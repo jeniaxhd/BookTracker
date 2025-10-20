@@ -1,4 +1,6 @@
-package sk.upjs.paz;
+package sk.upjs.paz.entity;
+
+import sk.upjs.paz.enums.UserRank;
 
 public record User (
     long id,

@@ -1,9 +1,11 @@
-package sk.upjs.paz;
+package sk.upjs.paz.entity;
+
+import sk.upjs.paz.enums.*;
 
 public record Book (
         Long id,
         String title,
-        String author,
+        Author author,
         Genre genre,
         int year,
         double rating,

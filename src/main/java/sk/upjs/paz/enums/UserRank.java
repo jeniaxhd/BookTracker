@@ -1,4 +1,4 @@
-package sk.upjs.paz;
+package sk.upjs.paz.enums;
 
 public enum UserRank {
     NOVICE(0, 5),
