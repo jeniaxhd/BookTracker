@@ -21,7 +21,7 @@ public enum UserRank {
                 return rank;
             }
         }
-        return NOVICE; // на всяк випадок
+        return NOVICE;
     }
 
     public int getMinBooks() { return minBooks; }

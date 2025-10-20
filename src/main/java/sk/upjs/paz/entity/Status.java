@@ -9,7 +9,7 @@ public record Status (
         Book book,
         User user,
         Bookstate state,
-        int pagesRead,
+        int pagesRead   ,
         LocalDate lastTimeRead
 ) {
     public Status {

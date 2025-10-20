@@ -1,7 +1,5 @@
 package sk.upjs.paz.entity;
 
-import sk.upjs.paz.enums.*;
-
 public record Book (
         Long id,
         String title,
