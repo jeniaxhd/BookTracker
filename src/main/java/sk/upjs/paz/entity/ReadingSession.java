@@ -3,13 +3,17 @@ package sk.upjs.paz.entity;
 import sk.upjs.paz.enums.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-public class Status {
+public class ReadingSession {
     private long id;
     private Book book;
     private User user;
     private Bookstate state;
-    private int pagesRead;
+    private LocalDateTime start;
+    private LocalDateTime end;
+    private int duration;
+    private int endPage;
     private LocalDate lastTimeRead;
 
     public long getId() {
@@ -45,11 +49,11 @@ public class Status {
     }
 
     public int getPagesRead() {
-        return pagesRead;
+        return endPage;
     }
 
-    public void setPagesRead(int pagesRead) {
-        this.pagesRead = pagesRead;
+    public void setPagesRead(int endPage) {
+        this.endPage = endPage;
     }
 
     public LocalDate getLastTimeRead() {
@@ -60,14 +64,38 @@ public class Status {
         this.lastTimeRead = lastTimeRead;
     }
 
-    public Status() {
+    public LocalDateTime getStart() {
+        return start;
+    }
+
+    public void setStart(LocalDateTime start) {
+        this.start = start;
+    }
+
+    public LocalDateTime getEnd() {
+        return end;
+    }
+
+    public void setEnd(LocalDateTime end) {
+        this.end = end;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public ReadingSession() {
 
     }
 
     public void UpdateProgress(int newPagesRead) {
         Bookstate finalState = state;
 
-        if (pagesRead > 0) {
+        if (endPage > 0) {
             if (state != Bookstate.FINISHED && state != Bookstate.ABANDONED) {
                 finalState = Bookstate.READING;
             }

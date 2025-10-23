@@ -1,6 +1,5 @@
 package sk.upjs.paz.entity;
 
-import sk.upjs.paz.enums.Bookstate;
 import sk.upjs.paz.enums.Genre;
 
 public class Book{
@@ -10,6 +9,9 @@ public class Book{
     private Genre genre;
     private int year;
     private double rating;
+    private int pages;
+    private String coverPath;
+
 
 
     public Long getId() {
@@ -60,9 +62,28 @@ public class Book{
         this.rating = rating;
     }
 
+    public int getPages() {
+        return pages;
+    }
+
+    public void setPages(int pages) {
+        this.pages = pages;
+    }
+
     @Override
     public String toString() {
         return "[" + title + "by" + author + "]";
     }
+
+    public Book(){}
+
+    public String getCoverPath() {
+        return coverPath;
+    }
+
+    public void setCoverPath(String coverPath) {
+        this.coverPath = coverPath;
+    }
+
 }
 
