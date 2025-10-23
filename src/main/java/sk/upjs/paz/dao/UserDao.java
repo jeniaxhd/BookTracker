@@ -13,4 +13,5 @@ public interface UserDao {
     User getByEmail(String email);
     User getByEmailAndPassword(String email, String password);
 
+
 }
