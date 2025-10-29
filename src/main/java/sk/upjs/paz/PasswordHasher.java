@@ -11,7 +11,7 @@ public class PasswordHasher {
             StringBuilder sb = new StringBuilder();
 
             for (byte b : hash) {
-                sb.append(String.format("%02x", b)); // переводимо байти в hex
+                sb.append(String.format("%02x", b));
             }
             return sb.toString();
         } catch (NoSuchAlgorithmException e) {
