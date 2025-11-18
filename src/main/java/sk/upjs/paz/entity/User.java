@@ -1,17 +1,13 @@
 package sk.upjs.paz.entity;
 
-import sk.upjs.paz.enums.UserRank;
-
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class User {
-    private long id;
+    private Long id;
     private String name;
     private String email;
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
     private int readedBooks;
-    private String password;
-    private UserRank rank;
 
     public User(){}
 
@@ -26,16 +22,11 @@ public class User {
                 && email != null && email.contains("@");
     }
 
-
-    public UserRank getRank() {
-        return UserRank.getRankByReadBooks(readedBooks);
-    }
-
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -55,40 +46,20 @@ public class User {
         this.email = email;
     }
 
-    public int getReadBooks() {
-        return readedBooks;
-    }
-
-    public void setReadBooks(int readBooks) {
-        this.readedBooks = readBooks;
-    }
-
-    public LocalDate getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDate createdAt) {
-        this.createdAt = createdAt;
-    }
-
     public int getReadedBooks() {
         return readedBooks;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
     public void setReadedBooks(int readedBooks) {
         this.readedBooks = readedBooks;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setRank(UserRank rank) {
-        this.rank = rank;
     }
 
 

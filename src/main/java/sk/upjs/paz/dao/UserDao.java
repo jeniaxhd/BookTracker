@@ -7,10 +7,11 @@ import java.util.Optional;
 
 public interface UserDao {
     void add (User user);
-    void delete(long id);
+    void delete(Long id);
     void update(User user);
-    Optional<User> getById(long id);
+    Optional<User> getById(Long id);
     List<User> searchByName(String name);
+    List<User> findAll();
     Optional<User> getByEmail(String email);
 
 

@@ -3,7 +3,7 @@ package sk.upjs.paz.entity;
 import java.time.LocalDateTime;
 
 public record Review (
-        long id,
+        Long id,
         Book book,
         User user,
         int rating,

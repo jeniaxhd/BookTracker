@@ -1,7 +1,5 @@
 package sk.upjs.paz.entity;
 
-import sk.upjs.paz.enums.Genre;
-
 public class Book{
     private Long id;
     private String title;
@@ -71,8 +69,8 @@ public class Book{
     }
 
     @Override
-    public String toString() {
-        return "[" + title + "by" + author + "]";
+        public String toString() {
+        return "[" + title + " by " + (author != null ? author.getName() : "Unknown") + "]";
     }
 
     public Book(){}

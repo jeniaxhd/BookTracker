@@ -8,10 +8,10 @@ import java.util.Optional;
 
 public interface BookDao {
     void add(Book book);
-    void delete(long id);
+    void delete(Long id);
     void update(Book book);
 
-    Optional<Book> getById(long id);
+    Optional<Book> getById(Long id);
     List<Book> getAll();
     List<Book> getByAuthor(Author author);
     List<Book> getByGenre(Genre genre);

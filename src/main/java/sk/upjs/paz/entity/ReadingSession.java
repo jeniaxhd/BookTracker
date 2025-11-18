@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class ReadingSession {
-    private long id;
+    private Long id;
     private Book book;
     private User user;
     private Bookstate state;
@@ -16,11 +16,11 @@ public class ReadingSession {
     private int endPage;
     private LocalDate lastTimeRead;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

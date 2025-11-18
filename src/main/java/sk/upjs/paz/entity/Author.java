@@ -1,19 +1,17 @@
 package sk.upjs.paz.entity;
 
-import sk.upjs.paz.enums.Country;
-
 public class Author{
-    private int id;
+    private Long id;
     private String name;
     private Country country;
     private String bio;
 
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -31,6 +29,14 @@ public class Author{
 
     public void setCountry(Country country) {
         this.country = country;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
     }
 
     @Override

@@ -8,12 +8,12 @@ import java.util.Optional;
 public interface ReadingSessionDao {
     void add(ReadingSession readingSession);
     void update(ReadingSession readingSession);
-    void delete(long id);
+    void delete(Long id);
 
-    Optional<ReadingSession> findById(long id);
-    List<ReadingSession> findByUserId(long userId);
-    List<ReadingSession> findByBookId(long bookId);
-    Optional<ReadingSession> findActiveSession(long userId, long bookId);
+    Optional<ReadingSession> findById(Long id);
+    List<ReadingSession> findByUserId(Long userId);
+    List<ReadingSession> findByBookId(Long bookId);
+    Optional<ReadingSession> findActiveSession(Long userId, Long bookId);
     List<ReadingSession> getAll();
 
 }

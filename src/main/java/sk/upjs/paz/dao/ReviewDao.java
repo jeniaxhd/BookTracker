@@ -8,11 +8,11 @@ import java.util.OptionalDouble;
 public interface ReviewDao {
     void add(Review review);
     void update(Review review);
-    void delete(long id);
+    void delete(Long id);
 
     List<Review> getAll();
-    List<Review> getByBook(long bookId);
-    List<Review> getByUser(long userId);
-    Optional<Review> findById(long id);
-    OptionalDouble getAverageRatingForBook(long bookId);
+    List<Review> getByBook(Long bookId);
+    List<Review> getByUser(Long userId);
+    Optional<Review> findById(Long id);
+    OptionalDouble getAverageRatingForBook(Long bookId);
 }
