@@ -10,9 +10,10 @@ public interface ReviewDao {
     void update(Review review);
     void delete(Long id);
 
-    List<Review> getAll();
     List<Review> getByBook(Long bookId);
     List<Review> getByUser(Long userId);
-    Optional<Review> findById(Long id);
-    OptionalDouble getAverageRatingForBook(Long bookId);
+    Optional<Review> getById(Long id);
+    Optional<Review> getByUserAndBook(Long userId, Long bookId);
+
+    List<Review> getAll();
 }

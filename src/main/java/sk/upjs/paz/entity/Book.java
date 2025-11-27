@@ -1,16 +1,47 @@
 package sk.upjs.paz.entity;
 
-public class Book{
+import javax.swing.*;
+import java.util.List;
+
+public class Book {
     private Long id;
     private String title;
-    private Author author;
+    private String description;
+    private List<Author> authors;
+    private double averageRating;
     private Genre genre;
     private int year;
-    private double rating;
     private int pages;
+    private String language;
     private String coverPath;
 
+    public Book() {
+    }
 
+    public Book(Long id, String title, List<Author> authors, Genre genre, int year, int pages, String coverPath,int averageRating, String description, String language) {
+        this.id = id;
+        this.title = title;
+        this.authors = authors;
+        this.genre = genre;
+        this.year = year;
+        this.pages = pages;
+        this.coverPath = coverPath;
+        this.description = description;
+        this.language = language;
+        this.averageRating = averageRating;
+    }
+
+    public Book(String title, List<Author> authors, Genre genre, int year, int pages, String coverPath, String description, String language) {
+        this.title = title;
+        this.authors = authors;
+        this.genre = genre;
+        this.year = year;
+        this.pages = pages;
+        this.coverPath = coverPath;
+        this.description = description;
+        this.language = language;
+        this.averageRating = 0.0;
+    }
 
     public Long getId() {
         return id;
@@ -28,12 +59,19 @@ public class Book{
         this.title = title;
     }
 
-    public Author getAuthor() {
-        return author;
+    public List<Author> getAuthors() {
+        return authors;
     }
 
-    public void setAuthor(Author author) {
-        this.author = author;
+    public void setAuthors(List<Author> authors) {
+        this.authors = authors;
+    }
+
+    public void addAuthor(Author author) {
+        if (this.authors == null) {
+            this.authors = new java.util.ArrayList<>();
+        }
+        this.authors.add(author);
     }
 
     public Genre getGenre() {
@@ -52,12 +90,12 @@ public class Book{
         this.year = year;
     }
 
-    public double getRating() {
-        return rating;
+    public String getDescription() {
+        return description;
     }
 
-    public void setRating(double rating) {
-        this.rating = rating;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public int getPages() {
@@ -68,12 +106,27 @@ public class Book{
         this.pages = pages;
     }
 
-    @Override
-        public String toString() {
-        return "[" + title + " by " + (author != null ? author.getName() : "Unknown") + "]";
+    public String getLanguage() {
+        return language;
     }
 
-    public Book(){}
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    @Override
+    public String toString() {
+        String authorNames = "Unknown";
+
+        if (authors != null && !authors.isEmpty()) {
+            authorNames = authors.stream()
+                    .map(Author::getName)
+                    .reduce((a1, a2) -> a1 + ", " + a2)
+                    .orElse("Unknown");
+        }
+
+        return "[" + title + " by " + authorNames + "]";
+    }
 
     public String getCoverPath() {
         return coverPath;
@@ -83,5 +136,12 @@ public class Book{
         this.coverPath = coverPath;
     }
 
+    public double getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(double averageRating) {
+        this.averageRating = averageRating;
+    }
 }
 

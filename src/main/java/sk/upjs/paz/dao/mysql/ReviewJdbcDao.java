@@ -5,9 +5,9 @@ import sk.upjs.paz.entity.Review;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.OptionalDouble;
 
-public class MysqlReviewDao implements ReviewDao {
+public class ReviewJdbcDao implements ReviewDao {
+
     @Override
     public void add(Review review) {
 
@@ -24,11 +24,6 @@ public class MysqlReviewDao implements ReviewDao {
     }
 
     @Override
-    public List<Review> getAll() {
-        return List.of();
-    }
-
-    @Override
     public List<Review> getByBook(Long bookId) {
         return List.of();
     }
@@ -39,12 +34,17 @@ public class MysqlReviewDao implements ReviewDao {
     }
 
     @Override
-    public Optional<Review> findById(Long id) {
+    public Optional<Review> getById(Long id) {
         return Optional.empty();
     }
 
     @Override
-    public OptionalDouble getAverageRatingForBook(Long bookId) {
-        return OptionalDouble.empty();
+    public Optional<Review> getByUserAndBook(Long userId, Long bookId) {
+        return Optional.empty();
+    }
+
+    @Override
+    public List<Review> getAll() {
+        return List.of();
     }
 }

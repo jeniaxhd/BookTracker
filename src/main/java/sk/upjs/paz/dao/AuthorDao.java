@@ -10,10 +10,10 @@ public interface AuthorDao {
     void add(Author author);
     void delete(Long id);
     void update(Author author);
+
     Optional<Author> getById(Long id);
     List<Author> getAll();
-    Optional<Author> getByName(String name);
-    List<Author> searchByName(String name);
+    List<Author> getByName(String name);
     List<Author> getByCountry(Country country);
 
 }

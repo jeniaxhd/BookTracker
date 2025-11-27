@@ -7,19 +7,27 @@ public class User {
     private String name;
     private String email;
     private LocalDateTime createdAt;
-    private int readedBooks;
+    private int readBooks;
 
-    public User(){}
-
-    public User (String name, String email, int readedBooks) {
-        this.name = name;
-        this.email = email;
-        this.readedBooks = readedBooks;
+    public User() {
     }
 
-    public boolean isValid() {
-        return name != null && !name.isBlank()
-                && email != null && email.contains("@");
+    public User(Long id, String name, String email, LocalDateTime createdAt, int readBooks) {
+        this.id = id;
+        setName(name);
+        setEmail(email);
+        this.createdAt = createdAt;
+        this.readBooks = readBooks;
+    }
+
+    public User(String name, String email, int readBooks) {
+        setName(name);
+        setEmail(email);
+        this.readBooks = readBooks;
+    }
+
+    private boolean isEmailValid(String email) {
+        return email != null && email.matches("^[^@]+@[^@]+\\.[^@]+$");
     }
 
     public Long getId() {
@@ -35,6 +43,9 @@ public class User {
     }
 
     public void setName(String name) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Name cannot be blank");
+        }
         this.name = name;
     }
 
@@ -43,11 +54,14 @@ public class User {
     }
 
     public void setEmail(String email) {
+        if (!isEmailValid(email)) {
+            throw new IllegalArgumentException("Invalid email: " + email);
+        }
         this.email = email;
     }
 
-    public int getReadedBooks() {
-        return readedBooks;
+    public int getReadBooks() {
+        return readBooks;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -58,16 +72,15 @@ public class User {
         this.createdAt = createdAt;
     }
 
-    public void setReadedBooks(int readedBooks) {
-        this.readedBooks = readedBooks;
+    public void setReadBooks(int readBooks) {
+        if (readBooks < 0) {
+            throw new IllegalArgumentException("readBooks cannot be negative");
+        }
+        this.readBooks = readBooks;
     }
-
-
 
     @Override
     public String toString() {
-        return "User{" +
-                "name='" + name + '\'' +
-                '}';
+        return name + " (" + email + ")";
     }
 }

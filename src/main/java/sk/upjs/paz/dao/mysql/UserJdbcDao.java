@@ -6,7 +6,7 @@ import sk.upjs.paz.entity.User;
 import java.util.List;
 import java.util.Optional;
 
-public class MysqlUserDao implements UserDao {
+public class UserJdbcDao implements UserDao {
     @Override
     public void add(User user) {
 
@@ -14,7 +14,6 @@ public class MysqlUserDao implements UserDao {
 
     @Override
     public void delete(Long id) {
-        String sql = "DELETE FROM user WHERE id = ?";
 
     }
 
@@ -29,17 +28,22 @@ public class MysqlUserDao implements UserDao {
     }
 
     @Override
-    public List<User> searchByName(String name) {
+    public List<User> getByName(String name) {
         return List.of();
     }
 
     @Override
-    public List<User> findAll() {
+    public List<User> getAll() {
         return List.of();
     }
 
     @Override
     public Optional<User> getByEmail(String email) {
         return Optional.empty();
+    }
+
+    @Override
+    public void updateReadBooks(Long userId, int newCount) {
+
     }
 }

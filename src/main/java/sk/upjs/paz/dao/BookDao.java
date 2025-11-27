@@ -1,7 +1,6 @@
 package sk.upjs.paz.dao;
 
 import sk.upjs.paz.entity.*;
-import sk.upjs.paz.enums.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,8 +14,17 @@ public interface BookDao {
     List<Book> getAll();
     List<Book> getByAuthor(Author author);
     List<Book> getByGenre(Genre genre);
-    Optional<Book> getByTitle(String title);
-    List<Book> searchByTitle(String title);
+    List<Book> getByTitle(String title);
     List<Book> getByYear(int year);
+    List<Book> getByLanguage(String language);
+
+    List<Book> findByFilter(
+            Integer yearFrom,
+            Integer yearTo,
+            Integer pagesFrom,
+            Integer pagesTo,
+            Double ratingFrom,
+            Double ratingTo
+    );
 
 }

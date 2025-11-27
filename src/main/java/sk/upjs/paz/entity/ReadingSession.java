@@ -11,10 +11,33 @@ public class ReadingSession {
     private User user;
     private Bookstate state;
     private LocalDateTime start;
-    private LocalDateTime end;
     private int duration;
     private int endPage;
     private LocalDate lastTimeRead;
+
+    public ReadingSession(){}
+
+    public ReadingSession(Long id, Book book, User user, Bookstate state, LocalDateTime start,
+                          int duration, int endPage, LocalDate lastTimeRead){
+        this.id = id;
+        this.user = user;
+        this.book = book;
+        this.state = state;
+        this.start = start;
+        this.duration = duration;
+        this.endPage = endPage;
+        this.lastTimeRead = lastTimeRead;
+    }
+    public ReadingSession(Book book, User user, Bookstate state, LocalDateTime start,
+                          int duration, int endPage, LocalDate lastTimeRead){
+        this.user = user;
+        this.book = book;
+        this.state = state;
+        this.start = start;
+        this.duration = duration;
+        this.endPage = endPage;
+        this.lastTimeRead = lastTimeRead;
+    }
 
     public Long getId() {
         return id;
@@ -48,11 +71,11 @@ public class ReadingSession {
         this.state = state;
     }
 
-    public int getPagesRead() {
+    public int getEndPage() {
         return endPage;
     }
 
-    public void setPagesRead(int endPage) {
+    public void setEndPage(int endPage) {
         this.endPage = endPage;
     }
 
@@ -72,14 +95,6 @@ public class ReadingSession {
         this.start = start;
     }
 
-    public LocalDateTime getEnd() {
-        return end;
-    }
-
-    public void setEnd(LocalDateTime end) {
-        this.end = end;
-    }
-
     public int getDuration() {
         return duration;
     }
@@ -88,19 +103,21 @@ public class ReadingSession {
         this.duration = duration;
     }
 
-    public ReadingSession() {
+    public void updateProgress(int newEndPage) {
+        if (newEndPage <= 0) {
+            return;
+        }
 
-    }
+        this.endPage = newEndPage;
 
-    public void UpdateProgress(int newPagesRead) {
-        Bookstate finalState = state;
-
-        if (endPage > 0) {
-            if (state != Bookstate.FINISHED && state != Bookstate.ABANDONED) {
-                finalState = Bookstate.READING;
+        if (state != Bookstate.FINISHED && state != Bookstate.ABANDONED) {
+            if (book != null && endPage >= book.getPages()) {
+                state = Bookstate.FINISHED;
+            } else {
+                state = Bookstate.READING;
             }
         }
 
-        state = finalState;
+        this.lastTimeRead = LocalDate.now();
     }
 }

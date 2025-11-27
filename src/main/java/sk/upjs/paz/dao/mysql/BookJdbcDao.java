@@ -8,7 +8,8 @@ import sk.upjs.paz.entity.Genre;
 import java.util.List;
 import java.util.Optional;
 
-public class MysqlBookDao implements BookDao {
+public class BookJdbcDao implements BookDao {
+
     @Override
     public void add(Book book) {
 
@@ -45,17 +46,22 @@ public class MysqlBookDao implements BookDao {
     }
 
     @Override
-    public Optional<Book> getByTitle(String title) {
-        return Optional.empty();
-    }
-
-    @Override
-    public List<Book> searchByTitle(String title) {
+    public List<Book> getByTitle(String title) {
         return List.of();
     }
 
     @Override
     public List<Book> getByYear(int year) {
+        return List.of();
+    }
+
+    @Override
+    public List<Book> getByLanguage(String language) {
+        return List.of();
+    }
+
+    @Override
+    public List<Book> findByFilter(Integer yearFrom, Integer yearTo, Integer pagesFrom, Integer pagesTo, Double ratingFrom, Double ratingTo) {
         return List.of();
     }
 }

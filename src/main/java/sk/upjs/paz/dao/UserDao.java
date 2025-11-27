@@ -9,10 +9,13 @@ public interface UserDao {
     void add (User user);
     void delete(Long id);
     void update(User user);
+
     Optional<User> getById(Long id);
-    List<User> searchByName(String name);
-    List<User> findAll();
+    List<User> getByName(String name);
+    List<User> getAll();
     Optional<User> getByEmail(String email);
+
+    void updateReadBooks(Long userId, int newCount);
 
 
 }
