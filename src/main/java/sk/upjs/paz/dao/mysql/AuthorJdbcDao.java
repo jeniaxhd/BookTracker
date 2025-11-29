@@ -19,9 +19,7 @@ public class AuthorJdbcDao implements AuthorDao {
 
     @Override
     public void add(Author author) {
-        String sql =
-                "INSERT INTO author(name, country, bio, country_id) " +
-                        "VALUES(?, ?, ?, ?)";
+        String sql = "INSERT INTO author(name, country, bio, country_id) " + "VALUES(?, ?, ?, ?)";
 
         try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, author.getName());
