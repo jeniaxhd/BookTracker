@@ -23,8 +23,7 @@ public class ReadingSessionJdbcDao implements ReadingSessionDao {
 
     @Override
     public void add(ReadingSession readingSession) {
-        String sql = "INSERT INTO readingSession(start, duration, endPage, lastTimeRead, book_id, user_id) " +
-                "VALUES(?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO readingSession(start, duration, endPage, lastTimeRead, book_id, user_id) VALUES(?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             if (readingSession.getStart() != null) {
@@ -59,8 +58,7 @@ public class ReadingSessionJdbcDao implements ReadingSessionDao {
 
     @Override
     public void update(ReadingSession readingSession) {
-        String sql = "UPDATE readingSession SET start = ?, duration = ?, endPage = ?, lastTimeRead = ?, " +
-                "book_id = ?, user_id = ? WHERE id = ?";
+        String sql = "UPDATE readingSession SET start = ?, duration = ?, endPage = ?, lastTimeRead = ?,book_id = ?, user_id = ? WHERE id = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             if (readingSession.getStart() != null) {
