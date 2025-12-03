@@ -1,4 +1,4 @@
-package sk.upjs.paz.dao.mysql;
+package sk.upjs.paz.dao.jdbc;
 
 import sk.upjs.paz.dao.ReadingSessionDao;
 import sk.upjs.paz.entity.Book;

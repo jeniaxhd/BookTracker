@@ -1,4 +1,4 @@
-package sk.upjs.paz.dao.mysql;
+package sk.upjs.paz.dao.jdbc;
 
 import sk.upjs.paz.dao.UserDao;
 import sk.upjs.paz.entity.User;
