@@ -19,6 +19,43 @@ public class CountryJdbcDao implements CountryDao {
     }
 
     @Override
+    public void add(Country country) {
+        String sql = "INSERT INTO country(country_name) VALUES (?)";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, country.name()); // якщо в рекорді поле інакше, то country.countryName()
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error adding country: " + country, e);
+        }
+    }
+
+    @Override
+    public void update(Country country) {
+        String sql = "UPDATE country SET country_name = ? WHERE id = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, country.name());
+            ps.setLong(2, country.id());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error updating country with id: " + country.id(), e);
+        }
+    }
+
+    @Override
+    public void delete(Long id) {
+        String sql = "DELETE FROM country WHERE id = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error deleting country with id: " + id, e);
+        }
+    }
+
+    @Override
     public List<Country> getAll() {
         String sql = "SELECT id, country_name FROM country ORDER BY id";
         List<Country> countries = new ArrayList<>();

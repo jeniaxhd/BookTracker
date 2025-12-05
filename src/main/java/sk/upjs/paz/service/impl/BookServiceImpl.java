@@ -104,9 +104,7 @@ public class BookServiceImpl implements BookService {
                 .filter(b -> filter.getToYear() == null
                         || (b.getYear() != null && b.getYear() <= filter.getToYear()))
                 .filter(b -> filter.getGenres() == null || filter.getGenres().isEmpty()
-                        || b.getGenres().stream().anyMatch(filter.getGenres()::contains))
-                .filter(b -> filter.getState() == null
-                        || b.getState() == filter.getState())
+                        || b.getGenre().stream().anyMatch(filter.getGenres()::contains))
                 .sorted((b1, b2) -> {
                     if (filter.getSortBy() == null) return 0;
 

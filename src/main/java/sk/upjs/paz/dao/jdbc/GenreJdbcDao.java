@@ -17,6 +17,44 @@ public class GenreJdbcDao implements GenreDao {
     }
 
     @Override
+    public void add(Genre genre) {
+        String sql = "INSERT INTO genre(genre_name) VALUES (?)";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, genre.name()); // або genre.genreName() якщо у рекорді поле інакше
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error adding genre: " + genre, e);
+        }
+    }
+
+    @Override
+    public void update(Genre genre) {
+        String sql = "UPDATE genre SET genre_name = ? WHERE id = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, genre.name());
+            ps.setLong(2, genre.id());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error updating genre with id: " + genre.id(), e);
+        }
+    }
+
+    @Override
+    public void delete(Long id) {
+        String sql = "DELETE FROM genre WHERE id = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error deleting genre with id: " + id, e);
+        }
+    }
+
+
+    @Override
     public List<Genre> getAll() {
         String sql = "SELECT id, name FROM genre ORDER BY name";
         List<Genre> genres = new ArrayList<>();
@@ -65,26 +103,28 @@ public class GenreJdbcDao implements GenreDao {
     }
 
     @Override
-    public Optional<Genre> getByName(String name) {
-        String sql = "SELECT id, name FROM genre WHERE name = ?";
+    public List<Genre> getByName(String name) {
+        String sql = "SELECT id, genre_name FROM genre WHERE genre_name = ?";
+        List<Genre> result = new ArrayList<>();
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, name);
-            try (ResultSet rs = ps.executeQuery()) {
 
-                if (rs.next()) {
-                    return Optional.of(
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    result.add(
                             new Genre(
                                     rs.getLong("id"),
-                                    rs.getString("name")
+                                    rs.getString("genre_name")
                             )
                     );
                 }
-                return Optional.empty();
             }
 
+            return result;
+
         } catch (SQLException e) {
-            throw new RuntimeException("Error getting genre by name: " + name, e);
+            throw new RuntimeException("Error getting genre(s) by name: " + name, e);
         }
     }
 }
