@@ -1,0 +1,188 @@
+/* ============= THEME: LIGHT ============= */
+
+.root {
+    -fx-background-color: #f6efe6;
+    -fx-text-fill: #3b2c23;
+    -fx-font-family: "Nunito";
+}
+
+/* Background gradients replacement */
+.root.light-theme {
+    -fx-background-color:
+            radial-gradient(center 20% 20%, radius 50%, rgba(246,225,199,0.8), transparent),
+            radial-gradient(center 80% 80%, radius 55%, rgba(231,210,188,0.8), transparent),
+            #f6efe6;
+}
+
+/* Cards */
+.card {
+    -fx-background-color: #fff9f3;
+    -fx-background-radius: 16;
+    -fx-padding: 20;
+    -fx-border-color: rgba(92,72,56,0.16);
+    -fx-effect: dropshadow(gaussian, rgba(149,111,78,0.15), 25, 0, 0, 10);
+}
+
+/* Buttons */
+.btn {
+    -fx-background-radius: 999;
+    -fx-cursor: hand;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+    -fx-padding: 9 18;
+    -fx-text-fill: #3b2c23;
+    -fx-background-insets: 0;
+}
+
+.btn-primary {
+    -fx-background-color: linear-gradient(to bottom right, #d6a15f, #f0c796);
+    -fx-text-fill: #3a2616;
+    -fx-effect: dropshadow(gaussian, rgba(172,117,66,0.45), 16, 0, 0, 8);
+}
+
+.btn-soft {
+    -fx-background-color: rgba(255,255,255,0.9);
+    -fx-border-color: rgba(92,72,56,0.16);
+}
+
+.btn-ghost {
+    -fx-background-color: transparent;
+    -fx-border-color: rgba(92,72,56,0.16);
+}
+
+/* Header */
+.header {
+    -fx-background-color: rgba(246,239,230,0.9);
+    -fx-padding: 12 20;
+}
+
+.brand {
+    -fx-font-family: "Playfair Display";
+    -fx-font-size: 22px;
+    -fx-text-fill: #3b2c23;
+}
+
+.nav-link {
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #807065;
+}
+
+/* Pill */
+.pill {
+    -fx-background-color: rgba(255,255,255,0.8);
+    -fx-padding: 6 12;
+    -fx-background-radius: 999;
+    -fx-border-color: rgba(203,173,141,0.45);
+}
+
+/* Feature card */
+.feature-card {
+    -fx-background-color: #fff9f3;
+    -fx-padding: 18;
+    -fx-background-radius: 16;
+    -fx-border-color: rgba(92,72,56,0.16);
+    -fx-effect: dropshadow(gaussian, rgba(149,111,78,0.15), 22, 0, 0, 10);
+}
+
+/* Book card */
+.book-card {
+    -fx-background-color: #fff9f3;
+    -fx-padding: 14;
+    -fx-background-radius: 18;
+    -fx-border-color: rgba(92,72,56,0.16);
+    -fx-effect: dropshadow(gaussian, rgba(149,111,78,0.15), 18, 0, 0, 10);
+}
+
+/* Book tag */
+.book-tag {
+    -fx-background-color: rgba(214,161,95,0.14);
+    -fx-background-radius: 999;
+    -fx-font-weight: 600;
+}
+
+/* Generic progress bars */
+.progress-bar {
+    -fx-background-color: rgba(118,88,65,0.12);
+    -fx-background-radius: 999;
+}
+
+.progress-fill {
+    -fx-background-color: linear-gradient(to right, #d6a15f, #f0c796);
+    -fx-background-radius: inherit;
+}
+
+/* Progress panel */
+.progress-panel {
+    -fx-background-color: linear-gradient(to bottom right, rgba(255,248,239,0.96), rgba(244,225,205,0.96));
+    -fx-background-radius: 24;
+    -fx-padding: 24;
+    -fx-border-color: rgba(214,161,95,0.28);
+    -fx-effect: dropshadow(gaussian, rgba(149,111,78,0.15), 25, 0, 0, 12);
+}
+
+/* Circle progress (static styling only — value via inline JavaFX code) */
+.circle-bg {
+    -fx-stroke: rgba(222,198,170,0.6);
+    -fx-stroke-width: 10;
+    -fx-fill: transparent;
+}
+
+.circle-value {
+    -fx-stroke: #d6a15f;
+    -fx-stroke-width: 10;
+    -fx-fill: transparent;
+}
+
+/* Footer */
+.footer {
+    -fx-background-color: rgba(32,25,19,0.92);
+    -fx-padding: 20;
+    -fx-text-fill: #bba99a;
+}
+
+/* ============= THEME: DARK ============= */
+
+.root.dark-theme {
+    -fx-background-color: #15120f;
+    -fx-text-fill: #f7e8d8;
+}
+
+.dark-theme .card {
+    -fx-background-color: #241b14;
+    -fx-border-color: rgba(244,217,188,0.15);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.45), 40, 0, 0, 20);
+}
+
+.dark-theme .btn-soft {
+    -fx-background-color: rgba(41,31,22,0.9);
+}
+
+.dark-theme .btn-ghost:hover {
+    -fx-background-color: rgba(255,255,255,0.04);
+}
+
+.dark-theme .feature-card {
+    -fx-background-color: #2b2119;
+}
+
+.dark-theme .book-card {
+    -fx-background-color: #2b2119;
+}
+
+.dark-theme .book-tag {
+    -fx-background-color: rgba(214,161,95,0.25);
+}
+
+.dark-theme .progress-panel {
+    -fx-background-color: linear-gradient(to bottom right, #2b2017, #1c140e);
+    -fx-border-color: rgba(214,161,95,0.35);
+}
+
+.dark-theme .circle-bg {
+    -fx-stroke: rgba(95,72,53,0.9);
+}
+
+.dark-theme .footer {
+    -fx-background-color: rgba(21,18,15,0.92);
+}

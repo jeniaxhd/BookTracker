@@ -3,7 +3,7 @@ package sk.upjs.paz;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class PasswordHasher {
+public class        PasswordHasher {
     public static String hash(String password) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");

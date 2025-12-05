@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane xmlns="http://javafx.com/javafx/21"
+           xmlns:fx="http://javafx.com/fxml/1"
+           stylesheets="@styles.css"
+           styleClass="root">
+
+    <!-- Весь контент центруємо і обмежуємо по ширині -->
+    <VBox alignment="TOP_CENTER" spacing="20">
+        <padding>
+            <Insets top="30" right="30" bottom="30" left="30"/>
+        </padding>
+        <children>
+
+            <!-- ВЕЛИКА CARD -->
+            <VBox styleClass="login-card"
+                  spacing="24"
+                  maxWidth="1000">
+                <padding>
+                    <Insets top="24" right="32" bottom="24" left="32"/>
+                </padding>
+                <children>
+
+                    <!-- Заголовок -->
+                    <Label text="Add Book"
+                           alignment="CENTER"
+                           maxWidth="Infinity"
+                           styleClass="title"/>
+
+                    <!-- ГОЛОВНИЙ РЯД: Cover + Права колонка -->
+                    <HBox spacing="32">
+                        <children>
+
+                            <!-- Ліва колонка: обкладинка -->
+                            <VBox spacing="16" alignment="TOP_CENTER">
+
+                                <!-- Placeholder обкладинки -->
+                                <StackPane prefWidth="220" prefHeight="300"
+                                           style="-fx-background-color: #fdfaf7;
+                                                  -fx-border-color: #d6c7b8;
+                                                  -fx-background-radius: 18;
+                                                  -fx-border-radius: 18;
+                                                  -fx-effect: dropshadow(gaussian, rgba(150,120,90,0.12), 18, 0, 0, 4);">
+                                    <children>
+                                        <Label text="No image"
+                                               style="-fx-text-fill: #a07a58; -fx-font-size: 16;"/>
+                                    </children>
+                                </StackPane>
+
+                                <!-- Кнопка Upload -->
+                                <Button text="Upload Cover"
+                                        prefWidth="220"
+                                        styleClass="secondary-button"/>
+                            </VBox>
+
+                            <!-- Права колонка: поля -->
+                            <VBox spacing="16" HBox.hgrow="ALWAYS">
+
+                                <!-- Book Title -->
+                                <VBox spacing="4">
+                                    <Label text="Book Title" styleClass="label-text"/>
+                                    <TextField promptText="Enter book title"
+                                               styleClass="input-field"
+                                               maxWidth="Infinity"/>
+                                </VBox>
+
+                                <!-- Author -->
+                                <VBox spacing="4">
+                                    <Label text="Author" styleClass="label-text"/>
+                                    <TextField promptText="Enter author name"
+                                               styleClass="input-field"
+                                               maxWidth="Infinity"/>
+                                </VBox>
+
+                                <!-- Genre + Year -->
+                                <HBox spacing="16">
+                                    <VBox spacing="4" HBox.hgrow="ALWAYS">
+                                        <Label text="Genre" styleClass="label-text"/>
+                                        <ComboBox promptText="Select genre"
+                                                  styleClass="combo-box"
+                                                  maxWidth="Infinity"/>
+                                    </VBox>
+
+                                    <VBox spacing="4" HBox.hgrow="ALWAYS">
+                                        <Label text="Year Published" styleClass="label-text"/>
+                                        <TextField promptText="2024"
+                                                   styleClass="input-field"
+                                                   maxWidth="Infinity"/>
+                                    </VBox>
+                                </HBox>
+
+                                <!-- Pages + Status -->
+                                <HBox spacing="16">
+                                    <VBox spacing="4" HBox.hgrow="ALWAYS">
+                                        <Label text="Pages" styleClass="label-text"/>
+                                        <TextField promptText="320"
+                                                   styleClass="input-field"
+                                                   maxWidth="Infinity"/>
+                                    </VBox>
+
+                                    <VBox spacing="4" HBox.hgrow="ALWAYS">
+                                        <Label text="Status" styleClass="label-text"/>
+                                        <ComboBox promptText="Select status"
+                                                  styleClass="combo-box"
+                                                  maxWidth="Infinity"/>
+                                    </VBox>
+                                </HBox>
+
+                                <!-- Rating -->
+                                <VBox spacing="6">
+                                    <Label text="Rating (optional)" styleClass="label-text"/>
+                                    <HBox spacing="6">
+                                        <Label text="★" styleClass="star"/>
+                                        <Label text="★" styleClass="star"/>
+                                        <Label text="★" styleClass="star"/>
+                                        <Label text="★" styleClass="star"/>
+                                        <Label text="★" styleClass="star"/>
+                                    </HBox>
+                                </VBox>
+
+                            </VBox>
+
+                        </children>
+                    </HBox>
+
+                    <!-- Description -->
+                    <VBox spacing="6">
+                        <Label text="Description (optional)" styleClass="label-text"/>
+                        <TextArea promptText="Add notes or a brief description..."
+                                  prefHeight="150"
+                                  styleClass="text-area"
+                                  maxWidth="Infinity"/>
+                    </VBox>
+
+                    <!-- Нижня кнопка -->
+                    <Button text="Add Book"
+                            styleClass="primary-button"
+                            prefHeight="44"
+                            maxWidth="Infinity"/>
+
+                </children>
+            </VBox>
+
+        </children>
+    </VBox>
+
+</StackPane>

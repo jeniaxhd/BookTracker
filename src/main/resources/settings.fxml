@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane xmlns="http://javafx.com/javafx/25"
+           xmlns:fx="http://javafx.com/fxml/1"
+           stylesheets="@styles.css"
+           styleClass="root">
+
+
+    <VBox alignment="CENTER"
+          spacing="25"
+          maxWidth="480"
+          prefWidth="430"
+          fillWidth="true"
+          styleClass="login-card">
+
+        <!-- Title -->
+        <Label text="Settings" styleClass="title"/>
+
+        <!-- THEME -->
+        <VBox spacing="6" fillWidth="true">
+            <Label text="Theme" styleClass="label-text"/>
+            <ComboBox promptText="Select theme"
+                      styleClass="input-field"
+                      maxWidth="Infinity"
+                      prefWidth="Infinity"/>
+        </VBox>
+
+        <!-- CHANGE PASSWORD -->
+        <VBox spacing="6" fillWidth="true">
+            <Label text="Change password" styleClass="label-text"/>
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Button text="Change"
+                        styleClass="primary-button"
+                        prefHeight="40"
+                        prefWidth="120"/>
+            </HBox>
+        </VBox>
+
+
+        <!-- LANGUAGE -->
+        <VBox spacing="6" fillWidth="true">
+            <Label text="Language" styleClass="label-text"/>
+            <ComboBox promptText="Select language"
+                      styleClass="input-field"
+                      maxWidth="Infinity"
+                      prefWidth="Infinity"/>
+        </VBox>
+
+        <!-- SAVE SETTINGS BUTTON -->
+        <HBox alignment="CENTER" prefWidth="Infinity">
+            <Button text="Save settings"
+                    styleClass="primary-button"
+                    prefHeight="45"
+                    HBox.hgrow="ALWAYS"
+                    maxWidth="Infinity"/>
+        </HBox>
+
+        <!-- BACK LINK -->
+        <HBox alignment="CENTER">
+            <Hyperlink text="Back" styleClass="link"/>
+        </HBox>
+
+    </VBox>
+
+</StackPane>
