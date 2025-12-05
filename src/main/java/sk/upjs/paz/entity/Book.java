@@ -125,7 +125,9 @@ public class Book {
                     .orElse("Unknown");
         }
 
-        return "[" + title + " by " + authorNames + "]";
+        return "[" + title + " by " + authorNames + " " + year + " Description: " + description +
+                " with average rating: " + averageRating + " in genres: " + getGenre().toString() +
+                " pages: " + pages + " on " + language + "]";
     }
 
     public String getCoverPath() {
@@ -143,5 +145,6 @@ public class Book {
     public void setAverageRating(double averageRating) {
         this.averageRating = averageRating;
     }
+
 }
 

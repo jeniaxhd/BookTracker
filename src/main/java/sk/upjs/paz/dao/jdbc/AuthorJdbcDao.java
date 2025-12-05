@@ -1,4 +1,4 @@
-package sk.upjs.paz.dao.mysql;
+package sk.upjs.paz.dao.jdbc;
 
 import sk.upjs.paz.dao.AuthorDao;
 import sk.upjs.paz.entity.Author;
@@ -159,4 +159,5 @@ public class AuthorJdbcDao implements AuthorDao {
 
         return list;
     }
+
 }
