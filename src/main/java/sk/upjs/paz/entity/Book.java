@@ -1,6 +1,5 @@
 package sk.upjs.paz.entity;
 
-import javax.swing.*;
 import java.util.List;
 
 public class Book {
@@ -9,37 +8,34 @@ public class Book {
     private String description;
     private List<Author> authors;
     private double averageRating;
-    private Genre genre;
-    private int year;
+    private List<Genre> genres;
+    private Integer year;
     private int pages;
-    private String language;
     private String coverPath;
 
     public Book() {
     }
 
-    public Book(Long id, String title, List<Author> authors, Genre genre, int year, int pages, String coverPath,int averageRating, String description, String language) {
+    public Book(Long id, String title, List<Author> authors, List<Genre> genre, int year, int pages, String coverPath, int averageRating, String description, String language) {
         this.id = id;
         this.title = title;
         this.authors = authors;
-        this.genre = genre;
+        this.genres = genre;
         this.year = year;
         this.pages = pages;
         this.coverPath = coverPath;
         this.description = description;
-        this.language = language;
         this.averageRating = averageRating;
     }
 
-    public Book(String title, List<Author> authors, Genre genre, int year, int pages, String coverPath, String description, String language) {
+    public Book(String title, List<Author> authors, List<Genre> genre, int year, int pages, String coverPath, String description, String language) {
         this.title = title;
         this.authors = authors;
-        this.genre = genre;
+        this.genres = genre;
         this.year = year;
         this.pages = pages;
         this.coverPath = coverPath;
         this.description = description;
-        this.language = language;
         this.averageRating = 0.0;
     }
 
@@ -74,19 +70,19 @@ public class Book {
         this.authors.add(author);
     }
 
-    public Genre getGenre() {
-        return genre;
+    public List<Genre> getGenre() {
+        return genres;
     }
 
-    public void setGenre(Genre genre) {
-        this.genre = genre;
+    public void setGenre(List<Genre> genres) {
+        this.genres = genres;
     }
 
-    public int getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(int year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 
@@ -106,14 +102,6 @@ public class Book {
         this.pages = pages;
     }
 
-    public String getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(String language) {
-        this.language = language;
-    }
-
     @Override
     public String toString() {
         String authorNames = "Unknown";
@@ -127,7 +115,7 @@ public class Book {
 
         return "[" + title + " by " + authorNames + " " + year + " Description: " + description +
                 " with average rating: " + averageRating + " in genres: " + getGenre().toString() +
-                " pages: " + pages + " on " + language + "]";
+                " pages: " + pages + "]";
     }
 
     public String getCoverPath() {

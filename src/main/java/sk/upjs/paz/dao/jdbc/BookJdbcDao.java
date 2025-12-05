@@ -20,21 +20,16 @@ public class BookJdbcDao implements BookDao {
 
     @Override
     public void add(Book book) {
-        String sql = "INSERT INTO book(title, description, year, pages, language, cover_path, genre_id) VALUES(?, ?, ?, ?, ?, ?, ?)";
+        // ⚠️ genre_id в book більше НЕ зберігаємо (many-to-many через book_has_genre)
+        String sql = "INSERT INTO book(title, description, year, pages, cover_path) " +
+                "VALUES(?, ?, ?, ?, ?)";
 
         try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, book.getTitle());
             ps.setString(2, book.getDescription());
             ps.setInt(3, book.getYear());
             ps.setInt(4, book.getPages());
-            ps.setString(5, book.getLanguage());
-            ps.setString(6, book.getCoverPath());
-
-            if (book.getGenre() != null && book.getGenre().id() != null) {
-                ps.setLong(7, book.getGenre().id());
-            } else {
-                ps.setNull(7, Types.BIGINT);
-            }
+            ps.setString(5, book.getCoverPath());
 
             ps.executeUpdate();
 
@@ -50,6 +45,9 @@ public class BookJdbcDao implements BookDao {
 
         if (book.getAuthors() != null && book.getId() != null) {
             insertBookAuthors(book);
+        }
+        if (book.getGenre() != null && book.getId() != null) {
+            insertBookGenres(book);
         }
     }
 
@@ -69,19 +67,42 @@ public class BookJdbcDao implements BookDao {
         }
     }
 
+    // 🔹 зв’язки книга–жанр (Genre = record)
+    private void insertBookGenres(Book book) {
+        String linkSql = "INSERT INTO book_has_genre(book_id, genre_id) VALUES(?, ?)";
+
+        try (PreparedStatement ps = conn.prepareStatement(linkSql)) {
+            for (Genre genre : book.getGenre()) {
+                // genre.id() – компонент рекорда (типу Long id)
+                if (genre == null || genre.id() == null) continue;
+                ps.setLong(1, book.getId());
+                ps.setLong(2, genre.id());
+                ps.addBatch();
+            }
+            ps.executeBatch();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public void delete(Long id) {
-        String deleteLinksSql = "DELETE FROM book_has_author WHERE book_id = ?";
+        String deleteAuthorLinksSql = "DELETE FROM book_has_author WHERE book_id = ?";
+        String deleteGenreLinksSql = "DELETE FROM book_has_genre WHERE book_id = ?";
         String deleteBookSql = "DELETE FROM book WHERE id = ?";
 
-        try (PreparedStatement ps1 = conn.prepareStatement(deleteLinksSql);
-             PreparedStatement ps2 = conn.prepareStatement(deleteBookSql)) {
+        try (PreparedStatement ps1 = conn.prepareStatement(deleteAuthorLinksSql);
+             PreparedStatement ps2 = conn.prepareStatement(deleteGenreLinksSql);
+             PreparedStatement ps3 = conn.prepareStatement(deleteBookSql)) {
 
             ps1.setLong(1, id);
             ps1.executeUpdate();
 
             ps2.setLong(1, id);
             ps2.executeUpdate();
+
+            ps3.setLong(1, id);
+            ps3.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -89,31 +110,33 @@ public class BookJdbcDao implements BookDao {
 
     @Override
     public void update(Book book) {
-        String sql = "UPDATE book SET title = ?, description = ?, year = ?, pages = ?, language = ?, cover_path = ?, genre_id = ? WHERE id = ?";
+        String sql = "UPDATE book SET title = ?, description = ?, year = ?, pages = ?, cover_path = ? " +
+                "WHERE id = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, book.getTitle());
             ps.setString(2, book.getDescription());
             ps.setInt(3, book.getYear());
             ps.setInt(4, book.getPages());
-            ps.setString(5, book.getLanguage());
-            ps.setString(6, book.getCoverPath());
-
-            if (book.getGenre() != null && book.getGenre().id() != null) {
-                ps.setLong(7, book.getGenre().id());
-            } else {
-                ps.setNull(7, Types.BIGINT);
-            }
-
-            ps.setLong(8, book.getId());
+            ps.setString(5, book.getCoverPath());
+            ps.setLong(6, book.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-        String deleteLinksSql = "DELETE FROM book_has_author WHERE book_id = ?";
+        // спочатку чистимо всі зв’язки, потім знову додаємо актуальні
+        String deleteAuthorLinksSql = "DELETE FROM book_has_author WHERE book_id = ?";
+        String deleteGenreLinksSql = "DELETE FROM book_has_genre WHERE book_id = ?";
 
-        try (PreparedStatement ps = conn.prepareStatement(deleteLinksSql)) {
+        try (PreparedStatement ps = conn.prepareStatement(deleteAuthorLinksSql)) {
+            ps.setLong(1, book.getId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        try (PreparedStatement ps = conn.prepareStatement(deleteGenreLinksSql)) {
             ps.setLong(1, book.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -121,6 +144,7 @@ public class BookJdbcDao implements BookDao {
         }
 
         insertBookAuthors(book);
+        insertBookGenres(book);
     }
 
     private Book mapRow(ResultSet rs) throws SQLException {
@@ -130,17 +154,16 @@ public class BookJdbcDao implements BookDao {
         b.setDescription(rs.getString("description"));
         b.setYear(rs.getInt("year"));
         b.setPages(rs.getInt("pages"));
-        b.setLanguage(rs.getString("language"));
         b.setCoverPath(rs.getString("cover_path"));
+
         double avg = loadAverageRating(rs.getLong("id"));
         b.setAverageRating(avg);
 
-        long genreId = rs.getLong("genre_id");
-        if (!rs.wasNull()) {
-            Genre genre = loadGenreById(genreId);
-            b.setGenre(genre);
-        }
+        // 🔹 жанри через join-таблицю
+        List<Genre> genres = loadGenresForBook(b.getId());
+        b.setGenre(genres);
 
+        // 🔹 автори як і раніше
         List<Author> authors = loadAuthorsForBook(b.getId());
         b.setAuthors(authors);
 
@@ -162,20 +185,28 @@ public class BookJdbcDao implements BookDao {
         return 0.0;
     }
 
-    private Genre loadGenreById(long genreId) throws SQLException {
-        String sql = "SELECT id, name FROM genre WHERE id = ?";
+    // 🔹 жанри для книги (Genre = record)
+    private List<Genre> loadGenresForBook(long bookId) throws SQLException {
+        String sql = "SELECT g.id, g.name " +
+                "FROM genre g " +
+                "JOIN book_has_genre bg ON g.id = bg.genre_id " +
+                "WHERE bg.book_id = ?";
+
+        List<Genre> genres = new ArrayList<>();
+
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setLong(1, genreId);
+            ps.setLong(1, bookId);
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return new Genre(
+                while (rs.next()) {
+                    Genre g = new Genre(
                             rs.getLong("id"),
                             rs.getString("name")
                     );
+                    genres.add(g);
                 }
             }
         }
-        return null;
+        return genres;
     }
 
     private List<Author> loadAuthorsForBook(long bookId) throws SQLException {
@@ -244,7 +275,10 @@ public class BookJdbcDao implements BookDao {
             return List.of();
         }
 
-        String sql = "SELECT b.* FROM book b JOIN book_has_author ba ON b.id = ba.book_id WHERE ba.author_id = ?";
+        String sql = "SELECT b.* " +
+                "FROM book b " +
+                "JOIN book_has_author ba ON b.id = ba.book_id " +
+                "WHERE ba.author_id = ?";
         List<Book> books = new ArrayList<>();
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -262,10 +296,51 @@ public class BookJdbcDao implements BookDao {
     }
 
     @Override
+    public List<Book> getByGenres(List<Genre> genres) {
+        if (genres == null || genres.isEmpty()) {
+            return List.of();
+        }
+
+        // формуємо ?, ?, ?, ...
+        String placeholders = String.join(",", genres.stream().map(g -> "?").toList());
+
+        String sql =
+                "SELECT DISTINCT b.* " +
+                        "FROM book b " +
+                        "JOIN book_has_genre bg ON b.id = bg.book_id " +
+                        "WHERE bg.genre_id IN (" + placeholders + ")";
+
+        List<Book> books = new ArrayList<>();
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            int i = 1;
+            for (Genre g : genres) {
+                ps.setLong(i++, g.id());   // Genre = record(id, name)
+            }
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    books.add(mapRow(rs));
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return books;
+    }
+
+
+    @Override
     public List<Book> getByGenre(Genre genre) {
         if (genre == null || genre.id() == null) return List.of();
 
-        String sql = "SELECT * FROM book WHERE genre_id = ?";
+        String sql = "SELECT b.* " +
+                "FROM book b " +
+                "JOIN book_has_genre bg ON b.id = bg.book_id " +
+                "WHERE bg.genre_id = ?";
         List<Book> books = new ArrayList<>();
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -302,7 +377,7 @@ public class BookJdbcDao implements BookDao {
     }
 
     @Override
-    public List<Book> getByYear(int year) {
+    public List<Book> getByYear(Integer year) {
         String sql = "SELECT * FROM book WHERE year = ?";
         List<Book> books = new ArrayList<>();
 
@@ -321,26 +396,34 @@ public class BookJdbcDao implements BookDao {
     }
 
     @Override
-    public List<Book> getByLanguage(String language) {
-        String sql = "SELECT * FROM book WHERE language = ?";
-        List<Book> books = new ArrayList<>();
+    public List<Book> getRandom(int limit) {
+        String sql = "SELECT * FROM book ORDER BY RAND() LIMIT ?";
+
+        List<Book> result = new ArrayList<>();
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, language);
+            ps.setInt(1, limit);
+
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    books.add(mapRow(rs));
+                    result.add(mapRow(rs));
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error loading random books", e);
         }
 
-        return books;
+        return result;
     }
 
     @Override
-    public List<Book> findByFilter(Integer yearFrom, Integer yearTo, Integer pagesFrom, Integer pagesTo, Double ratingFrom, Double ratingTo) {
+    public List<Book> findByFilter(Integer yearFrom,
+                                   Integer yearTo,
+                                   Integer pagesFrom,
+                                   Integer pagesTo,
+                                   Double ratingFrom,
+                                   Double ratingTo) {
+
         StringBuilder sb = new StringBuilder("SELECT * FROM book");
         List<Object> params = new ArrayList<>();
         boolean where = false;
@@ -382,6 +465,16 @@ public class BookJdbcDao implements BookDao {
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+
+        // додатковий фільтр по рейтингу в Java
+        if (ratingFrom != null || ratingTo != null) {
+            books.removeIf(b -> {
+                double r = b.getAverageRating();
+                if (ratingFrom != null && r < ratingFrom) return true;
+                if (ratingTo != null && r > ratingTo) return true;
+                return false;
+            });
         }
 
         return books;

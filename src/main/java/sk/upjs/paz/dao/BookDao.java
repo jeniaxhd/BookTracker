@@ -13,10 +13,14 @@ public interface BookDao {
     Optional<Book> getById(Long id);
     List<Book> getAll();
     List<Book> getByAuthor(Author author);
+    List<Book> getByGenres(List<Genre> genre);
+
     List<Book> getByGenre(Genre genre);
+
     List<Book> getByTitle(String title);
-    List<Book> getByYear(int year);
-    List<Book> getByLanguage(String language);
+    List<Book> getByYear(Integer year);
+
+    List<Book> getRandom(int limit);
 
     List<Book> findByFilter(
             Integer yearFrom,

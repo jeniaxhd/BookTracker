@@ -50,7 +50,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public List<Author> searchByName(String namePart) {
+    public List<Author> getByName(String namePart) {
         return authorDao.getByName(namePart);
     }
 }

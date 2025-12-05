@@ -2,7 +2,6 @@ package sk.upjs.paz.service;
 
 import sk.upjs.paz.entity.Author;
 import sk.upjs.paz.entity.Country;
-import sk.upjs.paz.entity.ReadingSession;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,5 +19,5 @@ public interface AuthorService {
 
     List<Author> getByCountry(Country country);
 
-    List<Author> searchByName(String namePart);
+    List<Author> getByName(String namePart);
 }
