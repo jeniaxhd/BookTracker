@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+
+<BorderPane fx:id="root"
+            prefHeight="800.0"
+            prefWidth="1200.0"
+            xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="sk.upjs.paz.ui.StatisticsController"
+            styleClass="dashboard-root">
+
+    <!-- same base css as dashboard / library -->
+    <stylesheets>
+        <URL value="@../css/lightTheme.css"/>
+    </stylesheets>
+
+    <!-- ========== SIDEBAR (same pattern as other screens) ========== -->
+    <left>
+        <VBox prefWidth="240.0"
+              styleClass="sidebar"
+              BorderPane.alignment="CENTER">
+            <children>
+
+                <!-- Logo -->
+                <VBox spacing="10.0" styleClass="sidebar-header">
+                    <padding>
+                        <Insets top="24" right="24" bottom="16" left="24"/>
+                    </padding>
+                    <children>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                            <children>
+                                <StackPane prefWidth="32.0" prefHeight="32.0"
+                                           styleClass="sidebar-logo-circle">
+                                    <children>
+                                        <Label text="B"
+                                               styleClass="sidebar-logo-letter"/>
+                                    </children>
+                                </StackPane>
+                                <Label text="BookTrack"
+                                       styleClass="sidebar-logo-text"/>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+
+                <Separator/>
+
+                <!-- Navigation -->
+                <VBox spacing="6.0">
+                    <padding>
+                        <Insets top="16" right="16" bottom="16" left="16"/>
+                    </padding>
+                    <children>
+                        <ToggleButton text="Dashboard"
+                                      styleClass="sidebar-nav-button"/>
+                        <ToggleButton text="Library"
+                                      styleClass="sidebar-nav-button"/>
+                        <ToggleButton text="Currently Reading"
+                                      styleClass="sidebar-nav-button"/>
+                        <ToggleButton text="Statistics"
+                                      selected="true"
+                                      styleClass="sidebar-nav-button"/>
+                        <ToggleButton text="Settings"
+                                      styleClass="sidebar-nav-button"/>
+                    </children>
+                </VBox>
+
+                <Pane VBox.vgrow="ALWAYS"/>
+
+                <!-- User profile -->
+                <VBox>
+                    <padding>
+                        <Insets top="8" right="16" bottom="24" left="16"/>
+                    </padding>
+                    <children>
+                        <Button maxWidth="Infinity"
+                                styleClass="sidebar-user-button">
+                            <graphic>
+                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                    <children>
+                                        <StackPane prefWidth="32.0"
+                                                   prefHeight="32.0"
+                                                   styleClass="sidebar-user-avatar">
+                                            <children>
+                                                <Label text="S"
+                                                       styleClass="sidebar-user-initials"/>
+                                            </children>
+                                        </StackPane>
+                                        <VBox spacing="2.0">
+                                            <children>
+                                                <Label text="Sarah Chen"
+                                                       styleClass="sidebar-user-name"/>
+                                                <Label text="View profile"
+                                                       styleClass="sidebar-user-subtitle"/>
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </HBox>
+                            </graphic>
+                        </Button>
+                    </children>
+                </VBox>
+
+            </children>
+        </VBox>
+    </left>
+
+    <!-- ========== MAIN AREA ========== -->
+    <center>
+        <VBox spacing="0.0" BorderPane.alignment="CENTER">
+
+            <!-- ===== HEADER ===== -->
+            <children>
+                <VBox styleClass="header">
+                    <children>
+                        <HBox spacing="16.0" alignment="CENTER_LEFT">
+                            <padding>
+                                <Insets top="24" right="32" bottom="24" left="32"/>
+                            </padding>
+
+                            <children>
+                                <!-- title + subtitle -->
+                                <VBox spacing="4.0">
+                                    <children>
+                                        <Label text="Statistics"
+                                               styleClass="header-title"/>
+                                        <Label text="See how your reading habits evolve over time."
+                                               wrapText="true"
+                                               styleClass="header-subtitle"/>
+                                    </children>
+                                </VBox>
+
+                                <Pane HBox.hgrow="ALWAYS"/>
+
+                                <!-- time range + export -->
+                                <!-- time range + icons + export -->
+                                <HBox spacing="8.0" alignment="CENTER_RIGHT">
+                                    <children>
+                                        <!-- time range selector -->
+                                        <ComboBox prefWidth="140.0"
+                                                  promptText="Last 30 days"
+                                                  styleClass="filter-combobox"/>
+
+                                        <!-- notifications icon (placeholder) -->
+                                        <Button styleClass="header-icon-button">
+                                            <graphic>
+                                                <Label text="🔔"/>
+                                            </graphic>
+                                        </Button>
+
+                                        <!-- theme toggle icon (light/dark placeholder) -->
+                                        <Button styleClass="header-icon-button">
+                                            <graphic>
+                                                <Label text="☀"/>
+                                            </graphic>
+                                        </Button>
+
+                                        <!-- export button -->
+                                        <Button text="Export report"
+                                                styleClass="header-primary-button"/>
+                                    </children>
+                                </HBox>
+
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+
+                <!-- ===== SCROLLABLE CONTENT ===== -->
+                <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+                    <content>
+                        <VBox spacing="24.0">
+                            <padding>
+                                <Insets top="24" right="32" bottom="32" left="32"/>
+                            </padding>
+                            <children>
+
+                                <!-- ROW 1: main chart + streak + glance -->
+                                <HBox spacing="24.0">
+                                    <children>
+
+                                        <!-- MAIN LINE CHART CARD (placeholder) -->
+                                        <VBox spacing="16.0"
+                                              HBox.hgrow="ALWAYS"
+                                              styleClass="stat-card stats-main">
+                                            <children>
+
+                                                <HBox alignment="CENTER_LEFT"
+                                                      spacing="8.0">
+                                                    <children>
+                                                        <Label text="Pages read over time"
+                                                               styleClass="section-title"/>
+                                                        <Label text="Last 30 days"
+                                                               styleClass="stat-subtitle"/>
+                                                    </children>
+                                                </HBox>
+
+                                                <!-- chart placeholder -->
+                                                <StackPane prefHeight="260.0">
+                                                    <children>
+                                                        <Label text="Line chart placeholder"
+                                                               styleClass="stat-subtitle"/>
+                                                    </children>
+                                                </StackPane>
+
+                                                <!-- summary row -->
+                                                <HBox spacing="32.0">
+                                                    <children>
+
+                                                        <VBox spacing="4.0">
+                                                            <children>
+                                                                <Label text="Total pages"
+                                                                       styleClass="stat-label"/>
+                                                                <Label text="1,240"
+                                                                       styleClass="stat-value"/>
+                                                            </children>
+                                                        </VBox>
+
+                                                        <VBox spacing="4.0">
+                                                            <children>
+                                                                <Label text="Average per day"
+                                                                       styleClass="stat-label"/>
+                                                                <Label text="42"
+                                                                       styleClass="stat-value"/>
+                                                            </children>
+                                                        </VBox>
+
+                                                        <VBox spacing="4.0">
+                                                            <children>
+                                                                <Label text="Best day"
+                                                                       styleClass="stat-label"/>
+                                                                <Label text="120 pages"
+                                                                       styleClass="stat-value"/>
+                                                            </children>
+                                                        </VBox>
+
+                                                    </children>
+                                                </HBox>
+
+                                            </children>
+                                        </VBox>
+
+                                        <!-- RIGHT COLUMN: current streak + glance -->
+                                        <VBox prefWidth="280.0" spacing="16.0">
+
+                                            <!-- CURRENT STREAK -->
+                                            <VBox spacing="12.0"
+                                                  styleClass="stat-card">
+                                                <children>
+                                                    <Label text="Current streak"
+                                                           styleClass="section-title"/>
+
+                                                    <Label text="10 days"
+                                                           styleClass="stat-value"/>
+
+                                                    <Label text="Best streak: 21 days"
+                                                           styleClass="stat-subtitle"/>
+
+                                                    <!-- streak grid -->
+                                                    <GridPane hgap="6.0" vgap="6.0">
+                                                        <children>
+
+                                                            <!-- row 0 -->
+                                                            <Rectangle width="18.0" height="18.0"
+                                                                       GridPane.rowIndex="0"
+                                                                       GridPane.columnIndex="0"
+                                                                       styleClass="streak-day streak-day--active"/>
+                                                            <Rectangle width="18.0" height="18.0"
+                                                                       GridPane.rowIndex="0"
+                                                                       GridPane.columnIndex="1"
+                                                                       styleClass="streak-day streak-day--active"/>
+                                                            <Rectangle width="18.0" height="18.0"
+                                                                       GridPane.rowIndex="0"
+                                                                       GridPane.columnIndex="2"
+                                                                       styleClass="streak-day streak-day--active"/>
+                                                            <Rectangle width="18.0" height="18.0"
+                                                                       GridPane.rowIndex="0"
+                                                                       GridPane.columnIndex="3"
+                                                                       styleClass="streak-day streak-day--empty"/>
+                                                            <Rectangle width="18.0" height="18.0"
+                                                                       GridPane.rowIndex="0"
+                                                                       GridPane.columnIndex="4"
+                                                                       styleClass="streak-day streak-day--active"/>
+
+                                                            <!-- row 1 -->
+                                                            <Rectangle width="18.0" height="18.0"
+                                                                       GridPane.rowIndex="1"
+                                                                       GridPane.columnIndex="0"
+                                                                       styleClass="streak-day streak-day--active"/>
+                                                            <Rectangle width="18.0" height="18.0"
+                                                                       GridPane.rowIndex="1"
+                                                                       GridPane.columnIndex="1"
+                                                                       styleClass="streak-day streak-day--active"/>
+                                                            <Rectangle width="18.0" height="18.0"
+                                                                       GridPane.rowIndex="1"
+                                                                       GridPane.columnIndex="2"
+                                                                       styleClass="streak-day streak-day--active"/>
+                                                            <Rectangle width="18.0" height="18.0"
+                                                                       GridPane.rowIndex="1"
+                                                                       GridPane.columnIndex="3"
+                                                                       styleClass="streak-day streak-day--active"/>
+                                                            <Rectangle width="18.0" height="18.0"
+                                                                       GridPane.rowIndex="1"
+                                                                       GridPane.columnIndex="4"
+                                                                       styleClass="streak-day streak-day--active"/>
+
+                                                            <!-- row 2 -->
+                                                            <Rectangle width="18.0" height="18.0"
+                                                                       GridPane.rowIndex="2"
+                                                                       GridPane.columnIndex="0"
+                                                                       styleClass="streak-day streak-day--empty"/>
+                                                            <Rectangle width="18.0" height="18.0"
+                                                                       GridPane.rowIndex="2"
+                                                                       GridPane.columnIndex="1"
+                                                                       styleClass="streak-day streak-day--active"/>
+                                                            <Rectangle width="18.0" height="18.0"
+                                                                       GridPane.rowIndex="2"
+                                                                       GridPane.columnIndex="2"
+                                                                       styleClass="streak-day streak-day--active"/>
+                                                            <Rectangle width="18.0" height="18.0"
+                                                                       GridPane.rowIndex="2"
+                                                                       GridPane.columnIndex="3"
+                                                                       styleClass="streak-day streak-day--active"/>
+                                                            <Rectangle width="18.0" height="18.0"
+                                                                       GridPane.rowIndex="2"
+                                                                       GridPane.columnIndex="4"
+                                                                       styleClass="streak-day streak-day--active"/>
+
+                                                        </children>
+                                                    </GridPane>
+
+                                                </children>
+                                            </VBox>
+
+                                            <!-- YEAR AT A GLANCE -->
+                                            <VBox spacing="12.0"
+                                                  styleClass="stat-card">
+                                                <children>
+                                                    <Label text="This year at a glance"
+                                                           styleClass="section-title"/>
+
+                                                    <VBox spacing="8.0">
+                                                        <children>
+
+                                                            <!-- row 1 -->
+                                                            <HBox spacing="8.0"
+                                                                  alignment="CENTER_LEFT">
+                                                                <children>
+                                                                    <Label text="📚"
+                                                                           styleClass="stats-row-icon"/>
+                                                                    <Label text="Books finished"
+                                                                           styleClass="stats-row-label"/>
+                                                                    <Pane HBox.hgrow="ALWAYS"/>
+                                                                    <Label text="24"
+                                                                           styleClass="stats-row-value"/>
+                                                                </children>
+                                                            </HBox>
+
+                                                            <!-- row 2 -->
+                                                            <HBox spacing="8.0"
+                                                                  alignment="CENTER_LEFT">
+                                                                <children>
+                                                                    <Label text="📄"
+                                                                           styleClass="stats-row-icon"/>
+                                                                    <Label text="Pages read"
+                                                                           styleClass="stats-row-label"/>
+                                                                    <Pane HBox.hgrow="ALWAYS"/>
+                                                                    <Label text="7,340"
+                                                                           styleClass="stats-row-value"/>
+                                                                </children>
+                                                            </HBox>
+
+                                                            <!-- row 3 -->
+                                                            <HBox spacing="8.0"
+                                                                  alignment="CENTER_LEFT">
+                                                                <children>
+                                                                    <Label text="📆"
+                                                                           styleClass="stats-row-icon"/>
+                                                                    <Label text="Active reading days"
+                                                                           styleClass="stats-row-label"/>
+                                                                    <Pane HBox.hgrow="ALWAYS"/>
+                                                                    <Label text="112"
+                                                                           styleClass="stats-row-value"/>
+                                                                </children>
+                                                            </HBox>
+
+                                                            <!-- row 4 -->
+                                                            <HBox spacing="8.0"
+                                                                  alignment="CENTER_LEFT">
+                                                                <children>
+                                                                    <Label text="⏱"
+                                                                           styleClass="stats-row-icon"/>
+                                                                    <Label text="Avg session length"
+                                                                           styleClass="stats-row-label"/>
+                                                                    <Pane HBox.hgrow="ALWAYS"/>
+                                                                    <Label text="32 min"
+                                                                           styleClass="stats-row-value"/>
+                                                                </children>
+                                                            </HBox>
+
+                                                        </children>
+                                                    </VBox>
+
+                                                </children>
+                                            </VBox>
+
+                                        </VBox>
+
+                                    </children>
+                                </HBox>
+
+                                <!-- ROW 2: books per month chart -->
+                                <HBox spacing="24.0">
+                                    <children>
+
+                                        <VBox spacing="12.0"
+                                              HBox.hgrow="ALWAYS"
+                                              styleClass="stat-card">
+                                            <children>
+                                                <Label text="Books finished per month"
+                                                       styleClass="section-title"/>
+                                                <Label text="This year: 24 books finished"
+                                                       styleClass="stat-subtitle"/>
+
+                                                <StackPane prefHeight="220.0"
+                                                           styleClass="stats-bar-chart-placeholder">
+                                                    <children>
+                                                        <Label text="Bar chart placeholder"
+                                                               styleClass="stat-subtitle"/>
+                                                    </children>
+                                                </StackPane>
+                                            </children>
+                                        </VBox>
+
+                                    </children>
+                                </HBox>
+
+                            </children>
+                        </VBox>
+                    </content>
+                </ScrollPane>
+
+            </children>
+        </VBox>
+    </center>
+</BorderPane>

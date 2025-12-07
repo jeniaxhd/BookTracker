@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+
+<BorderPane
+        fx:id="root"
+        prefHeight="800.0"
+        prefWidth="1200.0"
+        styleClass="dashboard-root"
+        xmlns="http://javafx.com/javafx/17.0.12"
+        xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="sk.upjs.paz.ui.CurrentlyReadingController">
+
+    <!-- shared light theme -->
+    <stylesheets>
+        <URL value="@../css/lightTheme.css"/>
+    </stylesheets>
+
+    <!-- ========== SIDEBAR ========== -->
+    <left>
+        <VBox prefWidth="240.0"
+              styleClass="sidebar"
+              BorderPane.alignment="CENTER">
+            <children>
+
+                <!-- Logo -->
+                <VBox spacing="10.0" styleClass="sidebar-header">
+                    <padding>
+                        <Insets top="24" right="24" bottom="16" left="24"/>
+                    </padding>
+                    <children>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                            <children>
+                                <StackPane prefWidth="32.0" prefHeight="32.0"
+                                           styleClass="sidebar-logo-circle">
+                                    <children>
+                                        <Label text="B" styleClass="sidebar-logo-letter"/>
+                                    </children>
+                                </StackPane>
+                                <Label text="BookTrack" styleClass="sidebar-logo-text"/>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+
+                <Separator/>
+
+                <!-- Navigation -->
+                <VBox spacing="6.0">
+                    <padding>
+                        <Insets top="16" right="16" bottom="16" left="16"/>
+                    </padding>
+                    <children>
+                        <ToggleButton text="Dashboard"
+                                      styleClass="sidebar-nav-button"/>
+                        <ToggleButton text="Library"
+                                      styleClass="sidebar-nav-button"/>
+                        <ToggleButton text="Currently Reading"
+                                      selected="true"
+                                      styleClass="sidebar-nav-button sidebar-nav-button--active"/>
+                        <ToggleButton text="Statistics"
+                                      styleClass="sidebar-nav-button"/>
+                        <ToggleButton text="Settings"
+                                      styleClass="sidebar-nav-button"/>
+                    </children>
+                </VBox>
+
+                <Pane VBox.vgrow="ALWAYS"/>
+
+                <!-- User profile -->
+                <VBox>
+                    <padding>
+                        <Insets top="8" right="16" bottom="24" left="16"/>
+                    </padding>
+                    <children>
+                        <Button maxWidth="Infinity"
+                                styleClass="sidebar-user-button">
+                            <graphic>
+                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                    <children>
+                                        <StackPane prefWidth="32.0" prefHeight="32.0"
+                                                   styleClass="sidebar-user-avatar">
+                                            <children>
+                                                <Label text="S"
+                                                       styleClass="sidebar-user-initials"/>
+                                            </children>
+                                        </StackPane>
+                                        <VBox spacing="2.0">
+                                            <children>
+                                                <Label text="Sarah Chen"
+                                                       styleClass="sidebar-user-name"/>
+                                                <Label text="View profile"
+                                                       styleClass="sidebar-user-subtitle"/>
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </HBox>
+                            </graphic>
+                        </Button>
+                    </children>
+                </VBox>
+
+            </children>
+        </VBox>
+    </left>
+
+    <!-- ========== MAIN AREA ========== -->
+    <center>
+        <VBox spacing="0.0" BorderPane.alignment="CENTER">
+            <children>
+
+                <!-- ===== HEADER ===== -->
+                <VBox styleClass="header">
+                    <children>
+                        <HBox alignment="CENTER_LEFT"
+                              spacing="16.0">
+                            <padding>
+                                <Insets top="24" right="32" bottom="24" left="32"/>
+                            </padding>
+
+                            <children>
+                                <!-- Title + subtitle -->
+                                <VBox spacing="4.0">
+                                    <children>
+                                        <Label text="Currently Reading"
+                                               styleClass="header-title"/>
+                                        <Label text="Continue your active books and log your latest reading sessions."
+                                               wrapText="true"
+                                               styleClass="header-subtitle"/>
+                                    </children>
+                                </VBox>
+
+                                <Pane HBox.hgrow="ALWAYS"/>
+
+                                <!-- Right controls: search, settings, theme, start session -->
+                                <HBox alignment="CENTER_RIGHT" spacing="8.0">
+                                    <children>
+
+                                        <Button styleClass="header-icon-button">
+                                            <graphic>
+                                                <Label text="🔍"/>
+                                            </graphic>
+                                        </Button>
+
+                                        <Button styleClass="header-icon-button">
+                                            <graphic>
+                                                <Label text="⚙"/>
+                                            </graphic>
+                                        </Button>
+
+                                        <Button styleClass="header-icon-button">
+                                            <graphic>
+                                                <Label text="☀"/>
+                                            </graphic>
+                                        </Button>
+
+                                        <Button text="Start session"
+                                                styleClass="header-primary-button">
+                                            <graphic>
+                                                <Label text="+"
+                                                       styleClass="header-primary-icon"/>
+                                            </graphic>
+                                        </Button>
+
+                                    </children>
+                                </HBox>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+
+                <!-- ===== SCROLLABLE CONTENT ===== -->
+                <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+                    <content>
+                        <VBox spacing="24.0">
+                            <padding>
+                                <Insets top="24" right="32" bottom="32" left="32"/>
+                            </padding>
+                            <children>
+
+                                <!-- Active books + filters -->
+                                <VBox spacing="16.0">
+                                    <children>
+
+                                        <Label text="Active books"
+                                               styleClass="section-title"/>
+
+                                        <!-- Small subtitle -->
+                                        <Label text="Showing books you're currently reading."
+                                               styleClass="header-subtitle"/>
+
+                                        <!-- Filter chips row -->
+                                        <HBox spacing="8.0">
+                                            <children>
+                                                <ToggleButton text="All"
+                                                              selected="true"
+                                                              styleClass="filter-chip filter-chip--active"/>
+                                                <ToggleButton text="High priority"
+                                                              styleClass="filter-chip"/>
+                                                <ToggleButton text="Finishing soon"
+                                                              styleClass="filter-chip"/>
+                                                <ToggleButton text="Recently started"
+                                                              styleClass="filter-chip"/>
+                                            </children>
+                                        </HBox>
+
+                                    </children>
+                                </VBox>
+
+                                <!-- Main layout: cards + side stats -->
+                                <HBox spacing="24.0">
+                                    <children>
+
+                                        <!-- LEFT: active book cards -->
+                                        <VBox spacing="16.0" HBox.hgrow="ALWAYS">
+
+                                            <!-- Card 1 -->
+                                            <VBox spacing="12.0"
+                                                  styleClass="book-card">
+                                                <padding>
+                                                    <Insets top="16" right="20" bottom="16" left="20"/>
+                                                </padding>
+                                                <children>
+                                                    <HBox spacing="16.0" alignment="CENTER_LEFT">
+                                                        <children>
+                                                            <StackPane prefWidth="80.0"
+                                                                       prefHeight="120.0"
+                                                                       styleClass="book-cover"/>
+                                                            <VBox spacing="8.0">
+                                                                <children>
+                                                                    <Label text="Atomic Habits"
+                                                                           styleClass="book-title"/>
+                                                                    <Label text="James Clear"
+                                                                           styleClass="book-author"/>
+                                                                    <Label text="Productivity"
+                                                                           styleClass="book-category-pill"/>
+
+                                                                    <!-- progress -->
+                                                                    <VBox spacing="4.0">
+                                                                        <children>
+                                                                            <ProgressBar progress="0.58"
+                                                                                         styleClass="book-progress-bar"/>
+                                                                            <HBox spacing="6.0"
+                                                                                  alignment="CENTER_LEFT">
+                                                                                <children>
+                                                                                    <Label text="187 / 304 pages"
+                                                                                           styleClass="book-progress-text"/>
+                                                                                    <Pane HBox.hgrow="ALWAYS"/>
+                                                                                    <Label text="12h 30m"
+                                                                                           styleClass="book-meta-text"/>
+                                                                                </children>
+                                                                            </HBox>
+                                                                        </children>
+                                                                    </VBox>
+
+                                                                    <!-- status pills -->
+                                                                    <HBox spacing="8.0">
+                                                                        <children>
+                                                                            <Label text="In Progress"
+                                                                                   styleClass="book-status-pill"/>
+                                                                            <Label text="Reading today"
+                                                                                   styleClass="book-status-pill"/>
+                                                                        </children>
+                                                                    </HBox>
+
+                                                                    <!-- actions -->
+                                                                    <HBox spacing="8.0">
+                                                                        <children>
+                                                                            <Button text="Continue"
+                                                                                    styleClass="header-primary-button"/>
+                                                                            <Hyperlink text="View details"
+                                                                                       styleClass="login-bottom-link"/>
+                                                                        </children>
+                                                                    </HBox>
+
+                                                                </children>
+                                                            </VBox>
+                                                        </children>
+                                                    </HBox>
+                                                </children>
+                                            </VBox>
+
+                                            <!-- Card 2 -->
+                                            <VBox spacing="12.0"
+                                                  styleClass="book-card">
+                                                <padding>
+                                                    <Insets top="16" right="20" bottom="16" left="20"/>
+                                                </padding>
+                                                <children>
+                                                    <HBox spacing="16.0" alignment="CENTER_LEFT">
+                                                        <children>
+                                                            <StackPane prefWidth="80.0"
+                                                                       prefHeight="120.0"
+                                                                       styleClass="book-cover"/>
+                                                            <VBox spacing="8.0">
+                                                                <children>
+                                                                    <Label text="The Midnight Library"
+                                                                           styleClass="book-title"/>
+                                                                    <Label text="Matt Haig"
+                                                                           styleClass="book-author"/>
+                                                                    <Label text="Fiction"
+                                                                           styleClass="book-category-pill"/>
+
+                                                                    <VBox spacing="4.0">
+                                                                        <children>
+                                                                            <ProgressBar progress="0.32"
+                                                                                         styleClass="book-progress-bar"/>
+                                                                            <HBox spacing="6.0"
+                                                                                  alignment="CENTER_LEFT">
+                                                                                <children>
+                                                                                    <Label text="92 / 288 pages"
+                                                                                           styleClass="book-progress-text"/>
+                                                                                    <Pane HBox.hgrow="ALWAYS"/>
+                                                                                    <Label text="6h 15m"
+                                                                                           styleClass="book-meta-text"/>
+                                                                                </children>
+                                                                            </HBox>
+                                                                        </children>
+                                                                    </VBox>
+
+                                                                    <HBox spacing="8.0">
+                                                                        <children>
+                                                                            <Label text="In Progress"
+                                                                                   styleClass="book-status-pill"/>
+                                                                            <Label text="Finishing soon"
+                                                                                   styleClass="book-status-pill"/>
+                                                                        </children>
+                                                                    </HBox>
+
+                                                                    <HBox spacing="8.0">
+                                                                        <children>
+                                                                            <Button text="Continue"
+                                                                                    styleClass="header-primary-button"/>
+                                                                            <Hyperlink text="View details"
+                                                                                       styleClass="login-bottom-link"/>
+                                                                        </children>
+                                                                    </HBox>
+
+                                                                </children>
+                                                            </VBox>
+                                                        </children>
+                                                    </HBox>
+                                                </children>
+                                            </VBox>
+
+                                            <!-- Placeholder / example extra card -->
+                                            <VBox spacing="12.0"
+                                                  styleClass="book-card-placeholder"
+                                                  alignment="CENTER">
+                                                <padding>
+                                                    <Insets top="16" right="20" bottom="16" left="20"/>
+                                                </padding>
+                                                <children>
+                                                    <Label text="+"
+                                                           styleClass="book-card-placeholder-icon"/>
+                                                    <Label text="Add another active book"
+                                                           wrapText="true"
+                                                           maxWidth="220.0"
+                                                           styleClass="book-card-placeholder-text"/>
+                                                </children>
+                                            </VBox>
+
+                                        </VBox>
+
+                                        <!-- RIGHT: side stats -->
+                                        <VBox prefWidth="260.0" spacing="16.0">
+
+                                            <!-- Today’s reading -->
+                                            <VBox spacing="10.0"
+                                                  styleClass="stat-card">
+                                                <children>
+                                                    <Label text="Today's reading"
+                                                           styleClass="section-title"/>
+                                                    <Label text="42 min"
+                                                           styleClass="stat-value"/>
+                                                    <Label text="Time read so far today"
+                                                           styleClass="stat-label"/>
+
+                                                    <VBox spacing="4.0">
+                                                        <children>
+                                                            <ProgressBar progress="0.7"
+                                                                         styleClass="book-progress-bar"/>
+                                                            <Label text="70% of daily goal (60 min)"
+                                                                   styleClass="stat-subtitle"/>
+                                                        </children>
+                                                    </VBox>
+                                                </children>
+                                            </VBox>
+
+                                            <!-- Reading streak -->
+                                            <VBox spacing="10.0"
+                                                  styleClass="stat-card">
+                                                <children>
+                                                    <Label text="Reading streak"
+                                                           styleClass="section-title"/>
+                                                    <Label text="10 days"
+                                                           styleClass="stat-value"/>
+                                                    <Label text="In a row"
+                                                           styleClass="stat-label"/>
+
+                                                    <HBox spacing="4.0">
+                                                        <children>
+                                                            <!-- filled dots -->
+                                                            <Rectangle width="12.0" height="12.0"
+                                                                       arcWidth="6.0" arcHeight="6.0"
+                                                                       styleClass="stat-icon-gold"/>
+                                                            <Rectangle width="12.0" height="12.0"
+                                                                       arcWidth="6.0" arcHeight="6.0"
+                                                                       styleClass="stat-icon-gold"/>
+                                                            <Rectangle width="12.0" height="12.0"
+                                                                       arcWidth="6.0" arcHeight="6.0"
+                                                                       styleClass="stat-icon-gold"/>
+                                                            <Rectangle width="12.0" height="12.0"
+                                                                       arcWidth="6.0" arcHeight="6.0"
+                                                                       styleClass="stat-icon-gold"/>
+                                                            <Rectangle width="12.0" height="12.0"
+                                                                       arcWidth="6.0" arcHeight="6.0"
+                                                                       styleClass="stat-icon-gold"/>
+                                                            <Rectangle width="12.0" height="12.0"
+                                                                       arcWidth="6.0" arcHeight="6.0"
+                                                                       styleClass="stat-icon-gold"/>
+                                                            <Rectangle width="12.0" height="12.0"
+                                                                       arcWidth="6.0" arcHeight="6.0"
+                                                                       styleClass="stat-icon-gold"/>
+                                                            <!-- lighter dots (placeholder) -->
+                                                            <Rectangle width="12.0" height="12.0"
+                                                                       arcWidth="6.0" arcHeight="6.0"/>
+                                                            <Rectangle width="12.0" height="12.0"
+                                                                       arcWidth="6.0" arcHeight="6.0"/>
+                                                            <Rectangle width="12.0" height="12.0"
+                                                                       arcWidth="6.0" arcHeight="6.0"/>
+                                                        </children>
+                                                    </HBox>
+                                                </children>
+                                            </VBox>
+
+                                            <!-- Quick stats -->
+                                            <VBox spacing="10.0"
+                                                  styleClass="stat-card">
+                                                <children>
+                                                    <Label text="Quick stats"
+                                                           styleClass="section-title"/>
+
+                                                    <HBox spacing="8.0" alignment="CENTER_LEFT">
+                                                        <children>
+                                                            <Label text="Books in progress"
+                                                                   styleClass="stat-label"/>
+                                                            <Pane HBox.hgrow="ALWAYS"/>
+                                                            <Label text="4"
+                                                                   styleClass="stat-label"/>
+                                                        </children>
+                                                    </HBox>
+
+                                                    <HBox spacing="8.0" alignment="CENTER_LEFT">
+                                                        <children>
+                                                            <Label text="Pages read this week"
+                                                                   styleClass="stat-label"/>
+                                                            <Pane HBox.hgrow="ALWAYS"/>
+                                                            <Label text="320"
+                                                                   styleClass="stat-label"/>
+                                                        </children>
+                                                    </HBox>
+
+                                                    <HBox spacing="8.0" alignment="CENTER_LEFT">
+                                                        <children>
+                                                            <Label text="Sessions this week"
+                                                                   styleClass="stat-label"/>
+                                                            <Pane HBox.hgrow="ALWAYS"/>
+                                                            <Label text="6"
+                                                                   styleClass="stat-label"/>
+                                                        </children>
+                                                    </HBox>
+                                                </children>
+                                            </VBox>
+
+                                        </VBox>
+
+                                    </children>
+                                </HBox>
+
+                            </children>
+                        </VBox>
+                    </content>
+                </ScrollPane>
+
+            </children>
+        </VBox>
+    </center>
+</BorderPane>

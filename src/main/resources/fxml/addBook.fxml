@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane fx:id="root" prefHeight="800.0" prefWidth="1200.0" styleClass="dashboard-root" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.upjs.paz.ui.AddBookController">
+
+    <!-- одразу підключаємо світлу тему -->
+    <stylesheets>
+        <URL value="@../css/lightTheme.css" />
+    </stylesheets>
+
+    <!-- ============ SIDEBAR ============ -->
+    <left>
+        <VBox prefWidth="240.0" styleClass="sidebar" BorderPane.alignment="CENTER">
+            <children>
+
+                <!-- Logo -->
+                <VBox spacing="10.0" styleClass="sidebar-header">
+                    <padding>
+                        <Insets bottom="16" left="24" right="24" top="24" />
+                    </padding>
+                    <children>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                            <children>
+                                <StackPane prefHeight="32.0" prefWidth="32.0" styleClass="sidebar-logo-circle">
+                                    <children>
+                                        <Label styleClass="sidebar-logo-letter" text="B" />
+                                    </children>
+                                </StackPane>
+                                <Label styleClass="sidebar-logo-text" text="BookTrack" />
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+
+                <Separator />
+
+                <!-- Навігація (Library активна) -->
+                <VBox spacing="6.0" styleClass="sidebar-nav">
+                    <children>
+                        <ToggleButton text="Dashboard"
+                                      styleClass="sidebar-nav-button" />
+
+                        <ToggleButton text="Library"
+                                      selected="true"
+                                      styleClass="sidebar-nav-button,sidebar-nav-button-active" />
+
+                        <ToggleButton text="Currently Reading"
+                                      styleClass="sidebar-nav-button" />
+
+                        <ToggleButton text="Statistics"
+                                      styleClass="sidebar-nav-button" />
+
+                        <ToggleButton text="Settings"
+                                      styleClass="sidebar-nav-button" />
+                    </children>
+                </VBox>
+
+
+                <Pane VBox.vgrow="ALWAYS" />
+
+                <!-- User profile -->
+                <VBox styleClass="sidebar-user">
+                    <padding>
+                        <Insets bottom="24" left="16" right="16" top="8" />
+                    </padding>
+                    <children>
+                        <Button maxWidth="Infinity" styleClass="sidebar-user-button">
+                            <graphic>
+                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                    <children>
+                                        <StackPane prefHeight="32.0" prefWidth="32.0" styleClass="sidebar-user-avatar">
+                                            <children>
+                                                <Label styleClass="sidebar-user-initials" text="S" />
+                                            </children>
+                                        </StackPane>
+
+                                        <VBox spacing="2.0">
+                                            <children>
+                                                <Label styleClass="sidebar-user-name" text="Stano Krajci" />
+                                                <Label styleClass="sidebar-user-subtitle" text="View profile" />
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </HBox>
+                            </graphic>
+                        </Button>
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+    </left>
+
+    <!-- ============ MAIN AREA ============ -->
+    <center>
+        <VBox spacing="0.0" BorderPane.alignment="CENTER">
+            <children>
+
+                <!-- HEADER -->
+                <VBox spacing="0.0" styleClass="header">
+                    <children>
+                        <HBox alignment="CENTER_LEFT" spacing="16.0">
+                            <padding>
+                                <Insets bottom="24" left="32" right="32" top="24" />
+                            </padding>
+
+                            <!-- Title + subtitle -->
+                            <children>
+                                <VBox spacing="4.0">
+                                    <children>
+                                        <Label styleClass="header-title" text="Add Book" />
+                                        <Label styleClass="header-subtitle" text="Add a new book to your library and set up its details." wrapText="true" />
+                                    </children>
+                                </VBox>
+
+                                <Pane HBox.hgrow="ALWAYS" />
+
+                                <!-- Right actions -->
+                                <HBox alignment="CENTER_RIGHT" spacing="8.0">
+                                    <children>
+                                        <Button styleClass="header-icon-button">
+                                            <graphic>
+                                                <Label text="🔍" />
+                                            </graphic>
+                                        </Button>
+
+                                        <StackPane>
+                                            <children>
+                                                <Button styleClass="header-icon-button">
+                                                    <graphic>
+                                                        <Label text="🔔" />
+                                                    </graphic>
+                                                </Button>
+                                                <Region maxHeight="8.0" maxWidth="8.0" minHeight="8.0" minWidth="8.0" prefHeight="8.0" prefWidth="8.0" styleClass="header-notification-dot" StackPane.alignment="TOP_RIGHT" />
+                                            </children>
+                                        </StackPane>
+
+                                        <!-- theme toggle -->
+                                        <ToggleButton fx:id="themeToggle" onAction="#onToggleTheme" styleClass="header-icon-button" text="☀" />
+
+                                        <!-- primary button -->
+                                        <Button onAction="#onSaveBook" styleClass="header-primary-button" text="Save Book" />
+                                    </children>
+                                </HBox>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+
+                <!-- CONTENT -->
+                <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+                    <content>
+                        <VBox spacing="24.0">
+                            <padding>
+                                <Insets bottom="32" left="32" right="32" top="24" />
+                            </padding>
+                            <children>
+
+                                <!-- Дві основні карти: Cover + Details -->
+                                <HBox spacing="24.0">
+                                    <children>
+
+                                        <!-- LEFT: Cover & preview -->
+                                        <VBox prefWidth="360.0" spacing="16.0" styleClass="book-card">
+                                            <children>
+                                                <Label styleClass="section-title" text="Book cover &amp; preview" />
+
+                                                <!-- зона завантаження обкладинки -->
+                                                <VBox alignment="CENTER" spacing="8.0" styleClass="book-card-placeholder">
+                                                    <children>
+                                                        <Label styleClass="book-card-placeholder-icon" text="⤓" />
+                                                        <Label alignment="CENTER" maxWidth="220.0" prefHeight="85.0" prefWidth="220.0" styleClass="book-card-placeholder-text" text="Upload cover" wrapText="true" />
+                                                    </children>
+                                                </VBox>
+
+                                                <!-- кнопка для FileChooser (логіка у контролері) -->
+                                                <Button fx:id="uploadCoverButton" maxWidth="Infinity" styleClass="header-primary-button" text="Upload cover image" />
+                                            </children>
+                                        </VBox>
+
+                                        <!-- RIGHT: Book details -->
+                                        <VBox spacing="16.0" styleClass="stat-card" HBox.hgrow="ALWAYS">
+                                            <children>
+                                                <Label styleClass="section-title" text="Book details" />
+
+                                                <!-- Basic info -->
+                                                <VBox spacing="12.0">
+                                                    <children>
+
+                                                        <Label styleClass="header-subtitle" text="Basic information" />
+
+                                                        <!-- Title -->
+                                                        <VBox spacing="4.0">
+                                                            <children>
+                                                                <Label text="Book Title" />
+                                                                <TextField fx:id="titleField" promptText="Enter book title" />
+                                                            </children>
+                                                        </VBox>
+
+                                                        <!-- Author -->
+                                                        <VBox spacing="4.0">
+                                                            <children>
+                                                                <Label text="Author" />
+                                                                <TextField fx:id="authorField" promptText="Enter author name" />
+                                                            </children>
+                                                        </VBox>
+
+                                                        <!-- Category + Format -->
+                                                        <HBox spacing="12.0">
+                                                            <children>
+                                                                <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                                                                    <children>
+                                                                        <Label text="Category" />
+                                                                        <ComboBox fx:id="categoryBox" promptText="Select category" />
+                                                                    </children>
+                                                                </VBox>
+
+                                                                <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                                                                    <children>
+                                                                        <Label text="Format" />
+                                                                        <ComboBox fx:id="formatBox" promptText="Select format" />
+                                                                    </children>
+                                                                </VBox>
+                                                            </children>
+                                                        </HBox>
+
+                                                        <!-- Language -->
+                                                        <VBox spacing="4.0">
+                                                            <children>
+                                                                <Label text="Language" />
+                                                                <TextField fx:id="languageField" promptText="e.g. English" />
+                                                            </children>
+                                                        </VBox>
+
+                                                        <!-- Tags -->
+                                                        <VBox spacing="4.0">
+                                                            <children>
+                                                                <Label text="Tags (optional)" />
+                                                                <TextField fx:id="tagsField" promptText="Type and press Enter to add tags" />
+                                                            </children>
+                                                        </VBox>
+
+                                                        <!-- Notes -->
+                                                        <VBox spacing="4.0">
+                                                            <children>
+                                                                <Label text="Notes (optional)" />
+                                                                <TextArea fx:id="notesArea" prefRowCount="4" promptText="Thoughts, highlights, expectations..." />
+                                                            </children>
+                                                        </VBox>
+
+                                                    </children>
+                                                </VBox>
+                                            </children>
+                                        </VBox>
+
+                                    </children>
+                                </HBox>
+
+                            </children>
+                        </VBox>
+                    </content>
+                </ScrollPane>
+            </children>
+        </VBox>
+    </center>
+</BorderPane>

@@ -1,0 +1,249 @@
+/* ========= ROOT ========= */
+
+.auth-root {
+    /* same warm beige as dashboard */
+    -fx-background-color: #F7F5F2;
+}
+
+/* ========= LEFT PANEL ========= */
+
+.auth-left {
+    /* slightly darker than main background */
+    -fx-background-color: #F0ECE6;
+    -fx-background-radius: 0;
+}
+
+/* Logo */
+
+.auth-logo-circle {
+    -fx-background-radius: 999;
+    -fx-background-color: #C08552;
+    -fx-alignment: center;
+}
+
+.auth-logo-letter {
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.auth-logo-text {
+    -fx-text-fill: #2C2C2E;
+    -fx-font-size: 16px;
+    -fx-font-weight: 600;
+}
+
+/* Hero text */
+
+.auth-hero-title {
+    -fx-text-fill: #2C2C2E;
+    -fx-font-size: 20px;
+    -fx-font-weight: 600;
+}
+
+.auth-hero-subtitle {
+    -fx-text-fill: #6C6C70;
+    -fx-font-size: 13px;
+}
+
+/* Book card preview (left side) */
+
+.auth-book-card {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 20;
+    -fx-padding: 16;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 8, 0, 0, 4);
+}
+
+.auth-book-cover {
+    /* muted caramel cover */
+    -fx-background-color: #B28A63;
+    -fx-background-radius: 12;
+}
+
+.auth-book-title {
+    -fx-text-fill: #2C2C2E;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+}
+
+.auth-book-author {
+    -fx-text-fill: #6C6C70;
+    -fx-font-size: 11px;
+}
+
+.auth-book-status-pill {
+    -fx-background-color: #F3E4D6;
+    -fx-text-fill: #C08552;
+    -fx-background-radius: 999;
+    -fx-padding: 2 10 2 10;
+    -fx-font-size: 10px;
+}
+
+/* Progress in preview card */
+
+.auth-book-progress-label {
+    -fx-text-fill: #6C6C70;
+    -fx-font-size: 11px;
+}
+
+.auth-book-progress-bar {
+    -fx-accent: #C08552;
+}
+
+.auth-book-progress-bar > .track {
+    -fx-background-color: #EEE9E2;
+    -fx-background-radius: 999;
+}
+
+.auth-book-progress-bar > .bar {
+    -fx-background-radius: 999;
+}
+
+.auth-book-progress-percent {
+    -fx-text-fill: #6C6C70;
+    -fx-font-size: 11px;
+}
+
+/* Small stats under card */
+
+.auth-stat-icon {
+    -fx-font-size: 14px;
+}
+
+.auth-stat-text {
+    -fx-text-fill: #6C6C70;
+    -fx-font-size: 12px;
+}
+
+/* ========= RIGHT PANEL (LOGIN + REGISTER FORM) ========= */
+
+.auth-right {
+    -fx-background-color: #FFFFFF;
+}
+
+/* Title / subtitle for both screens */
+
+.auth-title {
+    -fx-text-fill: #2C2C2E;
+    -fx-font-size: 24px;
+    -fx-font-weight: 600;
+}
+
+.auth-subtitle {
+    -fx-text-fill: #6C6C70;
+    -fx-font-size: 13px;
+}
+
+/* Google button */
+
+.auth-google-button {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 999;
+    -fx-border-color: #E2E2E6;
+    -fx-border-radius: 999;
+    -fx-padding: 8 16 8 16;
+}
+
+.auth-google-button:hover {
+    -fx-background-color: #F7F5F2;
+}
+
+.auth-google-icon-circle {
+    -fx-background-radius: 999;
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E2E2E6;
+    -fx-border-radius: 999;
+}
+
+.auth-google-icon-letter {
+    /* fake Google blue letter */
+    -fx-text-fill: #4285F4;
+    -fx-font-weight: bold;
+}
+
+.auth-google-text {
+    -fx-text-fill: #2C2C2E;
+    -fx-font-size: 13px;
+    -fx-font-weight: 500;
+}
+
+/* Divider "OR ..." */
+
+.auth-divider-line {
+    -fx-border-color: #E0DFE4;
+    -fx-border-width: 0 0 1 0;
+}
+
+.auth-divider-text {
+    -fx-text-fill: #A0A0AA;
+    -fx-font-size: 11px;
+}
+
+/* Form fields (labels + inputs) */
+
+.auth-field-label {
+    -fx-text-fill: #4A4A4F;
+    -fx-font-size: 12px;
+    -fx-font-weight: 500;
+}
+
+.auth-input {
+    -fx-background-color: #F3F3F5;
+    -fx-background-radius: 10;
+    -fx-border-color: #E0DFE4;
+    -fx-border-radius: 10;
+    -fx-padding: 8 12 8 12;
+    -fx-text-fill: #2C2C2E;
+}
+
+/* Focus state similar to dashboard */
+
+.auth-input:focused {
+    -fx-border-color: #C08552;
+    -fx-effect: dropshadow(gaussian, rgba(192,133,82,0.35), 8, 0, 0, 0);
+}
+
+/* Remember-me text and generic helper text */
+
+.auth-remember {
+    -fx-text-fill: #4A4A4F;
+    -fx-font-size: 12px;
+}
+
+/* "Forgot password?" link and other inline links */
+
+.auth-forgot-link,
+.auth-bottom-link {
+    -fx-text-fill: #C08552;
+    -fx-font-size: 12px;
+    -fx-underline: false;
+}
+
+.auth-forgot-link:hover,
+.auth-bottom-link:hover {
+    -fx-underline: true;
+}
+
+/* Primary CTA button (Sign in / Create account) */
+
+.auth-primary-button {
+    -fx-background-color: #C08552;
+    -fx-background-radius: 999;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+    -fx-padding: 10 16 10 16;
+    -fx-effect: dropshadow(gaussian, rgba(192,133,82,0.45), 10, 0, 0, 3);
+}
+
+.auth-primary-button:hover {
+    -fx-background-color: #B07644;
+}
+
+/* Bottom text ("Don't have an account?", etc.) */
+
+.auth-bottom-text {
+    -fx-text-fill: #6C6C70;
+    -fx-font-size: 12px;
+}

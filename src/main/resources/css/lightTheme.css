@@ -1,0 +1,588 @@
+/* ========= ROOT ========= */
+
+.dashboard-root {
+    -fx-background-color: #F7F5F2;
+}
+
+/* ========= SIDEBAR ========= */
+
+.sidebar {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E8E6E3;
+    -fx-border-width: 0 1 0 0;
+}
+
+.sidebar-header { }
+
+.sidebar-logo-circle {
+    -fx-background-radius: 16;
+    -fx-background-color: #C08552;
+    -fx-alignment: center;
+}
+
+.sidebar-logo-letter {
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.sidebar-logo-text {
+    -fx-text-fill: #2C2C2E;
+    -fx-font-size: 16px;
+    -fx-font-weight: 600;
+}
+
+.sidebar-nav-button {
+    -fx-background-radius: 12;
+    -fx-text-fill: #6C6C70;
+    -fx-padding: 8 10 8 10;
+    -fx-background-color: transparent;
+    -fx-alignment: CENTER_LEFT;
+    -fx-cursor: hand;
+}
+
+.sidebar-nav-button:hover {
+    -fx-background-color: #F7F5F2;
+}
+
+/* active nav item */
+.sidebar-nav-button-active,
+.sidebar-nav-button--active,
+.sidebar-nav-button:selected {
+    -fx-background-color: #EDE8E3;
+    -fx-text-fill: #C08552;
+}
+
+
+/* sidebar user */
+
+.sidebar-user-button {
+    -fx-background-radius: 12;
+    -fx-background-color: transparent;
+    -fx-padding: 8 10 8 10;
+}
+
+.sidebar-user-button:hover {
+    -fx-background-color: #F7F5F2;
+}
+
+.sidebar-user-avatar {
+    -fx-background-color: linear-gradient(
+            from 0% 0% to 100% 100%,
+            #9BB5CE 0%,
+            #7B9BB8 100%
+    );
+    -fx-background-radius: 999;
+    -fx-alignment: center;
+}
+
+.sidebar-user-initials {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.sidebar-user-name {
+    -fx-text-fill: #2C2C2E;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+}
+
+.sidebar-user-subtitle {
+    -fx-text-fill: #6C6C70;
+    -fx-font-size: 11px;
+}
+
+/* ========= HEADER ========= */
+
+.header {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E8E6E3;
+    -fx-border-width: 0 0 1 0;
+}
+
+.header-title {
+    -fx-text-fill: #2C2C2E;
+    -fx-font-size: 20px;
+    -fx-font-weight: 600;
+}
+
+.header-subtitle {
+    -fx-text-fill: #6C6C70;
+    -fx-font-size: 12px;
+}
+
+.header-icon-button {
+    -fx-background-radius: 12;
+    -fx-background-color: #F7F5F2;
+    -fx-min-width: 40;
+    -fx-min-height: 40;
+    -fx-max-width: 40;
+    -fx-max-height: 40;
+}
+
+.header-icon-button:hover {
+    -fx-background-color: #EDE8E3;
+}
+
+.header-notification-dot {
+    -fx-fill: #D4A574;
+}
+
+.header-primary-button {
+    -fx-background-radius: 12;
+    -fx-background-color: #C08552;
+    -fx-text-fill: white;
+    -fx-padding: 0 16 0 16;
+    -fx-min-height: 40;
+}
+
+.header-primary-button:hover {
+    -fx-background-color: #B07644;
+}
+
+.header-primary-icon {
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+}
+
+/* ========= GENERIC SECTION TITLE ========= */
+
+.section-title {
+    -fx-text-fill: #2C2C2E;
+    -fx-font-size: 16px;
+    -fx-font-weight: 600;
+}
+
+/* ========= GENERIC BOOK CARD (Dashboard) ========= */
+
+.book-card {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 20;
+    -fx-border-color: #E8E6E3;
+    -fx-border-radius: 20;
+    -fx-padding: 16;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.04), 6, 0, 0, 3);
+}
+
+.book-cover {
+    -fx-background-color: #E8E6E3;
+    -fx-background-radius: 16;
+}
+
+.book-title {
+    -fx-text-fill: #2C2C2E;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+}
+
+.book-author {
+    -fx-text-fill: #6C6C70;
+    -fx-font-size: 11px;
+}
+
+.book-progress-bar {
+    -fx-accent: #C08552;
+}
+
+.book-progress-text {
+    -fx-text-fill: #6C6C70;
+    -fx-font-size: 10px;
+}
+
+.book-status-pill {
+    -fx-background-color: #EDE8E3;
+    -fx-text-fill: #C08552;
+    -fx-background-radius: 999;
+    -fx-padding: 2 8 2 8;
+    -fx-font-size: 10px;
+}
+
+/* placeholder card for dashboard */
+
+.book-card-placeholder {
+    -fx-background-color: transparent;
+    -fx-border-color: #E8E6E3;
+    -fx-border-radius: 20;
+    -fx-padding: 16;
+    -fx-border-style: segments(2,2);
+}
+
+.book-card-placeholder-icon {
+    -fx-text-fill: #C08552;
+    -fx-font-size: 24px;
+}
+
+.book-card-placeholder-text {
+    -fx-text-fill: #6C6C70;
+    -fx-font-size: 11px;
+}
+
+/* ========= QUEUE CARDS (Dashboard) ========= */
+
+.queue-card {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 16;
+    -fx-border-color: #E8E6E3;
+    -fx-border-radius: 16;
+    -fx-padding: 12;
+}
+
+.queue-drag-handle {
+    -fx-text-fill: #AEAEB2;
+}
+
+.queue-title {
+    -fx-text-fill: #2C2C2E;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+}
+
+.queue-pill {
+    -fx-background-radius: 999;
+    -fx-padding: 2 10 2 10;
+    -fx-font-size: 10px;
+}
+
+.queue-pill-psychology {
+    -fx-background-color: #D4E4F7;
+    -fx-text-fill: #5B8EC4;
+}
+
+.queue-pill-mindfulness {
+    -fx-background-color: #E4F0D4;
+    -fx-text-fill: #7BA05B;
+}
+
+.queue-date {
+    -fx-text-fill: #6C6C70;
+    -fx-font-size: 10px;
+}
+
+.queue-checkbox {
+    -fx-border-color: #AEAEB2;
+    -fx-border-radius: 6;
+    -fx-border-width: 2;
+}
+
+/* ========= STAT CARDS (Dashboard & Library side) ========= */
+
+.stat-card {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 18;
+    -fx-border-color: #E8E6E3;
+    -fx-border-radius: 18;
+    -fx-padding: 16;
+}
+
+.stat-icon {
+    -fx-background-radius: 16;
+}
+
+.stat-icon-gold {
+    -fx-background-color: linear-gradient(
+            from 0% 0% to 100% 100%,
+            #D4A574 0%,
+            #C08552 100%
+    );
+}
+
+.stat-icon-blue {
+    -fx-background-color: linear-gradient(
+            from 0% 0% to 100% 100%,
+            #9BB5CE 0%,
+            #7B9BB8 100%
+    );
+}
+
+.stat-icon-emoji {
+    -fx-font-size: 22px;
+}
+
+.stat-label {
+    -fx-text-fill: #6C6C70;
+    -fx-font-size: 11px;
+}
+
+.stat-value {
+    -fx-text-fill: #2C2C2E;
+    -fx-font-size: 18px;
+    -fx-font-weight: 600;
+}
+
+.stat-subtitle {
+    -fx-text-fill: #AEAEB2;
+    -fx-font-size: 10px;
+}
+
+/* extra hook for library right-side cards, if needed */
+.library-side-card {
+    /* you can tweak padding/spacing later if you want */
+}
+
+/* ========= SHARED FORM ELEMENTS ========= */
+
+.text-field,
+.combo-box-base,
+.text-area {
+    -fx-background-color: #F3F3F5;
+    -fx-background-radius: 10;
+    -fx-border-color: #E8E6E3;
+    -fx-border-radius: 10;
+    -fx-padding: 6 10 6 10;
+    -fx-text-fill: #2C2C2E;
+    -fx-font-size: 12px;
+}
+
+.text-field:focused,
+.combo-box-base:focused,
+.text-area:focused {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #C08552;
+    -fx-effect: dropshadow(gaussian, rgba(192,133,82,0.25), 6, 0, 0, 0);
+}
+
+/* combobox arrow button */
+
+.combo-box-base > .arrow-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.combo-box .list-cell {
+    -fx-text-fill: #2C2C2E;
+    -fx-font-size: 12px;
+}
+
+/* textarea inner content */
+
+.text-area .content {
+    -fx-background-color: transparent;
+}
+
+/* scrollpane background */
+
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: #F7F5F2;
+}
+
+/* ========= LIBRARY: FILTER CHIPS ========= */
+
+.filter-chips-row {
+    -fx-spacing: 6;
+}
+
+.filter-chip {
+    -fx-background-color: transparent;
+    -fx-text-fill: #6C6C70;
+    -fx-padding: 4 12 4 12;
+    -fx-background-radius: 999;
+    -fx-border-radius: 999;
+    -fx-border-color: #E8E6E3;
+    -fx-border-width: 1;
+    -fx-cursor: hand;
+    -fx-font-size: 11px;
+}
+
+.filter-chip:hover {
+    -fx-background-color: #F7F5F2;
+}
+
+.filter-chip--active,
+.filter-chip:selected {
+    -fx-background-color: #EDE8E3;
+    -fx-text-fill: #C08552;
+    -fx-border-color: transparent;
+}
+
+/* ========= LIBRARY: CATEGORY / SORT COMBOBOXES ========= */
+
+.filter-combobox {
+    -fx-background-color: #F3F3F5;
+    -fx-background-radius: 999;
+    -fx-border-radius: 999;
+    -fx-border-color: #E2E2E6;
+    -fx-padding: 0 10 0 10;
+    -fx-font-size: 12px;
+    -fx-text-fill: #2C2C2E;
+}
+
+.filter-combobox > .arrow-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 999;
+    -fx-border-color: transparent;
+}
+
+.filter-combobox > .arrow-button > .arrow {
+    -fx-background-color: #6C6C70;
+}
+
+.filter-combobox:focused {
+    -fx-border-color: #C08552;
+}
+
+/* ========= HEADER SEARCH FIELD ========= */
+
+.header-search-field {
+    -fx-background-color: #F3F3F5;
+    -fx-background-radius: 999;
+    -fx-border-radius: 999;
+    -fx-border-color: #E2E2E6;
+    -fx-padding: 8 16 8 16;
+    -fx-text-fill: #2C2C2E;
+    -fx-font-size: 12px;
+}
+
+.header-search-field:focused {
+    -fx-border-color: #C08552;
+    -fx-effect: dropshadow(gaussian, rgba(192,133,82,0.35), 8, 0, 0, 0);
+}
+
+/* ========= LIBRARY BOOK CARDS ========= */
+
+.library-book-card {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 20;
+    -fx-border-color: #E8E6E3;
+    -fx-border-radius: 20;
+    -fx-padding: 16;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.04), 6, 0, 0, 3);
+}
+
+.library-book-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 4);
+    -fx-translate-y: -1;
+}
+
+.library-book-cover {
+    -fx-background-color: #E8E6E3;
+    -fx-background-radius: 16;
+}
+
+.book-cover-placeholder-text {
+    -fx-text-fill: #AEAEB2;
+    -fx-font-size: 12px;
+}
+
+.library-book-title {
+    -fx-text-fill: #2C2C2E;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+}
+
+.library-book-author {
+    -fx-text-fill: #6C6C70;
+    -fx-font-size: 11px;
+}
+
+.library-book-genre,
+.book-category-pill {
+    -fx-text-fill: #AEAEB2;
+    -fx-font-size: 10px;
+}
+
+/* reusable meta text / rating */
+
+.book-meta-text {
+    -fx-text-fill: #6C6C70;
+    -fx-font-size: 10px;
+}
+
+.book-rating-text {
+    -fx-text-fill: #C08552;
+    -fx-font-size: 11px;
+}
+
+/* library placeholder card */
+
+.library-book-card-placeholder {
+    -fx-background-color: transparent;
+    -fx-border-color: #E8E6E3;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-border-style: segments(2,2);
+    -fx-padding: 16;
+}
+
+.library-book-card-placeholder-text {
+    -fx-text-fill: #AEAEB2;
+    -fx-font-size: 11px;
+}
+
+/* ========= LIBRARY RIGHT-SIDE TAGS ========= */
+
+.library-side-title {
+    -fx-text-fill: #2C2C2E;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+}
+
+.library-side-label {
+    -fx-text-fill: #6C6C70;
+    -fx-font-size: 11px;
+}
+
+.tag-pill {
+    -fx-background-color: #F0EBE5;
+    -fx-background-radius: 999;
+    -fx-padding: 2 10 2 10;
+    -fx-text-fill: #6C6C70;
+    -fx-font-size: 10px;
+    -fx-cursor: hand;
+}
+
+.tag-pill:hover {
+    -fx-background-color: #EDE3D9;
+}
+/* ===== STATISTICS SCREEN SPECIFICS ===== */
+
+/* Main big chart card (already uses .stat-card) – optional subtle tweak */
+.stat-card.stats-main {
+    -fx-padding: 20 24 20 24;
+}
+
+/* Streak day squares */
+.streak-day {
+    -fx-arc-width: 6;
+    -fx-arc-height: 6;
+    -fx-fill: #F0EBE5;      /* neutral warm */
+    -fx-stroke: #E8E6E3;
+    -fx-stroke-width: 1;
+}
+
+.streak-day--active {
+    -fx-fill: #C08552;      /* warm caramel for active days */
+    -fx-stroke: transparent;
+}
+
+.streak-day--empty {
+    -fx-fill: #F7F5F2;      /* background-like */
+    -fx-stroke: #E8E6E3;
+}
+
+/* "This year at a glance" rows */
+.stats-row-icon {
+    -fx-font-size: 14px;
+}
+
+.stats-row-label {
+    -fx-text-fill: #6C6C70;
+    -fx-font-size: 11px;
+}
+
+.stats-row-value {
+    -fx-text-fill: #2C2C2E;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+}
+
+/* Books-per-month chart placeholder */
+.stats-bar-chart-placeholder {
+    -fx-background-color: #F7F5F2;
+    -fx-background-radius: 16;
+    -fx-border-color: #E8E6E3;
+    -fx-border-radius: 16;
+}
