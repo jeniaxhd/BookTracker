@@ -11,6 +11,7 @@ import sk.upjs.paz.entity.Genre;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 public class test {
     public static void main(String[] args) throws SQLException {
@@ -23,15 +24,13 @@ public class test {
         book.setTitle("Introduction to MZI");
         book.addAuthor(krajci);
 
+        List<Genre> genreList = List.of(new Genre[]{horror});
         book.setYear(2025);
         book.setDescription("Xyeta");
         book.setAverageRating(0.0);
-        book.setGenre(horror);
+        book.setGenre(genreList);
         book.setPages(666);
-        book.setLanguage("Slovak");
 
-        Genre genre = new Genre(1L, "Fantasy");
-        book.setGenre(genre);
 
         bookDao.add(book);
         authorDao.add(krajci);
