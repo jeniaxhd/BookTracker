@@ -35,8 +35,8 @@ public class AuthorJdbcDao implements AuthorDao {
                 }
             }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }  catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -48,7 +48,7 @@ public class AuthorJdbcDao implements AuthorDao {
             ps.setLong(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -66,7 +66,7 @@ public class AuthorJdbcDao implements AuthorDao {
 
             ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -93,7 +93,7 @@ public class AuthorJdbcDao implements AuthorDao {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return Optional.empty();
@@ -112,7 +112,7 @@ public class AuthorJdbcDao implements AuthorDao {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return list;
@@ -133,7 +133,7 @@ public class AuthorJdbcDao implements AuthorDao {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return list;
@@ -154,7 +154,7 @@ public class AuthorJdbcDao implements AuthorDao {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return list;

@@ -41,7 +41,7 @@ public class UserJdbcDao implements UserDao {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -53,7 +53,7 @@ public class UserJdbcDao implements UserDao {
             ps.setLong(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -68,7 +68,7 @@ public class UserJdbcDao implements UserDao {
             ps.setLong(4, user.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -100,7 +100,7 @@ public class UserJdbcDao implements UserDao {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return Optional.empty();
@@ -120,7 +120,7 @@ public class UserJdbcDao implements UserDao {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return list;
@@ -138,7 +138,7 @@ public class UserJdbcDao implements UserDao {
                 list.add(mapRow(rs));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return list;
@@ -157,7 +157,7 @@ public class UserJdbcDao implements UserDao {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return Optional.empty();
@@ -172,7 +172,7 @@ public class UserJdbcDao implements UserDao {
             ps.setLong(2, userId);
             ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 }

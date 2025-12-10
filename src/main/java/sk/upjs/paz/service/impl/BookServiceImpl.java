@@ -1,7 +1,9 @@
 package sk.upjs.paz.service.impl;
 
+import sk.upjs.paz.dao.AuthorDao;
 import sk.upjs.paz.dao.BookDao;
 import sk.upjs.paz.dao.BookFilter;
+import sk.upjs.paz.dao.GenreDao;
 import sk.upjs.paz.entity.Author;
 import sk.upjs.paz.entity.Book;
 import sk.upjs.paz.entity.Genre;
@@ -13,11 +15,15 @@ public class BookServiceImpl implements BookService {
 
     private final BookDao bookDao;
 
+    public BookServiceImpl(BookDao bookDao, AuthorDao authorDao, GenreDao genreDao) {
+        this.bookDao = Objects.requireNonNull(bookDao, "bookDao must not be null");
+    }
+
     public BookServiceImpl(BookDao bookDao) {
         this.bookDao = Objects.requireNonNull(bookDao, "bookDao must not be null");
     }
 
-    @Override
+        @Override
     public void add(Book book) {
         bookDao.add(book);
     }
@@ -57,9 +63,9 @@ public class BookServiceImpl implements BookService {
         if (genre == null || genre.isEmpty()) {
             return bookDao.getAll();
         }
-        Set<Book> result = new HashSet<Book>();
+        Set<Book> result = new HashSet<>();
 
-        for(Genre g : genre) {
+        for (Genre g : genre) {
             result.addAll(bookDao.getByGenre(g));
         }
 
@@ -81,7 +87,36 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> search(String text) {
-        return List.of();
+        if (text == null || text.isBlank()) {
+            return bookDao.getAll();
+        }
+
+        String query = text.trim().toLowerCase();
+
+        return bookDao.getAll().stream()
+                .filter(b -> {
+                    if (b.getTitle() != null &&
+                            b.getTitle().toLowerCase().contains(query)) {
+                        return true;
+                    }
+
+                    if (b.getAuthors() != null &&
+                            b.getAuthors().stream()
+                                    .anyMatch(a -> a.getName() != null &&
+                                            a.getName().toLowerCase().contains(query))) {
+                        return true;
+                    }
+
+                    if (b.getGenre() != null &&
+                            b.getGenre().stream()
+                                    .anyMatch(g -> g.name() != null &&
+                                            g.name().toLowerCase().contains(query))) {
+                        return true;
+                    }
+
+                    return false;
+                })
+                .toList();
     }
 
     @Override
@@ -90,31 +125,51 @@ public class BookServiceImpl implements BookService {
             return bookDao.getAll();
         }
 
-        List<Book> books = bookDao.getAll();  // базовий список
+        List<Book> books = bookDao.findByFilter(
+                filter.getFromYear(),
+                filter.getToYear(),
+                filter.getFromPagesCount(),
+                filter.getToPagesCount(),
+                filter.getFromAverageRating(),
+                filter.getToAverageRating()
+        );
 
         return books.stream()
                 .filter(b -> filter.getTitlePart() == null
-                        || b.getTitle().toLowerCase()
-                        .contains(filter.getTitlePart().toLowerCase()))
+                        || (b.getTitle() != null
+                        && b.getTitle().toLowerCase()
+                        .contains(filter.getTitlePart().toLowerCase())))
                 .filter(b -> filter.getAuthorId() == null
-                    || b.getAuthors().stream()
-                    .anyMatch(a -> a.getId().equals(filter.getAuthorId())))
-                .filter(b -> filter.getFromYear() == null
-                        || (b.getYear() != null && b.getYear() >= filter.getFromYear()))
-                .filter(b -> filter.getToYear() == null
-                        || (b.getYear() != null && b.getYear() <= filter.getToYear()))
-                .filter(b -> filter.getGenres() == null || filter.getGenres().isEmpty()
-                        || b.getGenre().stream().anyMatch(filter.getGenres()::contains))
+                        || (b.getAuthors() != null
+                        && b.getAuthors().stream()
+                        .anyMatch(a -> a.getId().equals(filter.getAuthorId()))))
+                .filter(b -> filter.getGenres() == null
+                        || filter.getGenres().isEmpty()
+                        || (b.getGenre() != null
+                        && b.getGenre().stream().anyMatch(filter.getGenres()::contains)))
                 .sorted((b1, b2) -> {
                     if (filter.getSortBy() == null) return 0;
 
                     int cmp = switch (filter.getSortBy()) {
                         case "title" ->
-                                b1.getTitle().compareToIgnoreCase(b2.getTitle());
+                                Optional.ofNullable(b1.getTitle()).orElse("")
+                                        .compareToIgnoreCase(
+                                                Optional.ofNullable(b2.getTitle()).orElse("")
+                                        );
                         case "year" ->
                                 Integer.compare(
                                         b1.getYear() == null ? 0 : b1.getYear(),
                                         b2.getYear() == null ? 0 : b2.getYear()
+                                );
+                        case "pages" ->
+                                Integer.compare(
+                                        b1.getPages(),
+                                        b2.getPages()
+                                );
+                        case "rating" ->
+                                Double.compare(
+                                        b1.getAverageRating(),
+                                        b2.getAverageRating()
                                 );
                         default -> 0;
                     };
