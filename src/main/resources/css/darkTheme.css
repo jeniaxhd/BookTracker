@@ -1,0 +1,350 @@
+/* ========= DARK THEME FOR DASHBOARD ========= */
+
+/* Root background */
+.dashboard-root {
+    -fx-background-color: #1C1C1E;
+}
+
+/* SIDEBAR */
+.sidebar {
+    -fx-background-color: #2C2C2E;
+    -fx-border-color: #3A3A3C;
+    -fx-border-width: 0 1 0 0;
+}
+
+.sidebar-header { }
+
+.sidebar-logo-circle {
+    -fx-background-radius: 16;
+    -fx-background-color: linear-gradient(
+            from 0% 0% to 100% 100%,
+            #D4A574 0%,
+            #C08552 100%
+    );
+    -fx-alignment: center;
+}
+
+
+.sidebar-logo-letter {
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.sidebar-logo-text {
+    -fx-text-fill: #F7F5F2;
+    -fx-font-size: 16px;
+    -fx-font-weight: 600;
+}
+
+.sidebar-nav-button {
+    -fx-background-radius: 12;
+    -fx-text-fill: #AEAEB2;
+    -fx-padding: 8 10 8 10;
+    -fx-background-color: transparent;
+    -fx-alignment: CENTER_LEFT;
+    -fx-cursor: hand;
+}
+
+.sidebar-nav-button:hover {
+    -fx-background-color: #3A3A3C;
+}
+
+.sidebar-nav-button-active,
+.sidebar-nav-button:selected {
+    -fx-background-color: #3A3A3C;
+    -fx-text-fill: #D4A574;
+}
+
+/* Sidebar user */
+.sidebar-user-button {
+    -fx-background-radius: 12;
+    -fx-background-color: transparent;
+    -fx-padding: 8 10 8 10;
+}
+
+.sidebar-user-button:hover {
+    -fx-background-color: #3A3A3C;
+}
+
+.sidebar-user-avatar {
+    -fx-background-radius: 999;
+    -fx-background-color: linear-gradient(
+            from 0% 0% to 100% 100%,
+            #9BB5CE 0%,
+            #7B9BB8 100%
+    );
+    -fx-alignment: center;
+}
+
+.sidebar-user-initials {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.sidebar-user-name {
+    -fx-text-fill: #F7F5F2;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+}
+
+.sidebar-user-subtitle {
+    -fx-text-fill: #AEAEB2;
+    -fx-font-size: 11px;
+}
+
+/* HEADER */
+.header {
+    -fx-background-color: #2C2C2E;
+    -fx-border-color: #3A3A3C;
+    -fx-border-width: 0 0 1 0;
+}
+
+.header-title {
+    -fx-text-fill: #F7F5F2;
+    -fx-font-size: 20px;
+    -fx-font-weight: 600;
+}
+
+.header-subtitle {
+    -fx-text-fill: #AEAEB2;
+    -fx-font-size: 12px;
+}
+
+.header-icon-button {
+    -fx-background-radius: 12;
+    -fx-background-color: #3A3A3C;
+    -fx-min-width: 40;
+    -fx-min-height: 40;
+    -fx-max-width: 40;
+    -fx-max-height: 40;
+}
+
+.header-icon-button:hover {
+    -fx-background-color: #48484A;
+}
+
+.header-notification-dot {
+    -fx-fill: #D4A574;
+}
+
+.header-primary-button {
+    -fx-background-radius: 12;
+    -fx-background-color: #C08552;
+    -fx-text-fill: white;
+    -fx-padding: 0 16 0 16;
+    -fx-min-height: 40;
+}
+
+.header-primary-button:hover {
+    -fx-background-color: #B07644;
+}
+
+.header-primary-icon {
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+}
+
+/* Sections */
+.section-title {
+    -fx-text-fill: #F7F5F2;
+    -fx-font-size: 16px;
+    -fx-font-weight: 600;
+}
+
+/* Book card */
+.book-card {
+    -fx-background-color: #2C2C2E;
+    -fx-background-radius: 20;
+    -fx-border-color: #3A3A3C;
+    -fx-border-radius: 20;
+    -fx-padding: 16;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 0, 4);
+}
+
+.book-cover {
+    -fx-background-color: #3A3A3C;
+    -fx-background-radius: 16;
+}
+
+.book-title {
+    -fx-text-fill: #F7F5F2;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+}
+
+.book-author {
+    -fx-text-fill: #AEAEB2;
+    -fx-font-size: 11px;
+}
+
+.book-progress-bar > .bar {
+    -fx-background-insets: 0;
+    -fx-background-radius: 999;
+    -fx-background-color: linear-gradient(
+            from 0% 0% to 100% 0%,
+            #D4A574 0%,
+            #C08552 100%
+    );
+}
+
+.book-progress-text {
+    -fx-text-fill: #AEAEB2;
+    -fx-font-size: 10px;
+}
+
+.book-status-pill {
+    -fx-background-color: #3A3A3C;
+    -fx-text-fill: #D4A574;
+    -fx-background-radius: 999;
+    -fx-padding: 2 8 2 8;
+    -fx-font-size: 10px;
+}
+
+/* Placeholder card */
+.book-card-placeholder {
+    -fx-background-color: transparent;
+    -fx-border-color: #3A3A3C;
+    -fx-border-radius: 20;
+    -fx-padding: 16;
+    -fx-border-style: segments(2,2);
+}
+
+.book-card-placeholder-icon {
+    -fx-text-fill: #D4A574;
+    -fx-font-size: 24px;
+}
+
+.book-card-placeholder-text {
+    -fx-text-fill: #AEAEB2;
+    -fx-font-size: 11px;
+}
+
+/* Queue cards */
+.queue-card {
+    -fx-background-color: #2C2C2E;
+    -fx-background-radius: 16;
+    -fx-border-color: #3A3A3C;
+    -fx-border-radius: 16;
+    -fx-padding: 12;
+}
+
+.queue-drag-handle {
+    -fx-text-fill: #6C6C70;
+}
+
+.queue-title {
+    -fx-text-fill: #F7F5F2;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+}
+
+.queue-pill {
+    -fx-background-radius: 999;
+    -fx-padding: 2 10 2 10;
+    -fx-font-size: 10px;
+}
+
+/* категорії – темні версії */
+.queue-pill-psychology {
+    -fx-background-color: #2C3E50;
+    -fx-text-fill: #9BB5CE;
+}
+
+.queue-pill-mindfulness {
+    -fx-background-color: #2D3A2D;
+    -fx-text-fill: #A8C99B;
+}
+
+.queue-pill-biography {
+    -fx-background-color: #3A302C;
+    -fx-text-fill: #D4A574;
+}
+
+.queue-pill-productivity {
+    -fx-background-color: #3A2C3E;
+    -fx-text-fill: #C49BCE;
+}
+
+.queue-pill-fiction {
+    -fx-background-color: #3E2C34;
+    -fx-text-fill: #D49BB5;
+}
+
+.queue-date {
+    -fx-text-fill: #AEAEB2;
+    -fx-font-size: 10px;
+}
+
+.queue-checkbox {
+    -fx-border-color: #6C6C70;
+    -fx-border-radius: 6;
+    -fx-border-width: 2;
+}
+
+/* Statistics cards */
+.stat-card {
+    -fx-background-color: #2C2C2E;
+    -fx-background-radius: 18;
+    -fx-border-color: #3A3A3C;
+    -fx-border-radius: 18;
+    -fx-padding: 16;
+}
+
+.stat-icon {
+    -fx-background-radius: 16;
+}
+
+.stat-icon-gold {
+    -fx-background-color: linear-gradient(
+            from 0% 0% to 100% 100%,
+            #D4A574 0%,
+            #C08552 100%
+    );
+}
+
+.stat-icon-blue {
+    -fx-background-color: linear-gradient(
+            from 0% 0% to 100% 100%,
+            #9BB5CE 0%,
+            #7B9BB8 100%
+    );
+}
+.stat-icon-emoji {
+    -fx-font-size: 22px;
+}
+
+.stat-label {
+    -fx-text-fill: #AEAEB2;
+    -fx-font-size: 11px;
+}
+
+.stat-value {
+    -fx-text-fill: #F7F5F2;
+    -fx-font-size: 18px;
+    -fx-font-weight: 600;
+}
+
+.stat-subtitle {
+    -fx-text-fill: #6C6C70;
+    -fx-font-size: 10px;
+}
+/* SCROLLPANE – light */
+.scroll-pane {
+    -fx-background-color: #F7F5F2;
+    -fx-border-color: transparent;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+/* SCROLLPANE – dark */
+.scroll-pane {
+    -fx-background-color: #1C1C1E;
+    -fx-border-color: transparent;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}

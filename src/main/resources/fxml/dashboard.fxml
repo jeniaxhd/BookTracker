@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+
+<BorderPane
+        fx:id="root"
+        prefHeight="800.0"
+        prefWidth="1200.0"
+        styleClass="dashboard-root"
+        xmlns="http://javafx.com/javafx/17.0.12"
+        xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="sk.upjs.paz.ui.DashboardController">
+
+    <!-- LEFT: SIDEBAR -->
+    <left>
+        <VBox prefWidth="240.0" styleClass="sidebar" BorderPane.alignment="CENTER">
+            <children>
+
+                <!-- Logo -->
+                <VBox spacing="10.0" styleClass="sidebar-header">
+                    <padding>
+                        <Insets bottom="16" left="24" right="24" top="24" />
+                    </padding>
+                    <children>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                            <children>
+                                <StackPane prefHeight="32.0" prefWidth="32.0" styleClass="sidebar-logo-circle">
+                                    <children>
+                                        <Label styleClass="sidebar-logo-letter" text="B" />
+                                    </children>
+                                </StackPane>
+                                <Label styleClass="sidebar-logo-text" text="BookTrack" />
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+
+                <Separator />
+
+                <!-- Navigation -->
+                <VBox spacing="6.0" styleClass="sidebar-nav">
+                    <padding>
+                        <Insets bottom="16" left="16" right="16" top="16" />
+                    </padding>
+                        <children>
+                            <ToggleButton selected="true" styleClass="sidebar-nav-button,sidebar-nav-button--active" text="Dashboard" />
+                            <ToggleButton styleClass="sidebar-nav-button" text="Library" />
+                            <ToggleButton styleClass="sidebar-nav-button" text="Currently Reading" />
+                            <ToggleButton styleClass="sidebar-nav-button" text="Statistics" />
+                            <ToggleButton styleClass="sidebar-nav-button" text="Settings" />
+                        </children>
+                </VBox>
+
+                <Pane VBox.vgrow="ALWAYS" />
+
+                <!-- User profile -->
+                <VBox styleClass="sidebar-user">
+                    <padding>
+                        <Insets bottom="24" left="16" right="16" top="8" />
+                    </padding>
+                    <children>
+                        <Button maxWidth="Infinity" styleClass="sidebar-user-button">
+                            <graphic>
+                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                    <children>
+                                        <StackPane prefHeight="32.0" prefWidth="32.0" styleClass="sidebar-user-avatar">
+                                            <children>
+                                                <Label styleClass="sidebar-user-initials" text="S" />
+                                            </children>
+                                        </StackPane>
+
+                                        <VBox spacing="2.0">
+                                            <children>
+                                                <Label styleClass="sidebar-user-name" text="Stano Krajci" />
+                                                <Label styleClass="sidebar-user-subtitle" text="View profile" />
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </HBox>
+                            </graphic>
+                        </Button>
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+    </left>
+
+    <!-- CENTER: MAIN AREA -->
+    <center>
+        <VBox spacing="0.0" BorderPane.alignment="CENTER">
+            <children>
+                <!-- Header -->
+                <VBox spacing="0.0" styleClass="header">
+                    <children>
+                        <HBox alignment="CENTER_LEFT" spacing="16.0" styleClass="header-inner">
+                            <padding>
+                                <Insets bottom="24" left="32" right="32" top="24" />
+                            </padding>
+
+                            <!-- Title + subtitle -->
+                            <children>
+                                <VBox spacing="4.0">
+                                    <children>
+                                        <Label styleClass="header-title" text="Dashboard" />
+                                        <Label styleClass="header-subtitle" text="Track your reading progress and organize your books." wrapText="true" />
+                                    </children>
+                                </VBox>
+
+                                <Pane HBox.hgrow="ALWAYS" />
+
+                                <!-- Right actions -->
+                                <HBox alignment="CENTER_RIGHT" spacing="8.0">
+                                    <children>
+                                        <Button styleClass="header-icon-button">
+                                            <graphic>
+                                                <Label text="🔍" />
+                                            </graphic>
+                                        </Button>
+
+                                        <StackPane>
+                                            <children>
+                                                <Button styleClass="header-icon-button">
+                                                    <graphic>
+                                                        <Label text="🔔" />
+                                                    </graphic>
+                                                </Button>
+                                                <!-- notification dot -->
+                                                <Rectangle arcHeight="8.0" arcWidth="8.0" height="8.0" styleClass="header-notification-dot" translateX="-6" translateY="6" width="8.0" StackPane.alignment="TOP_RIGHT" />
+                                            </children>
+                                        </StackPane>
+
+                                        <ToggleButton
+                                                fx:id="themeToggle"
+                                                text="☀"
+                                                onAction="#onToggleTheme"
+                                                styleClass="header-icon-button" />
+
+                                        <Button styleClass="header-primary-button" text="Add Book">
+                                            <graphic>
+                                                <Label styleClass="header-primary-icon" text="+" />
+                                            </graphic>
+                                        </Button>
+                                    </children>
+                                </HBox>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+
+                <!-- Scrollable content -->
+                <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+                    <content>
+                        <VBox spacing="32.0">
+                            <padding>
+                                <Insets bottom="32" left="32" right="32" top="24" />
+                            </padding>
+                            <children>
+
+                                <!-- Currently Reading -->
+                                <VBox spacing="16.0">
+                                    <children>
+                                        <Label styleClass="section-title" text="Currently Reading" />
+                                        <HBox spacing="16.0">
+                                            <children>
+                                                <!-- Book card sample -->
+                                                <VBox prefWidth="220.0" spacing="12.0" styleClass="book-card">
+                                                    <children>
+                                                        <StackPane prefHeight="220.0" styleClass="book-cover">
+                                                            <children>
+                                                                <ImageView fitHeight="220.0" fitWidth="160.0" preserveRatio="true" />
+                                                            </children>
+                                                        </StackPane>
+
+                                                        <VBox spacing="6.0">
+                                                            <children>
+                                                                <Label styleClass="book-title" text="The Midnight Library" wrapText="true" />
+                                                                <Label styleClass="book-author" text="Matt Haig" />
+                                                            </children>
+                                                        </VBox>
+
+                                                        <!-- Progress -->
+                                                        <VBox spacing="6.0">
+                                                            <children>
+                                                                <ProgressBar progress="0.61" styleClass="book-progress-bar" />
+
+                                                                <HBox alignment="CENTER_LEFT" spacing="8.0">
+                                                                    <children>
+                                                                        <Label styleClass="book-progress-text" text="187 / 304 pages" />
+                                                                        <Pane HBox.hgrow="ALWAYS" />
+                                                                        <Label styleClass="book-status-pill" text="In Progress" />
+                                                                    </children>
+                                                                </HBox>
+                                                            </children>
+                                                        </VBox>
+                                                    </children>
+                                                </VBox>
+
+                                                <!-- Placeholder card (можеш потім видалити/скопіювати) -->
+                                                <VBox alignment="CENTER" prefWidth="220.0" spacing="8.0" styleClass="book-card-placeholder">
+                                                    <children>
+                                                        <Label styleClass="book-card-placeholder-icon" text="+" />
+                                                        <Label alignment="CENTER" maxWidth="180.0" styleClass="book-card-placeholder-text" text="Add another book" wrapText="true" />
+                                                    </children>
+                                                </VBox>
+
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                </VBox>
+
+                                <!-- Bottom grid: Queue + Statistics -->
+                                <HBox spacing="24.0">
+                                    <children>
+                                        <!-- Reading queue -->
+                                        <VBox spacing="12.0" HBox.hgrow="ALWAYS">
+                                            <children>
+                                                <Label styleClass="section-title" text="Reading Queue" />
+                                                <VBox spacing="8.0">
+                                                    <children>
+                                                        <!-- Queue item 1 -->
+                                                        <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="queue-card">
+                                                            <children>
+                                                                <Label styleClass="queue-drag-handle" text="☰" />
+                                                                <VBox spacing="4.0">
+                                                                    <children>
+                                                                        <Label styleClass="queue-title" text="Thinking, Fast and Slow" />
+                                                                        <HBox alignment="CENTER_LEFT" spacing="8.0">
+                                                                            <children>
+                                                                                <Label styleClass="queue-pill queue-pill-psychology" text="Psychology" />
+                                                                                <Label styleClass="queue-date" text="Next week" />
+                                                                            </children>
+                                                                        </HBox>
+                                                                    </children>
+                                                                </VBox>
+                                                                <Pane HBox.hgrow="ALWAYS" />
+                                                                <Region prefHeight="20.0" prefWidth="20.0" styleClass="queue-checkbox" />
+                                                            </children>
+                                                        </HBox>
+
+                                                        <!-- Queue item 2 -->
+                                                        <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="queue-card">
+                                                            <children>
+                                                                <Label styleClass="queue-drag-handle" text="☰" />
+                                                                <VBox spacing="4.0">
+                                                                    <children>
+                                                                        <Label styleClass="queue-title" text="The Power of Now" />
+                                                                        <HBox alignment="CENTER_LEFT" spacing="8.0">
+                                                                            <children>
+                                                                                <Label styleClass="queue-pill queue-pill-mindfulness" text="Mindfulness" />
+                                                                            </children>
+                                                                        </HBox>
+                                                                    </children>
+                                                                </VBox>
+                                                                <Pane HBox.hgrow="ALWAYS" />
+                                                                <Region prefHeight="20.0" prefWidth="20.0" styleClass="queue-checkbox" />
+                                                            </children>
+                                                        </HBox>
+                                                    </children>
+                                                </VBox>
+                                            </children>
+                                        </VBox>
+
+                                        <!-- Statistics column -->
+                                        <VBox prefWidth="260.0" spacing="12.0">
+                                            <children>
+                                                <Label styleClass="section-title" text="Statistics" />
+
+                                                <VBox spacing="12.0">
+                                                    <children>
+                                                        <!-- Stat 1 -->
+                                                        <HBox spacing="12.0" styleClass="stat-card">
+                                                            <children>
+                                                                <StackPane prefHeight="48.0" prefWidth="48.0" styleClass="stat-icon stat-icon-gold">
+                                                                    <children>
+                                                                        <Label styleClass="stat-icon-emoji" text="📚" />
+                                                                    </children>
+                                                                </StackPane>
+
+                                                                <VBox spacing="4.0">
+                                                                    <children>
+                                                                        <Label styleClass="stat-label" text="Books Read" />
+                                                                        <Label styleClass="stat-value" text="24" />
+                                                                        <Label styleClass="stat-subtitle" text="This year" />
+                                                                    </children>
+                                                                </VBox>
+                                                            </children>
+                                                        </HBox>
+
+                                                        <!-- Stat 2 -->
+                                                        <HBox spacing="12.0" styleClass="stat-card">
+                                                            <children>
+                                                                <StackPane prefHeight="48.0" prefWidth="48.0" styleClass="stat-icon stat-icon-blue">
+                                                                    <children>
+                                                                        <Label styleClass="stat-icon-emoji" text="📖" />
+                                                                    </children>
+                                                                </StackPane>
+
+                                                                <VBox spacing="4.0">
+                                                                    <children>
+                                                                        <Label styleClass="stat-label" text="In Progress" />
+                                                                        <Label styleClass="stat-value" text="4" />
+                                                                        <Label styleClass="stat-subtitle" text="Currently reading" />
+                                                                    </children>
+                                                                </VBox>
+                                                            </children>
+                                                        </HBox>
+                                                    </children>
+                                                </VBox>
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </HBox>
+
+                            </children>
+                        </VBox>
+                    </content>
+                </ScrollPane>
+            </children>
+        </VBox>
+    </center>
+</BorderPane>
