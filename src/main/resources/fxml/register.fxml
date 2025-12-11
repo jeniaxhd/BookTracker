@@ -7,6 +7,7 @@
 <?import java.net.URL?>
 
 <BorderPane
+        fx:id="root"
         prefHeight="700.0"
         prefWidth="1100.0"
         xmlns="http://javafx.com/javafx/17.0.12"
@@ -176,7 +177,8 @@
                             <children>
                                 <Label text="Full Name"
                                        styleClass="auth-field-label"/>
-                                <TextField promptText="Enter your full name"
+                                <TextField fx:id="nameField"
+                                           promptText="Enter your full name"
                                            styleClass="auth-input"/>
                             </children>
                         </VBox>
@@ -186,7 +188,8 @@
                             <children>
                                 <Label text="Email address"
                                        styleClass="auth-field-label"/>
-                                <TextField promptText="Enter your email"
+                                <TextField fx:id="emailField"
+                                           promptText="Enter your email"
                                            styleClass="auth-input"/>
                             </children>
                         </VBox>
@@ -196,7 +199,8 @@
                             <children>
                                 <Label text="Password"
                                        styleClass="auth-field-label"/>
-                                <PasswordField promptText="Create a password"
+                                <PasswordField fx:id="passwordField"
+                                               promptText="Create a password"
                                                styleClass="auth-input"/>
                             </children>
                         </VBox>
@@ -206,7 +210,8 @@
                             <children>
                                 <Label text="Confirm password"
                                        styleClass="auth-field-label"/>
-                                <PasswordField promptText="Confirm your password"
+                                <PasswordField fx:id="confirmPasswordField"
+                                               promptText="Confirm your password"
                                                styleClass="auth-input"/>
                             </children>
                         </VBox>
@@ -240,6 +245,7 @@
 
                         <!-- Create account button -->
                         <Button text="Create account"
+                                onAction="#onRegister"
                                 maxWidth="Infinity"
                                 styleClass="auth-primary-button"/>
 
@@ -251,7 +257,9 @@
                     <children>
                         <Label text="Already have an account?"
                                styleClass="auth-bottom-text"/>
-                        <Hyperlink text="Log in"
+                        <Hyperlink fx:id="loginLink"
+                                   onAction="#onOpenLogin"
+                                   text="Log in"
                                    styleClass="auth-bottom-link"/>
                     </children>
                 </HBox>

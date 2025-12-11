@@ -52,13 +52,14 @@
                         <Insets bottom="16" left="16" right="16" top="16" />
                     </padding>
                     <children>
-                        <ToggleButton styleClass="sidebar-nav-button" text="Dashboard" />
+                        <ToggleButton styleClass="sidebar-nav-button" text="Dashboard" onAction="#onNavigateDashboard" />
                         <ToggleButton selected="true"
-                                      styleClass="sidebar-nav-button,sidebar-nav-button--active"
-                                      text="Library" />
-                        <ToggleButton styleClass="sidebar-nav-button" text="Currently Reading" />
-                        <ToggleButton styleClass="sidebar-nav-button" text="Statistics" />
-                        <ToggleButton styleClass="sidebar-nav-button" text="Settings" />
+                                      styleClass="sidebar-nav-button sidebar-nav-button--active"
+                                      text="Library"
+                                      onAction="#onNavigateLibrary" />
+                        <ToggleButton styleClass="sidebar-nav-button" text="Currently Reading" onAction="#onNavigateCurrentlyReading" />
+                        <ToggleButton styleClass="sidebar-nav-button" text="Statistics" onAction="#onNavigateStatistics" />
+                        <ToggleButton styleClass="sidebar-nav-button" text="Settings" onAction="#onNavigateSettings" />
                     </children>
                 </VBox>
 
@@ -128,7 +129,9 @@
                                     <children>
 
                                         <!-- Search field -->
-                                        <TextField prefWidth="260.0"
+                                        <TextField fx:id="searchField"
+                                                   onAction="#onSearchChanged"
+                                                   prefWidth="260.0"
                                                    promptText="Search by title, author, or tag..."
                                                    styleClass="header-search-field" />
 

@@ -48,11 +48,11 @@
                         <Insets bottom="16" left="16" right="16" top="16" />
                     </padding>
                         <children>
-                            <ToggleButton selected="true" styleClass="sidebar-nav-button,sidebar-nav-button--active" text="Dashboard" />
-                            <ToggleButton styleClass="sidebar-nav-button" text="Library" />
-                            <ToggleButton styleClass="sidebar-nav-button" text="Currently Reading" />
-                            <ToggleButton styleClass="sidebar-nav-button" text="Statistics" />
-                            <ToggleButton styleClass="sidebar-nav-button" text="Settings" />
+                            <ToggleButton selected="true" styleClass="sidebar-nav-button sidebar-nav-button--active" text="Dashboard" onAction="#onNavigateDashboard" />
+                            <ToggleButton styleClass="sidebar-nav-button" text="Library" onAction="#onNavigateLibrary" />
+                            <ToggleButton styleClass="sidebar-nav-button" text="Currently Reading" onAction="#onNavigateCurrentlyReading" />
+                            <ToggleButton styleClass="sidebar-nav-button" text="Statistics" onAction="#onNavigateStatistics" />
+                            <ToggleButton styleClass="sidebar-nav-button" text="Settings" onAction="#onNavigateSettings" />
                         </children>
                 </VBox>
 

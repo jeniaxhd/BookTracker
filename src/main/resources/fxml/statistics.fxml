@@ -57,15 +57,20 @@
                     </padding>
                     <children>
                         <ToggleButton text="Dashboard"
+                                      onAction="#onNavigateDashboard"
                                       styleClass="sidebar-nav-button"/>
                         <ToggleButton text="Library"
+                                      onAction="#onNavigateLibrary"
                                       styleClass="sidebar-nav-button"/>
                         <ToggleButton text="Currently Reading"
+                                      onAction="#onNavigateCurrentlyReading"
                                       styleClass="sidebar-nav-button"/>
                         <ToggleButton text="Statistics"
                                       selected="true"
-                                      styleClass="sidebar-nav-button"/>
+                                      onAction="#onNavigateStatistics"
+                                      styleClass="sidebar-nav-button sidebar-nav-button--active"/>
                         <ToggleButton text="Settings"
+                                      onAction="#onNavigateSettings"
                                       styleClass="sidebar-nav-button"/>
                     </children>
                 </VBox>
