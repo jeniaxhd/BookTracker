@@ -5,6 +5,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
+<?import javafx.scene.image.ImageView?>
 
 <BorderPane
         fx:id="root"
@@ -50,21 +51,31 @@
                 <Separator/>
 
                 <!-- Navigation -->
-                <VBox spacing="6.0">
+                <VBox spacing="6.0" styleClass="sidebar-nav">
                     <padding>
                         <Insets top="16" right="16" bottom="16" left="16"/>
                     </padding>
                     <children>
-                        <ToggleButton text="Dashboard"
+                        <ToggleButton fx:id="dashboardNavButton"
+                                      text="Dashboard"
+                                      onAction="#onDashboardSelected"
                                       styleClass="sidebar-nav-button"/>
-                        <ToggleButton text="Library"
+                        <ToggleButton fx:id="libraryNavButton"
+                                      text="Library"
+                                      onAction="#onLibrarySelected"
                                       styleClass="sidebar-nav-button"/>
-                        <ToggleButton text="Currently Reading"
+                        <ToggleButton fx:id="currentlyReadingNavButton"
+                                      text="Currently Reading"
                                       selected="true"
-                                      styleClass="sidebar-nav-button sidebar-nav-button--active"/>
-                        <ToggleButton text="Statistics"
+                                      onAction="#onCurrentlyReadingSelected"
+                                      styleClass="sidebar-nav-button,sidebar-nav-button--active"/>
+                        <ToggleButton fx:id="statisticsNavButton"
+                                      text="Statistics"
+                                      onAction="#onStatisticsSelected"
                                       styleClass="sidebar-nav-button"/>
-                        <ToggleButton text="Settings"
+                        <ToggleButton fx:id="settingsNavButton"
+                                      text="Settings"
+                                      onAction="#onSettingsSelected"
                                       styleClass="sidebar-nav-button"/>
                     </children>
                 </VBox>
@@ -72,12 +83,14 @@
                 <Pane VBox.vgrow="ALWAYS"/>
 
                 <!-- User profile -->
-                <VBox>
+                <VBox styleClass="sidebar-user">
                     <padding>
                         <Insets top="8" right="16" bottom="24" left="16"/>
                     </padding>
                     <children>
-                        <Button maxWidth="Infinity"
+                        <Button fx:id="userProfileButton"
+                                maxWidth="Infinity"
+                                onAction="#onUserProfile"
                                 styleClass="sidebar-user-button">
                             <graphic>
                                 <HBox alignment="CENTER_LEFT" spacing="10.0">
@@ -91,7 +104,8 @@
                                         </StackPane>
                                         <VBox spacing="2.0">
                                             <children>
-                                                <Label text="Sarah Chen"
+                                                <Label fx:id="userNameLabel"
+                                                       text="Sarah Chen"
                                                        styleClass="sidebar-user-name"/>
                                                 <Label text="View profile"
                                                        styleClass="sidebar-user-subtitle"/>
@@ -110,7 +124,7 @@
 
     <!-- ========== MAIN AREA ========== -->
     <center>
-        <VBox spacing="0.0" BorderPane.alignment="CENTER">
+        <VBox BorderPane.alignment="CENTER">
             <children>
 
                 <!-- ===== HEADER ===== -->
@@ -126,7 +140,8 @@
                                 <!-- Title + subtitle -->
                                 <VBox spacing="4.0">
                                     <children>
-                                        <Label text="Currently Reading"
+                                        <Label fx:id="headerTitleLabel"
+                                               text="Currently Reading"
                                                styleClass="header-title"/>
                                         <Label text="Continue your active books and log your latest reading sessions."
                                                wrapText="true"
@@ -140,25 +155,41 @@
                                 <HBox alignment="CENTER_RIGHT" spacing="8.0">
                                     <children>
 
-                                        <Button styleClass="header-icon-button">
+                                        <Button fx:id="searchButton"
+                                                onAction="#onSearch"
+                                                styleClass="header-icon-button">
                                             <graphic>
-                                                <Label text="🔍"/>
+                                                <ImageView fx:id="searchIcon"
+                                                           fitWidth="18.0"
+                                                           fitHeight="18.0"
+                                                           preserveRatio="true"/>
                                             </graphic>
                                         </Button>
 
-                                        <Button styleClass="header-icon-button">
+                                        <Button fx:id="settingsButton"
+                                                onAction="#onSettings"
+                                                styleClass="header-icon-button">
                                             <graphic>
-                                                <Label text="⚙"/>
+                                                <ImageView fx:id="settingsIcon"
+                                                           fitWidth="18.0"
+                                                           fitHeight="18.0"
+                                                           preserveRatio="true"/>
                                             </graphic>
                                         </Button>
 
-                                        <Button styleClass="header-icon-button">
+                                        <ToggleButton fx:id="themeToggle"
+                                                      onAction="#onToggleTheme"
+                                                      styleClass="header-icon-button">
                                             <graphic>
-                                                <Label text="☀"/>
+                                                <ImageView fx:id="themeIcon"
+                                                           fitWidth="18.0"
+                                                           fitHeight="18.0"
+                                                           preserveRatio="true"/>
                                             </graphic>
-                                        </Button>
+                                        </ToggleButton>
 
-                                        <Button text="Start session"
+                                        <Button fx:id="startSessionButton"
+                                                text="Start session"
                                                 styleClass="header-primary-button">
                                             <graphic>
                                                 <Label text="+"
@@ -174,9 +205,12 @@
                 </VBox>
 
                 <!-- ===== SCROLLABLE CONTENT ===== -->
-                <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+                <ScrollPane fx:id="contentScrollPane"
+                            fitToWidth="true"
+                            VBox.vgrow="ALWAYS">
                     <content>
-                        <VBox spacing="24.0">
+                        <VBox fx:id="contentRoot"
+                              spacing="24.0">
                             <padding>
                                 <Insets top="24" right="32" bottom="32" left="32"/>
                             </padding>
@@ -189,16 +223,14 @@
                                         <Label text="Active books"
                                                styleClass="section-title"/>
 
-                                        <!-- Small subtitle -->
                                         <Label text="Showing books you're currently reading."
                                                styleClass="header-subtitle"/>
 
-                                        <!-- Filter chips row -->
                                         <HBox spacing="8.0">
                                             <children>
                                                 <ToggleButton text="All"
                                                               selected="true"
-                                                              styleClass="filter-chip filter-chip--active"/>
+                                                              styleClass="filter-chip,filter-chip--active"/>
                                                 <ToggleButton text="High priority"
                                                               styleClass="filter-chip"/>
                                                 <ToggleButton text="Finishing soon"
@@ -239,7 +271,6 @@
                                                                     <Label text="Productivity"
                                                                            styleClass="book-category-pill"/>
 
-                                                                    <!-- progress -->
                                                                     <VBox spacing="4.0">
                                                                         <children>
                                                                             <ProgressBar progress="0.58"
@@ -257,7 +288,6 @@
                                                                         </children>
                                                                     </VBox>
 
-                                                                    <!-- status pills -->
                                                                     <HBox spacing="8.0">
                                                                         <children>
                                                                             <Label text="In Progress"
@@ -267,13 +297,13 @@
                                                                         </children>
                                                                     </HBox>
 
-                                                                    <!-- actions -->
                                                                     <HBox spacing="8.0">
                                                                         <children>
                                                                             <Button text="Continue"
                                                                                     styleClass="header-primary-button"/>
                                                                             <Hyperlink text="View details"
-                                                                                       styleClass="login-bottom-link"/>
+                                                                                       styleClass="book-link"/>
+
                                                                         </children>
                                                                     </HBox>
 
@@ -336,7 +366,8 @@
                                                                             <Button text="Continue"
                                                                                     styleClass="header-primary-button"/>
                                                                             <Hyperlink text="View details"
-                                                                                       styleClass="login-bottom-link"/>
+                                                                                       styleClass="book-link"/>
+
                                                                         </children>
                                                                     </HBox>
 
@@ -347,7 +378,7 @@
                                                 </children>
                                             </VBox>
 
-                                            <!-- Placeholder / example extra card -->
+                                            <!-- Placeholder -->
                                             <VBox spacing="12.0"
                                                   styleClass="book-card-placeholder"
                                                   alignment="CENTER">
@@ -426,7 +457,7 @@
                                                             <Rectangle width="12.0" height="12.0"
                                                                        arcWidth="6.0" arcHeight="6.0"
                                                                        styleClass="stat-icon-gold"/>
-                                                            <!-- lighter dots (placeholder) -->
+                                                            <!-- empty dots -->
                                                             <Rectangle width="12.0" height="12.0"
                                                                        arcWidth="6.0" arcHeight="6.0"/>
                                                             <Rectangle width="12.0" height="12.0"

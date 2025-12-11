@@ -26,12 +26,12 @@ public class test {
         book.setYear(2025);
         book.setDescription("Xyeta");
         book.setAverageRating(0.0);
-        book.setGenre(horror);
+        //book.setGenre(horror);
         book.setPages(666);
-        book.setLanguage("Slovak");
+        //book.setLanguage("Slovak");
 
         Genre genre = new Genre(1L, "Fantasy");
-        book.setGenre(genre);
+        //book.setGenre(genre);
 
         bookDao.add(book);
         authorDao.add(krajci);

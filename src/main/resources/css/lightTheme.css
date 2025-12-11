@@ -12,8 +12,6 @@
     -fx-border-width: 0 1 0 0;
 }
 
-.sidebar-header { }
-
 .sidebar-logo-circle {
     -fx-background-radius: 16;
     -fx-background-color: #C08552;
@@ -130,11 +128,14 @@
 
 .header-primary-button {
     -fx-background-radius: 12;
-    -fx-background-color: #C08552;
+    -fx-background-color: #D49A5A;
     -fx-text-fill: white;
     -fx-padding: 0 16 0 16;
     -fx-min-height: 40;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
 }
+
 
 .header-primary-button:hover {
     -fx-background-color: #B07644;
@@ -232,10 +233,11 @@
 }
 
 .queue-title {
-    -fx-text-fill: #2C2C2E;
+    -fx-text-fill: #3b2f28;
     -fx-font-size: 13px;
-    -fx-font-weight: 600;
+    -fx-font-weight: bold;
 }
+
 
 .queue-pill {
     -fx-background-radius: 999;
@@ -312,11 +314,6 @@
 .stat-subtitle {
     -fx-text-fill: #AEAEB2;
     -fx-font-size: 10px;
-}
-
-/* extra hook for library right-side cards, if needed */
-.library-side-card {
-    /* you can tweak padding/spacing later if you want */
 }
 
 /* ========= SHARED FORM ELEMENTS ========= */
@@ -478,8 +475,7 @@
     -fx-font-size: 11px;
 }
 
-.library-book-genre,
-.book-category-pill {
+.library-book-genre {
     -fx-text-fill: #AEAEB2;
     -fx-font-size: 10px;
 }
@@ -537,6 +533,7 @@
 .tag-pill:hover {
     -fx-background-color: #EDE3D9;
 }
+
 /* ===== STATISTICS SCREEN SPECIFICS ===== */
 
 /* Main big chart card (already uses .stat-card) – optional subtle tweak */
@@ -585,4 +582,754 @@
     -fx-background-radius: 16;
     -fx-border-color: #E8E6E3;
     -fx-border-radius: 16;
+}
+
+/* ===== BOOK DETAILS SPECIFIC ===== */
+
+.book-breadcrumb {
+    -fx-text-fill: #AEAEB2;
+    -fx-font-size: 11px;
+}
+
+/* Slightly larger cover for details page */
+.book-details-cover {
+    -fx-background-color: #E8E6E3;
+    -fx-background-radius: 16;
+}
+
+/* Metadata labels / values */
+.book-meta-label {
+    -fx-text-fill: #6C6C70;
+    -fx-font-size: 11px;
+}
+
+.book-meta-value {
+    -fx-text-fill: #2C2C2E;
+    -fx-font-size: 12px;
+    -fx-font-weight: 500;
+}
+
+/* Category pill on details page */
+.book-category-pill {
+    -fx-background-color: #F0EBE5;
+    -fx-text-fill: #C08552;
+    -fx-background-radius: 999;
+    -fx-padding: 2 10 2 10;
+    -fx-font-size: 10px;
+}
+
+/* Description text */
+.book-description-text {
+    -fx-text-fill: #4A4A4F;
+    -fx-font-size: 12px;
+}
+
+/* Notes textarea (read only look) */
+.book-notes-area {
+    -fx-background-color: #F7F5F2;
+    -fx-background-radius: 10;
+    -fx-border-color: #E8E6E3;
+    -fx-border-radius: 10;
+    -fx-padding: 8 10 8 10;
+    -fx-font-size: 12px;
+    -fx-text-fill: #2C2C2E;
+}
+
+.book-notes-area:focused {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #C08552;
+}
+
+/* Ghost button for small secondary actions */
+.ghost-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #6C6C70;
+    -fx-font-size: 11px;
+    -fx-padding: 4 8 4 8;
+}
+
+.ghost-button:hover {
+    -fx-text-fill: #C08552;
+}
+
+/* Danger text button (remove from library) */
+.danger-text-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #D4183D;
+    -fx-font-size: 12px;
+    -fx-padding: 6 8 6 8;
+}
+
+.danger-text-button:hover {
+    -fx-text-fill: #A1122E;
+}
+
+/* Optional spacing tweaks for summary card */
+.book-summary-card {
+    -fx-spacing: 6;
+}
+
+/* Text secondary button in headers / modals (Edit, Close etc.) */
+.header-secondary-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #6C6C70;
+    -fx-font-size: 13px;
+    -fx-font-weight: 500;
+    -fx-padding: 8 16 8 16;
+    -fx-background-radius: 999;
+    -fx-border-color: transparent;
+}
+
+.header-secondary-button:hover {
+    -fx-background-color: #F7F5F2;
+}
+
+/* ===== Live reading session bar ===== */
+
+.session-bar {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 20;
+    -fx-padding: 10 18 10 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 12, 0, 0, 4);
+}
+
+/* Book cover placeholder */
+.session-book-cover {
+    -fx-background-color: #E5C9AF; /* warm muted */
+    -fx-background-radius: 12;
+}
+
+/* Title / subtitle */
+.session-book-title {
+    -fx-text-fill: #2C2C2E;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+}
+
+.session-book-subtitle {
+    -fx-text-fill: #6C6C70;
+    -fx-font-size: 11px;
+}
+
+/* Status pill */
+.session-status-pill {
+    -fx-background-color: #F7E3DD;
+    -fx-text-fill: #C08552;
+    -fx-background-radius: 999;
+    -fx-padding: 2 8 2 8;
+    -fx-font-size: 10px;
+}
+
+/* Timer */
+.session-timer-text {
+    -fx-text-fill: #2C2C2E;
+    -fx-font-size: 18px;
+    -fx-font-weight: 600;
+}
+
+.session-timer-caption {
+    -fx-text-fill: #6C6C70;
+    -fx-font-size: 11px;
+}
+
+/* Small vertical divider */
+.session-divider {
+    -fx-background-color: #E8E6E3;
+}
+
+/* Main play/pause button */
+.session-control-main {
+    -fx-background-radius: 999;
+    -fx-background-color: #C08552;
+    -fx-text-fill: white;
+    -fx-min-width: 40;
+    -fx-min-height: 40;
+    -fx-max-width: 40;
+    -fx-max-height: 40;
+    -fx-font-size: 16px;
+}
+
+.session-control-main:hover {
+    -fx-background-color: #B07644;
+}
+
+/* Stop button */
+.session-control-secondary {
+    -fx-background-radius: 999;
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E2E2E6;
+    -fx-border-radius: 999;
+    -fx-min-width: 36;
+    -fx-min-height: 36;
+    -fx-max-width: 36;
+    -fx-max-height: 36;
+    -fx-text-fill: #6C6C70;
+}
+
+.session-control-secondary:hover {
+    -fx-background-color: #F7F5F2;
+}
+
+/* More button */
+.session-control-more {
+    -fx-background-radius: 999;
+    -fx-background-color: transparent;
+    -fx-min-width: 32;
+    -fx-min-height: 32;
+    -fx-max-width: 32;
+    -fx-max-height: 32;
+    -fx-text-fill: #6C6C70;
+}
+
+.session-control-more:hover {
+    -fx-background-color: #F7F5F2;
+}
+
+/* ===== End Reading Session modal ===== */
+
+.session-end-header {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E8E6E3;
+    -fx-border-width: 0 0 1 0;
+}
+
+.session-end-title {
+    -fx-text-fill: #2C2C2E;
+    -fx-font-size: 20px;
+    -fx-font-weight: 600;
+}
+
+.session-end-subtitle {
+    -fx-text-fill: #6C6C70;
+    -fx-font-size: 12px;
+}
+
+.session-end-discard-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #6C6C70;
+    -fx-font-size: 12px;
+}
+
+.session-end-discard-button:hover {
+    -fx-text-fill: #C08552;
+}
+
+/* Book card on top */
+.session-end-book-card {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 16;
+    -fx-padding: 14;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.04), 8, 0, 0, 3);
+}
+
+.session-end-cover-placeholder {
+    -fx-background-radius: 14;
+    -fx-background-color: linear-gradient(
+            from 0% 0% to 100% 100%,
+            #9BB5CE 0%,
+            #C08552 100%
+    );
+}
+
+.session-end-book-title {
+    -fx-text-fill: #2C2C2E;
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+}
+
+.session-end-book-meta {
+    -fx-text-fill: #6C6C70;
+    -fx-font-size: 11px;
+}
+
+/* Sections and fields */
+.session-end-section-title {
+    -fx-text-fill: #2C2C2E;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+}
+
+.session-end-field-label {
+    -fx-text-fill: #6C6C70;
+    -fx-font-size: 11px;
+    -fx-font-weight: 500;
+}
+
+.session-end-helper-text {
+    -fx-text-fill: #AEAEB2;
+    -fx-font-size: 11px;
+}
+
+/* Pages read pill */
+.session-end-pages-pill {
+    -fx-background-color: #F3E4D6;
+    -fx-text-fill: #C08552;
+    -fx-background-radius: 999;
+    -fx-padding: 2 8 2 8;
+    -fx-font-size: 11px;
+}
+
+/* Mood pills */
+.session-feel-pill {
+    -fx-background-radius: 999;
+    -fx-background-color: #F3F3F5;
+    -fx-text-fill: #4A4A4F;
+    -fx-padding: 4 12 4 12;
+    -fx-font-size: 11px;
+    -fx-border-color: transparent;
+}
+
+.session-feel-pill:hover {
+    -fx-background-color: #EDE8E3;
+}
+
+.session-feel-pill--active,
+.session-feel-pill:selected {
+    -fx-background-color: #C08552;
+    -fx-text-fill: white;
+}
+
+/* Bottom buttons */
+.session-end-cancel-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #6C6C70;
+    -fx-font-size: 13px;
+}
+
+.session-end-cancel-button:hover {
+    -fx-text-fill: #C08552;
+}
+
+/* ===== SETTINGS SCREEN ===== */
+
+.settings-avatar-circle {
+    -fx-background-radius: 999;
+    -fx-background-color: linear-gradient(
+            from 0% 0% to 100% 100%,
+            #D4A574 0%,
+            #C08552 100%
+    );
+    -fx-alignment: center;
+}
+
+.settings-avatar-text {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.settings-name {
+    -fx-text-fill: #2C2C2E;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+}
+
+.settings-pill-label {
+    -fx-background-color: #F3E4D6;
+    -fx-background-radius: 999;
+    -fx-padding: 2 8 2 8;
+    -fx-text-fill: #C08552;
+    -fx-font-size: 10px;
+}
+
+.settings-label {
+    -fx-text-fill: #4A4A4F;
+    -fx-font-size: 12px;
+    -fx-font-weight: 500;
+}
+
+.settings-small-label {
+    -fx-text-fill: #6C6C70;
+    -fx-font-size: 11px;
+}
+
+.settings-helper {
+    -fx-text-fill: #AEAEB2;
+    -fx-font-size: 10px;
+}
+
+.settings-email-box {
+    -fx-background-color: #F3F3F5;
+    -fx-background-radius: 10;
+    -fx-padding: 8 12 8 12;
+    -fx-text-fill: #2C2C2E;
+    -fx-font-size: 12px;
+}
+
+.settings-secondary-button {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 10;
+    -fx-border-color: #E8E6E3;
+    -fx-border-radius: 10;
+    -fx-text-fill: #2C2C2E;
+    -fx-font-size: 12px;
+}
+
+.settings-secondary-button:hover {
+    -fx-background-color: #F7F5F2;
+}
+
+/* number-like small fields */
+.settings-number-field {
+    -fx-background-color: #F3F3F5;
+    -fx-background-radius: 8;
+    -fx-border-color: #E8E6E3;
+    -fx-border-radius: 8;
+    -fx-padding: 4 8 4 8;
+    -fx-font-size: 12px;
+}
+
+/* segmented pills (tabs-like) */
+.segmented-pill {
+    -fx-background-color: transparent;
+    -fx-text-fill: #6C6C70;
+    -fx-padding: 6 16 6 16;
+    -fx-background-radius: 999;
+    -fx-border-radius: 999;
+    -fx-border-color: #E8E6E3;
+    -fx-border-width: 1;
+    -fx-font-size: 11px;
+    -fx-cursor: hand;
+}
+
+.segmented-pill:hover {
+    -fx-background-color: #F7F5F2;
+}
+
+.segmented-pill--active,
+.segmented-pill:selected {
+    -fx-background-color: #C08552;
+    -fx-text-fill: white;
+    -fx-border-color: transparent;
+}
+/* ===== STAT CARDS (light theme, compact) ===== */
+
+.stat-card {
+    -fx-background-color: #fdfaf7;
+    -fx-background-radius: 14;
+    -fx-border-color: #f0e3d8;
+    -fx-border-radius: 14;
+    -fx-padding: 12 14 12 14; /* smaller padding */
+}
+
+/* rounded square behind the icon */
+.stat-icon {
+    -fx-background-radius: 14;
+    -fx-alignment: center;
+    -fx-pref-width: 40;
+    -fx-pref-height: 40;      /* smaller badge size */
+}
+
+/* warm gold badge */
+.stat-icon-gold {
+    -fx-background-color: linear-gradient(
+            from 0% 0% to 100% 100%,
+            #d9a15f 0%,
+            #c47c3d 100%
+    );
+}
+
+/* soft blue badge */
+.stat-icon-blue {
+    -fx-background-color: linear-gradient(
+            from 0% 0% to 100% 100%,
+            #9bb5ce 0%,
+            #7b9bb8 100%
+    );
+}
+
+/* soft green badge */
+.stat-icon-green {
+    -fx-background-color: linear-gradient(
+            from 0% 0% to 100% 100%,
+            #8bc58a 0%,
+            #6ca66b 100%
+    );
+}
+
+/* soft pink badge */
+.stat-icon-pink {
+    -fx-background-color: linear-gradient(
+            from 0% 0% to 100% 100%,
+            #ce7fae 0%,
+            #b86396 100%
+    );
+}
+
+/* emoji/icon inside the badge */
+.stat-icon-emoji {
+    -fx-text-fill: white;
+    -fx-font-size: 18px;  /* smaller icon */
+}
+
+.stat-label {
+    -fx-text-fill: #8c7a66;
+    -fx-font-size: 11px;
+}
+
+.stat-value {
+    -fx-text-fill: #3b2f28;
+    -fx-font-size: 16px;  /* slightly smaller */
+    -fx-font-weight: 600;
+}
+
+.stat-subtitle {
+    -fx-text-fill: #b3a292;
+    -fx-font-size: 10px;
+}
+.library-side-wrapper {
+    -fx-background-color: #ffff;
+    -fx-background-radius: 18;
+    -fx-padding: 16;
+}
+
+.book-link {
+    -fx-text-fill: #A0A0B0;
+    -fx-underline: false;
+    -fx-font-size: 11px;
+}
+
+.book-link:hover {
+    -fx-text-fill: #C4864B;   /* твій теплий акцент */
+    -fx-underline: true;
+}
+
+.book-link:visited {
+    -fx-text-fill: #8C8C97;
+}
+
+/* ===== SIDEBAR LAYOUT BLOCKS ===== */
+
+.sidebar-header {
+    /* top block with logo */
+    -fx-background-color: transparent;
+    -fx-padding: 24 24 16 24;
+}
+
+.sidebar-nav {
+    /* block with navigation buttons */
+    -fx-background-color: transparent;
+    -fx-spacing: 6;
+    -fx-padding: 16 16 16 16;
+}
+
+.sidebar-user {
+    /* bottom block with user info */
+    -fx-background-color: transparent;
+    -fx-padding: 8 16 24 16;
+    -fx-spacing: 8;
+    -fx-border-color: rgba(0, 0, 0, 0.05);
+    -fx-border-width: 1 0 0 0; /* subtle top line */
+}
+/* ===== HEADER INNER WRAPPER ===== */
+.header-inner {
+    /* Visual helper for the header row, can stay minimal */
+    -fx-spacing: 16px;
+}
+
+/* ===== SETTINGS COMBOBOX (light) ===== */
+.settings-combobox {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 10;
+    -fx-border-color: #e4d6c6;
+    -fx-border-radius: 10;
+    -fx-padding: 4 12 4 12;
+    -fx-font-size: 12px;
+    -fx-text-fill: #3b2e26;
+}
+
+.settings-combobox:focused {
+    -fx-border-color: #d79a52;
+    -fx-effect: dropshadow(gaussian, rgba(215,154,82,0.35), 6, 0, 0, 0);
+}
+
+.settings-combobox > .arrow-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.settings-combobox > .arrow-button > .arrow {
+    -fx-background-color: #9b8470;
+}
+
+/* ===== AUTH ERROR LABEL (light) ===== */
+.auth-error-label {
+    -fx-text-fill: #d64545;
+    -fx-font-size: 11px;
+    -fx-padding: 2 0 0 0;
+}
+/* ========= STATISTICS: MAIN CARD ========= */
+
+/* Make the main stats card a bit roomier */
+.stat-card.stats-main {
+    -fx-padding: 20 24 20 24;
+}
+
+/* ===== READING STREAK (light theme) ===== */
+
+.streak-day {
+    -fx-fill: transparent;
+    -fx-stroke: #e2d4c5;      /* soft border */
+    -fx-stroke-width: 1.2;
+}
+
+.streak-day--active {
+    -fx-fill: #f3c89a;        /* warm “gold” */
+    -fx-stroke: #f3c89a;
+}
+
+.streak-day--empty {
+    -fx-fill: transparent;
+    -fx-stroke: #e2d4c5;
+    -fx-opacity: 0.45;
+}
+
+/* ===== AddBook modal (light) ===== */
+
+.addbook-window {
+    /* background behind cards */
+    -fx-background-color: #F7F5F2;
+}
+
+/* top header of modal */
+.addbook-header {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E8E6E3;
+    -fx-border-width: 0 0 1 0;
+}
+
+/* bottom button bar */
+.addbook-footer {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E8E6E3;
+    -fx-border-width: 1 0 0 0;
+}
+
+/* keep cards same style as stat-card, just fix height a bit */
+.addbook-cover-card {
+    -fx-pref-height: 360;
+}
+
+.addbook-details-card {
+    -fx-pref-height: 360;
+}
+
+/* upload area inside cover card: no aggressive yellow, тільки м’яка зона */
+.upload-dropzone {
+    -fx-background-color: #FBF7F2;   /* трохи світліше за фон */
+    -fx-background-radius: 16;
+    -fx-border-color: #E8E6E3;       /* дуже делікатний бордер */
+    -fx-border-radius: 16;
+    -fx-border-width: 1;
+    -fx-padding: 24;
+}
+
+/* close "X" button in header */
+.addbook-close-button {
+    -fx-min-width: 32;
+    -fx-min-height: 32;
+    -fx-max-width: 32;
+    -fx-max-height: 32;
+    -fx-background-color: transparent;
+    -fx-text-fill: #6C6C70;
+}
+
+.addbook-close-button:hover {
+    -fx-background-color: #F3F3F5;
+}
+
+/* validation error highlight for inputs */
+.field-error {
+    -fx-border-color: #d64545;
+    -fx-border-width: 1.2;
+    -fx-border-radius: 10;
+    -fx-background-color: #FFF8F8; /* дуже легкий рожевий фон */
+}
+/* ===== BOOK DETAILS MODAL – LIGHT ===== */
+
+.book-detail-root {
+    -fx-background-color: #F7F5F2;
+}
+
+.book-detail-header {
+    -fx-background-color: #FFFFFF;
+}
+
+/* main cover card look */
+.book-detail-cover {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 18;
+    -fx-border-color: #E8E6E3;
+    -fx-border-radius: 18;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.04), 8, 0, 0, 4);
+}
+
+.book-detail-cover-placeholder {
+    -fx-text-fill: #AEAEB2;
+    -fx-font-size: 12px;
+}
+
+/* small meta cards under cover (year / language / pages) */
+.book-meta-card {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 12;
+    -fx-border-color: #E8E6E3;
+    -fx-border-radius: 12;
+    -fx-padding: 8 10 8 10;
+}
+
+.book-meta-label {
+    -fx-text-fill: #6C6C70;
+    -fx-font-size: 11px;
+}
+
+.book-meta-value {
+    -fx-text-fill: #2C2C2E;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+}
+
+/* status pill under cover */
+.status-pill--in-progress {
+    -fx-background-color: #F7E3DD;
+    -fx-text-fill: #C08552;
+    -fx-background-radius: 999;
+    -fx-padding: 2 10 2 10;
+    -fx-font-size: 10px;
+}
+
+/* main text blocks */
+.book-detail-body-text {
+    -fx-text-fill: #4A4A4F;
+    -fx-font-size: 12px;
+}
+
+/* author avatar + text */
+.author-avatar {
+    -fx-background-radius: 999;
+    -fx-background-color: linear-gradient(
+            from 0% 0% to 100% 100%,
+            #9BB5CE 0%,
+            #C08552 100%
+    );
+    -fx-alignment: center;
+}
+
+.author-avatar-initials {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+}
+
+.author-name {
+    -fx-text-fill: #2C2C2E;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+}
+
+.author-country-pill {
+    -fx-background-color: #F0EBE5;
+    -fx-background-radius: 999;
+    -fx-padding: 2 10 2 10;
+    -fx-text-fill: #6C6C70;
+    -fx-font-size: 10px;
 }

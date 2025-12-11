@@ -1,87 +1,105 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.*?>
+<?import java.net.URL?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 
-<BorderPane fx:id="root" prefHeight="800.0" prefWidth="1200.0" styleClass="dashboard-root" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.upjs.paz.ui.AddBookController">
+<BorderPane fx:id="root"
+            prefHeight="800.0"
+            prefWidth="1200.0"
+            xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="sk.upjs.paz.ui.AddBookController"
+            styleClass="dashboard-root">
 
-    <!-- одразу підключаємо світлу тему -->
     <stylesheets>
-        <URL value="@../css/lightTheme.css" />
+        <URL value="@../css/lightTheme.css"/>
     </stylesheets>
 
     <!-- ============ SIDEBAR ============ -->
     <left>
-        <VBox prefWidth="240.0" styleClass="sidebar" BorderPane.alignment="CENTER">
+        <VBox prefWidth="240.0"
+              styleClass="sidebar"
+              BorderPane.alignment="CENTER">
             <children>
 
                 <!-- Logo -->
-                <VBox spacing="10.0" styleClass="sidebar-header">
+                <VBox spacing="10.0"
+                      styleClass="sidebar-header">
                     <padding>
-                        <Insets bottom="16" left="24" right="24" top="24" />
+                        <Insets top="24" right="24" bottom="16" left="24"/>
                     </padding>
                     <children>
-                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                        <HBox alignment="CENTER_LEFT"
+                              spacing="10.0">
                             <children>
-                                <StackPane prefHeight="32.0" prefWidth="32.0" styleClass="sidebar-logo-circle">
+                                <StackPane prefHeight="32.0"
+                                           prefWidth="32.0"
+                                           styleClass="sidebar-logo-circle">
                                     <children>
-                                        <Label styleClass="sidebar-logo-letter" text="B" />
+                                        <Label text="B"
+                                               styleClass="sidebar-logo-letter"/>
                                     </children>
                                 </StackPane>
-                                <Label styleClass="sidebar-logo-text" text="BookTrack" />
+                                <Label text="BookTrack"
+                                       styleClass="sidebar-logo-text"/>
                             </children>
                         </HBox>
                     </children>
                 </VBox>
 
-                <Separator />
+                <Separator/>
 
-                <!-- Навігація (Library активна) -->
-                <VBox spacing="6.0" styleClass="sidebar-nav">
+                <!-- Navigation -->
+                <VBox spacing="6.0"
+                      styleClass="sidebar-nav">
                     <children>
                         <ToggleButton text="Dashboard"
-                                      styleClass="sidebar-nav-button" />
-
+                                      styleClass="sidebar-nav-button"/>
                         <ToggleButton text="Library"
                                       selected="true"
-                                      styleClass="sidebar-nav-button,sidebar-nav-button-active" />
-
+                                      styleClass="sidebar-nav-button,sidebar-nav-button--active"/>
                         <ToggleButton text="Currently Reading"
-                                      styleClass="sidebar-nav-button" />
-
+                                      styleClass="sidebar-nav-button"/>
                         <ToggleButton text="Statistics"
-                                      styleClass="sidebar-nav-button" />
-
+                                      styleClass="sidebar-nav-button"/>
                         <ToggleButton text="Settings"
-                                      styleClass="sidebar-nav-button" />
+                                      styleClass="sidebar-nav-button"/>
                     </children>
                 </VBox>
 
-
-                <Pane VBox.vgrow="ALWAYS" />
+                <Pane VBox.vgrow="ALWAYS"/>
 
                 <!-- User profile -->
                 <VBox styleClass="sidebar-user">
                     <padding>
-                        <Insets bottom="24" left="16" right="16" top="8" />
+                        <Insets top="8" right="16" bottom="24" left="16"/>
                     </padding>
                     <children>
-                        <Button maxWidth="Infinity" styleClass="sidebar-user-button">
+                        <Button maxWidth="Infinity"
+                                styleClass="sidebar-user-button">
                             <graphic>
-                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                <HBox alignment="CENTER_LEFT"
+                                      spacing="10.0">
                                     <children>
-                                        <StackPane prefHeight="32.0" prefWidth="32.0" styleClass="sidebar-user-avatar">
+                                        <StackPane prefHeight="32.0"
+                                                   prefWidth="32.0"
+                                                   styleClass="sidebar-user-avatar">
                                             <children>
-                                                <Label styleClass="sidebar-user-initials" text="S" />
+                                                <Label text="S"
+                                                       styleClass="sidebar-user-initials"/>
                                             </children>
                                         </StackPane>
 
                                         <VBox spacing="2.0">
                                             <children>
-                                                <Label styleClass="sidebar-user-name" text="Stano Krajci" />
-                                                <Label styleClass="sidebar-user-subtitle" text="View profile" />
+                                                <Label text="Stano Krajci"
+                                                       styleClass="sidebar-user-name"/>
+                                                <Label text="View profile"
+                                                       styleClass="sidebar-user-subtitle"/>
                                             </children>
                                         </VBox>
                                     </children>
@@ -96,53 +114,90 @@
 
     <!-- ============ MAIN AREA ============ -->
     <center>
-        <VBox spacing="0.0" BorderPane.alignment="CENTER">
+        <VBox BorderPane.alignment="CENTER">
             <children>
 
                 <!-- HEADER -->
-                <VBox spacing="0.0" styleClass="header">
+                <VBox styleClass="header">
                     <children>
-                        <HBox alignment="CENTER_LEFT" spacing="16.0">
+                        <HBox alignment="CENTER_LEFT"
+                              spacing="16.0">
                             <padding>
-                                <Insets bottom="24" left="32" right="32" top="24" />
+                                <Insets top="24" right="32" bottom="24" left="32"/>
                             </padding>
 
-                            <!-- Title + subtitle -->
                             <children>
+                                <!-- Title + subtitle -->
                                 <VBox spacing="4.0">
                                     <children>
-                                        <Label styleClass="header-title" text="Add Book" />
-                                        <Label styleClass="header-subtitle" text="Add a new book to your library and set up its details." wrapText="true" />
+                                        <Label text="Add Book"
+                                               styleClass="header-title"/>
+                                        <Label text="Add a new book to your library and set up its details."
+                                               wrapText="true"
+                                               styleClass="header-subtitle"/>
                                     </children>
                                 </VBox>
 
-                                <Pane HBox.hgrow="ALWAYS" />
+                                <Pane HBox.hgrow="ALWAYS"/>
 
-                                <!-- Right actions -->
-                                <HBox alignment="CENTER_RIGHT" spacing="8.0">
+                                <!-- Header actions -->
+                                <HBox alignment="CENTER_RIGHT"
+                                      spacing="8.0">
                                     <children>
-                                        <Button styleClass="header-icon-button">
+
+                                        <!-- Search -->
+                                        <Button fx:id="searchButton"
+                                                onAction="#onSearch"
+                                                styleClass="header-icon-button">
                                             <graphic>
-                                                <Label text="🔍" />
+                                                <ImageView fx:id="searchIcon"
+                                                           fitWidth="18.0"
+                                                           fitHeight="18.0"
+                                                           preserveRatio="true"/>
                                             </graphic>
                                         </Button>
 
-                                        <StackPane>
-                                            <children>
-                                                <Button styleClass="header-icon-button">
-                                                    <graphic>
-                                                        <Label text="🔔" />
-                                                    </graphic>
-                                                </Button>
-                                                <Region maxHeight="8.0" maxWidth="8.0" minHeight="8.0" minWidth="8.0" prefHeight="8.0" prefWidth="8.0" styleClass="header-notification-dot" StackPane.alignment="TOP_RIGHT" />
-                                            </children>
-                                        </StackPane>
+                                        <!-- Notifications -->
+                                        <Button fx:id="notificationsButton"
+                                                onAction="#onNotifications"
+                                                styleClass="header-icon-button">
+                                            <graphic>
+                                                <StackPane>
+                                                    <children>
+                                                        <ImageView fx:id="notificationsIcon"
+                                                                   fitWidth="18.0"
+                                                                   fitHeight="18.0"
+                                                                   preserveRatio="true"/>
+                                                        <Rectangle arcHeight="8.0"
+                                                                   arcWidth="8.0"
+                                                                   height="8.0"
+                                                                   width="8.0"
+                                                                   translateX="-6"
+                                                                   translateY="6"
+                                                                   styleClass="header-notification-dot"
+                                                                   StackPane.alignment="TOP_RIGHT"/>
+                                                    </children>
+                                                </StackPane>
+                                            </graphic>
+                                        </Button>
 
-                                        <!-- theme toggle -->
-                                        <ToggleButton fx:id="themeToggle" onAction="#onToggleTheme" styleClass="header-icon-button" text="☀" />
+                                        <!-- Theme toggle -->
+                                        <ToggleButton fx:id="themeToggle"
+                                                      onAction="#onToggleTheme"
+                                                      styleClass="header-icon-button">
+                                            <graphic>
+                                                <ImageView fx:id="themeIcon"
+                                                           fitWidth="18.0"
+                                                           fitHeight="18.0"
+                                                           preserveRatio="true"/>
+                                            </graphic>
+                                        </ToggleButton>
 
-                                        <!-- primary button -->
-                                        <Button onAction="#onSaveBook" styleClass="header-primary-button" text="Save Book" />
+                                        <!-- Save book -->
+                                        <Button text="Save Book"
+                                                onAction="#onSaveBook"
+                                                styleClass="header-primary-button"/>
+
                                     </children>
                                 </HBox>
                             </children>
@@ -151,77 +206,104 @@
                 </VBox>
 
                 <!-- CONTENT -->
-                <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+                <ScrollPane fitToWidth="true"
+                            VBox.vgrow="ALWAYS">
                     <content>
                         <VBox spacing="24.0">
                             <padding>
-                                <Insets bottom="32" left="32" right="32" top="24" />
+                                <Insets top="24" right="32" bottom="32" left="32"/>
                             </padding>
                             <children>
 
-                                <!-- Дві основні карти: Cover + Details -->
+                                <!-- Cover card + details card -->
                                 <HBox spacing="24.0">
                                     <children>
 
-                                        <!-- LEFT: Cover & preview -->
-                                        <VBox prefWidth="360.0" spacing="16.0" styleClass="book-card">
+                                        <!-- LEFT: cover card -->
+                                        <VBox prefWidth="380.0"
+                                              spacing="16.0"
+                                              styleClass="stat-card,addbook-cover-card">
                                             <children>
-                                                <Label styleClass="section-title" text="Book cover &amp; preview" />
+                                                <Label text="Book cover &amp; preview"
+                                                       styleClass="section-title"/>
 
-                                                <!-- зона завантаження обкладинки -->
-                                                <VBox alignment="CENTER" spacing="8.0" styleClass="book-card-placeholder">
+                                                <!-- upload area -->
+                                                <VBox alignment="CENTER"
+                                                      spacing="10.0"
+                                                      styleClass="upload-dropzone">
                                                     <children>
-                                                        <Label styleClass="book-card-placeholder-icon" text="⤓" />
-                                                        <Label alignment="CENTER" maxWidth="220.0" prefHeight="85.0" prefWidth="220.0" styleClass="book-card-placeholder-text" text="Upload cover" wrapText="true" />
+                                                        <Label text="⤓"
+                                                               styleClass="book-card-placeholder-icon"/>
+                                                        <Label alignment="CENTER"
+                                                               maxWidth="220.0"
+                                                               wrapText="true"
+                                                               text="Upload cover"
+                                                               styleClass="book-card-placeholder-text"/>
+                                                        <Label alignment="CENTER"
+                                                               maxWidth="260.0"
+                                                               wrapText="true"
+                                                               text="Drag and drop or click to browse"
+                                                               styleClass="header-subtitle"/>
                                                     </children>
                                                 </VBox>
 
-                                                <!-- кнопка для FileChooser (логіка у контролері) -->
-                                                <Button fx:id="uploadCoverButton" maxWidth="Infinity" styleClass="header-primary-button" text="Upload cover image" />
+                                                <Button fx:id="uploadCoverButton"
+                                                        maxWidth="Infinity"
+                                                        text="Upload cover image"
+                                                        styleClass="header-primary-button"/>
                                             </children>
                                         </VBox>
 
-                                        <!-- RIGHT: Book details -->
-                                        <VBox spacing="16.0" styleClass="stat-card" HBox.hgrow="ALWAYS">
+                                        <!-- RIGHT: book details -->
+                                        <VBox spacing="16.0"
+                                              styleClass="stat-card"
+                                              HBox.hgrow="ALWAYS">
                                             <children>
-                                                <Label styleClass="section-title" text="Book details" />
+                                                <Label text="Book details"
+                                                       styleClass="section-title"/>
 
-                                                <!-- Basic info -->
                                                 <VBox spacing="12.0">
                                                     <children>
 
-                                                        <Label styleClass="header-subtitle" text="Basic information" />
+                                                        <Label text="Basic information"
+                                                               styleClass="header-subtitle"/>
 
                                                         <!-- Title -->
                                                         <VBox spacing="4.0">
                                                             <children>
-                                                                <Label text="Book Title" />
-                                                                <TextField fx:id="titleField" promptText="Enter book title" />
+                                                                <Label text="Book Title"/>
+                                                                <TextField fx:id="titleField"
+                                                                           promptText="Enter book title"/>
                                                             </children>
                                                         </VBox>
 
                                                         <!-- Author -->
                                                         <VBox spacing="4.0">
                                                             <children>
-                                                                <Label text="Author" />
-                                                                <TextField fx:id="authorField" promptText="Enter author name" />
+                                                                <Label text="Author"/>
+                                                                <TextField fx:id="authorField"
+                                                                           promptText="Enter author name"/>
                                                             </children>
                                                         </VBox>
 
                                                         <!-- Category + Format -->
                                                         <HBox spacing="12.0">
                                                             <children>
-                                                                <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                                                                <VBox spacing="4.0"
+                                                                      HBox.hgrow="ALWAYS">
                                                                     <children>
-                                                                        <Label text="Category" />
-                                                                        <ComboBox fx:id="categoryBox" promptText="Select category" />
+                                                                        <Label text="Category"/>
+                                                                        <ComboBox fx:id="categoryBox"
+                                                                                  promptText="Select category"/>
                                                                     </children>
                                                                 </VBox>
 
-                                                                <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                                                                <VBox spacing="4.0"
+                                                                      HBox.hgrow="ALWAYS">
                                                                     <children>
-                                                                        <Label text="Format" />
-                                                                        <ComboBox fx:id="formatBox" promptText="Select format" />
+                                                                        <Label text="Format"/>
+                                                                        <ComboBox fx:id="formatBox"
+                                                                                  promptText="Select format"/>
                                                                     </children>
                                                                 </VBox>
                                                             </children>
@@ -230,24 +312,28 @@
                                                         <!-- Language -->
                                                         <VBox spacing="4.0">
                                                             <children>
-                                                                <Label text="Language" />
-                                                                <TextField fx:id="languageField" promptText="e.g. English" />
+                                                                <Label text="Language"/>
+                                                                <TextField fx:id="languageField"
+                                                                           promptText="e.g. English"/>
                                                             </children>
                                                         </VBox>
 
                                                         <!-- Tags -->
                                                         <VBox spacing="4.0">
                                                             <children>
-                                                                <Label text="Tags (optional)" />
-                                                                <TextField fx:id="tagsField" promptText="Type and press Enter to add tags" />
+                                                                <Label text="Tags (optional)"/>
+                                                                <TextField fx:id="tagsField"
+                                                                           promptText="Type and press Enter to add tags"/>
                                                             </children>
                                                         </VBox>
 
                                                         <!-- Notes -->
                                                         <VBox spacing="4.0">
                                                             <children>
-                                                                <Label text="Notes (optional)" />
-                                                                <TextArea fx:id="notesArea" prefRowCount="4" promptText="Thoughts, highlights, expectations..." />
+                                                                <Label text="Notes (optional)"/>
+                                                                <TextArea fx:id="notesArea"
+                                                                          prefRowCount="4"
+                                                                          promptText="Thoughts, highlights, expectations..."/>
                                                             </children>
                                                         </VBox>
 
@@ -263,6 +349,7 @@
                         </VBox>
                     </content>
                 </ScrollPane>
+
             </children>
         </VBox>
     </center>

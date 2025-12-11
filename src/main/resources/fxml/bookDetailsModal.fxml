@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane fx:id="root"
+            prefHeight="620.0"
+            prefWidth="820.0"
+            xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="sk.upjs.paz.ui.BookDetailsModalController"
+            styleClass="book-detail-root">
+
+    <!-- reuse main light theme -->
+    <stylesheets>
+        <URL value="@../css/lightTheme.css" />
+    </stylesheets>
+
+    <!-- ========= HEADER ========= -->
+    <top>
+        <VBox styleClass="book-detail-header">
+            <children>
+                <HBox alignment="CENTER_LEFT" spacing="16.0">
+                    <padding>
+                        <Insets top="20" right="24" bottom="16" left="24" />
+                    </padding>
+                    <children>
+
+                        <!-- Title + subtitle -->
+                        <VBox spacing="4.0">
+                            <children>
+                                <Label fx:id="titleLabel"
+                                       styleClass="header-title"
+                                       text="Atomic Habits" />
+                                <Label fx:id="subtitleLabel"
+                                       styleClass="header-subtitle"
+                                       text="Book details and metadata" />
+                            </children>
+                        </VBox>
+
+                        <Pane HBox.hgrow="ALWAYS" />
+
+                        <!-- Header actions -->
+                        <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                            <children>
+
+                                <Button fx:id="editBookButton"
+                                        text="Edit book"
+                                        mnemonicParsing="false"
+                                        styleClass="header-secondary-button"/>
+
+                                <Button fx:id="startSessionHeaderButton"
+                                        minWidth="180.0"
+                                        mnemonicParsing="false"
+                                        onAction="#handleStartSession"
+                                        styleClass="header-primary-button"
+                                        text="Start reading session" />
+
+                                <Button fx:id="closeIconButton"
+                                        minWidth="36.0"
+                                        onAction="#handleClose"
+                                        styleClass="header-icon-button"
+                                        text="✕" />
+                            </children>
+                        </HBox>
+
+                    </children>
+                </HBox>
+
+                <Separator />
+            </children>
+        </VBox>
+    </top>
+
+    <!-- ========= MAIN CONTENT ========= -->
+    <center>
+        <VBox spacing="24.0">
+            <padding>
+                <Insets top="24" right="32" bottom="24" left="32" />
+            </padding>
+            <children>
+
+                <!-- Two-column layout -->
+                <HBox spacing="32.0">
+                    <children>
+
+                        <!-- LEFT COLUMN: cover + meta -->
+                        <VBox prefWidth="260.0" spacing="16.0">
+
+                            <!-- Cover -->
+                            <StackPane prefHeight="320.0"
+                                       prefWidth="220.0"
+                                       styleClass="book-detail-cover">
+                                <children>
+                                    <Label styleClass="book-detail-cover-placeholder"
+                                           text="Book Cover" />
+                                </children>
+                            </StackPane>
+
+                            <!-- Meta cards: year / language / pages -->
+                            <FlowPane hgap="12.0" vgap="8.0">
+                                <children>
+
+                                    <VBox alignment="CENTER"
+                                          prefWidth="70.0"
+                                          spacing="4.0"
+                                          styleClass="book-meta-card">
+                                        <children>
+                                            <Label styleClass="book-meta-label"
+                                                   text="Year" />
+                                            <Label fx:id="yearLabel"
+                                                   styleClass="book-meta-value"
+                                                   text="2020" />
+                                        </children>
+                                    </VBox>
+
+                                    <VBox alignment="CENTER"
+                                          prefWidth="80.0"
+                                          spacing="4.0"
+                                          styleClass="book-meta-card">
+                                        <children>
+                                            <Label styleClass="book-meta-label"
+                                                   text="Language" />
+                                            <Label fx:id="languageLabel"
+                                                   styleClass="book-meta-value"
+                                                   text="EN" />
+                                        </children>
+                                    </VBox>
+
+                                    <VBox alignment="CENTER"
+                                          prefWidth="80.0"
+                                          spacing="4.0"
+                                          styleClass="book-meta-card">
+                                        <children>
+                                            <Label styleClass="book-meta-label"
+                                                   text="Pages" />
+                                            <Label fx:id="pagesLabel"
+                                                   styleClass="book-meta-value"
+                                                   text="320" />
+                                        </children>
+                                    </VBox>
+
+                                </children>
+                            </FlowPane>
+
+                            <!-- Genre + status pills -->
+                            <HBox spacing="8.0">
+                                <children>
+                                    <Label fx:id="genreLabel"
+                                           styleClass="tag-pill"
+                                           text="Productivity" />
+                                    <Label fx:id="statusLabel"
+                                           styleClass="status-pill--in-progress"
+                                           text="In Progress" />
+                                </children>
+                            </HBox>
+
+                        </VBox>
+
+                        <!-- RIGHT COLUMN: description + author -->
+                        <VBox spacing="24.0" VBox.vgrow="ALWAYS">
+
+                            <!-- About this book -->
+                            <VBox spacing="8.0">
+                                <children>
+                                    <Label styleClass="section-title"
+                                           text="About this book" />
+
+                                    <Label fx:id="descriptionLabel"
+                                           maxWidth="420.0"
+                                           styleClass="book-detail-body-text"
+                                           text="An atomic habit is a regular practice or routine that is not only small and easy to do but is also the source of incredible power..."
+                                           wrapText="true" />
+                                </children>
+                            </VBox>
+
+                            <!-- About the author -->
+                            <VBox spacing="12.0">
+                                <children>
+                                    <Label styleClass="section-title"
+                                           text="About the author" />
+
+                                    <!-- author row -->
+                                    <HBox alignment="CENTER_LEFT"
+                                          spacing="12.0">
+                                        <children>
+                                            <!-- Avatar circle -->
+                                            <StackPane prefHeight="40.0"
+                                                       prefWidth="40.0"
+                                                       styleClass="author-avatar">
+                                                <children>
+                                                    <Label fx:id="authorInitialsLabel"
+                                                           styleClass="author-avatar-initials"
+                                                           text="JC" />
+                                                </children>
+                                            </StackPane>
+
+                                            <VBox spacing="4.0">
+                                                <children>
+                                                    <Label fx:id="authorNameLabel"
+                                                           styleClass="author-name"
+                                                           text="James Clear" />
+                                                    <Label fx:id="authorCountryLabel"
+                                                           styleClass="author-country-pill"
+                                                           text="United States" />
+                                                </children>
+                                            </VBox>
+                                        </children>
+                                    </HBox>
+
+                                    <!-- author bio -->
+                                    <Label fx:id="authorBioLabel"
+                                           maxWidth="440.0"
+                                           styleClass="book-detail-body-text"
+                                           text="James Clear is a writer and speaker focused on habits, decision making, and continuous improvement..."
+                                           wrapText="true" />
+                                </children>
+                            </VBox>
+
+                        </VBox>
+
+                    </children>
+                </HBox>
+
+            </children>
+        </VBox>
+    </center>
+
+    <!-- ========= FOOTER ========= -->
+    <bottom>
+        <VBox>
+            <children>
+                <Separator />
+                <HBox alignment="CENTER_LEFT" spacing="12.0">
+                    <padding>
+                        <Insets top="12" right="24" bottom="16" left="24" />
+                    </padding>
+                    <children>
+
+                        <Label styleClass="stat-subtitle"
+                               text="You can edit this information later from your Library." />
+
+                        <Pane HBox.hgrow="ALWAYS" />
+
+                        <Button fx:id="closeButton"
+                                text="Close"
+                                mnemonicParsing="false"
+                                onAction="#handleClose"
+                                styleClass="header-secondary-button"/>
+
+                        <Button fx:id="startSessionFooterButton"
+                                minWidth="190.0"
+                                mnemonicParsing="false"
+                                onAction="#handleStartSession"
+                                styleClass="header-primary-button"
+                                text="Start reading session" />
+
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </bottom>
+
+</BorderPane>

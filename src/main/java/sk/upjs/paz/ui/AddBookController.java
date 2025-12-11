@@ -1,8 +1,10 @@
 package sk.upjs.paz.ui;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 
 public class AddBookController {
@@ -10,6 +12,26 @@ public class AddBookController {
     @FXML
     private BorderPane root;
 
+    // header buttons + icons
+    @FXML
+    private Button searchButton;
+
+    @FXML
+    private Button notificationsButton;
+
+    @FXML
+    private ToggleButton themeToggle;
+
+    @FXML
+    private ImageView searchIcon;
+
+    @FXML
+    private ImageView notificationsIcon;
+
+    @FXML
+    private ImageView themeIcon;
+
+    // form fields
     @FXML
     private TextField titleField;
 
@@ -31,53 +53,165 @@ public class AddBookController {
     @FXML
     private TextArea notesArea;
 
-    private boolean dark = false;
+    @FXML
+    private Button uploadCoverButton;
+
+    // stylesheets
+    private String lightThemeUrl;
+    private String darkThemeUrl;
+
+    // icons
+    private Image searchLight;
+    private Image searchDark;
+    private Image bellLight;
+    private Image bellDark;
+    private Image moonIconImg;
+    private Image sunIconImg;
 
     @FXML
     private void initialize() {
-        // приклад початкових значень
+        lightThemeUrl = getClass().getResource("/css/lightTheme.css").toExternalForm();
+        darkThemeUrl  = getClass().getResource("/css/darkTheme.css").toExternalForm();
+
+        searchLight   = load("/img/logoLight/search.png");
+        searchDark    = load("/img/logoDark/search.png");
+        bellLight     = load("/img/logoLight/bell.png");
+        bellDark      = load("/img/logoDark/bell.png");
+        moonIconImg   = load("/img/logoLight/moon.png");
+        sunIconImg    = load("/img/logoDark/sun.png");
+
+        // when scene is ready – apply light theme
+        root.sceneProperty().addListener((obs, oldScene, newScene) -> {
+            if (newScene != null) {
+                switchToLightTheme();
+            }
+        });
+
+        // example options for combos
         if (categoryBox != null) {
-            categoryBox.getItems().setAll(
-                    "Fiction", "Non-fiction", "Fantasy", "Mystery",
-                    "Sci-Fi", "Biography", "Self-help"
+            categoryBox.getItems().addAll(
+                    "Fiction", "Non-fiction", "Fantasy", "Sci-Fi",
+                    "Self-help", "Biography", "Other"
             );
         }
 
         if (formatBox != null) {
-            formatBox.getItems().setAll("Paperback", "Hardcover", "E-book", "Audiobook");
+            formatBox.getItems().addAll(
+                    "Paperback", "Hardcover", "E-book", "Audiobook", "Other"
+            );
+        }
+
+        if (uploadCoverButton != null) {
+            uploadCoverButton.setOnAction(e -> onUploadCover());
         }
     }
 
+    private Image load(String path) {
+        return new Image(getClass().getResource(path).toExternalForm());
+    }
+
+    // ===== theme toggle =====
+
     @FXML
-    private void onToggleTheme() {
+    private void onToggleTheme(ActionEvent event) {
         var stylesheets = root.getStylesheets();
-        stylesheets.clear();
+        boolean darkActive = stylesheets.contains(darkThemeUrl);
 
-        if (dark) {
-            // назад на світлу
-            stylesheets.add(
-                    getClass().getResource("/css/lightTheme.css").toExternalForm()
-            );
+        if (darkActive) {
+            switchToLightTheme();
         } else {
-            // темна
-            stylesheets.add(
-                    getClass().getResource("/css/darkTheme.css").toExternalForm()
-            );
+            switchToDarkTheme();
+        }
+    }
+
+    private void switchToLightTheme() {
+        var stylesheets = root.getStylesheets();
+        stylesheets.remove(darkThemeUrl);
+        if (!stylesheets.contains(lightThemeUrl)) {
+            stylesheets.add(lightThemeUrl);
         }
 
-        dark = !dark;
+        if (searchIcon != null) {
+            searchIcon.setImage(searchLight);
+        }
+        if (notificationsIcon != null) {
+            notificationsIcon.setImage(bellLight);
+        }
+        if (themeIcon != null) {
+            themeIcon.setImage(moonIconImg);
+        }
+
+        themeToggle.setSelected(false);
+    }
+
+    private void switchToDarkTheme() {
+        var stylesheets = root.getStylesheets();
+        stylesheets.remove(lightThemeUrl);
+        if (!stylesheets.contains(darkThemeUrl)) {
+            stylesheets.add(darkThemeUrl);
+        }
+
+        if (searchIcon != null) {
+            searchIcon.setImage(searchDark);
+        }
+        if (notificationsIcon != null) {
+            notificationsIcon.setImage(bellDark);
+        }
+        if (themeIcon != null) {
+            themeIcon.setImage(sunIconImg);
+        }
+
+        themeToggle.setSelected(true);
+    }
+
+    // ===== header actions =====
+
+    @FXML
+    private void onSearch(ActionEvent event) {
+        // later: open search dialog
     }
 
     @FXML
-    private void onSaveBook() {
-        // тут потім додаси збереження в БД / сервіс
-        System.out.println("Saving book:");
-        System.out.println("Title: " + titleField.getText());
-        System.out.println("Author: " + authorField.getText());
-        System.out.println("Category: " + categoryBox.getValue());
-        System.out.println("Format: " + formatBox.getValue());
-        System.out.println("Language: " + languageField.getText());
-        System.out.println("Tags: " + tagsField.getText());
-        System.out.println("Notes: " + notesArea.getText());
+    private void onNotifications(ActionEvent event) {
+        // later: open notifications panel
+    }
+
+    // ===== cover upload + save book =====
+
+    private void onUploadCover() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Upload cover");
+        alert.setHeaderText(null);
+        alert.setContentText("Cover upload is not implemented yet.");
+        alert.showAndWait();
+    }
+
+    @FXML
+    private void onSaveBook(ActionEvent event) {
+        String title  = titleField != null ? titleField.getText().trim() : "";
+        String author = authorField != null ? authorField.getText().trim() : "";
+
+        if (title.isEmpty() || author.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Missing data");
+            alert.setHeaderText("Please fill in required fields");
+            alert.setContentText("Title and author are required.");
+            alert.showAndWait();
+            return;
+        }
+
+        String category = categoryBox != null ? categoryBox.getValue() : null;
+        String format   = formatBox   != null ? formatBox.getValue()   : null;
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Book saved");
+        alert.setHeaderText("Book added to your library");
+        alert.setContentText(
+                "Title: " + title + "\n" +
+                        "Author: " + author + "\n" +
+                        (category != null ? "Category: " + category + "\n" : "") +
+                        (format != null   ? "Format: " + format   + "\n" : "")
+        );
+        alert.showAndWait();
     }
 }

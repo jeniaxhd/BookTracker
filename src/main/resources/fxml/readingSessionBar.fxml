@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+
+<HBox fx:id="root"
+      xmlns="http://javafx.com/javafx/17.0.12"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="sk.upjs.paz.ui.SessionBarController"
+      spacing="16.0"
+      alignment="CENTER_LEFT"
+      styleClass="session-bar">
+
+    <!-- attach main app css -->
+    <stylesheets>
+        <URL value="@../css/lightTheme.css"/>
+    </stylesheets>
+
+    <!-- Book cover + info -->
+    <HBox spacing="10.0" alignment="CENTER_LEFT">
+        <children>
+            <!-- Cover -->
+            <StackPane prefWidth="40.0"
+                       prefHeight="60.0"
+                       styleClass="session-book-cover">
+                <!-- if you will use ImageView, just replace this -->
+            </StackPane>
+
+            <!-- Title + author -->
+            <VBox spacing="2.0">
+                <children>
+                    <Label fx:id="bookTitleLabel"
+                           text="Atomic Habits"
+                           styleClass="session-book-title"/>
+                    <Label fx:id="bookSubtitleLabel"
+                           text="James Clear · Productivity"
+                           styleClass="session-book-subtitle"/>
+                    <Label fx:id="statusPillLabel"
+                           text="In Progress"
+                           styleClass="session-status-pill"/>
+                </children>
+            </VBox>
+        </children>
+    </HBox>
+
+    <!-- Spacer before timer -->
+    <Region HBox.hgrow="ALWAYS"/>
+
+    <!-- Timer block -->
+    <VBox spacing="4.0" alignment="CENTER">
+        <children>
+            <Label fx:id="timerLabel"
+                   text="12:50"
+                   styleClass="session-timer-text"/>
+            <Label fx:id="timerCaptionLabel"
+                   text="Reading now"
+                   styleClass="session-timer-caption"/>
+        </children>
+    </VBox>
+
+    <!-- Vertical separator (optional, just visual) -->
+    <Region prefWidth="1.0" prefHeight="40.0" styleClass="session-divider"/>
+
+    <!-- Controls -->
+    <HBox spacing="10.0" alignment="CENTER_LEFT">
+        <children>
+
+            <!-- Main play/pause button -->
+            <Button fx:id="playPauseButton"
+                    onAction="#handlePlayPause"
+                    styleClass="session-control-main">
+                <graphic>
+                    <!-- start in "pause" state, you can change text in controller -->
+                    <Label text="⏸"/>
+                </graphic>
+            </Button>
+
+            <!-- Stop button -->
+            <Button fx:id="stopButton"
+                    onAction="#handleStop"
+                    styleClass="session-control-secondary">
+                <graphic>
+                    <Label text="■"/>
+                </graphic>
+            </Button>
+
+            <!-- More / details button -->
+            <Button fx:id="moreButton"
+                    onAction="#handleMore"
+                    styleClass="session-control-more">
+                <graphic>
+                    <Label text="⋯"/>
+                </graphic>
+            </Button>
+
+        </children>
+    </HBox>
+
+</HBox>

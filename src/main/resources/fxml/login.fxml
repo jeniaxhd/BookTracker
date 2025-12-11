@@ -3,9 +3,10 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
 <?import java.net.URL?>
 
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <BorderPane
         prefHeight="700.0"
         prefWidth="1100.0"
@@ -14,7 +15,7 @@
         fx:controller="sk.upjs.paz.ui.LoginController"
         styleClass="auth-root">
 
-    <!-- shared auth stylesheet -->
+    <!-- Shared auth stylesheet -->
     <stylesheets>
         <URL value="@../css/auth.css"/>
     </stylesheets>
@@ -66,7 +67,8 @@
                                 <VBox spacing="4.0" alignment="CENTER_LEFT">
                                     <children>
                                         <Label text="The Midnight Library"
-                                               styleClass="auth-book-title" wrapText="true"/>
+                                               styleClass="auth-book-title"
+                                               wrapText="true"/>
                                         <Label text="Matt Haig"
                                                styleClass="auth-book-author"/>
                                         <Label text="In Progress"
@@ -108,107 +110,151 @@
         </VBox>
     </left>
 
-    <!-- RIGHT SIDE: LOGIN FORM -->
+    <!-- RIGHT SIDE: LOGIN FORM (VERTICALLY CENTERED) -->
     <center>
-        <VBox spacing="24.0"
-              styleClass="auth-right"
+        <VBox styleClass="auth-right"
               BorderPane.alignment="CENTER">
             <padding>
                 <Insets top="40" right="72" bottom="40" left="56"/>
             </padding>
             <children>
 
-                <!-- Title -->
-                <VBox spacing="8.0">
-                    <children>
-                        <Label text="Welcome back 👋"
-                               styleClass="auth-title"/>
-                        <Label wrapText="true"
-                               text="Sign in to continue tracking your reading with BookTrack."
-                               styleClass="auth-subtitle"/>
-                    </children>
-                </VBox>
+                <!-- Top spacer for vertical centering -->
+                <Pane VBox.vgrow="ALWAYS"/>
 
-                <!-- Google button -->
-                <Button maxWidth="Infinity"
-                        styleClass="auth-google-button">
-                    <graphic>
-                        <HBox alignment="CENTER" spacing="8.0">
-                            <children>
-                                <StackPane prefWidth="24.0" prefHeight="24.0"
-                                           styleClass="auth-google-icon-circle">
-                                    <children>
-                                        <Label text="G"
-                                               styleClass="auth-google-icon-letter"/>
-                                    </children>
-                                </StackPane>
-                                <Label text="Continue with Google"
-                                       styleClass="auth-google-text"/>
-                            </children>
-                        </HBox>
-                    </graphic>
-                </Button>
+                <!-- Actual login content -->
+                <VBox spacing="24.0"
+                      maxWidth="520.0"
+                      alignment="CENTER"
+                      VBox.vgrow="NEVER">
 
-                <!-- Divider -->
-                <HBox alignment="CENTER" spacing="12.0">
-                    <children>
-                        <Region HBox.hgrow="ALWAYS"
-                                styleClass="auth-divider-line"/>
-                        <Label text="or continue with email"
-                               styleClass="auth-divider-text"/>
-                        <Region HBox.hgrow="ALWAYS"
-                                styleClass="auth-divider-line"/>
-                    </children>
-                </HBox>
+                    <!-- Title -->
+                    <VBox spacing="8.0">
+                        <children>
 
-                <!-- Form -->
-                <VBox spacing="16.0">
-                    <children>
-                        <!-- Email -->
-                        <VBox spacing="6.0">
-                            <children>
-                                <Label text="Email" styleClass="auth-field-label"/>
-                                <TextField promptText="you@example.com"
-                                           styleClass="auth-input"/>
-                            </children>
-                        </VBox>
+                            <!-- Row with icon + title -->
+                            <HBox spacing="8.0" alignment="CENTER_LEFT">
+                                <children>
+                                    <ImageView fitWidth="28.0" fitHeight="28.0" preserveRatio="true">
+                                        <image>
+                                            <Image url="@../img/logoForLogin/waving-hand.png"/>
+                                        </image>
+                                    </ImageView>
 
-                        <!-- Password -->
-                        <VBox spacing="6.0">
-                            <children>
-                                <Label text="Password" styleClass="auth-field-label"/>
-                                <PasswordField promptText="Enter your password"
+                                    <Label text="Welcome back !!"
+                                           styleClass="auth-title"/>
+                                </children>
+                            </HBox>
+
+                            <Label wrapText="true"
+                                   text="Sign in to continue tracking your reading with BookTrack."
+                                   styleClass="auth-subtitle"/>
+                        </children>
+                    </VBox>
+
+                    <!-- Google button -->
+                    <Button fx:id="googleButton"
+                            maxWidth="Infinity"
+                            styleClass="auth-google-button"
+                            onAction="#onGoogleSignIn">
+                        <graphic>
+                            <HBox alignment="CENTER" spacing="8.0">
+                                <children>
+                                    <ImageView fitWidth="20.0" fitHeight="20.0" preserveRatio="true">
+                                        <image>
+                                            <Image url="@../img/logoForLogin/google.png"/>
+                                        </image>
+                                    </ImageView>
+                                    <Label text="Continue with Google"
+                                           styleClass="auth-google-text"/>
+                                </children>
+                            </HBox>
+                        </graphic>
+                    </Button>
+
+
+                    <!-- Divider -->
+                    <HBox alignment="CENTER" spacing="12.0">
+                        <children>
+                            <Region HBox.hgrow="ALWAYS"
+                                    styleClass="auth-divider-line"/>
+                            <Label text="or continue with email"
+                                   styleClass="auth-divider-text"/>
+                            <Region HBox.hgrow="ALWAYS"
+                                    styleClass="auth-divider-line"/>
+                        </children>
+                    </HBox>
+
+                    <!-- Form -->
+                    <VBox spacing="16.0">
+                        <children>
+                            <!-- Email -->
+                            <VBox spacing="6.0">
+                                <children>
+                                    <Label text="Email"
+                                           styleClass="auth-field-label"/>
+                                    <TextField fx:id="emailField"
+                                               promptText="you@example.com"
                                                styleClass="auth-input"/>
-                            </children>
-                        </VBox>
+                                </children>
+                            </VBox>
 
-                        <!-- Remember + Forgot -->
-                        <HBox alignment="CENTER_LEFT" spacing="8.0">
-                            <children>
-                                <CheckBox text="Remember me"
-                                          styleClass="auth-remember"/>
-                                <Pane HBox.hgrow="ALWAYS"/>
-                                <Hyperlink text="Forgot password?"
-                                           styleClass="auth-forgot-link"/>
-                            </children>
-                        </HBox>
+                            <!-- Password -->
+                            <VBox spacing="6.0">
+                                <children>
+                                    <Label text="Password"
+                                           styleClass="auth-field-label"/>
+                                    <PasswordField fx:id="passwordField"
+                                                   promptText="Enter your password"
+                                                   styleClass="auth-input"/>
+                                </children>
+                            </VBox>
 
-                        <!-- Sign in -->
-                        <Button text="Sign In"
-                                maxWidth="Infinity"
-                                styleClass="auth-primary-button"/>
-                    </children>
+                            <!-- Remember + Forgot -->
+                            <HBox alignment="CENTER_LEFT" spacing="8.0">
+                                <children>
+                                    <CheckBox fx:id="rememberMeCheckBox"
+                                              text="Remember me"
+                                              styleClass="auth-remember"/>
+                                    <Pane HBox.hgrow="ALWAYS"/>
+                                    <Hyperlink fx:id="forgotPasswordLink"
+                                               text="Forgot password?"
+                                               styleClass="auth-forgot-link"
+                                               onAction="#onForgotPassword"/>
+                                </children>
+                            </HBox>
+
+                            <!-- Error label -->
+                            <Label fx:id="errorLabel"
+                                   styleClass="auth-error-label"
+                                   wrapText="true"
+                                   visible="false"
+                                   managed="false"/>
+
+                            <!-- Sign in -->
+                            <Button fx:id="signInButton"
+                                    text="Sign In"
+                                    maxWidth="Infinity"
+                                    styleClass="auth-primary-button"
+                                    onAction="#onSignIn"/>
+                        </children>
+                    </VBox>
+
+                    <!-- Bottom text -->
+                    <HBox alignment="CENTER" spacing="4.0">
+                        <children>
+                            <Label text="Don't have an account?"
+                                   styleClass="auth-bottom-text"/>
+                            <Hyperlink fx:id="createAccountLink"
+                                       text="Create one"
+                                       styleClass="auth-bottom-link"
+                                       onAction="#onCreateAccount"/>
+                        </children>
+                    </HBox>
                 </VBox>
 
-                <!-- Bottom text -->
-                <HBox alignment="CENTER" spacing="4.0">
-                    <children>
-                        <Label text="Don't have an account?"
-                               styleClass="auth-bottom-text"/>
-                        <Hyperlink text="Create one"
-                                   styleClass="auth-bottom-link"/>
-                    </children>
-                </HBox>
+                <!-- Bottom spacer for vertical centering -->
+                <Pane VBox.vgrow="ALWAYS"/>
 
             </children>
         </VBox>
