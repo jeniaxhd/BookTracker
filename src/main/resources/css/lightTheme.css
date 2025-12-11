@@ -369,6 +369,17 @@
     -fx-background-color: #F7F5F2;
 }
 
+/* cross-screen links (e.g., Currently Reading page) */
+.login-bottom-link {
+    -fx-text-fill: #C08552;
+    -fx-font-size: 12px;
+    -fx-underline: false;
+}
+
+.login-bottom-link:hover {
+    -fx-underline: true;
+}
+
 /* ========= LIBRARY: FILTER CHIPS ========= */
 
 .filter-chips-row {

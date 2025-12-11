@@ -51,6 +51,7 @@
 }
 
 .sidebar-nav-button-active,
+.sidebar-nav-button--active,
 .sidebar-nav-button:selected {
     -fx-background-color: #3A3A3C;
     -fx-text-fill: #D4A574;
@@ -329,22 +330,24 @@
     -fx-text-fill: #6C6C70;
     -fx-font-size: 10px;
 }
-/* SCROLLPANE – light */
+
+/* SCROLLPANE */
 .scroll-pane {
-    -fx-background-color: #F7F5F2;
+    -fx-background-color: transparent;
     -fx-border-color: transparent;
 }
 
 .scroll-pane > .viewport {
-    -fx-background-color: transparent;
-}
-
-/* SCROLLPANE – dark */
-.scroll-pane {
     -fx-background-color: #1C1C1E;
-    -fx-border-color: transparent;
 }
 
-.scroll-pane > .viewport {
-    -fx-background-color: transparent;
+/* cross-screen links */
+.login-bottom-link {
+    -fx-text-fill: #D4A574;
+    -fx-font-size: 12px;
+    -fx-underline: false;
+}
+
+.login-bottom-link:hover {
+    -fx-underline: true;
 }

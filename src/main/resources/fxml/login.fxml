@@ -7,6 +7,7 @@
 <?import java.net.URL?>
 
 <BorderPane
+        fx:id="root"
         prefHeight="700.0"
         prefWidth="1100.0"
         xmlns="http://javafx.com/javafx/17.0.12"
@@ -168,7 +169,8 @@
                         <VBox spacing="6.0">
                             <children>
                                 <Label text="Email" styleClass="auth-field-label"/>
-                                <TextField promptText="you@example.com"
+                                <TextField fx:id="emailField"
+                                           promptText="you@example.com"
                                            styleClass="auth-input"/>
                             </children>
                         </VBox>
@@ -177,7 +179,8 @@
                         <VBox spacing="6.0">
                             <children>
                                 <Label text="Password" styleClass="auth-field-label"/>
-                                <PasswordField promptText="Enter your password"
+                                <PasswordField fx:id="passwordField"
+                                               promptText="Enter your password"
                                                styleClass="auth-input"/>
                             </children>
                         </VBox>
@@ -185,16 +188,20 @@
                         <!-- Remember + Forgot -->
                         <HBox alignment="CENTER_LEFT" spacing="8.0">
                             <children>
-                                <CheckBox text="Remember me"
+                                <CheckBox fx:id="rememberMeCheckBox"
+                                          text="Remember me"
                                           styleClass="auth-remember"/>
                                 <Pane HBox.hgrow="ALWAYS"/>
-                                <Hyperlink text="Forgot password?"
+                                <Hyperlink fx:id="forgotPasswordLink"
+                                           onAction="#onForgotPassword"
+                                           text="Forgot password?"
                                            styleClass="auth-forgot-link"/>
                             </children>
                         </HBox>
 
                         <!-- Sign in -->
                         <Button text="Sign In"
+                                onAction="#onSignIn"
                                 maxWidth="Infinity"
                                 styleClass="auth-primary-button"/>
                     </children>
@@ -205,7 +212,9 @@
                     <children>
                         <Label text="Don't have an account?"
                                styleClass="auth-bottom-text"/>
-                        <Hyperlink text="Create one"
+                        <Hyperlink fx:id="createAccountLink"
+                                   onAction="#onCreateAccount"
+                                   text="Create one"
                                    styleClass="auth-bottom-link"/>
                     </children>
                 </HBox>

@@ -42,19 +42,24 @@
                 <VBox spacing="6.0" styleClass="sidebar-nav">
                     <children>
                         <ToggleButton text="Dashboard"
+                                      onAction="#onNavigateDashboard"
                                       styleClass="sidebar-nav-button" />
 
                         <ToggleButton text="Library"
                                       selected="true"
-                                      styleClass="sidebar-nav-button,sidebar-nav-button-active" />
+                                      onAction="#onNavigateLibrary"
+                                      styleClass="sidebar-nav-button sidebar-nav-button-active" />
 
                         <ToggleButton text="Currently Reading"
+                                      onAction="#onNavigateCurrentlyReading"
                                       styleClass="sidebar-nav-button" />
 
                         <ToggleButton text="Statistics"
+                                      onAction="#onNavigateStatistics"
                                       styleClass="sidebar-nav-button" />
 
                         <ToggleButton text="Settings"
+                                      onAction="#onNavigateSettings"
                                       styleClass="sidebar-nav-button" />
                     </children>
                 </VBox>
