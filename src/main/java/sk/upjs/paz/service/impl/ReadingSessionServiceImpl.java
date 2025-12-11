@@ -72,9 +72,9 @@ public class ReadingSessionServiceImpl implements ReadingSessionService {
         ReadingSession session = new ReadingSession();
         session.setUser(user);
         session.setBook(book);
-        session.setState(Bookstate.READING); // uprav podľa tvojho enumu
+        session.setState(Bookstate.READING);
         session.setStart(LocalDateTime.now());
-        session.setDuration(0); // v minútach
+        session.setDuration(0);
         session.setEndPage(startPage);
         session.setLastTimeRead(LocalDate.now());
 
@@ -97,6 +97,11 @@ public class ReadingSessionServiceImpl implements ReadingSessionService {
         if (durationMinutes < 0) {
             throw new IllegalArgumentException("durationMinutes cannot be negative");
         }
+        if (finalState == null) {
+            throw new IllegalArgumentException("finalState cannot be null");
+        }
+        
+        Bookstate previousState = session.getState();
 
         session.setEndPage(endPage);
         session.setDuration(durationMinutes);
@@ -105,9 +110,21 @@ public class ReadingSessionServiceImpl implements ReadingSessionService {
 
         readingSessionDao.update(session);
 
-        // Tu môžeš doplniť ďalšiu logiku:
-        // - ak finalState == FINISHED → zmeniť stav knihy v BookDao
-        // - aktualizovať štatistiky používateľa (UserDao.updateReadBooks(...))
+        if (finalState == Bookstate.FINISHED && previousState != Bookstate.FINISHED) {
+            if (session.getUser() == null || session.getUser().getId() == null) {
+                throw new IllegalStateException("ReadingSession user is null or has null id");
+            }
+
+            Long userId = session.getUser().getId();
+
+            User user = userDao.getById(userId)
+                    .orElseThrow(() -> new IllegalStateException("User with id " + userId + " not found"));
+
+            int currentCount = user.getReadBooks();
+            int newCount = currentCount + 1;
+
+            userDao.updateReadBooks(userId, newCount);
+        }
 
     }
 

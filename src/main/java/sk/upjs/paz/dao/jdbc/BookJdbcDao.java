@@ -20,7 +20,6 @@ public class BookJdbcDao implements BookDao {
 
     @Override
     public void add(Book book) {
-        // ⚠️ genre_id в book більше НЕ зберігаємо (many-to-many через book_has_genre)
         String sql = "INSERT INTO book(title, description, year, pages, cover_path) " +
                 "VALUES(?, ?, ?, ?, ?)";
 

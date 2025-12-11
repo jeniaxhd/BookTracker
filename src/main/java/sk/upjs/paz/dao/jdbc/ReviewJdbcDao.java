@@ -44,7 +44,7 @@ public class ReviewJdbcDao implements ReviewDao {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -59,7 +59,7 @@ public class ReviewJdbcDao implements ReviewDao {
             ps.setLong(3, review.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -71,7 +71,7 @@ public class ReviewJdbcDao implements ReviewDao {
             ps.setLong(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -111,7 +111,7 @@ public class ReviewJdbcDao implements ReviewDao {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return list;
@@ -131,7 +131,7 @@ public class ReviewJdbcDao implements ReviewDao {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return list;
@@ -150,7 +150,7 @@ public class ReviewJdbcDao implements ReviewDao {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return Optional.empty();
@@ -170,7 +170,7 @@ public class ReviewJdbcDao implements ReviewDao {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return Optional.empty();
@@ -188,7 +188,7 @@ public class ReviewJdbcDao implements ReviewDao {
                 list.add(mapRow(rs));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return list;
