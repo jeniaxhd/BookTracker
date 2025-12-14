@@ -14,11 +14,6 @@
       alignment="CENTER_LEFT"
       styleClass="session-bar">
 
-    <!-- attach main app css -->
-    <stylesheets>
-        <URL value="@../css/lightTheme.css"/>
-    </stylesheets>
-
     <!-- Book cover + info -->
     <HBox spacing="10.0" alignment="CENTER_LEFT">
         <children>

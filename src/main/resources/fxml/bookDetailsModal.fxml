@@ -13,11 +13,6 @@
             fx:controller="sk.upjs.paz.ui.BookDetailsModalController"
             styleClass="book-detail-root">
 
-    <!-- reuse main light theme -->
-    <stylesheets>
-        <URL value="@../css/lightTheme.css" />
-    </stylesheets>
-
     <!-- ========= HEADER ========= -->
     <top>
         <VBox styleClass="book-detail-header">

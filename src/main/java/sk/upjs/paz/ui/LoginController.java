@@ -2,46 +2,22 @@ package sk.upjs.paz.ui;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
+import sk.upjs.paz.entity.User;
+import sk.upjs.paz.service.ServiceFactory;
+
+import java.util.Optional;
 
 public class LoginController {
 
-    @FXML
-    private TextField emailField;
-
-    @FXML
-    private PasswordField passwordField;
-
-    @FXML
-    private CheckBox rememberMeCheckBox;
-
-    @FXML
-    private Label errorLabel;
-
-    @FXML
-    private Button signInButton;
-
-    @FXML
-    private Button googleButton;
-
-    @FXML
-    private Hyperlink forgotPasswordLink;
-
-    @FXML
-    private Hyperlink createAccountLink;
+    @FXML private TextField emailField;
+    @FXML private PasswordField passwordField;
+    @FXML private CheckBox rememberMeCheckBox;
+    @FXML private Label errorLabel;
 
     @FXML
     private void initialize() {
-        // Hide error label on start
-        if (errorLabel != null) {
-            errorLabel.setVisible(false);
-            errorLabel.setManaged(false);
-        }
+        clearError();
     }
 
     @FXML
@@ -56,35 +32,30 @@ public class LoginController {
             return;
         }
 
-        // TODO: Add real authentication (e.g. check against database / service)
-        boolean authenticated = fakeAuthentication(email, password);
-
-        if (!authenticated) {
-            showError("Invalid email or password.");
+        var userOpt = sk.upjs.paz.service.ServiceFactory.INSTANCE.getUserService().getByEmail(email);
+        if (userOpt.isEmpty()) {
+            showError("No user with this email (demo mode).");
             return;
         }
 
-        // TODO: Navigate to dashboard scene
-        // Example:
-        // SceneNavigator.showDashboard();
+        AppState.setCurrentUser(userOpt.get());
+        SceneNavigator.showDashboard();
+    }
+
+
+    @FXML
+    private void onCreateAccount(ActionEvent event) {
+        SceneNavigator.showRegister();
     }
 
     @FXML
     private void onGoogleSignIn(ActionEvent event) {
-        // TODO: Implement Google sign-in (or show info message for now)
         showError("Google sign-in is not implemented yet.");
     }
 
     @FXML
     private void onForgotPassword(ActionEvent event) {
-        // TODO: Show forgot-password dialog or info
         showError("Password reset is not implemented yet.");
-    }
-
-    @FXML
-    private void onCreateAccount(ActionEvent event) {
-        // TODO: Navigate to register scene
-        SceneNavigator.showRegister();
     }
 
     private void showError(String message) {
@@ -101,10 +72,5 @@ public class LoginController {
             errorLabel.setVisible(false);
             errorLabel.setManaged(false);
         }
-    }
-
-    private boolean fakeAuthentication(String email, String password) {
-        // Temporary simple check – replace with real logic later
-        return email.equals("test@example.com") && password.equals("password");
     }
 }

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox fx:id="root"
+      xmlns="http://javafx.com/javafx/17.0.12"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="sk.upjs.paz.ui.NotificationsPopoverController"
+      prefWidth="360.0"
+      spacing="12.0"
+      styleClass="stat-card">
+
+    <stylesheets>
+        <URL value="@../css/lightTheme.css"/>
+    </stylesheets>
+
+    <padding>
+        <Insets top="14" right="14" bottom="14" left="14"/>
+    </padding>
+
+    <!-- Header -->
+    <HBox alignment="CENTER_LEFT" spacing="10.0">
+        <children>
+            <Label text="Notifications" styleClass="section-title"/>
+            <Pane HBox.hgrow="ALWAYS"/>
+            <Button fx:id="markAllReadButton"
+                    text="Mark all read"
+                    onAction="#onMarkAllRead"
+                    styleClass="ghost-button"/>
+        </children>
+    </HBox>
+
+    <Separator/>
+
+    <!-- List -->
+    <VBox fx:id="itemsBox" spacing="10.0">
+        <children>
+
+            <HBox spacing="12.0" alignment="CENTER_LEFT" styleClass="queue-card">
+                <children>
+                    <StackPane prefWidth="34.0" prefHeight="34.0" styleClass="stat-icon,stat-icon-gold">
+                        <children>
+                            <Label text="🔔" styleClass="stat-icon-emoji"/>
+                        </children>
+                    </StackPane>
+
+                    <VBox spacing="2.0" HBox.hgrow="ALWAYS">
+                        <children>
+                            <Label text="Reading session saved" styleClass="queue-title"/>
+                            <Label text="You added 32 minutes to your streak" styleClass="book-meta-text"/>
+                        </children>
+                    </VBox>
+
+                    <Label text="2m" styleClass="book-meta-text"/>
+                </children>
+            </HBox>
+
+            <HBox spacing="12.0" alignment="CENTER_LEFT" styleClass="queue-card">
+                <children>
+                    <StackPane prefWidth="34.0" prefHeight="34.0" styleClass="stat-icon,stat-icon-blue">
+                        <children>
+                            <Label text="📚" styleClass="stat-icon-emoji"/>
+                        </children>
+                    </StackPane>
+
+                    <VBox spacing="2.0" HBox.hgrow="ALWAYS">
+                        <children>
+                            <Label text="Book added to Library" styleClass="queue-title"/>
+                            <Label text="Atomic Habits · Productivity" styleClass="book-meta-text"/>
+                        </children>
+                    </VBox>
+
+                    <Label text="1h" styleClass="book-meta-text"/>
+                </children>
+            </HBox>
+
+            <HBox spacing="12.0" alignment="CENTER_LEFT" styleClass="queue-card">
+                <children>
+                    <StackPane prefWidth="34.0" prefHeight="34.0" styleClass="stat-icon,stat-icon-green">
+                        <children>
+                            <Label text="🔥" styleClass="stat-icon-emoji"/>
+                        </children>
+                    </StackPane>
+
+                    <VBox spacing="2.0" HBox.hgrow="ALWAYS">
+                        <children>
+                            <Label text="Streak milestone" styleClass="queue-title"/>
+                            <Label text="7 days in a row" styleClass="book-meta-text"/>
+                        </children>
+                    </VBox>
+
+                    <Label text="Yesterday" styleClass="book-meta-text"/>
+                </children>
+            </HBox>
+
+        </children>
+    </VBox>
+
+    <Separator/>
+
+    <!-- Footer actions -->
+    <HBox alignment="CENTER_RIGHT" spacing="10.0">
+        <children>
+            <Button fx:id="viewAllButton"
+                    text="View all"
+                    onAction="#onViewAll"
+                    styleClass="header-secondary-button"/>
+            <Button fx:id="closeButton"
+                    text="Close"
+                    onAction="#onClose"
+                    styleClass="header-primary-button"/>
+        </children>
+    </HBox>
+
+</VBox>

@@ -18,11 +18,6 @@
         xmlns:fx="http://javafx.com/fxml/1"
         fx:controller="sk.upjs.paz.ui.SettingsController">
 
-    <!-- shared app styles -->
-    <stylesheets>
-        <URL value="@../css/lightTheme.css"/>
-    </stylesheets>
-
     <!-- ========== SIDEBAR ========== -->
     <left>
         <VBox prefWidth="240.0"
@@ -424,11 +419,12 @@
                                                                     <children>
                                                                         <ToggleButton fx:id="themeLightToggle"
                                                                                       text="Light"
-                                                                                      selected="true"
-                                                                                      styleClass="segmented-pill,segmented-pill--active"/>
+                                                                                      styleClass="segmented-pill"/>
+
                                                                         <ToggleButton fx:id="themeDarkToggle"
                                                                                       text="Dark"
                                                                                       styleClass="segmented-pill"/>
+
                                                                     </children>
                                                                 </HBox>
                                                             </children>

@@ -169,6 +169,7 @@
 
                                         <!-- Simple filter button -->
                                         <Button fx:id="filterButton"
+                                                onAction="#onTopSettings"
                                                 styleClass="header-icon-button">
                                             <graphic>
                                                 <ImageView fx:id="filterIcon"

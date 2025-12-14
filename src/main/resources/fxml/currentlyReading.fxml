@@ -16,10 +16,6 @@
         xmlns:fx="http://javafx.com/fxml/1"
         fx:controller="sk.upjs.paz.ui.CurrentlyReadingController">
 
-    <!-- shared light theme -->
-    <stylesheets>
-        <URL value="@../css/lightTheme.css"/>
-    </stylesheets>
 
     <!-- ========== SIDEBAR ========== -->
     <left>
@@ -190,7 +186,9 @@
 
                                         <Button fx:id="startSessionButton"
                                                 text="Start session"
+                                                onAction="#onStartSession"
                                                 styleClass="header-primary-button">
+
                                             <graphic>
                                                 <Label text="+"
                                                        styleClass="header-primary-icon"/>
@@ -300,9 +298,15 @@
                                                                     <HBox spacing="8.0">
                                                                         <children>
                                                                             <Button text="Continue"
+                                                                                    onAction="#onContinue"
+                                                                                    userData="Atomic Habits"
                                                                                     styleClass="header-primary-button"/>
+
                                                                             <Hyperlink text="View details"
+                                                                                       onAction="#onViewDetails"
+                                                                                       userData="Atomic Habits"
                                                                                        styleClass="book-link"/>
+
 
                                                                         </children>
                                                                     </HBox>
@@ -364,9 +368,15 @@
                                                                     <HBox spacing="8.0">
                                                                         <children>
                                                                             <Button text="Continue"
+                                                                                    onAction="#onContinue"
+                                                                                    userData="The Midnight Library"
                                                                                     styleClass="header-primary-button"/>
+
                                                                             <Hyperlink text="View details"
+                                                                                       onAction="#onViewDetails"
+                                                                                       userData="The Midnight Library"
                                                                                        styleClass="book-link"/>
+
 
                                                                         </children>
                                                                     </HBox>
@@ -378,22 +388,25 @@
                                                 </children>
                                             </VBox>
 
-                                            <!-- Placeholder -->
-                                            <VBox spacing="12.0"
-                                                  styleClass="book-card-placeholder"
-                                                  alignment="CENTER">
-                                                <padding>
-                                                    <Insets top="16" right="20" bottom="16" left="20"/>
-                                                </padding>
-                                                <children>
-                                                    <Label text="+"
-                                                           styleClass="book-card-placeholder-icon"/>
-                                                    <Label text="Add another active book"
-                                                           wrapText="true"
-                                                           maxWidth="220.0"
-                                                           styleClass="book-card-placeholder-text"/>
-                                                </children>
-                                            </VBox>
+                                            <Button text=""
+                                                    onAction="#onAddAnotherBook"
+                                                    prefWidth="210.0"
+                                                    styleClass="library-book-card-placeholder"
+                                                    maxWidth="210.0">
+                                                <graphic>
+                                                    <VBox alignment="CENTER" spacing="8.0">
+                                                        <children>
+                                                            <Label text="+" styleClass="book-card-placeholder-icon"/>
+                                                            <Label text="Add another book"
+                                                                   prefHeight="180.0"
+                                                                   minHeight="180.0"
+                                                                   maxHeight="180.0"
+                                                                   styleClass="library-book-card-placeholder-text"/>
+                                                        </children>
+                                                    </VBox>
+                                                </graphic>
+                                            </Button>
+
 
                                         </VBox>
 
@@ -438,32 +451,35 @@
                                                             <!-- filled dots -->
                                                             <Rectangle width="12.0" height="12.0"
                                                                        arcWidth="6.0" arcHeight="6.0"
-                                                                       styleClass="stat-icon-gold"/>
+                                                                       styleClass="streak-day,streak-day--active"/>
                                                             <Rectangle width="12.0" height="12.0"
                                                                        arcWidth="6.0" arcHeight="6.0"
-                                                                       styleClass="stat-icon-gold"/>
+                                                                       styleClass="streak-day,streak-day--active"/>
                                                             <Rectangle width="12.0" height="12.0"
                                                                        arcWidth="6.0" arcHeight="6.0"
-                                                                       styleClass="stat-icon-gold"/>
+                                                                       styleClass="streak-day,streak-day--active"/>
                                                             <Rectangle width="12.0" height="12.0"
                                                                        arcWidth="6.0" arcHeight="6.0"
-                                                                       styleClass="stat-icon-gold"/>
+                                                                       styleClass="streak-day,streak-day--active"/>
                                                             <Rectangle width="12.0" height="12.0"
                                                                        arcWidth="6.0" arcHeight="6.0"
-                                                                       styleClass="stat-icon-gold"/>
+                                                                       styleClass="streak-day,streak-day--active"/>
                                                             <Rectangle width="12.0" height="12.0"
                                                                        arcWidth="6.0" arcHeight="6.0"
-                                                                       styleClass="stat-icon-gold"/>
+                                                                       styleClass="streak-day,streak-day--active"/>
                                                             <Rectangle width="12.0" height="12.0"
                                                                        arcWidth="6.0" arcHeight="6.0"
-                                                                       styleClass="stat-icon-gold"/>
+                                                                       styleClass="streak-day,streak-day--active"/>
                                                             <!-- empty dots -->
                                                             <Rectangle width="12.0" height="12.0"
-                                                                       arcWidth="6.0" arcHeight="6.0"/>
+                                                                       arcWidth="6.0" arcHeight="6.0"
+                                                                       styleClass="streak-day,streak-day--empty"/>
                                                             <Rectangle width="12.0" height="12.0"
-                                                                       arcWidth="6.0" arcHeight="6.0"/>
+                                                                       arcWidth="6.0" arcHeight="6.0"
+                                                                       styleClass="streak-day,streak-day--empty"/>
                                                             <Rectangle width="12.0" height="12.0"
-                                                                       arcWidth="6.0" arcHeight="6.0"/>
+                                                                       arcWidth="6.0" arcHeight="6.0"
+                                                                       styleClass="streak-day,streak-day--empty"/>
                                                         </children>
                                                     </HBox>
                                                 </children>

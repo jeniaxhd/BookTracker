@@ -1,59 +1,82 @@
 package sk.upjs.paz.ui;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.stage.Window;
+import javafx.util.Duration;
 
 public class SessionBarController {
 
-    @FXML
-    private HBox root;
+    @FXML private HBox root;
 
-    @FXML
-    private Label bookTitleLabel;
+    @FXML private Label bookTitleLabel;
+    @FXML private Label bookSubtitleLabel;
+    @FXML private Label statusPillLabel;
 
-    @FXML
-    private Label bookSubtitleLabel;
+    @FXML private Label timerLabel;
+    @FXML private Label timerCaptionLabel;
 
-    @FXML
-    private Label statusPillLabel;
+    @FXML private Button playPauseButton;
+    @FXML private Button stopButton;
+    @FXML private Button moreButton;
 
-    @FXML
-    private Label timerLabel;
-
-    @FXML
-    private Label timerCaptionLabel;
-
-    @FXML
-    private Button playPauseButton;
-
-    @FXML
-    private Button stopButton;
-
-    @FXML
-    private Button moreButton;
-
-    private boolean running = true;
+    private boolean running = false;
+    private int seconds = 0;
+    private Timeline timeline;
 
     @FXML
     private void initialize() {
-        // Default demo values – you can override them from outside
-        if (bookTitleLabel != null && bookTitleLabel.getText() == null) {
+        if (bookTitleLabel != null && isBlank(bookTitleLabel.getText())) {
             bookTitleLabel.setText("Current book");
         }
-        if (bookSubtitleLabel != null && bookSubtitleLabel.getText() == null) {
+        if (bookSubtitleLabel != null && isBlank(bookSubtitleLabel.getText())) {
             bookSubtitleLabel.setText("Author · Category");
         }
-        if (timerLabel != null && timerLabel.getText() == null) {
-            timerLabel.setText("00:00");
-        }
-        if (timerCaptionLabel != null && timerCaptionLabel.getText() == null) {
-            timerCaptionLabel.setText("Ready to read");
+        if (statusPillLabel != null && isBlank(statusPillLabel.getText())) {
+            statusPillLabel.setText("In Progress");
         }
 
-        setPauseIcon(); // start as “running”
+        if (timerLabel != null) timerLabel.setText("00:00");
+        if (timerCaptionLabel != null) timerCaptionLabel.setText("Ready to read");
+
+        timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> tick()));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+
+        setPlayIcon();
     }
+
+    // ===== Public API =====
+
+    public void startSession(String title, String subtitle, String status) {
+        setBookTitle(title != null ? title : "Current book");
+        setBookSubtitle(subtitle != null ? subtitle : "");
+        setStatusText(status != null ? status : "");
+
+        resetTimer();
+        running = true;
+        setPauseIcon();
+
+        if (timerCaptionLabel != null) timerCaptionLabel.setText("Reading now");
+        if (timeline != null) timeline.playFromStart();
+    }
+
+    public void setBookTitle(String title) {
+        if (bookTitleLabel != null) bookTitleLabel.setText(title);
+    }
+
+    public void setBookSubtitle(String subtitle) {
+        if (bookSubtitleLabel != null) bookSubtitleLabel.setText(subtitle);
+    }
+
+    public void setStatusText(String status) {
+        if (statusPillLabel != null) statusPillLabel.setText(status);
+    }
+
+    // ===== UI handlers =====
 
     @FXML
     private void handlePlayPause() {
@@ -61,62 +84,112 @@ public class SessionBarController {
 
         if (running) {
             setPauseIcon();
-            timerCaptionLabel.setText("Reading now");
-            // TODO: resume timer logic
+            if (timerCaptionLabel != null) timerCaptionLabel.setText("Reading now");
+            if (timeline != null) timeline.play();
         } else {
             setPlayIcon();
-            timerCaptionLabel.setText("Paused");
-            // TODO: pause timer logic
+            if (timerCaptionLabel != null) timerCaptionLabel.setText("Paused");
+            if (timeline != null) timeline.pause();
         }
     }
 
     @FXML
     private void handleStop() {
+        // Pause timer while end-session modal is open
+        boolean wasRunning = running;
         running = false;
+        if (timeline != null) timeline.pause();
         setPlayIcon();
-        timerLabel.setText("00:00");
-        timerCaptionLabel.setText("Stopped");
-        // TODO: end session, open EndSession dialog if needed
+        if (timerCaptionLabel != null) timerCaptionLabel.setText("Stopped");
+
+        EndSessionController end = openEndSessionModal();
+        if (end != null && (end.isSessionSaved() || end.isDiscarded())) {
+            // Hide global bar
+            SessionBarHost.hide();
+            // Optional: reset local state
+            resetTimer();
+            return;
+        }
+
+        // If user closed modal without saving/discarding, restore previous state
+        running = wasRunning;
+        if (running) {
+            setPauseIcon();
+            if (timerCaptionLabel != null) timerCaptionLabel.setText("Reading now");
+            if (timeline != null) timeline.play();
+        } else {
+            setPlayIcon();
+            if (timerCaptionLabel != null) timerCaptionLabel.setText("Paused");
+        }
     }
 
     @FXML
     private void handleMore() {
-        // TODO: open menu / book details / options
+        if (timerCaptionLabel != null) timerCaptionLabel.setText("More (TODO)");
+        // TODO: open context menu or details
     }
 
-    // ===== helpers =====
+    // ===== Internals =====
+
+    private void tick() {
+        seconds++;
+        if (timerLabel != null) timerLabel.setText(format(seconds));
+    }
+
+    private void resetTimer() {
+        seconds = 0;
+        if (timerLabel != null) timerLabel.setText("00:00");
+    }
+
+    private EndSessionController openEndSessionModal() {
+        Window owner = (root != null && root.getScene() != null) ? root.getScene().getWindow() : null;
+        if (owner == null) return null;
+
+        // Provide placeholders; replace later with real book/session data
+        return SceneNavigator.showEndSessionModal(
+                owner,
+                safeText(bookTitleLabel, "Current book"),
+                safeText(bookSubtitleLabel, "Author · Category"),
+                safeText(statusPillLabel, "In Progress"),
+                "Current page: 187 / 320",
+                "10:14",
+                String.valueOf(Math.max(1, seconds / 60)),
+                "164",
+                "188"
+        );
+    }
 
     private void setPlayIcon() {
-        if (playPauseButton != null && playPauseButton.getGraphic() instanceof Label label) {
-            label.setText("▶");
-        } else if (playPauseButton != null) {
-            playPauseButton.setText("▶");
-        }
+        setIconText("▶");
     }
 
     private void setPauseIcon() {
-        if (playPauseButton != null && playPauseButton.getGraphic() instanceof Label label) {
-            label.setText("⏸");
-        } else if (playPauseButton != null) {
-            playPauseButton.setText("⏸");
+        setIconText("⏸");
+    }
+
+    private void setIconText(String t) {
+        if (playPauseButton == null) return;
+
+        if (playPauseButton.getGraphic() instanceof Label label) {
+            label.setText(t);
+        } else {
+            playPauseButton.setText(t);
         }
     }
 
-    // Optional setters, if you want to pass data from other controllers
-
-    public void setBookTitle(String title) {
-        bookTitleLabel.setText(title);
+    private String format(int totalSec) {
+        int m = totalSec / 60;
+        int s = totalSec % 60;
+        return String.format("%02d:%02d", m, s);
     }
 
-    public void setBookSubtitle(String subtitle) {
-        bookSubtitleLabel.setText(subtitle);
+    private boolean isBlank(String s) {
+        return s == null || s.trim().isEmpty();
     }
 
-    public void setStatusText(String status) {
-        statusPillLabel.setText(status);
-    }
-
-    public void setTimerText(String text) {
-        timerLabel.setText(text);
+    private String safeText(Label label, String fallback) {
+        if (label == null) return fallback;
+        String t = label.getText();
+        return isBlank(t) ? fallback : t;
     }
 }
