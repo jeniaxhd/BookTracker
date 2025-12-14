@@ -7,84 +7,73 @@ import javafx.stage.Window;
 
 public class EndSessionController {
 
-    @FXML
-    private BorderPane root;
+    @FXML private BorderPane root;
 
     // Book summary
-    @FXML
-    private Label bookTitleLabel;
-    @FXML
-    private Label bookMetaLabel;
-    @FXML
-    private Label statusPill;
-    @FXML
-    private Label currentPageLabel;
+    @FXML private Label bookTitleLabel;
+    @FXML private Label bookMetaLabel;
+    @FXML private Label statusPill;
+    @FXML private Label currentPageLabel;
 
     // Time
-    @FXML
-    private TextField startTimeField;
-    @FXML
-    private TextField durationField;
+    @FXML private TextField startTimeField;
+    @FXML private TextField durationField;
 
     // Notes
-    @FXML
-    private TextArea notesArea;
+    @FXML private TextArea notesArea;
 
     // Pages
-    @FXML
-    private TextField startPageField;
-    @FXML
-    private TextField endPageField;
-    @FXML
-    private Label pagesReadLabel;
+    @FXML private TextField startPageField;
+    @FXML private TextField endPageField;
+    @FXML private Label pagesReadLabel;
 
     // Feeling toggles
-    @FXML
-    private ToggleButton deepFocusToggle;
-    @FXML
-    private ToggleButton lightReadingToggle;
-    @FXML
-    private ToggleButton studyToggle;
-    @FXML
-    private ToggleButton relaxToggle;
+    @FXML private ToggleButton deepFocusToggle;
+    @FXML private ToggleButton lightReadingToggle;
+    @FXML private ToggleButton studyToggle;
+    @FXML private ToggleButton relaxToggle;
 
     // Checkboxes
-    @FXML
-    private CheckBox countToGoalCheck;
-    @FXML
-    private CheckBox markFinishedCheck;
+    @FXML private CheckBox countToGoalCheck;
+    @FXML private CheckBox markFinishedCheck;
 
-    // Result flags (for caller)
     private boolean sessionSaved = false;
     private boolean discarded = false;
 
+    private ToggleGroup feelGroup;
+
     @FXML
     private void initialize() {
-        // Make feel toggles behave like a "single choice" group
-        ToggleGroup feelGroup = new ToggleGroup();
+        // Defensive: if something is missing in FXML, do nothing instead of crashing
+        if (deepFocusToggle == null || lightReadingToggle == null || studyToggle == null || relaxToggle == null) {
+            return;
+        }
+
+        feelGroup = new ToggleGroup();
         deepFocusToggle.setToggleGroup(feelGroup);
         lightReadingToggle.setToggleGroup(feelGroup);
         studyToggle.setToggleGroup(feelGroup);
         relaxToggle.setToggleGroup(feelGroup);
 
-        // Default selection
         deepFocusToggle.setSelected(true);
 
-        // Update CSS class for active pill when selection changes
-        feelGroup.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
+        // Prevent "no selection" state
+        feelGroup.selectedToggleProperty().addListener((obs, oldT, newT) -> {
+            if (newT == null && oldT != null) {
+                oldT.setSelected(true);
+                return;
+            }
             updateFeelPillStyles();
         });
         updateFeelPillStyles();
 
-        // Live calculation of pages read when start/end change
-        startPageField.textProperty().addListener((obs, oldVal, newVal) -> updatePagesRead());
-        endPageField.textProperty().addListener((obs, oldVal, newVal) -> updatePagesRead());
+        if (startPageField != null) startPageField.textProperty().addListener((obs, o, n) -> updatePagesRead());
+        if (endPageField != null) endPageField.textProperty().addListener((obs, o, n) -> updatePagesRead());
 
-        // Initial compute
         updatePagesRead();
     }
 
-    // ====== Public API for caller ======
+    // ===== Public API =====
 
     public boolean isSessionSaved() {
         return sessionSaved;
@@ -94,58 +83,41 @@ public class EndSessionController {
         return discarded;
     }
 
-    /**
-     * Optional helper – you can call it from the code that opens this dialog
-     * to pre-fill fields based on active reading session.
-     */
-    public void setInitialData(String bookTitle,
-                               String bookMeta,
-                               String statusText,
-                               String currentPageText,
-                               String startTime,
-                               String durationMinutes,
-                               String startPage,
-                               String endPage) {
-        if (bookTitle != null) {
-            bookTitleLabel.setText(bookTitle);
-        }
-        if (bookMeta != null) {
-            bookMetaLabel.setText(bookMeta);
-        }
-        if (statusText != null) {
-            statusPill.setText(statusText);
-        }
-        if (currentPageText != null) {
-            currentPageLabel.setText(currentPageText);
-        }
-        if (startTime != null) {
-            startTimeField.setText(startTime);
-        }
-        if (durationMinutes != null) {
-            durationField.setText(durationMinutes);
-        }
-        if (startPage != null) {
-            startPageField.setText(startPage);
-        }
-        if (endPage != null) {
-            endPageField.setText(endPage);
-        }
+    public void setInitialData(
+            String bookTitle,
+            String bookMeta,
+            String statusText,
+            String currentPageText,
+            String startTime,
+            String durationMinutes,
+            String startPage,
+            String endPage
+    ) {
+        if (bookTitleLabel != null && bookTitle != null) bookTitleLabel.setText(bookTitle);
+        if (bookMetaLabel != null && bookMeta != null) bookMetaLabel.setText(bookMeta);
+        if (statusPill != null && statusText != null) statusPill.setText(statusText);
+        if (currentPageLabel != null && currentPageText != null) currentPageLabel.setText(currentPageText);
+
+        if (startTimeField != null && startTime != null) startTimeField.setText(startTime);
+        if (durationField != null && durationMinutes != null) durationField.setText(durationMinutes);
+
+        if (startPageField != null && startPage != null) startPageField.setText(startPage);
+        if (endPageField != null && endPage != null) endPageField.setText(endPage);
 
         updatePagesRead();
     }
 
-    // ====== Buttons handlers ======
+    // ===== Button handlers =====
 
     @FXML
     private void handleSave() {
-        // You could add simple validation here if needed
         sessionSaved = true;
+        discarded = false;
         closeWindow();
     }
 
     @FXML
     private void handleCancel() {
-        // Just close, do not mark as saved or discarded
         closeWindow();
     }
 
@@ -158,33 +130,31 @@ public class EndSessionController {
 
     @FXML
     private void handleClose() {
-        // Same behavior as cancel icon
         closeWindow();
     }
 
-    // ====== Internal helpers ======
+    // ===== Internal helpers =====
 
     private void closeWindow() {
-        Window w = root.getScene() != null ? root.getScene().getWindow() : null;
-        if (w != null) {
-            w.hide();
-        }
+        Window w = (root != null && root.getScene() != null) ? root.getScene().getWindow() : null;
+        if (w != null) w.hide();
     }
 
     private void updatePagesRead() {
-        int start = parseIntSafe(startPageField.getText());
-        int end = parseIntSafe(endPageField.getText());
+        if (pagesReadLabel == null) return;
+
+        int start = parseIntSafe(startPageField != null ? startPageField.getText() : null);
+        int end = parseIntSafe(endPageField != null ? endPageField.getText() : null);
+
         int pagesRead = 0;
         if (start > 0 && end >= start) {
-            pagesRead = end - start;
+            pagesRead = end - start; // keep your logic
         }
         pagesReadLabel.setText(String.valueOf(pagesRead));
     }
 
     private int parseIntSafe(String value) {
-        if (value == null) {
-            return 0;
-        }
+        if (value == null) return 0;
         try {
             return Integer.parseInt(value.trim());
         } catch (NumberFormatException e) {
@@ -193,7 +163,6 @@ public class EndSessionController {
     }
 
     private void updateFeelPillStyles() {
-        // We use CSS class "session-feel-pill--active" for selected pill
         updateSinglePillStyle(deepFocusToggle);
         updateSinglePillStyle(lightReadingToggle);
         updateSinglePillStyle(studyToggle);
@@ -201,6 +170,8 @@ public class EndSessionController {
     }
 
     private void updateSinglePillStyle(ToggleButton btn) {
+        if (btn == null) return;
+
         if (btn.isSelected()) {
             if (!btn.getStyleClass().contains("session-feel-pill--active")) {
                 btn.getStyleClass().add("session-feel-pill--active");

@@ -1,4 +1,4 @@
-package sk.upjs.paz;
+/*package sk.upjs.paz;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -10,7 +10,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/readingSessionBar.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/dashboard.fxml"));
         Scene scene = new Scene(root);
 
         stage.setTitle("Login");
@@ -21,9 +21,9 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch();
     }
-}
+}*/
 
-/*
+
 package sk.upjs.paz;
 
 import javafx.application.Application;
@@ -33,13 +33,15 @@ import sk.upjs.paz.ui.SceneNavigator;
 public class Main extends Application {
 
     @Override
-    public void start(Stage primaryStage) {
-        SceneNavigator.setMainStage(primaryStage);
-        SceneNavigator.showLogin();
+    public void start(Stage stage) {
+        SceneNavigator.init(stage);
+        SceneNavigator.showDashboard();
     }
+
+
+
 
     public static void main(String[] args) {
         launch(args);
     }
 }
-*/

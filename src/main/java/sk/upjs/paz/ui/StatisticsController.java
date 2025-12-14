@@ -6,69 +6,50 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.FlowPane;
 
 public class StatisticsController {
 
-    // Root
     @FXML
     private BorderPane root;
 
-    // Sidebar navigation (optional – may be null if fx:id missing)
+    // Sidebar
     @FXML
     private ToggleButton dashboardNavButton;
-
     @FXML
     private ToggleButton libraryNavButton;
-
     @FXML
     private ToggleButton currentlyReadingNavButton;
-
     @FXML
     private ToggleButton statisticsNavButton;
-
     @FXML
     private ToggleButton settingsNavButton;
 
-    // User profile (optional)
+    // User
     @FXML
     private Button userProfileButton;
-
     @FXML
     private Label userNameLabel;
 
     // Header
     @FXML
     private Label headerTitleLabel;
-
     @FXML
     private ComboBox<String> timeRangeCombo;
 
     @FXML
-    private ToggleButton themeToggle;      // if you change it to Button in FXML, this will stay null
+    private ToggleButton themeToggle;
+    @FXML
+    private ImageView themeIcon;
 
     @FXML
-    private ImageView themeIcon;           // optional – only if defined in FXML
+    private Button notificationsButton;
+    @FXML
+    private ImageView notificationsIcon;
 
     @FXML
-    private Button notificationsButton;    // optional
+    private Button exportButton;
 
-    @FXML
-    private ImageView notificationsIcon;   // optional
-
-    @FXML
-    private Button exportButton;           // optional
-
-    // Scrollable content
-    @FXML
-    private ScrollPane contentScrollPane;
-
-    @FXML
-    private VBox contentRoot;
-
-    // Stylesheets
-    private String lightThemeUrl;
-    private String darkThemeUrl;
 
     // Icons
     private Image bellLight;
@@ -78,168 +59,108 @@ public class StatisticsController {
 
     @FXML
     private void initialize() {
-        // Navigation group – use only buttons that are actually injected
+        // Sidebar toggle group
         ToggleGroup navGroup = new ToggleGroup();
-        if (dashboardNavButton != null) {
-            dashboardNavButton.setToggleGroup(navGroup);
-        }
-        if (libraryNavButton != null) {
-            libraryNavButton.setToggleGroup(navGroup);
-        }
-        if (currentlyReadingNavButton != null) {
-            currentlyReadingNavButton.setToggleGroup(navGroup);
-        }
-        if (statisticsNavButton != null) {
-            statisticsNavButton.setToggleGroup(navGroup);
-            statisticsNavButton.setSelected(true);
-        }
-        if (settingsNavButton != null) {
-            settingsNavButton.setToggleGroup(navGroup);
+        dashboardNavButton.setToggleGroup(navGroup);
+        libraryNavButton.setToggleGroup(navGroup);
+        currentlyReadingNavButton.setToggleGroup(navGroup);
+        statisticsNavButton.setToggleGroup(navGroup);
+        settingsNavButton.setToggleGroup(navGroup);
+        statisticsNavButton.setSelected(true);
+
+        // Header
+        if (headerTitleLabel != null) headerTitleLabel.setText("Statistics");
+
+        // User name
+        if (userNameLabel != null && AppState.getCurrentUser() != null) {
+            userNameLabel.setText(AppState.getCurrentUser().getName());
         }
 
-        // Header title
-        if (headerTitleLabel != null) {
-            headerTitleLabel.setText("Statistics");
-        }
-
-        // Time range combo
+        // Combo
         if (timeRangeCombo != null) {
-            timeRangeCombo.getItems().setAll(
-                    "Last 7 days",
-                    "Last 30 days",
-                    "This year",
-                    "All time"
-            );
+            timeRangeCombo.getItems().setAll("Last 7 days", "Last 30 days", "This year", "All time");
             timeRangeCombo.getSelectionModel().select("Last 30 days");
         }
 
-        // Stylesheet URLs
-        lightThemeUrl = getClass().getResource("/css/lightTheme.css").toExternalForm();
-        darkThemeUrl  = getClass().getResource("/css/darkTheme.css").toExternalForm();
-
-        // Icons (only used if corresponding ImageView is present)
+        // Icons (safe)
         bellLight = load("/img/logoLight/bell.png");
-        bellDark  = load("/img/logoDark/bell.png");
-        moonIcon  = load("/img/logoLight/moon.png");
-        sunIcon   = load("/img/logoDark/sun.png");
+        bellDark = load("/img/logoDark/bell.png");
+        moonIcon = load("/img/logoLight/moon.png");
+        sunIcon = load("/img/logoDark/sun.png");
 
-        // Apply default theme when scene is attached
-        if (root != null) {
-            root.sceneProperty().addListener((obs, oldScene, newScene) -> {
-                if (newScene != null) {
-                    switchToLightTheme();
-                }
-            });
+        // Apply theme when scene is attached + sync icons
+        root.sceneProperty().addListener((obs, oldScene, newScene) -> {
+            if (newScene != null) {
+                ThemeManager.apply(newScene);
+                updateIconsForTheme();
+            }
+        });
+
+        // In case scene is already present
+        if (root.getScene() != null) {
+            ThemeManager.apply(root.getScene());
+            updateIconsForTheme();
         }
     }
 
     private Image load(String path) {
-        return new Image(getClass().getResource(path).toExternalForm());
+        var url = getClass().getResource(path);
+        return url == null ? null : new Image(url.toExternalForm());
     }
 
-    // ========= THEME TOGGLE =========
-
+    // ===== THEME =====
     @FXML
     private void onToggleTheme(ActionEvent event) {
-        if (root == null) {
-            return;
-        }
-        var stylesheets = root.getStylesheets();
-        boolean darkActive = stylesheets.contains(darkThemeUrl);
-
-        if (darkActive) {
-            switchToLightTheme();
-        } else {
-            switchToDarkTheme();
-        }
+        ThemeManager.toggle();
+        ThemeManager.apply(root.getScene());
+        updateIconsForTheme();
     }
 
-    private void switchToLightTheme() {
-        if (root == null) return;
+    private void updateIconsForTheme() {
+        boolean dark = ThemeManager.isDarkMode();
 
-        var stylesheets = root.getStylesheets();
-        stylesheets.remove(darkThemeUrl);
-        if (!stylesheets.contains(lightThemeUrl)) {
-            stylesheets.add(lightThemeUrl);
-        }
-
-        // Icons for light theme
-        if (notificationsIcon != null) {
-            notificationsIcon.setImage(bellLight);
-        }
-        if (themeIcon != null) {
-            themeIcon.setImage(moonIcon);
-        }
-        if (themeToggle != null) {
-            themeToggle.setSelected(false);
-        }
+        if (themeToggle != null) themeToggle.setSelected(dark);
+        if (themeIcon != null) themeIcon.setImage(dark ? sunIcon : moonIcon);
+        if (notificationsIcon != null) notificationsIcon.setImage(dark ? bellDark : bellLight);
     }
 
-    private void switchToDarkTheme() {
-        if (root == null) return;
-
-        var stylesheets = root.getStylesheets();
-        stylesheets.remove(lightThemeUrl);
-        if (!stylesheets.contains(darkThemeUrl)) {
-            stylesheets.add(darkThemeUrl);
-        }
-
-        // Icons for dark theme
-        if (notificationsIcon != null) {
-            notificationsIcon.setImage(bellDark);
-        }
-        if (themeIcon != null) {
-            themeIcon.setImage(sunIcon);
-        }
-        if (themeToggle != null) {
-            themeToggle.setSelected(true);
-        }
-    }
-
-    // ========= NAVIGATION HANDLERS =========
-
+    // ===== NAVIGATION =====
     @FXML
     private void onDashboardSelected(ActionEvent event) {
-        // TODO: SceneNavigator.showDashboard();
+        SceneNavigator.showDashboard();
     }
 
     @FXML
     private void onLibrarySelected(ActionEvent event) {
-        // TODO: SceneNavigator.showLibrary();
+        SceneNavigator.showLibrary();
     }
 
     @FXML
     private void onCurrentlyReadingSelected(ActionEvent event) {
-        // TODO: SceneNavigator.showCurrentlyReading();
+        SceneNavigator.showCurrentlyReading();
     }
 
     @FXML
     private void onStatisticsSelected(ActionEvent event) {
-        if (statisticsNavButton != null) {
-            statisticsNavButton.setSelected(true);
-        }
-        // TODO: maybe refresh statistics later
+        statisticsNavButton.setSelected(true);
     }
 
     @FXML
     private void onSettingsSelected(ActionEvent event) {
-        // TODO: SceneNavigator.showSettings();
+        SceneNavigator.showSettings();
     }
 
-    // ========= HEADER ACTIONS =========
-
+    // ===== HEADER ACTIONS =====
     @FXML
     private void onNotifications(ActionEvent event) {
-        // TODO: open notifications panel
+        SceneNavigator.toggleNotifications(notificationsButton);
     }
 
     @FXML
-    private void onExportReport(ActionEvent event) {
-        // TODO: export report
-    }
+    private void onExportReport(ActionEvent event) { /* TODO */ }
 
     @FXML
     private void onUserProfile(ActionEvent event) {
-        // TODO: open user profile
+        SceneNavigator.showUserProfile();
     }
 }

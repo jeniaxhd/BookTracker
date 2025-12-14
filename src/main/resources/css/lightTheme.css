@@ -1333,3 +1333,12 @@
     -fx-text-fill: #6C6C70;
     -fx-font-size: 10px;
 }
+.field-error {
+    -fx-border-color: #e05555;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+.field-error:focused {
+    -fx-border-color: #e05555;
+}

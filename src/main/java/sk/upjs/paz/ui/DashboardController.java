@@ -86,9 +86,6 @@ public class DashboardController {
     @FXML
     private Button userProfileButton;
 
-    // Stylesheet URLs
-    private String lightThemeUrl;
-    private String darkThemeUrl;
 
     // Icons used on light and dark background
     private Image searchLight;   // for light theme
@@ -112,25 +109,33 @@ public class DashboardController {
         if (headerTitleLabel != null) {
             headerTitleLabel.setText("Dashboard");
         }
+        if (userNameLabel != null && AppState.getCurrentUser() != null) {
+            userNameLabel.setText(AppState.getCurrentUser().getName());
+        }
 
-        // Resolve stylesheet URLs
-        lightThemeUrl = getClass().getResource("/css/lightTheme.css").toExternalForm();
-        darkThemeUrl = getClass().getResource("/css/darkTheme.css").toExternalForm();
+
 
         // Load icon images
         searchLight = load("/img/logoLight/search.png");
-        searchDark  = load("/img/logoDark/search.png");
-        bellLight   = load("/img/logoLight/bell.png");
-        bellDark    = load("/img/logoDark/bell.png");
-        moonIcon    = load("/img/logoLight/moon.png");
-        sunIcon     = load("/img/logoDark/sun.png");
+        searchDark = load("/img/logoDark/search.png");
+        bellLight = load("/img/logoLight/bell.png");
+        bellDark = load("/img/logoDark/bell.png");
+        moonIcon = load("/img/logoLight/moon.png");
+        sunIcon = load("/img/logoDark/sun.png");
 
         // When the scene is attached, apply default (light) theme and icons
         root.sceneProperty().addListener((obs, oldScene, newScene) -> {
             if (newScene != null) {
-                switchToLightTheme();
+                ThemeManager.apply(newScene);
+                updateIconsForTheme();
             }
         });
+        if (root.getScene() != null) {
+            ThemeManager.apply(root.getScene());
+            updateIconsForTheme();
+        }
+
+
 
         // Example initial values for stats
         if (booksReadValueLabel != null) {
@@ -142,95 +147,63 @@ public class DashboardController {
     }
 
     private Image load(String path) {
-        return new Image(getClass().getResource(path).toExternalForm());
+        var url = getClass().getResource(path);
+        return url == null ? null : new Image(url.toExternalForm());
     }
+
 
     // ========== THEME TOGGLE ==========
 
     @FXML
     private void onToggleTheme(ActionEvent event) {
-        var stylesheets = root.getStylesheets();
-        boolean darkActive = stylesheets.contains(darkThemeUrl);
+        ThemeManager.toggle();
 
-        if (darkActive) {
-            switchToLightTheme();
-        } else {
-            switchToDarkTheme();
-        }
+        var scene = root.getScene();
+        ThemeManager.apply(scene);
+
+        updateIconsForTheme();
     }
 
-    private void switchToLightTheme() {
-        var stylesheets = root.getStylesheets();
-        stylesheets.remove(darkThemeUrl);
-        if (!stylesheets.contains(lightThemeUrl)) {
-            stylesheets.add(lightThemeUrl);
-        }
+    private void updateIconsForTheme() {
+        boolean dark = ThemeManager.isDarkMode();
 
-        searchIcon.setImage(searchLight);
-        notificationsIcon.setImage(bellLight);
-        themeIcon.setImage(moonIcon);  // show moon when app is in light mode
+        if (searchIcon != null) searchIcon.setImage(dark ? searchDark : searchLight);
+        if (notificationsIcon != null) notificationsIcon.setImage(dark ? bellDark : bellLight);
+        if (themeIcon != null) themeIcon.setImage(dark ? sunIcon : moonIcon);
 
-        themeToggle.setSelected(false);
-    }
-
-    private void switchToDarkTheme() {
-        var stylesheets = root.getStylesheets();
-        stylesheets.remove(lightThemeUrl);
-        if (!stylesheets.contains(darkThemeUrl)) {
-            stylesheets.add(darkThemeUrl);
-        }
-
-        searchIcon.setImage(searchDark);
-        notificationsIcon.setImage(bellDark);
-        themeIcon.setImage(sunIcon);   // show sun when app is in dark mode
-
-        themeToggle.setSelected(true);
+        if (themeToggle != null) themeToggle.setSelected(dark);
     }
 
     // ========== NAVIGATION HANDLERS ==========
 
     @FXML
     private void onDashboardSelected(ActionEvent event) {
-        if (headerTitleLabel != null) {
-            headerTitleLabel.setText("Dashboard");
-        }
-        // content stays the same for now
+        //already here
     }
+
 
     @FXML
     private void onLibrarySelected(ActionEvent event) {
-        if (headerTitleLabel != null) {
-            headerTitleLabel.setText("Library");
-        }
+        SceneNavigator.showLibrary();
     }
 
     @FXML
     private void onCurrentlyReadingSelected(ActionEvent event) {
-        if (headerTitleLabel != null) {
-            headerTitleLabel.setText("Currently Reading");
-        }
+        SceneNavigator.showCurrentlyReading();
     }
 
     @FXML
     private void onStatisticsSelected(ActionEvent event) {
-        if (headerTitleLabel != null) {
-            headerTitleLabel.setText("Statistics");
-        }
+        SceneNavigator.showStatistics();
     }
 
     @FXML
     private void onSettingsSelected(ActionEvent event) {
-        if (headerTitleLabel != null) {
-            headerTitleLabel.setText("Settings");
-        }
+        SceneNavigator.showSettings();
     }
 
     // ========== HEADER BUTTONS ==========
 
-    @FXML
-    private void onAddBook(ActionEvent event) {
-        // TODO: SceneNavigator.showAddBook();
-    }
 
     @FXML
     private void onSearch(ActionEvent event) {
@@ -239,11 +212,17 @@ public class DashboardController {
 
     @FXML
     private void onNotifications(ActionEvent event) {
-        // TODO: open notifications panel
+        SceneNavigator.toggleNotifications(notificationsButton);
     }
 
     @FXML
     private void onUserProfile(ActionEvent event) {
-        // TODO: open user profile screen or dialog
+        SceneNavigator.showUserProfile();
     }
+
+    @FXML
+    private void onAddBook(ActionEvent event) {
+        SceneNavigator.showAddBookModal(root.getScene().getWindow());
+    }
+
 }

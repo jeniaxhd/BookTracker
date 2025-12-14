@@ -15,11 +15,6 @@
             fx:controller="sk.upjs.paz.ui.StatisticsController"
             styleClass="dashboard-root">
 
-    <!-- shared CSS -->
-    <stylesheets>
-        <URL value="@../css/lightTheme.css"/>
-    </stylesheets>
-
     <!-- ========== SIDEBAR ========== -->
     <left>
         <VBox prefWidth="240.0"

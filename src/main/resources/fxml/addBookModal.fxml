@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.image.ImageView?>
 <BorderPane fx:id="root"
             prefWidth="920.0"
             prefHeight="620.0"
             xmlns="http://javafx.com/javafx/17.0.12"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="sk.upjs.paz.ui.AddBookModalController"
-            styleClass="dashboard-root,addbook-window">
+            styleClass="dashboard-root addbook-window">
 
-    <!-- light theme; dark додається з основного вікна -->
-    <stylesheets>
-        <URL value="@../css/lightTheme.css"/>
-    </stylesheets>
+    <!-- НЕ додаємо тут stylesheets!
+         Тему дає код, який відкриває модалку: ThemeManager.apply(dialogScene) -->
 
     <!-- ===== HEADER ===== -->
     <top>
-        <VBox styleClass="header,addbook-header">
+        <VBox styleClass="header addbook-header">
             <children>
                 <HBox alignment="CENTER_LEFT" spacing="16.0">
                     <padding>
@@ -28,7 +26,6 @@
                     </padding>
                     <children>
 
-                        <!-- Title + subtitle -->
                         <VBox spacing="4.0">
                             <children>
                                 <Label text="Add Book"
@@ -41,10 +38,9 @@
 
                         <Pane HBox.hgrow="ALWAYS"/>
 
-                        <!-- Close button (X) -->
                         <Button fx:id="closeButton"
                                 onAction="#onCancel"
-                                styleClass="header-icon-button,addbook-close-button">
+                                styleClass="header-icon-button addbook-close-button">
                             <graphic>
                                 <Label text="✕"/>
                             </graphic>
@@ -66,31 +62,30 @@
                     </padding>
                     <children>
 
-                        <!-- Two main cards: cover + details -->
                         <HBox spacing="24.0">
                             <children>
 
                                 <!-- LEFT: cover card -->
                                 <VBox prefWidth="340.0"
                                       spacing="16.0"
-                                      styleClass="stat-card,addbook-cover-card">
+                                      styleClass="stat-card addbook-cover-card">
                                     <children>
                                         <Label text="Book cover &amp; preview"
                                                styleClass="section-title"/>
 
-                                        <VBox alignment="CENTER"
-                                              spacing="8.0"
-                                              styleClass="upload-dropzone">
+                                        <VBox alignment="CENTER" spacing="8.0" styleClass="upload-dropzone">
                                             <children>
-                                                <Label text="⤓"
-                                                       styleClass="book-card-placeholder-icon"/>
-                                                <Label alignment="CENTER"
-                                                       maxWidth="220.0"
-                                                       wrapText="true"
+                                                <ImageView fx:id="coverPreview"
+                                                           fitWidth="220"
+                                                           fitHeight="300"
+                                                           preserveRatio="true"
+                                                           smooth="true"/>
+                                                <Label fx:id="coverPlaceholderLabel"
                                                        text="Upload cover"
                                                        styleClass="book-card-placeholder-text"/>
                                             </children>
                                         </VBox>
+
 
                                         <Button fx:id="uploadCoverButton"
                                                 maxWidth="Infinity"
@@ -102,8 +97,8 @@
 
                                 <!-- RIGHT: details card -->
                                 <VBox spacing="16.0"
-                                      styleClass="stat-card,addbook-details-card"
-                                      HBox.hgrow="ALWAYS">
+                                      HBox.hgrow="ALWAYS"
+                                      styleClass="stat-card addbook-details-card">
                                     <children>
 
                                         <Label text="Book details"
@@ -115,7 +110,6 @@
                                                 <Label text="Basic information"
                                                        styleClass="header-subtitle"/>
 
-                                                <!-- Title -->
                                                 <VBox spacing="4.0">
                                                     <children>
                                                         <Label text="Book title"/>
@@ -124,7 +118,6 @@
                                                     </children>
                                                 </VBox>
 
-                                                <!-- Author -->
                                                 <VBox spacing="4.0">
                                                     <children>
                                                         <Label text="Author"/>
@@ -133,12 +126,10 @@
                                                     </children>
                                                 </VBox>
 
-                                                <!-- Category + Format -->
                                                 <HBox spacing="12.0">
                                                     <children>
 
-                                                        <VBox spacing="4.0"
-                                                              HBox.hgrow="ALWAYS">
+                                                        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
                                                             <children>
                                                                 <Label text="Category"/>
                                                                 <ComboBox fx:id="categoryBox"
@@ -146,8 +137,7 @@
                                                             </children>
                                                         </VBox>
 
-                                                        <VBox spacing="4.0"
-                                                              HBox.hgrow="ALWAYS">
+                                                        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
                                                             <children>
                                                                 <Label text="Format"/>
                                                                 <ComboBox fx:id="formatBox"
@@ -158,7 +148,6 @@
                                                     </children>
                                                 </HBox>
 
-                                                <!-- Language -->
                                                 <VBox spacing="4.0">
                                                     <children>
                                                         <Label text="Language"/>
@@ -167,16 +156,16 @@
                                                     </children>
                                                 </VBox>
 
-                                                <!-- Tags -->
-                                                <VBox spacing="4.0">
+                                                <VBox spacing="6.0">
                                                     <children>
                                                         <Label text="Tags (optional)"/>
                                                         <TextField fx:id="tagsField"
                                                                    promptText="Type and press Enter to add tags"/>
+                                                        <FlowPane fx:id="tagsPane" hgap="8" vgap="8"/>
                                                     </children>
                                                 </VBox>
 
-                                                <!-- Notes -->
+
                                                 <VBox spacing="4.0">
                                                     <children>
                                                         <Label text="Notes (optional)"/>

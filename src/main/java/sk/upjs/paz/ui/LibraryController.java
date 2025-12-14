@@ -23,70 +23,56 @@ public class LibraryController {
     // Sidebar navigation
     @FXML
     private ToggleButton dashboardNavButton;
-
     @FXML
     private ToggleButton libraryNavButton;
-
     @FXML
     private ToggleButton currentlyReadingNavButton;
-
     @FXML
     private ToggleButton statisticsNavButton;
-
     @FXML
     private ToggleButton settingsNavButton;
 
     // User profile
     @FXML
     private Button userProfileButton;
-
     @FXML
     private Label userNameLabel;
 
     // Header
     @FXML
     private Label headerTitleLabel;
-
     @FXML
     private TextField searchField;
 
     @FXML
     private Button filterButton;
-
     @FXML
     private ImageView filterIcon;
 
     @FXML
     private ToggleButton themeToggle;
-
     @FXML
     private ImageView themeIcon;
 
     @FXML
     private Button addBookButton;
 
-    // Content
+    // Content (do NOT clear this - it contains your whole layout from FXML)
     @FXML
     private ScrollPane contentScrollPane;
-
     @FXML
     private VBox contentRoot;
 
-    // Stylesheets
-    private String lightThemeUrl;
-    private String darkThemeUrl;
+    // Icons
+    private Image moonIcon;
+    private Image sunIcon;
 
-    // Theme icons
-    private Image moonIcon;   // icon shown in light theme
-    private Image sunIcon;    // icon shown in dark theme
-
-    // Filter (settings) icons
-    private Image filterLight; // for light background
-    private Image filterDark;  // for dark background
+    private Image filterLight;
+    private Image filterDark;
 
     @FXML
     private void initialize() {
-        // Group navigation buttons so only one is selected at a time
+        // Sidebar group
         ToggleGroup navGroup = new ToggleGroup();
         dashboardNavButton.setToggleGroup(navGroup);
         libraryNavButton.setToggleGroup(navGroup);
@@ -95,108 +81,81 @@ public class LibraryController {
         settingsNavButton.setToggleGroup(navGroup);
         libraryNavButton.setSelected(true);
 
-        if (headerTitleLabel != null) {
-            headerTitleLabel.setText("Library");
+        if (headerTitleLabel != null) headerTitleLabel.setText("Library");
+
+        if (userNameLabel != null && AppState.getCurrentUser() != null) {
+            userNameLabel.setText(AppState.getCurrentUser().getName());
         }
 
-        // Resolve stylesheet URLs
-        lightThemeUrl = getClass().getResource("/css/lightTheme.css").toExternalForm();
-        darkThemeUrl = getClass().getResource("/css/darkTheme.css").toExternalForm();
-
-        // Load icons
+        // Load icons (safe)
         moonIcon = load("/img/logoLight/moon.png");
         sunIcon = load("/img/logoDark/sun.png");
+
         filterLight = load("/img/logoLight/settings.png");
         filterDark = load("/img/logoDark/settings.png");
 
-        // Apply default theme when the scene is attached
+        // Apply theme + icons when scene is attached
         root.sceneProperty().addListener((obs, oldScene, newScene) -> {
             if (newScene != null) {
-                switchToLightTheme();
+                ThemeManager.apply(newScene);
+                updateIconsForTheme();
             }
         });
+        if (root.getScene() != null) {
+            ThemeManager.apply(root.getScene());
+            updateIconsForTheme();
+        }
     }
 
     private Image load(String path) {
-        return new Image(getClass().getResource(path).toExternalForm());
+        var url = getClass().getResource(path);
+        return url == null ? null : new Image(url.toExternalForm());
     }
 
     // ===== THEME TOGGLE =====
 
     @FXML
     private void onToggleTheme(ActionEvent event) {
-        var stylesheets = root.getStylesheets();
-        boolean darkActive = stylesheets.contains(darkThemeUrl);
-
-        if (darkActive) {
-            switchToLightTheme();
-        } else {
-            switchToDarkTheme();
-        }
+        ThemeManager.toggle();
+        ThemeManager.apply(root.getScene());
+        updateIconsForTheme();
     }
 
-    private void switchToLightTheme() {
-        var stylesheets = root.getStylesheets();
-        stylesheets.remove(darkThemeUrl);
-        if (!stylesheets.contains(lightThemeUrl)) {
-            stylesheets.add(lightThemeUrl);
-        }
+    private void updateIconsForTheme() {
+        boolean dark = ThemeManager.isDarkMode();
 
-        themeToggle.setSelected(false);
-        themeToggle.setText(null);
+        if (themeToggle != null) themeToggle.setSelected(dark);
+        if (themeIcon != null) themeIcon.setImage(dark ? sunIcon : moonIcon);
 
-        if (themeIcon != null) {
-            themeIcon.setImage(moonIcon); // moon in light mode
-        }
-        if (filterIcon != null) {
-            filterIcon.setImage(filterLight); // light settings icon
-        }
-    }
-
-    private void switchToDarkTheme() {
-        var stylesheets = root.getStylesheets();
-        stylesheets.remove(lightThemeUrl);
-        if (!stylesheets.contains(darkThemeUrl)) {
-            stylesheets.add(darkThemeUrl);
-        }
-
-        themeToggle.setSelected(true);
-        themeToggle.setText(null);
-
-        if (themeIcon != null) {
-            themeIcon.setImage(sunIcon); // sun in dark mode
-        }
-        if (filterIcon != null) {
-            filterIcon.setImage(filterDark); // dark settings icon
-        }
+        if (filterIcon != null) filterIcon.setImage(dark ? filterDark : filterLight);
     }
 
     // ===== NAVIGATION =====
 
     @FXML
     private void onDashboardSelected(ActionEvent event) {
-        // TODO: SceneNavigator.showDashboard();
+        SceneNavigator.showDashboard();
     }
 
     @FXML
     private void onLibrarySelected(ActionEvent event) {
+        // already here
         libraryNavButton.setSelected(true);
-        // Already on Library screen; later you can refresh data here
     }
 
     @FXML
     private void onCurrentlyReadingSelected(ActionEvent event) {
-        // TODO: SceneNavigator.showCurrentlyReading();
+        SceneNavigator.showCurrentlyReading();
     }
 
     @FXML
     private void onStatisticsSelected(ActionEvent event) {
-        // TODO: SceneNavigator.showStatistics();
+        SceneNavigator.showStatistics();
     }
 
     @FXML
     private void onSettingsSelected(ActionEvent event) {
-        // TODO: SceneNavigator.showSettings();
+        SceneNavigator.showSettings();
     }
 
     // ===== HEADER ACTIONS =====
@@ -204,16 +163,11 @@ public class LibraryController {
     @FXML
     private void onAddBook(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/fxml/addBookModal.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/addBookModal.fxml"));
             Parent dialogRoot = loader.load();
 
             Scene dialogScene = new Scene(dialogRoot);
-
-            // Inherit current styles (light or dark theme)
-            dialogScene.getStylesheets().addAll(
-                    root.getScene().getStylesheets()
-            );
+            ThemeManager.apply(dialogScene);
 
             Stage dialogStage = new Stage();
             dialogStage.setTitle("Add Book");
@@ -223,13 +177,18 @@ public class LibraryController {
             dialogStage.showAndWait();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Cannot open addBookModal.fxml", e);
         }
-
     }
 
     @FXML
     private void onUserProfile(ActionEvent event) {
-        // TODO: open user profile
+        SceneNavigator.showUserProfile();
     }
+
+    @FXML
+    private void onTopSettings(ActionEvent event) {
+        SceneNavigator.showSettings();
+    }
+
 }
