@@ -1050,8 +1050,8 @@
 .stat-icon-pink {
     -fx-background-color: linear-gradient(
             from 0% 0% to 100% 100%,
-            #ce7fae 0%,
-            #b86396 100%
+            #F26A7A 0%,
+            #D44B5C 100%
     );
 }
 
@@ -1341,4 +1341,20 @@
 }
 .field-error:focused {
     -fx-border-color: #e05555;
+}
+.tag-chip {
+    -fx-background-radius: 999;
+    -fx-padding: 4 10 4 10;
+    -fx-background-color: rgba(0,0,0,0.06);
+    -fx-alignment: center;
+}
+
+.tag-chip-text {
+    -fx-fill: -fx-text-base-color;
+}
+
+.tag-chip-remove {
+    -fx-background-color: transparent;
+    -fx-padding: 0 4 0 4;
+    -fx-cursor: hand;
 }
