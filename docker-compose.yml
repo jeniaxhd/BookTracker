@@ -1,0 +1,17 @@
+services:
+  mysql:
+    image: mysql:8.4.2
+    environment:
+      MYSQL_ROOT_PASSWORD: BookTrackerYevhenVadym2025
+      MYSQL_DATABASE: booktracker
+      MYSQL_USER: booktracker_user
+      MYSQL_PASSWORD: BookTrackerYevhenVadym2025
+    ports:
+      - "3308:3306"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s #default is 30s
+      timeout: 5s   #default is 30s
+      retries: 5    #default is 3

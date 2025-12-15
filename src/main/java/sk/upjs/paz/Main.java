@@ -38,10 +38,4 @@ public class Main extends Application {
         SceneNavigator.showDashboard();
     }
 
-
-
-
-    public static void main(String[] args) {
-        launch(args);
-    }
 }

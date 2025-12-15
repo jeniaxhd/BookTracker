@@ -55,10 +55,6 @@ public class DaoFactory {
         return countryDao;
     }
 
-    public UserDao getUserDao() {
-        return userDao;
-    }
-
     public ReviewDao getReviewDao() {
         return reviewDao;
     }
@@ -69,5 +65,9 @@ public class DaoFactory {
 
     public Connection getConnection() {
         return connection;
+    }
+
+    public UserDao getUserDao() {
+        return new (DB::getConnection); // або інший спосіб
     }
 }

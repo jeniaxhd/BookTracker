@@ -1,40 +1,14 @@
 package sk.upjs.paz;
-
-import sk.upjs.paz.dao.AuthorDao;
-import sk.upjs.paz.dao.BookDao;
-import sk.upjs.paz.dao.jdbc.AuthorJdbcDao;
-import sk.upjs.paz.dao.jdbc.BookJdbcDao;
-import sk.upjs.paz.dao.DbUtil;
-import sk.upjs.paz.entity.Author;
-import sk.upjs.paz.entity.Book;
-import sk.upjs.paz.entity.Genre;
-
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.List;
+import java.sql.*;
 
 public class test {
-    public static void main(String[] args) throws SQLException {
-        Connection conn = DbUtil.getConnection();
-        BookDao bookDao = new BookJdbcDao(conn);
-        Genre horror = new Genre(9L, "Horror");
-        Author krajci = new Author("Stanislav Krajci", "Slovakia", null, null);
-        AuthorDao authorDao = new AuthorJdbcDao(conn);
-        Book book = new Book();
-        book.setTitle("Introduction to MZI");
-        book.addAuthor(krajci);
-
-        List<Genre> genreList = List.of(new Genre[]{horror});
-        book.setYear(2025);
-        book.setDescription("Xyeta");
-        book.setAverageRating(0.0);
-        book.setGenre(genreList);
-        book.setPages(666);
-
-
-        bookDao.add(book);
-        authorDao.add(krajci);
-
-        bookDao.getByTitle("Introduction to MZI");
+    public static void main(String[] args) throws Exception {
+        String url = "jdbc:mysql://localhost:3307/booktracker?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+        try (Connection c = DriverManager.getConnection(url, "app", "BookTrackerYevhenVadym2025");
+             Statement s = c.createStatement();
+             ResultSet rs = s.executeQuery("SELECT DATABASE()")) {
+            rs.next();
+            System.out.println("Connected to: " + rs.getString(1));
+        }
     }
 }
