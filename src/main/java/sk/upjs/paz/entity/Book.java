@@ -1,5 +1,6 @@
 package sk.upjs.paz.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Book {
@@ -8,7 +9,7 @@ public class Book {
     private String description;
     private List<Author> authors;
     private double averageRating;
-    private List<Genre> genres;
+    private List<Genre> genres = new ArrayList<>();
     private Integer year;
     private int pages;
     private String coverPath;
@@ -60,7 +61,7 @@ public class Book {
     }
 
     public void setAuthors(List<Author> authors) {
-        this.authors = authors;
+        this.authors = (authors != null) ? authors : new ArrayList<>();
     }
 
     public void addAuthor(Author author) {
@@ -74,8 +75,8 @@ public class Book {
         return genres;
     }
 
-    public void setGenre(List<Genre> genres) {
-        this.genres = genres;
+    public void setGenre(List<Genre> genre) {
+        this.genres = (genre != null) ? genre : new ArrayList<>();
     }
 
     public Integer getYear() {

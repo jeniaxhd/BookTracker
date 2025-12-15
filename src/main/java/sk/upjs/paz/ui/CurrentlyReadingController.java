@@ -200,12 +200,12 @@ public class CurrentlyReadingController {
     // ===== Modals =====
 
     private void openAddBookModal() {
-        openModal("/fxml/addBookModal.fxml", "Add Book");
+        openModal("/sk/upjs/paz/ui/addBookModal.fxml", "Add Book");
     }
 
     private void openBookDetailsModal(String bookTitle) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/bookDetailsModal.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sk/upjs/paz/ui/bookDetailsModal.fxml"));
             Parent dialogRoot = loader.load();
 
             BookDetailsModalController c = loader.getController();

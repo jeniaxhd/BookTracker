@@ -44,15 +44,15 @@ public final class SceneNavigator {
 
     // ===== Pages =====
 
-    public static void showDashboard() { setPage("/fxml/dashboard.fxml", "Dashboard"); }
-    public static void showLibrary() { setPage("/fxml/library.fxml", "Library"); }
-    public static void showCurrentlyReading() { setPage("/fxml/currentlyReading.fxml", "Currently Reading"); }
-    public static void showStatistics() { setPage("/fxml/statistics.fxml", "Statistics"); }
-    public static void showSettings() { setPage("/fxml/settings.fxml", "Settings"); }
-    public static void showUserProfile() { setPage("/fxml/userProfile.fxml", "Profile"); }
+    public static void showDashboard() { setPage("/sk/upjs/paz/ui/dashboard.fxml", "Dashboard"); }
+    public static void showLibrary() { setPage("/sk/upjs/paz/ui/library.fxml", "Library"); }
+    public static void showCurrentlyReading() { setPage("/sk/upjs/paz/ui/currentlyReading.fxml", "Currently Reading"); }
+    public static void showStatistics() { setPage("/sk/upjs/paz/ui/statistics.fxml", "Statistics"); }
+    public static void showSettings() { setPage("/sk/upjs/paz/ui/settings.fxml", "Settings"); }
+    public static void showUserProfile() { setPage("/sk/upjs/paz/ui/userProfile.fxml", "Profile"); }
 
-    public static void showLogin() { setPage("/fxml/login.fxml", "Login"); }
-    public static void showRegister() { setPage("/fxml/register.fxml", "Register"); }
+    public static void showLogin() { setPage("/sk/upjs/paz/ui/login.fxml", "Login"); }
+    public static void showRegister() { setPage("/sk/upjs/paz/ui/register.fxml", "Register"); }
 
     private static void setPage(String fxmlPath, String title) {
         Loaded<Parent> loaded = loadRoot(fxmlPath);
@@ -145,7 +145,7 @@ public final class SceneNavigator {
         notificationsPopup.setAutoHide(true);
 
         try {
-            URL url = SceneNavigator.class.getResource("/fxml/notificationsPopover.fxml");
+            URL url = SceneNavigator.class.getResource("/sk/upjs/paz/ui/notificationsPopover.fxml");
             if (url == null) throw new IllegalStateException("Missing FXML: /fxml/notificationsPopover.fxml");
 
             FXMLLoader loader = new FXMLLoader(url);
@@ -164,12 +164,12 @@ public final class SceneNavigator {
     // ===== Modals =====
 
     public static void showAddBookModal(Window owner) {
-        openModal("/fxml/addBookModal.fxml", "Add Book", owner);
+        openModal("/sk/upjs/paz/ui/addBookModal.fxml", "Add Book", owner);
     }
 
     public static BookDetailsModalController showBookDetailsModal(Window owner, String title) {
         try {
-            URL url = SceneNavigator.class.getResource("/fxml/bookDetailsModal.fxml");
+            URL url = SceneNavigator.class.getResource("/sk/upjs/paz/ui/bookDetailsModal.fxml");
             if (url == null) throw new IllegalStateException("Missing FXML: /fxml/bookDetailsModal.fxml");
 
             FXMLLoader loader = new FXMLLoader(url);
@@ -204,7 +204,7 @@ public final class SceneNavigator {
             String endPage
     ) {
         try {
-            URL url = SceneNavigator.class.getResource("/fxml/endSession.fxml");
+            URL url = SceneNavigator.class.getResource("/sk/upjs/paz/ui/endSession.fxml");
             if (url == null) throw new IllegalStateException("Missing FXML: /fxml/endSession.fxml");
 
             FXMLLoader loader = new FXMLLoader(url);

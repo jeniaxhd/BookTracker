@@ -14,7 +14,7 @@
       styleClass="stat-card">
 
     <stylesheets>
-        <URL value="@../css/lightTheme.css"/>
+        <URL value="@../../../../css/lightTheme.css"/>
     </stylesheets>
 
     <padding>

@@ -64,9 +64,8 @@ public class ReadingSession {
     }
 
     public Bookstate getState() {
-        return state;
+        return state != null ? state : Bookstate.NOT_READING;
     }
-
     public void setState(Bookstate state) {
         this.state = state;
     }

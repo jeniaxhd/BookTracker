@@ -88,7 +88,7 @@ public final class SessionBarHost {
     private static void ensureLoaded() {
         if (barRoot != null) return;
 
-        var url = SessionBarHost.class.getResource("/fxml/sessionBar.fxml");
+        var url = SessionBarHost.class.getResource("/sk/upjs/paz/ui/sessionBar.fxml");
         if (url == null) {
             throw new IllegalStateException("Missing FXML: /fxml/sessionBar.fxml");
         }

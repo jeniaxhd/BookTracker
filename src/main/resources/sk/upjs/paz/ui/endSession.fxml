@@ -15,7 +15,7 @@
 
     <!-- use main app styles -->
     <stylesheets>
-        <URL value="@../css/lightTheme.css"/>
+        <URL value="@../../../../css/lightTheme.css"/>
     </stylesheets>
 
     <!-- TOP HEADER -->

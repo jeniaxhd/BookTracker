@@ -17,7 +17,7 @@
 
     <!-- Shared auth stylesheet -->
     <stylesheets>
-        <URL value="@../css/auth.css"/>
+        <URL value="@../../../../css/auth.css"/>
     </stylesheets>
 
     <!-- LEFT WARM PANEL -->
@@ -137,7 +137,7 @@
                                 <children>
                                     <ImageView fitWidth="28.0" fitHeight="28.0" preserveRatio="true">
                                         <image>
-                                            <Image url="@../img/logoForLogin/waving-hand.png"/>
+                                            <Image url="@../../../../img/logoForLogin/waving-hand.png"/>
                                         </image>
                                     </ImageView>
 
@@ -162,7 +162,7 @@
                                 <children>
                                     <ImageView fitWidth="20.0" fitHeight="20.0" preserveRatio="true">
                                         <image>
-                                            <Image url="@../img/logoForLogin/google.png"/>
+                                            <Image url="@../../../../img/logoForLogin/google.png"/>
                                         </image>
                                     </ImageView>
                                     <Label text="Continue with Google"

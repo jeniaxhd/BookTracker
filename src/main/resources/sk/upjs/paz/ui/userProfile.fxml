@@ -15,7 +15,7 @@
             styleClass="dashboard-root">
 
     <stylesheets>
-        <URL value="@../css/lightTheme.css"/>
+        <URL value="@../../../../css/lightTheme.css"/>
     </stylesheets>
 
     <!-- ===== SIDEBAR ===== -->

@@ -90,7 +90,7 @@ public class BookDetailsModalController {
 
     private void openReadingSessionBar() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/sessionBar.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sk/upjs/paz/ui/sessionBar.fxml"));
             Parent dialogRoot = loader.load();
 
             Scene dialogScene = new Scene(dialogRoot);

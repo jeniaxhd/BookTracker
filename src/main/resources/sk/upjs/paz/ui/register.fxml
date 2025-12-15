@@ -17,7 +17,7 @@
 
     <!-- Shared auth stylesheet -->
     <stylesheets>
-        <URL value="@../css/auth.css"/>
+        <URL value="@../../../../css/auth.css"/>
     </stylesheets>
 
     <!-- LEFT PANEL (top-aligned, like original) -->
@@ -154,7 +154,7 @@
                                 <children>
                                     <ImageView fitWidth="20.0" fitHeight="20.0" preserveRatio="true">
                                         <image>
-                                            <Image url="@../img/logoForLogin/google.png"/>
+                                            <Image url="@../../../../img/logoForLogin/google.png"/>
                                         </image>
                                     </ImageView>
                                     <Label text="Continue with Google"
