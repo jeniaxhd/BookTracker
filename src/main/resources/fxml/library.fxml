@@ -1,116 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-
-
-<BorderPane
-        fx:id="root"
-        prefHeight="800.0"
-        prefWidth="1200.0"
-        styleClass="dashboard-root"
-        xmlns="http://javafx.com/javafx/17.0.12"
-        xmlns:fx="http://javafx.com/fxml/1"
-        fx:controller="sk.upjs.paz.ui.LibraryController">
+<BorderPane fx:id="root" prefHeight="800.0" prefWidth="1200.0" styleClass="dashboard-root" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.upjs.paz.ui.LibraryController">
 
     <!-- LEFT: SIDEBAR (same structure as Dashboard) -->
     <left>
-        <VBox prefWidth="240.0"
-              styleClass="sidebar"
-              BorderPane.alignment="CENTER">
+        <VBox prefWidth="240.0" styleClass="sidebar" BorderPane.alignment="CENTER">
             <children>
 
                 <!-- Logo -->
-                <VBox spacing="10.0"
-                      styleClass="sidebar-header">
+                <VBox spacing="10.0" styleClass="sidebar-header">
                     <padding>
-                        <Insets top="24" right="24" bottom="16" left="24"/>
+                        <Insets bottom="16" left="24" right="24" top="24" />
                     </padding>
                     <children>
                         <HBox alignment="CENTER_LEFT" spacing="10.0">
                             <children>
-                                <StackPane prefHeight="32.0"
-                                           prefWidth="32.0"
-                                           styleClass="sidebar-logo-circle">
+                                <StackPane prefHeight="32.0" prefWidth="32.0" styleClass="sidebar-logo-circle">
                                     <children>
-                                        <Label text="B"
-                                               styleClass="sidebar-logo-letter"/>
+                                        <Label styleClass="sidebar-logo-letter" text="B" />
                                     </children>
                                 </StackPane>
-                                <Label text="BookTrack"
-                                       styleClass="sidebar-logo-text"/>
+                                <Label styleClass="sidebar-logo-text" text="BookTrack" />
                             </children>
                         </HBox>
                     </children>
                 </VBox>
 
-                <Separator/>
+                <Separator />
 
                 <!-- Navigation -->
-                <VBox spacing="6.0"
-                      styleClass="sidebar-nav">
+                <VBox spacing="6.0" styleClass="sidebar-nav">
                     <padding>
-                        <Insets top="16" right="16" bottom="16" left="16"/>
+                        <Insets bottom="16" left="16" right="16" top="16" />
                     </padding>
                     <children>
-                        <ToggleButton fx:id="dashboardNavButton"
-                                      text="Dashboard"
-                                      onAction="#onDashboardSelected"
-                                      styleClass="sidebar-nav-button"/>
-                        <ToggleButton fx:id="libraryNavButton"
-                                      text="Library"
-                                      selected="true"
-                                      onAction="#onLibrarySelected"
-                                      styleClass="sidebar-nav-button,sidebar-nav-button--active"/>
-                        <ToggleButton fx:id="currentlyReadingNavButton"
-                                      text="Currently Reading"
-                                      onAction="#onCurrentlyReadingSelected"
-                                      styleClass="sidebar-nav-button"/>
-                        <ToggleButton fx:id="statisticsNavButton"
-                                      text="Statistics"
-                                      onAction="#onStatisticsSelected"
-                                      styleClass="sidebar-nav-button"/>
-                        <ToggleButton fx:id="settingsNavButton"
-                                      text="Settings"
-                                      onAction="#onSettingsSelected"
-                                      styleClass="sidebar-nav-button"/>
+                        <ToggleButton fx:id="dashboardNavButton" onAction="#onDashboardSelected" styleClass="sidebar-nav-button" text="Dashboard" />
+                        <ToggleButton fx:id="libraryNavButton" onAction="#onLibrarySelected" selected="true" styleClass="sidebar-nav-button,sidebar-nav-button--active" text="Library" />
+                        <ToggleButton fx:id="currentlyReadingNavButton" onAction="#onCurrentlyReadingSelected" styleClass="sidebar-nav-button" text="Currently Reading" />
+                        <ToggleButton fx:id="statisticsNavButton" onAction="#onStatisticsSelected" styleClass="sidebar-nav-button" text="Statistics" />
+                        <ToggleButton fx:id="settingsNavButton" onAction="#onSettingsSelected" styleClass="sidebar-nav-button" text="Settings" />
                     </children>
                 </VBox>
 
-                <Pane VBox.vgrow="ALWAYS"/>
+                <Pane VBox.vgrow="ALWAYS" />
 
                 <!-- User profile -->
                 <VBox styleClass="sidebar-user">
                     <padding>
-                        <Insets top="8" right="16" bottom="24" left="16"/>
+                        <Insets bottom="24" left="16" right="16" top="8" />
                     </padding>
                     <children>
-                        <Button fx:id="userProfileButton"
-                                maxWidth="Infinity"
-                                onAction="#onUserProfile"
-                                styleClass="sidebar-user-button">
+                        <Button fx:id="userProfileButton" maxWidth="Infinity" onAction="#onUserProfile" styleClass="sidebar-user-button">
                             <graphic>
                                 <HBox alignment="CENTER_LEFT" spacing="10.0">
                                     <children>
-                                        <StackPane prefHeight="32.0"
-                                                   prefWidth="32.0"
-                                                   styleClass="sidebar-user-avatar">
+                                        <StackPane prefHeight="32.0" prefWidth="32.0" styleClass="sidebar-user-avatar">
                                             <children>
-                                                <Label text="S"
-                                                       styleClass="sidebar-user-initials"/>
+                                                <Label styleClass="sidebar-user-initials" text="S" />
                                             </children>
                                         </StackPane>
 
                                         <VBox spacing="2.0">
                                             <children>
-                                                <Label fx:id="userNameLabel"
-                                                       text="Sarah Chen"
-                                                       styleClass="sidebar-user-name"/>
-                                                <Label text="View profile"
-                                                       styleClass="sidebar-user-subtitle"/>
+                                                <Label fx:id="userNameLabel" styleClass="sidebar-user-name" text="Sarah Chen" />
+                                                <Label styleClass="sidebar-user-subtitle" text="View profile" />
                                             </children>
                                         </VBox>
                                     </children>
@@ -125,19 +95,15 @@
 
     <!-- CENTER: MAIN AREA -->
     <center>
-        <VBox
-              BorderPane.alignment="CENTER">
+        <VBox BorderPane.alignment="CENTER">
             <children>
 
                 <!-- Header (same layout as Dashboard) -->
-                <VBox
-                      styleClass="header">
+                <VBox styleClass="header">
                     <children>
-                        <HBox alignment="CENTER_LEFT"
-                              spacing="16.0"
-                              styleClass="header-inner">
+                        <HBox alignment="CENTER_LEFT" spacing="16.0" styleClass="header-inner">
                             <padding>
-                                <Insets top="24" right="32" bottom="24" left="32"/>
+                                <Insets bottom="24" left="32" right="32" top="24" />
                             </padding>
 
                             <children>
@@ -145,61 +111,39 @@
                                 <!-- Title + subtitle -->
                                 <VBox spacing="4.0">
                                     <children>
-                                        <Label fx:id="headerTitleLabel"
-                                               text="Library"
-                                               styleClass="header-title"/>
-                                        <Label text="Browse, search, and organize all your books."
-                                               wrapText="true"
-                                               styleClass="header-subtitle"/>
+                                        <Label fx:id="headerTitleLabel" styleClass="header-title" text="Library" />
+                                        <Label styleClass="header-subtitle" text="Browse, search, and organize all your books." wrapText="true" />
                                     </children>
                                 </VBox>
 
-                                <Pane HBox.hgrow="ALWAYS"/>
+                                <Pane HBox.hgrow="ALWAYS" />
 
                                 <!-- Right actions -->
-                                <HBox alignment="CENTER_RIGHT"
-                                      spacing="8.0">
+                                <HBox alignment="CENTER_RIGHT" spacing="8.0">
                                     <children>
 
                                         <!-- Search field -->
-                                        <TextField fx:id="searchField"
-                                                   prefWidth="260.0"
-                                                   promptText="Search by title, author, or tag..."
-                                                   styleClass="header-search-field"/>
+                                        <TextField fx:id="searchField" prefWidth="260.0" promptText="Search by title, author, or tag..." styleClass="header-search-field" />
 
                                         <!-- Simple filter button -->
-                                        <Button fx:id="filterButton"
-                                                onAction="#onTopSettings"
-                                                styleClass="header-icon-button">
+                                        <Button fx:id="filterButton" onAction="#onTopSettings" styleClass="header-icon-button">
                                             <graphic>
-                                                <ImageView fx:id="filterIcon"
-                                                           fitWidth="18.0"
-                                                           fitHeight="18.0"
-                                                           preserveRatio="true"/>
+                                                <ImageView fx:id="filterIcon" fitHeight="18.0" fitWidth="18.0" preserveRatio="true" />
                                             </graphic>
                                         </Button>
 
 
                                         <!-- Theme toggle with PNG icon (like Dashboard) -->
-                                        <ToggleButton fx:id="themeToggle"
-                                                      onAction="#onToggleTheme"
-                                                      styleClass="header-icon-button">
+                                        <ToggleButton fx:id="themeToggle" onAction="#onToggleTheme" styleClass="header-icon-button">
                                             <graphic>
-                                                <ImageView fx:id="themeIcon"
-                                                           fitWidth="18.0"
-                                                           fitHeight="18.0"
-                                                           preserveRatio="true"/>
+                                                <ImageView fx:id="themeIcon" fitHeight="18.0" fitWidth="18.0" preserveRatio="true" />
                                             </graphic>
                                         </ToggleButton>
 
                                         <!-- Add Book primary button -->
-                                        <Button fx:id="addBookButton"
-                                                text="Add Book"
-                                                onAction="#onAddBook"
-                                                styleClass="header-primary-button">
+                                        <Button fx:id="addBookButton" onAction="#onAddBook" styleClass="header-primary-button" text="Add Book">
                                             <graphic>
-                                                <Label text="+"
-                                                       styleClass="header-primary-icon"/>
+                                                <Label styleClass="header-primary-icon" text="+" />
                                             </graphic>
                                         </Button>
 
@@ -211,49 +155,35 @@
                 </VBox>
 
                 <!-- Scrollable content -->
-                <ScrollPane fx:id="contentScrollPane"
-                            fitToWidth="true"
-                            VBox.vgrow="ALWAYS">
+                <ScrollPane fx:id="contentScrollPane" fitToWidth="true" VBox.vgrow="ALWAYS">
                     <content>
-                        <VBox fx:id="contentRoot"
-                              spacing="24.0">
+                        <VBox fx:id="contentRoot" spacing="24.0">
                             <padding>
-                                <Insets top="24" right="32" bottom="32" left="32"/>
+                                <Insets bottom="32" left="32" right="32" top="24" />
                             </padding>
                             <children>
 
                                 <!-- FILTER ROW -->
                                 <VBox spacing="12.0">
                                     <children>
-                                        <Label text="Filters"
-                                               styleClass="section-title"/>
+                                        <Label styleClass="section-title" text="Filters" />
 
                                         <!-- Status chips -->
                                         <HBox spacing="8.0">
                                             <children>
-                                                <ToggleButton text="All"
-                                                              selected="true"
-                                                              styleClass="filter-chip,filter-chip--active"/>
-                                                <ToggleButton text="In Progress"
-                                                              styleClass="filter-chip"/>
-                                                <ToggleButton text="Finished"
-                                                              styleClass="filter-chip"/>
-                                                <ToggleButton text="Not started"
-                                                              styleClass="filter-chip"/>
-                                                <ToggleButton text="Abandoned"
-                                                              styleClass="filter-chip"/>
+                                                <ToggleButton selected="true" styleClass="filter-chip,filter-chip--active" text="All" />
+                                                <ToggleButton styleClass="filter-chip" text="In Progress" />
+                                                <ToggleButton styleClass="filter-chip" text="Finished" />
+                                                <ToggleButton styleClass="filter-chip" text="Not started" />
+                                                <ToggleButton styleClass="filter-chip" text="Abandoned" />
                                             </children>
                                         </HBox>
 
                                         <!-- Category + sort -->
                                         <HBox spacing="12.0">
                                             <children>
-                                                <ComboBox prefWidth="180.0"
-                                                          promptText="Category"
-                                                          styleClass="filter-combobox"/>
-                                                <ComboBox prefWidth="220.0"
-                                                          promptText="Sort by: Recently added"
-                                                          styleClass="filter-combobox"/>
+                                                <ComboBox prefWidth="180.0" promptText="Category" styleClass="filter-combobox" />
+                                                <ComboBox prefWidth="220.0" promptText="Sort by: Recently added" styleClass="filter-combobox" />
                                             </children>
                                         </HBox>
                                     </children>
@@ -264,62 +194,45 @@
                                     <children>
 
                                         <!-- BOOK GRID -->
-                                        <VBox spacing="12.0"
-                                              HBox.hgrow="ALWAYS">
+                                        <VBox spacing="12.0" HBox.hgrow="ALWAYS">
                                             <children>
-                                                <Label text="All books"
-                                                       styleClass="section-title"/>
+                                                <Label styleClass="section-title" text="All books" />
 
-                                                <FlowPane hgap="16.0"
-                                                          vgap="16.0"
-                                                          prefWrapLength="720.0">
+                                                <FlowPane fx:id="allBooksContainer" hgap="16.0" prefWrapLength="720.0" vgap="16.0">
                                                     <children>
 
                                                         <!-- Book card 1 -->
-                                                        <VBox prefWidth="210.0"
-                                                              spacing="10.0"
-                                                              styleClass="book-card,library-book-card">
+                                                        <VBox prefWidth="210.0" spacing="10.0" styleClass="book-card,library-book-card">
                                                             <children>
-                                                                <StackPane prefHeight="220.0"
-                                                                           styleClass="library-book-cover">
+                                                                <StackPane prefHeight="220.0" styleClass="library-book-cover">
                                                                     <children>
-                                                                        <Label text="Cover"
-                                                                               styleClass="book-cover-placeholder-text"/>
+                                                                        <Label styleClass="book-cover-placeholder-text" text="Cover" />
                                                                     </children>
                                                                 </StackPane>
 
                                                                 <VBox spacing="4.0">
                                                                     <children>
-                                                                        <Label text="The Midnight Library"
-                                                                               wrapText="true"
-                                                                               styleClass="library-book-title"/>
-                                                                        <Label text="Matt Haig"
-                                                                               styleClass="library-book-author"/>
-                                                                        <Label text="Fiction"
-                                                                               styleClass="book-category-pill"/>
+                                                                        <Label styleClass="library-book-title" text="The Midnight Library" wrapText="true" />
+                                                                        <Label styleClass="library-book-author" text="Matt Haig" />
+                                                                        <Label styleClass="book-category-pill" text="Fiction" />
                                                                     </children>
                                                                 </VBox>
 
                                                                 <VBox spacing="4.0">
                                                                     <children>
-                                                                        <ProgressBar progress="0.61"
-                                                                                     styleClass="book-progress-bar"/>
-                                                                        <HBox spacing="6.0" alignment="CENTER_LEFT">
+                                                                        <ProgressBar progress="0.61" styleClass="book-progress-bar" />
+                                                                        <HBox alignment="CENTER_LEFT" spacing="6.0">
                                                                             <children>
-                                                                                <Label text="187 / 304 pages"
-                                                                                       styleClass="book-progress-text"/>
-                                                                                <Pane HBox.hgrow="ALWAYS"/>
-                                                                                <Label text="In Progress"
-                                                                                       styleClass="book-status-pill"/>
+                                                                                <Label styleClass="book-progress-text" text="187 / 304 pages" />
+                                                                                <Pane HBox.hgrow="ALWAYS" />
+                                                                                <Label styleClass="book-status-pill" text="In Progress" />
                                                                             </children>
                                                                         </HBox>
-                                                                        <HBox spacing="6.0" alignment="CENTER_LEFT">
+                                                                        <HBox alignment="CENTER_LEFT" spacing="6.0">
                                                                             <children>
-                                                                                <Label text="Last read: 2 days ago"
-                                                                                       styleClass="book-meta-text"/>
-                                                                                <Pane HBox.hgrow="ALWAYS"/>
-                                                                                <Label text="★★★★☆"
-                                                                                       styleClass="book-rating-text"/>
+                                                                                <Label styleClass="book-meta-text" text="Last read: 2 days ago" />
+                                                                                <Pane HBox.hgrow="ALWAYS" />
+                                                                                <Label styleClass="book-rating-text" text="★★★★☆" />
                                                                             </children>
                                                                         </HBox>
                                                                     </children>
@@ -328,50 +241,37 @@
                                                         </VBox>
 
                                                         <!-- Book card 2 -->
-                                                        <VBox prefWidth="210.0"
-                                                              spacing="10.0"
-                                                              styleClass="book-card,library-book-card">
+                                                        <VBox prefWidth="210.0" spacing="10.0" styleClass="book-card,library-book-card">
                                                             <children>
-                                                                <StackPane prefHeight="220.0"
-                                                                           styleClass="library-book-cover">
+                                                                <StackPane prefHeight="220.0" styleClass="library-book-cover">
                                                                     <children>
-                                                                        <Label text="Cover"
-                                                                               styleClass="book-cover-placeholder-text"/>
+                                                                        <Label styleClass="book-cover-placeholder-text" text="Cover" />
                                                                     </children>
                                                                 </StackPane>
 
                                                                 <VBox spacing="4.0">
                                                                     <children>
-                                                                        <Label text="Atomic Habits"
-                                                                               wrapText="true"
-                                                                               styleClass="library-book-title"/>
-                                                                        <Label text="James Clear"
-                                                                               styleClass="library-book-author"/>
-                                                                        <Label text="Productivity"
-                                                                               styleClass="book-category-pill"/>
+                                                                        <Label styleClass="library-book-title" text="Atomic Habits" wrapText="true" />
+                                                                        <Label styleClass="library-book-author" text="James Clear" />
+                                                                        <Label styleClass="book-category-pill" text="Productivity" />
                                                                     </children>
                                                                 </VBox>
 
                                                                 <VBox spacing="4.0">
                                                                     <children>
-                                                                        <ProgressBar progress="0.28"
-                                                                                     styleClass="book-progress-bar"/>
-                                                                        <HBox spacing="6.0" alignment="CENTER_LEFT">
+                                                                        <ProgressBar progress="0.28" styleClass="book-progress-bar" />
+                                                                        <HBox alignment="CENTER_LEFT" spacing="6.0">
                                                                             <children>
-                                                                                <Label text="89 / 320 pages"
-                                                                                       styleClass="book-progress-text"/>
-                                                                                <Pane HBox.hgrow="ALWAYS"/>
-                                                                                <Label text="In Progress"
-                                                                                       styleClass="book-status-pill"/>
+                                                                                <Label styleClass="book-progress-text" text="89 / 320 pages" />
+                                                                                <Pane HBox.hgrow="ALWAYS" />
+                                                                                <Label styleClass="book-status-pill" text="In Progress" />
                                                                             </children>
                                                                         </HBox>
-                                                                        <HBox spacing="6.0" alignment="CENTER_LEFT">
+                                                                        <HBox alignment="CENTER_LEFT" spacing="6.0">
                                                                             <children>
-                                                                                <Label text="Last read: yesterday"
-                                                                                       styleClass="book-meta-text"/>
-                                                                                <Pane HBox.hgrow="ALWAYS"/>
-                                                                                <Label text="★★★★★"
-                                                                                       styleClass="book-rating-text"/>
+                                                                                <Label styleClass="book-meta-text" text="Last read: yesterday" />
+                                                                                <Pane HBox.hgrow="ALWAYS" />
+                                                                                <Label styleClass="book-rating-text" text="★★★★★" />
                                                                             </children>
                                                                         </HBox>
                                                                     </children>
@@ -380,69 +280,41 @@
                                                         </VBox>
 
                                                         <!-- Book card 3 -->
-                                                        <VBox prefWidth="210.0"
-                                                              spacing="10.0"
-                                                              styleClass="book-card,library-book-card">
+                                                        <VBox prefWidth="210.0" spacing="10.0" styleClass="book-card,library-book-card">
                                                             <children>
-                                                                <StackPane prefHeight="220.0"
-                                                                           styleClass="library-book-cover">
+                                                                <StackPane prefHeight="220.0" styleClass="library-book-cover">
                                                                     <children>
-                                                                        <Label text="Cover"
-                                                                               styleClass="book-cover-placeholder-text"/>
+                                                                        <Label styleClass="book-cover-placeholder-text" text="Cover" />
                                                                     </children>
                                                                 </StackPane>
 
                                                                 <VBox spacing="4.0">
                                                                     <children>
-                                                                        <Label text="Sapiens"
-                                                                               wrapText="true"
-                                                                               styleClass="library-book-title"/>
-                                                                        <Label text="Yuval Noah Harari"
-                                                                               styleClass="library-book-author"/>
-                                                                        <Label text="Non-fiction"
-                                                                               styleClass="book-category-pill"/>
+                                                                        <Label styleClass="library-book-title" text="Sapiens" wrapText="true" />
+                                                                        <Label styleClass="library-book-author" text="Yuval Noah Harari" />
+                                                                        <Label styleClass="book-category-pill" text="Non-fiction" />
                                                                     </children>
                                                                 </VBox>
 
                                                                 <VBox spacing="4.0">
                                                                     <children>
-                                                                        <ProgressBar progress="1.0"
-                                                                                     styleClass="book-progress-bar"/>
-                                                                        <HBox spacing="6.0" alignment="CENTER_LEFT">
+                                                                        <ProgressBar progress="1.0" styleClass="book-progress-bar" />
+                                                                        <HBox alignment="CENTER_LEFT" spacing="6.0">
                                                                             <children>
-                                                                                <Label text="443 / 443 pages"
-                                                                                       styleClass="book-progress-text"/>
-                                                                                <Pane HBox.hgrow="ALWAYS"/>
-                                                                                <Label text="Finished"
-                                                                                       styleClass="book-status-pill"/>
+                                                                                <Label styleClass="book-progress-text" text="443 / 443 pages" />
+                                                                                <Pane HBox.hgrow="ALWAYS" />
+                                                                                <Label styleClass="book-status-pill" text="Finished" />
                                                                             </children>
                                                                         </HBox>
-                                                                        <HBox spacing="6.0" alignment="CENTER_LEFT">
+                                                                        <HBox alignment="CENTER_LEFT" spacing="6.0">
                                                                             <children>
-                                                                                <Label text="Finished: Oct 12"
-                                                                                       styleClass="book-meta-text"/>
-                                                                                <Pane HBox.hgrow="ALWAYS"/>
-                                                                                <Label text="★★★★★"
-                                                                                       styleClass="book-rating-text"/>
+                                                                                <Label styleClass="book-meta-text" text="Finished: Oct 12" />
+                                                                                <Pane HBox.hgrow="ALWAYS" />
+                                                                                <Label styleClass="book-rating-text" text="★★★★★" />
                                                                             </children>
                                                                         </HBox>
                                                                     </children>
                                                                 </VBox>
-                                                            </children>
-                                                        </VBox>
-
-                                                        <!-- Placeholder card -->
-                                                        <VBox alignment="CENTER"
-                                                              prefWidth="210.0"
-                                                              spacing="8.0"
-                                                              styleClass="library-book-card-placeholder">
-                                                            <children>
-                                                                <Label text="+"
-                                                                       styleClass="book-card-placeholder-icon"/>
-                                                                <Label text="Add another book"
-                                                                       maxWidth="180.0"
-                                                                       wrapText="true"
-                                                                       styleClass="library-book-card-placeholder-text"/>
                                                             </children>
                                                         </VBox>
 
@@ -452,54 +324,37 @@
                                         </VBox>
 
                                         <!-- SIDE PANEL with soft background -->
-                                        <VBox prefWidth="260.0"
-                                              spacing="16.0"
-                                              styleClass="library-side-wrapper">
+                                        <VBox prefWidth="260.0" spacing="16.0" styleClass="library-side-wrapper">
                                             <children>
 
                                                 <!-- Library overview -->
-                                                <VBox spacing="10.0"
-                                                      styleClass="stat-card,library-side-card">
+                                                <VBox spacing="10.0" styleClass="stat-card,library-side-card">
                                                     <children>
-                                                        <Label text="Library overview"
-                                                               styleClass="library-side-title"/>
-                                                        <Label text="Total books: 68"
-                                                               styleClass="library-side-label"/>
-                                                        <Label text="In progress: 4"
-                                                               styleClass="library-side-label"/>
-                                                        <Label text="Finished this year: 24"
-                                                               styleClass="library-side-label"/>
+                                                        <Label styleClass="library-side-title" text="Library overview" />
+                                                        <Label styleClass="library-side-label" text="Total books: 68" />
+                                                        <Label styleClass="library-side-label" text="In progress: 4" />
+                                                        <Label styleClass="library-side-label" text="Finished this year: 24" />
                                                     </children>
                                                 </VBox>
 
                                                 <!-- Favorite tags -->
-                                                <VBox spacing="10.0"
-                                                      styleClass="stat-card,library-side-card">
+                                                <VBox spacing="10.0" styleClass="stat-card,library-side-card">
                                                     <children>
-                                                        <Label text="Favorite tags"
-                                                               styleClass="library-side-title"/>
-                                                        <FlowPane hgap="8.0"
-                                                                  vgap="8.0">
+                                                        <Label styleClass="library-side-title" text="Favorite tags" />
+                                                        <FlowPane hgap="8.0" vgap="8.0">
                                                             <children>
-                                                                <Label text="#productivity"
-                                                                       styleClass="tag-pill"/>
-                                                                <Label text="#psychology"
-                                                                       styleClass="tag-pill"/>
-                                                                <Label text="#fiction"
-                                                                       styleClass="tag-pill"/>
-                                                                <Label text="#nonfiction"
-                                                                       styleClass="tag-pill"/>
-                                                                <Label text="#classics"
-                                                                       styleClass="tag-pill"/>
+                                                                <Label styleClass="tag-pill" text="#productivity" />
+                                                                <Label styleClass="tag-pill" text="#psychology" />
+                                                                <Label styleClass="tag-pill" text="#fiction" />
+                                                                <Label styleClass="tag-pill" text="#nonfiction" />
+                                                                <Label styleClass="tag-pill" text="#classics" />
                                                             </children>
                                                         </FlowPane>
                                                     </children>
                                                 </VBox>
 
                                                 <!-- Tip text -->
-                                                <Label wrapText="true"
-                                                       text="Tip: use filters and tags to quickly find books you want to revisit."
-                                                       styleClass="stat-subtitle"/>
+                                                <Label styleClass="stat-subtitle" text="Tip: use filters and tags to quickly find books you want to revisit." wrapText="true" />
 
                                             </children>
                                         </VBox>

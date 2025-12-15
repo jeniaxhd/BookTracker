@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class DbUtil {
 
-    private static final String URL = "jdbc:mysql://localhost:3307/booktracker?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+    private static final String URL = "jdbc:mysql://localhost:3306/booktracker";
     private static final String USER = "booktracker_user";
     private static final String PASSWORD = "BookTrackerYevhenVadym2025";
 

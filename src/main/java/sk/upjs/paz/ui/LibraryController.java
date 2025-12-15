@@ -9,11 +9,18 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import sk.upjs.paz.dao.DaoFactory;
+import sk.upjs.paz.dao.ReadingSessionDao;
+import sk.upjs.paz.dao.jdbc.ReadingSessionJdbcDao;
+import sk.upjs.paz.entity.ReadingSession;
+import sk.upjs.paz.service.ReadingSessionService;
 
 import java.io.IOException;
+import java.util.List;
 
 public class LibraryController {
 
@@ -21,6 +28,8 @@ public class LibraryController {
     private BorderPane root;
 
     // Sidebar navigation
+    @FXML
+    private FlowPane allBooksContainer;
     @FXML
     private ToggleButton dashboardNavButton;
     @FXML
@@ -105,6 +114,7 @@ public class LibraryController {
             ThemeManager.apply(root.getScene());
             updateIconsForTheme();
         }
+        loadBooks();
     }
 
     private Image load(String path) {
@@ -191,4 +201,24 @@ public class LibraryController {
         SceneNavigator.showSettings();
     }
 
+    private void loadBooks(){
+        long userId = AppState.getCurrentUser().getId();
+        ReadingSessionDao dao = DaoFactory.INSTANCE.getReadingSessionDao();
+        List<ReadingSession> sessions = dao.getByUser(userId);
+        allBooksContainer.getChildren().clear();
+        for (ReadingSession session : sessions) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("./bookCardLibrary.fxml"));
+            try {
+                Parent root = loader.load();
+
+                CardBookLibraryController controller = loader.getController();
+                controller.setData(session);
+                allBooksContainer.getChildren().add(root);
+
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
+    }
 }

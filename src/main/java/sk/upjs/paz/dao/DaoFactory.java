@@ -68,6 +68,6 @@ public class DaoFactory {
     }
 
     public UserDao getUserDao() {
-        return new (DB::getConnection); // або інший спосіб
+        return userDao;
     }
 }
