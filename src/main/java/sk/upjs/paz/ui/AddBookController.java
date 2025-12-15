@@ -112,18 +112,6 @@ public class AddBookController {
 
     // ===== theme toggle =====
 
-    @FXML
-    private void onToggleTheme(ActionEvent event) {
-        var stylesheets = root.getStylesheets();
-        boolean darkActive = stylesheets.contains(darkThemeUrl);
-
-        if (darkActive) {
-            switchToLightTheme();
-        } else {
-            switchToDarkTheme();
-        }
-    }
-
     private void switchToLightTheme() {
         var stylesheets = root.getStylesheets();
         stylesheets.remove(darkThemeUrl);
@@ -144,28 +132,7 @@ public class AddBookController {
         themeToggle.setSelected(false);
     }
 
-    private void switchToDarkTheme() {
-        var stylesheets = root.getStylesheets();
-        stylesheets.remove(lightThemeUrl);
-        if (!stylesheets.contains(darkThemeUrl)) {
-            stylesheets.add(darkThemeUrl);
-        }
-
-        if (searchIcon != null) {
-            searchIcon.setImage(searchDark);
-        }
-        if (notificationsIcon != null) {
-            notificationsIcon.setImage(bellDark);
-        }
-        if (themeIcon != null) {
-            themeIcon.setImage(sunIconImg);
-        }
-
-        themeToggle.setSelected(true);
-    }
-
     // ===== header actions =====
-
     @FXML
     private void onSearch(ActionEvent event) {
         // later: open search dialog
