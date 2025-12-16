@@ -80,13 +80,6 @@ public class AddBookController {
         moonIconImg   = load("/img/logoLight/moon.png");
         sunIconImg    = load("/img/logoDark/sun.png");
 
-        // when scene is ready – apply light theme
-        root.sceneProperty().addListener((obs, oldScene, newScene) -> {
-            if (newScene != null) {
-                switchToLightTheme();
-            }
-        });
-
         // example options for combos
         if (categoryBox != null) {
             categoryBox.getItems().addAll(
@@ -110,27 +103,6 @@ public class AddBookController {
         return new Image(getClass().getResource(path).toExternalForm());
     }
 
-    // ===== theme toggle =====
-
-    private void switchToLightTheme() {
-        var stylesheets = root.getStylesheets();
-        stylesheets.remove(darkThemeUrl);
-        if (!stylesheets.contains(lightThemeUrl)) {
-            stylesheets.add(lightThemeUrl);
-        }
-
-        if (searchIcon != null) {
-            searchIcon.setImage(searchLight);
-        }
-        if (notificationsIcon != null) {
-            notificationsIcon.setImage(bellLight);
-        }
-        if (themeIcon != null) {
-            themeIcon.setImage(moonIconImg);
-        }
-
-        themeToggle.setSelected(false);
-    }
 
     // ===== header actions =====
     @FXML

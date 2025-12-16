@@ -12,6 +12,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import sk.upjs.paz.entity.Genre;
+import sk.upjs.paz.service.GenreService;
 
 import java.io.File;
 import java.util.LinkedHashSet;
@@ -25,7 +27,7 @@ public class AddBookModalController {
     @FXML private TextField titleField;
     @FXML private TextField authorField;
 
-    @FXML private ComboBox<String> categoryBox;
+    @FXML private ComboBox<Genre> categoryBox;
     @FXML private ComboBox<String> formatBox;
 
     @FXML private TextField pagesField;
@@ -42,13 +44,16 @@ public class AddBookModalController {
 
     private final Set<String> tags = new LinkedHashSet<>();
     private File selectedCoverFile;
+    private GenreService genreService;
 
     @FXML
     private void initialize() {
-        // Categories / formats - replace with your real ones if you want
+        List<Genre> genres = genreService.getAll(); // або genreDao.getAll()
+
+        categoryBox.setItems(FXCollections.observableArrayList(genres));
+
         if (categoryBox != null) {
-            categoryBox.setItems(FXCollections.observableArrayList(
-                    "Fiction", "Non-fiction", "Fantasy", "Sci-fi", "Mystery", "Romance", "Self-help", "Other"
+            categoryBox.setItems(FXCollections.observableArrayList(genres
             ));
         }
         if (formatBox != null) {
@@ -157,7 +162,7 @@ public class AddBookModalController {
             return;
         }
 
-        String category = categoryBox != null ? categoryBox.getValue() : null;
+        String category = categoryBox != null ? String.valueOf(categoryBox.getValue()) : null;
         String format = formatBox != null ? formatBox.getValue() : null;
         String language = safeTrim(languageField.getText());
         String notes = notesArea != null ? safeTrim(notesArea.getText()) : "";
@@ -245,4 +250,9 @@ public class AddBookModalController {
         alert.initOwner(root.getScene().getWindow());
         alert.showAndWait();
     }
+
+    public void setGenreService(GenreService genreService) {
+        this.genreService = genreService;
+    }
+
 }
