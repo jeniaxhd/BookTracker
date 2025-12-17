@@ -29,9 +29,9 @@
                     <children>
                         <VBox spacing="4.0">
                             <children>
-                                <Label text="End reading session"
+                                <Label text="%endSession.end_reading_session"
                                        styleClass="session-end-title"/>
-                                <Label text="Review your reading and save this session."
+                                <Label text="%endSession.review_your_reading_and_save_this_session"
                                        wrapText="true"
                                        styleClass="session-end-subtitle"/>
                             </children>
@@ -40,7 +40,7 @@
                         <Pane HBox.hgrow="ALWAYS"/>
 
                         <!-- Discard button (text only) -->
-                        <Button text="Discard"
+                        <Button text="%endSession.discard"
                                 onAction="#handleDiscard"
                                 styleClass="session-end-discard-button"/>
 
@@ -107,14 +107,14 @@
                               GridPane.rowIndex="0"
                               GridPane.columnIndex="0">
                             <children>
-                                <Label text="Session time"
+                                <Label text="%endSession.session_time"
                                        styleClass="session-end-section-title"/>
 
                                 <HBox spacing="12.0">
                                     <children>
                                         <VBox spacing="4.0">
                                             <children>
-                                                <Label text="Start time"
+                                                <Label text="%endSession.start_time"
                                                        styleClass="session-end-field-label"/>
                                                 <TextField fx:id="startTimeField"
                                                            promptText="10:14"
@@ -124,7 +124,7 @@
 
                                         <VBox spacing="4.0">
                                             <children>
-                                                <Label text="Duration (min)"
+                                                <Label text="%endSession.duration_min"
                                                        styleClass="session-end-field-label"/>
                                                 <TextField fx:id="durationField"
                                                            promptText="32"
@@ -134,7 +134,7 @@
                                     </children>
                                 </HBox>
 
-                                <Label text="You can adjust the duration if needed."
+                                <Label text="%endSession.you_can_adjust_the_duration_if_needed"
                                        styleClass="session-end-helper-text"/>
                             </children>
                         </VBox>
@@ -144,10 +144,10 @@
                               GridPane.rowIndex="0"
                               GridPane.columnIndex="1">
                             <children>
-                                <Label text="Session notes (optional)"
+                                <Label text="%endSession.session_notes_optional"
                                        styleClass="session-end-section-title"/>
                                 <TextArea fx:id="notesArea"
-                                          promptText="What did you read? Any insights, quotes, or thoughts?"
+                                          promptText="%endSession.what_did_you_read_any_insights_quotes_or_thoughts"
                                           prefRowCount="4"
                                           wrapText="true"
                                           styleClass="text-area"/>
@@ -159,13 +159,13 @@
                               GridPane.rowIndex="1"
                               GridPane.columnIndex="0">
                             <children>
-                                <Label text="Pages"
+                                <Label text="%common.pages"
                                        styleClass="session-end-section-title"/>
                                 <HBox spacing="12.0">
                                     <children>
                                         <VBox spacing="4.0">
                                             <children>
-                                                <Label text="Start page"
+                                                <Label text="%endSession.start_page"
                                                        styleClass="session-end-field-label"/>
                                                 <TextField fx:id="startPageField"
                                                            promptText="164"
@@ -175,7 +175,7 @@
 
                                         <VBox spacing="4.0">
                                             <children>
-                                                <Label text="End page"
+                                                <Label text="%endSession.end_page"
                                                        styleClass="session-end-field-label"/>
                                                 <TextField fx:id="endPageField"
                                                            promptText="188"
@@ -187,7 +187,7 @@
 
                                 <HBox spacing="8.0" alignment="CENTER_LEFT">
                                     <children>
-                                        <Label text="Pages read: "
+                                        <Label text="%dashboard.pages_read"
                                                styleClass="session-end-helper-text"/>
                                         <Label fx:id="pagesReadLabel"
                                                text="24"
@@ -195,7 +195,7 @@
                                     </children>
                                 </HBox>
 
-                                <Label text="We will calculate pages read from these values."
+                                <Label text="%endSession.we_will_calculate_pages_read_from_these_values"
                                        styleClass="session-end-helper-text"/>
                             </children>
                         </VBox>
@@ -205,23 +205,23 @@
                               GridPane.rowIndex="1"
                               GridPane.columnIndex="1">
                             <children>
-                                <Label text="How did this session feel?"
+                                <Label text="%endSession.how_did_this_session_feel"
                                        styleClass="session-end-section-title"/>
 
                                 <FlowPane hgap="8.0" vgap="8.0">
                                     <children>
                                         <ToggleButton fx:id="deepFocusToggle"
-                                                      text="Deep focus"
+                                                      text="%endSession.deep_focus"
                                                       selected="true"
                                                       styleClass="session-feel-pill,session-feel-pill--active"/>
                                         <ToggleButton fx:id="lightReadingToggle"
-                                                      text="Light reading"
+                                                      text="%endSession.light_reading"
                                                       styleClass="session-feel-pill"/>
                                         <ToggleButton fx:id="studyToggle"
-                                                      text="Study"
+                                                      text="%endSession.study"
                                                       styleClass="session-feel-pill"/>
                                         <ToggleButton fx:id="relaxToggle"
-                                                      text="Relax"
+                                                      text="%endSession.relax"
                                                       styleClass="session-feel-pill"/>
                                     </children>
                                 </FlowPane>
@@ -229,10 +229,10 @@
                                 <VBox spacing="6.0">
                                     <children>
                                         <CheckBox fx:id="countToGoalCheck"
-                                                  text="Count toward today’s reading goal"
+                                                  text="%endSession.count_toward_today_s_reading_goal"
                                                   selected="true"/>
                                         <CheckBox fx:id="markFinishedCheck"
-                                                  text="Mark book as finished"/>
+                                                  text="%endSession.mark_book_as_finished"/>
                                     </children>
                                 </VBox>
                             </children>
@@ -251,16 +251,16 @@
                 <Insets top="12" right="24" bottom="16" left="24"/>
             </padding>
             <children>
-                <Label text="You can edit this session later in Statistics."
+                <Label text="%endSession.you_can_edit_this_session_later_in_statistics"
                        styleClass="session-end-helper-text"/>
 
                 <Pane HBox.hgrow="ALWAYS"/>
 
-                <Button text="Cancel"
+                <Button text="%common.cancel"
                         onAction="#handleCancel"
                         styleClass="session-end-cancel-button"/>
 
-                <Button text="Save session"
+                <Button text="%endSession.save_session"
                         onAction="#handleSave"
                         styleClass="header-primary-button"/>
             </children>

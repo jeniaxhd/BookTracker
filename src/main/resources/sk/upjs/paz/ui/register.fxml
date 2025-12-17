@@ -48,10 +48,10 @@
                 <VBox spacing="12.0">
                     <children>
                         <Label wrapText="true"
-                               text="Create your reading space."
+                               text="%register.create_your_reading_space"
                                styleClass="auth-hero-title"/>
                         <Label wrapText="true"
-                               text="Sign up to track your books, reading sessions, and progress in one cozy place."
+                               text="%register.sign_up_to_track_your_books_reading_sessions_and_p"
                                styleClass="auth-hero-subtitle"/>
                     </children>
                 </VBox>
@@ -59,7 +59,7 @@
                 <!-- Spacer pushes last text down -->
                 <Pane VBox.vgrow="ALWAYS"/>
 
-                <Label text="Stay consistent, remember what you read, and feel proud of your progress."
+                <Label text="%register.stay_consistent_remember_what_you_read_and_feel_pr"
                        wrapText="true"
                        styleClass="auth-hero-subtitle"/>
 
@@ -87,10 +87,10 @@
                     <!-- Title -->
                     <VBox spacing="8.0">
                         <children>
-                            <Label text="Create your account"
+                            <Label text="%register.create_your_account"
                                    styleClass="auth-title"/>
                             <Label wrapText="true"
-                                   text="Start tracking your reading, goals, and library in minutes."
+                                   text="%register.start_tracking_your_reading_goals_and_library_in_m"
                                    styleClass="auth-subtitle"/>
                         </children>
                     </VBox>
@@ -102,10 +102,10 @@
                             <!-- Full name -->
                             <VBox spacing="6.0">
                                 <children>
-                                    <Label text="Full Name"
+                                    <Label text="%register.full_name"
                                            styleClass="auth-field-label"/>
                                     <TextField fx:id="fullNameField"
-                                               promptText="Enter your full name"
+                                               promptText="%register.enter_your_full_name"
                                                styleClass="auth-input"/>
                                 </children>
                             </VBox>
@@ -113,10 +113,10 @@
                             <!-- Email -->
                             <VBox spacing="6.0">
                                 <children>
-                                    <Label text="Email address"
+                                    <Label text="%register.email_address"
                                            styleClass="auth-field-label"/>
                                     <TextField fx:id="emailField"
-                                               promptText="Enter your email"
+                                               promptText="%register.enter_your_email"
                                                styleClass="auth-input"/>
                                 </children>
                             </VBox>
@@ -124,10 +124,10 @@
                             <!-- Password -->
                             <VBox spacing="6.0">
                                 <children>
-                                    <Label text="Password"
+                                    <Label text="%common.password"
                                            styleClass="auth-field-label"/>
                                     <PasswordField fx:id="passwordField"
-                                                   promptText="Create a password"
+                                                   promptText="%register.create_a_password"
                                                    styleClass="auth-input"/>
                                 </children>
                             </VBox>
@@ -135,10 +135,10 @@
                             <!-- Confirm password -->
                             <VBox spacing="6.0">
                                 <children>
-                                    <Label text="Confirm password"
+                                    <Label text="%register.confirm_password"
                                            styleClass="auth-field-label"/>
                                     <PasswordField fx:id="confirmPasswordField"
-                                                   promptText="Confirm your password"
+                                                   promptText="%register.confirm_your_password"
                                                    styleClass="auth-input"/>
                                 </children>
                             </VBox>
@@ -147,7 +147,7 @@
                             <HBox alignment="CENTER_LEFT" spacing="8.0">
                                 <children>
                                     <CheckBox fx:id="newsletterCheck"/>
-                                    <Label text="Send me occasional reading tips and updates"
+                                    <Label text="%register.send_me_occasional_reading_tips_and_updates"
                                            wrapText="true"
                                            styleClass="auth-remember"/>
                                 </children>
@@ -156,13 +156,13 @@
                             <!-- Terms text -->
                             <HBox alignment="CENTER_LEFT" spacing="4.0">
                                 <children>
-                                    <Label text="By creating an account, you agree to the"
+                                    <Label text="%register.by_creating_an_account_you_agree_to_the"
                                            styleClass="auth-remember"/>
-                                    <Hyperlink text="Terms of Service"
+                                    <Hyperlink text="%register.terms_of_service"
                                                styleClass="auth-bottom-link"/>
-                                    <Label text="and"
+                                    <Label text="%register.and"
                                            styleClass="auth-remember"/>
-                                    <Hyperlink text="Privacy Policy"
+                                    <Hyperlink text="%register.privacy_policy"
                                                styleClass="auth-bottom-link"/>
                                     <Label text="."
                                            styleClass="auth-remember"/>
@@ -178,7 +178,7 @@
 
                             <!-- Create account button -->
                             <Button fx:id="createAccountButton"
-                                    text="Create account"
+                                    text="%register.create_account"
                                     maxWidth="Infinity"
                                     styleClass="auth-primary-button"
                                     onAction="#onSignUp"/>
@@ -189,10 +189,10 @@
                     <!-- Bottom text -->
                     <HBox alignment="CENTER" spacing="4.0">
                         <children>
-                            <Label text="Already have an account?"
+                            <Label text="%register.already_have_an_account"
                                    styleClass="auth-bottom-text"/>
                             <Hyperlink fx:id="loginLink"
-                                       text="Log in"
+                                       text="%register.log_in"
                                        styleClass="auth-bottom-link"
                                        onAction="#onGoToLogin"/>
                         </children>

@@ -57,24 +57,24 @@
                     </padding>
                     <children>
                         <ToggleButton fx:id="dashboardNavButton"
-                                      text="Dashboard"
+                                      text="%nav.dashboard"
                                       onAction="#onDashboardSelected"
                                       styleClass="sidebar-nav-button"/>
                         <ToggleButton fx:id="libraryNavButton"
-                                      text="Library"
+                                      text="%nav.library"
                                       onAction="#onLibrarySelected"
                                       styleClass="sidebar-nav-button"/>
                         <ToggleButton fx:id="currentlyReadingNavButton"
-                                      text="Currently Reading"
+                                      text="%nav.currentlyReading"
                                       onAction="#onCurrentlyReadingSelected"
                                       styleClass="sidebar-nav-button"/>
                         <ToggleButton fx:id="statisticsNavButton"
-                                      text="Statistics"
+                                      text="%nav.statistics"
                                       selected="true"
                                       onAction="#onStatisticsSelected"
                                       styleClass="sidebar-nav-button,sidebar-nav-button--active"/>
                         <ToggleButton fx:id="settingsNavButton"
-                                      text="Settings"
+                                      text="%nav.settings"
                                       onAction="#onSettingsSelected"
                                       styleClass="sidebar-nav-button"/>
                     </children>
@@ -108,7 +108,7 @@
                                                 <Label fx:id="userNameLabel"
                                                        text="Sarah Chen"
                                                        styleClass="sidebar-user-name"/>
-                                                <Label text="View profile"
+                                                <Label text="%nav.viewProfile"
                                                        styleClass="sidebar-user-subtitle"/>
                                             </children>
                                         </VBox>
@@ -144,7 +144,7 @@
                                 <VBox spacing="4.0">
                                     <children>
                                         <Label fx:id="headerTitleLabel"
-                                               text="Statistics"
+                                               text="%nav.statistics"
                                                styleClass="header-title"/>
                                         <Label text="See how your reading habits evolve over time."
                                                wrapText="true"
@@ -187,7 +187,7 @@
                                         </ToggleButton>
 
                                         <Button fx:id="exportButton"
-                                                text="Export report"
+                                                text="%statistics.export_report"
                                                 onAction="#onExportReport"
                                                 styleClass="header-primary-button"/>
                                     </children>
@@ -223,7 +223,7 @@
                                                 <HBox alignment="CENTER_LEFT"
                                                       spacing="8.0">
                                                     <children>
-                                                        <Label text="Pages read over time"
+                                                        <Label text="%statistics.pages_read_over_time"
                                                                styleClass="section-title"/>
                                                         <Label text="Last 30 days"
                                                                styleClass="stat-subtitle"/>
@@ -232,7 +232,7 @@
 
                                                 <StackPane prefHeight="260.0">
                                                     <children>
-                                                        <Label text="Line chart placeholder"
+                                                        <Label text="%statistics.line_chart_placeholder"
                                                                styleClass="stat-subtitle"/>
                                                     </children>
                                                 </StackPane>
@@ -242,7 +242,7 @@
 
                                                         <VBox spacing="4.0">
                                                             <children>
-                                                                <Label text="Total pages"
+                                                                <Label text="%statistics.total_pages"
                                                                        styleClass="stat-label"/>
                                                                 <Label text="1,240"
                                                                        styleClass="stat-value"/>
@@ -251,7 +251,7 @@
 
                                                         <VBox spacing="4.0">
                                                             <children>
-                                                                <Label text="Average per day"
+                                                                <Label text="%statistics.average_per_day"
                                                                        styleClass="stat-label"/>
                                                                 <Label text="42"
                                                                        styleClass="stat-value"/>
@@ -260,7 +260,7 @@
 
                                                         <VBox spacing="4.0">
                                                             <children>
-                                                                <Label text="Best day"
+                                                                <Label text="%statistics.best_day"
                                                                        styleClass="stat-label"/>
                                                                 <Label text="120 pages"
                                                                        styleClass="stat-value"/>
@@ -281,7 +281,7 @@
                                             <VBox spacing="12.0"
                                                   styleClass="stat-card">
                                                 <children>
-                                                    <Label text="Current streak"
+                                                    <Label text="%statistics.current_streak"
                                                            styleClass="section-title"/>
 
                                                     <Label text="10 days"
@@ -368,7 +368,7 @@
                                             <VBox spacing="12.0"
                                                   styleClass="stat-card">
                                                 <children>
-                                                    <Label text="This year at a glance"
+                                                    <Label text="%statistics.this_year_at_a_glance"
                                                            styleClass="section-title"/>
 
                                                     <VBox spacing="8.0">
@@ -379,7 +379,7 @@
                                                                 <children>
                                                                     <Label text="📚"
                                                                            styleClass="stats-row-icon"/>
-                                                                    <Label text="Books finished"
+                                                                    <Label text="%statistics.books_finished"
                                                                            styleClass="stats-row-label"/>
                                                                     <Pane HBox.hgrow="ALWAYS"/>
                                                                     <Label text="24"
@@ -392,7 +392,7 @@
                                                                 <children>
                                                                     <Label text="📄"
                                                                            styleClass="stats-row-icon"/>
-                                                                    <Label text="Pages read"
+                                                                    <Label text="%dashboard.pages_read"
                                                                            styleClass="stats-row-label"/>
                                                                     <Pane HBox.hgrow="ALWAYS"/>
                                                                     <Label text="7,340"
@@ -405,7 +405,7 @@
                                                                 <children>
                                                                     <Label text="📆"
                                                                            styleClass="stats-row-icon"/>
-                                                                    <Label text="Active reading days"
+                                                                    <Label text="%statistics.active_reading_days"
                                                                            styleClass="stats-row-label"/>
                                                                     <Pane HBox.hgrow="ALWAYS"/>
                                                                     <Label text="112"
@@ -418,7 +418,7 @@
                                                                 <children>
                                                                     <Label text="⏱"
                                                                            styleClass="stats-row-icon"/>
-                                                                    <Label text="Avg session length"
+                                                                    <Label text="%statistics.avg_session_length"
                                                                            styleClass="stats-row-label"/>
                                                                     <Pane HBox.hgrow="ALWAYS"/>
                                                                     <Label text="32 min"
@@ -444,7 +444,7 @@
                                               HBox.hgrow="ALWAYS"
                                               styleClass="stat-card">
                                             <children>
-                                                <Label text="Books finished per month"
+                                                <Label text="%statistics.books_finished_per_month"
                                                        styleClass="section-title"/>
                                                 <Label text="This year: 24 books finished"
                                                        styleClass="stat-subtitle"/>
@@ -452,7 +452,7 @@
                                                 <StackPane prefHeight="220.0"
                                                            styleClass="stats-bar-chart-placeholder">
                                                     <children>
-                                                        <Label text="Bar chart placeholder"
+                                                        <Label text="%statistics.bar_chart_placeholder"
                                                                styleClass="stat-subtitle"/>
                                                     </children>
                                                 </StackPane>

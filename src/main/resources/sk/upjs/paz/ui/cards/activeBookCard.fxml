@@ -51,12 +51,12 @@
                         <HBox spacing="8.0">
                             <children>
                                 <Button fx:id="continueButton"
-                                        text="Continue"
+                                        text="%activeBookCard.continue"
                                         onAction="#onContinue"
                                         styleClass="header-primary-button"/>
 
                                 <Hyperlink fx:id="detailsLink"
-                                           text="View details"
+                                           text="%activeBookCard.view_details"
                                            onAction="#onViewDetails"
                                            styleClass="book-link"/>
                             </children>

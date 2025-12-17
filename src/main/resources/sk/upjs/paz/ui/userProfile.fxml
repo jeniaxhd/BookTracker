@@ -36,27 +36,27 @@
                 <VBox styleClass="sidebar-nav">
                     <children>
                         <ToggleButton fx:id="dashboardNavButton"
-                                      text="Dashboard"
+                                      text="%nav.dashboard"
                                       onAction="#onDashboardSelected"
                                       styleClass="sidebar-nav-button"/>
 
                         <ToggleButton fx:id="libraryNavButton"
-                                      text="Library"
+                                      text="%nav.library"
                                       onAction="#onLibrarySelected"
                                       styleClass="sidebar-nav-button"/>
 
                         <ToggleButton fx:id="currentlyReadingNavButton"
-                                      text="Currently reading"
+                                      text="%nav.currentlyReading"
                                       onAction="#onCurrentlyReadingSelected"
                                       styleClass="sidebar-nav-button"/>
 
                         <ToggleButton fx:id="statisticsNavButton"
-                                      text="Statistics"
+                                      text="%nav.statistics"
                                       onAction="#onStatisticsSelected"
                                       styleClass="sidebar-nav-button"/>
 
                         <ToggleButton fx:id="settingsNavButton"
-                                      text="Settings"
+                                      text="%nav.settings"
                                       onAction="#onSettingsSelected"
                                       styleClass="sidebar-nav-button"/>
                     </children>
@@ -85,10 +85,10 @@
                                         <VBox spacing="2.0">
                                             <children>
                                                 <Label fx:id="userNameLabel"
-                                                       text="User Name"
+                                                       text="%userProfile.user_name"
                                                        styleClass="sidebar-user-name"/>
                                                 <Label fx:id="userSubtitleLabel"
-                                                       text="View profile"
+                                                       text="%nav.viewProfile"
                                                        styleClass="sidebar-user-subtitle"/>
                                             </children>
                                         </VBox>
@@ -116,10 +116,10 @@
                         <VBox spacing="4.0">
                             <children>
                                 <Label fx:id="headerTitleLabel"
-                                       text="Profile"
+                                       text="%userProfile.profile"
                                        styleClass="header-title"/>
                                 <Label fx:id="headerSubtitleLabel"
-                                       text="Account details"
+                                       text="%userProfile.account_details"
                                        styleClass="header-subtitle"/>
                             </children>
                         </VBox>
@@ -165,7 +165,7 @@
                         <VBox spacing="14.0" styleClass="stat-card" maxWidth="760.0">
                             <children>
 
-                                <Label text="Profile" styleClass="section-title"/>
+                                <Label text="%nav.viewProfile" styleClass="section-title"/>
 
                                 <HBox spacing="12.0" alignment="CENTER_LEFT">
                                     <children>
@@ -180,7 +180,7 @@
                                         <VBox spacing="4.0">
                                             <children>
                                                 <Label fx:id="profileNameLabel"
-                                                       text="User"
+                                                       text="%userProfile.user"
                                                        styleClass="settings-name"/>
                                                 <Label fx:id="profileMetaLabel"
                                                        text=""
@@ -192,7 +192,7 @@
 
                                 <VBox spacing="6.0">
                                     <children>
-                                        <Label text="Email" styleClass="settings-small-label"/>
+                                        <Label text="%common.email" styleClass="settings-small-label"/>
                                         <Label fx:id="emailValueLabel"
                                                text="user@mail.com"
                                                styleClass="settings-email-box"/>
@@ -206,9 +206,9 @@
                                     <children>
                                         <VBox spacing="6.0">
                                             <children>
-                                                <Label text="Name" styleClass="settings-small-label"/>
+                                                <Label text="%userProfile.name" styleClass="settings-small-label"/>
                                                 <TextField fx:id="nameEditField"
-                                                           promptText="Your name"
+                                                           promptText="%userProfile.your_name"
                                                            styleClass="settings-number-field"/>
                                             </children>
                                         </VBox>
@@ -216,11 +216,11 @@
                                         <HBox spacing="10.0" alignment="CENTER_RIGHT">
                                             <children>
                                                 <Button fx:id="cancelEditButton"
-                                                        text="Cancel"
+                                                        text="%common.cancel"
                                                         onAction="#onCancelEdit"
                                                         styleClass="header-secondary-button"/>
                                                 <Button fx:id="saveProfileButton"
-                                                        text="Save"
+                                                        text="%common.save"
                                                         onAction="#onSaveProfile"
                                                         styleClass="header-primary-button"/>
                                             </children>
@@ -230,16 +230,16 @@
 
                                 <VBox spacing="10.0">
                                     <children>
-                                        <Label text="Quick actions" styleClass="settings-label"/>
+                                        <Label text="%userProfile.quick_actions" styleClass="settings-label"/>
 
                                         <HBox spacing="10.0">
                                             <children>
                                                 <Button fx:id="editProfileButton"
-                                                        text="Edit profile"
+                                                        text="%userProfile.edit_profile"
                                                         onAction="#onEditProfile"
                                                         styleClass="settings-secondary-button"/>
                                                 <Button fx:id="logoutButton"
-                                                        text="Log out"
+                                                        text="%userProfile.log_out"
                                                         onAction="#onLogout"
                                                         styleClass="danger-text-button"/>
                                             </children>

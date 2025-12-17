@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import sk.upjs.paz.dao.DaoFactory;
 import sk.upjs.paz.dao.ReadingSessionDao;
 import sk.upjs.paz.entity.ReadingSession;
+import sk.upjs.paz.ui.i18n.I18N;
 
 import java.io.IOException;
 import java.util.List;
@@ -172,7 +173,7 @@ public class LibraryController {
     @FXML
     private void onAddBook(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sk/upjs/paz/ui/addBookModal.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sk/upjs/paz/ui/addBookModal.fxml"), I18N.getBundle());
             Parent dialogRoot = loader.load();
 
             Scene dialogScene = new Scene(dialogRoot);
@@ -211,7 +212,7 @@ public class LibraryController {
         List<ReadingSession> sessions = dao.getByUser(userId);
         allBooksContainer.getChildren().clear();
         for (ReadingSession session : sessions) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sk/upjs/paz/ui/bookCardLibrary.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sk/upjs/paz/ui/bookCardLibrary.fxml"), I18N.getBundle());
             try {
                 Parent root = loader.load();
 

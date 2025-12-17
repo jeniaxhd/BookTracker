@@ -51,11 +51,11 @@
                         <Insets bottom="16" left="16" right="16" top="16" />
                     </padding>
                     <children>
-                        <ToggleButton fx:id="dashboardNavButton" onAction="#onDashboardSelected" styleClass="sidebar-nav-button" text="Dashboard" />
-                        <ToggleButton fx:id="libraryNavButton" onAction="#onLibrarySelected" selected="true" styleClass="sidebar-nav-button,sidebar-nav-button--active" text="Library" />
-                        <ToggleButton fx:id="currentlyReadingNavButton" onAction="#onCurrentlyReadingSelected" styleClass="sidebar-nav-button" text="Currently Reading" />
-                        <ToggleButton fx:id="statisticsNavButton" onAction="#onStatisticsSelected" styleClass="sidebar-nav-button" text="Statistics" />
-                        <ToggleButton fx:id="settingsNavButton" onAction="#onSettingsSelected" styleClass="sidebar-nav-button" text="Settings" />
+                        <ToggleButton fx:id="dashboardNavButton" onAction="#onDashboardSelected" styleClass="sidebar-nav-button" text="%nav.dashboard" />
+                        <ToggleButton fx:id="libraryNavButton" onAction="#onLibrarySelected" selected="true" styleClass="sidebar-nav-button,sidebar-nav-button--active" text="%nav.library" />
+                        <ToggleButton fx:id="currentlyReadingNavButton" onAction="#onCurrentlyReadingSelected" styleClass="sidebar-nav-button" text="%nav.currentlyReading" />
+                        <ToggleButton fx:id="statisticsNavButton" onAction="#onStatisticsSelected" styleClass="sidebar-nav-button" text="%nav.statistics" />
+                        <ToggleButton fx:id="settingsNavButton" onAction="#onSettingsSelected" styleClass="sidebar-nav-button" text="%nav.settings" />
                     </children>
                 </VBox>
 
@@ -80,7 +80,7 @@
                                         <VBox spacing="2.0">
                                             <children>
                                                 <Label fx:id="userNameLabel" styleClass="sidebar-user-name" text="Sarah Chen" />
-                                                <Label styleClass="sidebar-user-subtitle" text="View profile" />
+                                                <Label styleClass="sidebar-user-subtitle" text="%nav.viewProfile" />
                                             </children>
                                         </VBox>
                                     </children>
@@ -111,8 +111,8 @@
                                 <!-- Title + subtitle -->
                                 <VBox spacing="4.0">
                                     <children>
-                                        <Label fx:id="headerTitleLabel" styleClass="header-title" text="Library" />
-                                        <Label styleClass="header-subtitle" text="Browse, search, and organize all your books." wrapText="true" />
+                                        <Label fx:id="headerTitleLabel" styleClass="header-title" text="%nav.library" />
+                                        <Label styleClass="header-subtitle" text="%library.browse_search_and_organize_all_your_books" wrapText="true" />
                                     </children>
                                 </VBox>
 
@@ -123,7 +123,7 @@
                                     <children>
 
                                         <!-- Search field -->
-                                        <TextField fx:id="searchField" prefWidth="260.0" promptText="Search by title, author, or tag..." styleClass="header-search-field" />
+                                        <TextField fx:id="searchField" prefWidth="260.0" promptText="%library.search_by_title_author_or_tag" styleClass="header-search-field" />
 
                                         <!-- Simple filter button -->
                                         <Button fx:id="filterButton" onAction="#onTopSettings" styleClass="header-icon-button">
@@ -141,7 +141,7 @@
                                         </ToggleButton>
 
                                         <!-- Add Book primary button -->
-                                        <Button fx:id="addBookButton" onAction="#onAddBook" styleClass="header-primary-button" text="Add Book">
+                                        <Button fx:id="addBookButton" onAction="#onAddBook" styleClass="header-primary-button" text="%common.addBook">
                                             <graphic>
                                                 <Label styleClass="header-primary-icon" text="+" />
                                             </graphic>
@@ -166,24 +166,24 @@
                                 <!-- FILTER ROW -->
                                 <VBox spacing="12.0">
                                     <children>
-                                        <Label styleClass="section-title" text="Filters" />
+                                        <Label styleClass="section-title" text="%library.filters" />
 
                                         <!-- Status chips -->
                                         <HBox spacing="8.0">
                                             <children>
-                                                <ToggleButton selected="true" styleClass="filter-chip,filter-chip--active" text="All" />
-                                                <ToggleButton styleClass="filter-chip" text="In Progress" />
-                                                <ToggleButton styleClass="filter-chip" text="Finished" />
-                                                <ToggleButton styleClass="filter-chip" text="Not started" />
-                                                <ToggleButton styleClass="filter-chip" text="Abandoned" />
+                                                <ToggleButton selected="true" styleClass="filter-chip,filter-chip--active" text="%common.all" />
+                                                <ToggleButton styleClass="filter-chip" text="%status.inProgress" />
+                                                <ToggleButton styleClass="filter-chip" text="%library.finished" />
+                                                <ToggleButton styleClass="filter-chip" text="%library.not_started" />
+                                                <ToggleButton styleClass="filter-chip" text="%library.abandoned" />
                                             </children>
                                         </HBox>
 
                                         <!-- Category + sort -->
                                         <HBox spacing="12.0">
                                             <children>
-                                                <ComboBox prefWidth="180.0" promptText="Category" styleClass="filter-combobox" />
-                                                <ComboBox prefWidth="220.0" promptText="Sort by: Recently added" styleClass="filter-combobox" />
+                                                <ComboBox prefWidth="180.0" promptText="%common.category" styleClass="filter-combobox" />
+                                                <ComboBox prefWidth="220.0" promptText="%library.sort_by_recently_added" styleClass="filter-combobox" />
                                             </children>
                                         </HBox>
                                     </children>
@@ -196,7 +196,7 @@
                                         <!-- BOOK GRID -->
                                         <VBox spacing="12.0" HBox.hgrow="ALWAYS">
                                             <children>
-                                                <Label styleClass="section-title" text="All books" />
+                                                <Label styleClass="section-title" text="%library.all_books" />
 
                                                 <FlowPane fx:id="allBooksContainer" hgap="16.0" prefWrapLength="720.0" vgap="16.0">
                                                     <children>
@@ -206,7 +206,7 @@
                                                             <children>
                                                                 <StackPane prefHeight="220.0" styleClass="library-book-cover">
                                                                     <children>
-                                                                        <Label styleClass="book-cover-placeholder-text" text="Cover" />
+                                                                        <Label styleClass="book-cover-placeholder-text" text="%common.cover" />
                                                                     </children>
                                                                 </StackPane>
 
@@ -245,7 +245,7 @@
                                                             <children>
                                                                 <StackPane prefHeight="220.0" styleClass="library-book-cover">
                                                                     <children>
-                                                                        <Label styleClass="book-cover-placeholder-text" text="Cover" />
+                                                                        <Label styleClass="book-cover-placeholder-text" text="%common.cover" />
                                                                     </children>
                                                                 </StackPane>
 
@@ -330,7 +330,7 @@
                                                 <!-- Library overview -->
                                                 <VBox spacing="10.0" styleClass="stat-card,library-side-card">
                                                     <children>
-                                                        <Label styleClass="library-side-title" text="Library overview" />
+                                                        <Label styleClass="library-side-title" text="%library.library_overview" />
                                                         <Label styleClass="library-side-label" text="Total books: 68" />
                                                         <Label styleClass="library-side-label" text="In progress: 4" />
                                                         <Label styleClass="library-side-label" text="Finished this year: 24" />
@@ -340,7 +340,7 @@
                                                 <!-- Favorite tags -->
                                                 <VBox spacing="10.0" styleClass="stat-card,library-side-card">
                                                     <children>
-                                                        <Label styleClass="library-side-title" text="Favorite tags" />
+                                                        <Label styleClass="library-side-title" text="%library.favorite_tags" />
                                                         <FlowPane hgap="8.0" vgap="8.0">
                                                             <children>
                                                                 <Label styleClass="tag-pill" text="#productivity" />
@@ -354,7 +354,7 @@
                                                 </VBox>
 
                                                 <!-- Tip text -->
-                                                <Label styleClass="stat-subtitle" text="Tip: use filters and tags to quickly find books you want to revisit." wrapText="true" />
+                                                <Label styleClass="stat-subtitle" text="%library.tip_use_filters_and_tags_to_quickly_find_books_you" wrapText="true" />
 
                                             </children>
                                         </VBox>

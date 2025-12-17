@@ -12,7 +12,7 @@
     <children>
         <StackPane fx:id="coverLabel" prefHeight="220.0" styleClass="library-book-cover">
             <children>
-                <Label styleClass="book-cover-placeholder-text" text="Cover"/>
+                <Label styleClass="book-cover-placeholder-text" text="%common.cover"/>
             </children>
         </StackPane>
 
@@ -32,7 +32,7 @@
                     <children>
                         <Label fx:id="pages" styleClass="book-progress-text" text="187 / 304 pages"/>
                         <Pane HBox.hgrow="ALWAYS"/>
-                        <Label fx:id="statusLabel" styleClass="book-status-pill" text="In Progress"/>
+                        <Label fx:id="statusLabel" styleClass="book-status-pill" text="%status.inProgress"/>
                     </children>
                 </HBox>
 

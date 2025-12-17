@@ -57,24 +57,24 @@
                     </padding>
                     <children>
                         <ToggleButton fx:id="dashboardNavButton"
-                                      text="Dashboard"
+                                      text="%nav.dashboard"
                                       selected="true"
                                       onAction="#onDashboardSelected"
                                       styleClass="sidebar-nav-button,sidebar-nav-button--active"/>
                         <ToggleButton fx:id="libraryNavButton"
-                                      text="Library"
+                                      text="%nav.library"
                                       onAction="#onLibrarySelected"
                                       styleClass="sidebar-nav-button"/>
                         <ToggleButton fx:id="currentlyReadingNavButton"
-                                      text="Currently Reading"
+                                      text="%nav.currentlyReading"
                                       onAction="#onCurrentlyReadingSelected"
                                       styleClass="sidebar-nav-button"/>
                         <ToggleButton fx:id="statisticsNavButton"
-                                      text="Statistics"
+                                      text="%nav.statistics"
                                       onAction="#onStatisticsSelected"
                                       styleClass="sidebar-nav-button"/>
                         <ToggleButton fx:id="settingsNavButton"
-                                      text="Settings"
+                                      text="%nav.settings"
                                       onAction="#onSettingsSelected"
                                       styleClass="sidebar-nav-button"/>
                     </children>
@@ -109,7 +109,7 @@
                                                 <Label fx:id="userNameLabel"
                                                        text="Stano Krajci"
                                                        styleClass="sidebar-user-name"/>
-                                                <Label text="View profile"
+                                                <Label text="%nav.viewProfile"
                                                        styleClass="sidebar-user-subtitle"/>
                                             </children>
                                         </VBox>
@@ -146,9 +146,9 @@
                                 <VBox spacing="4.0">
                                     <children>
                                         <Label fx:id="headerTitleLabel"
-                                               text="Dashboard"
+                                               text="%nav.dashboard"
                                                styleClass="header-title"/>
-                                        <Label text="Track your reading progress and organize your books."
+                                        <Label text="%dashboard.track_your_reading_progress_and_organize_your_book"
                                                wrapText="true"
                                                styleClass="header-subtitle"/>
                                     </children>
@@ -207,7 +207,7 @@
                                         </ToggleButton>
 
                                         <Button fx:id="addBookButton"
-                                                text="Add Book"
+                                                text="%common.addBook"
                                                 onAction="#onAddBook"
                                                 styleClass="header-primary-button">
                                             <graphic>
@@ -237,7 +237,7 @@
                                 <!-- Currently Reading section -->
                                 <VBox spacing="16.0">
                                     <children>
-                                        <Label text="Currently Reading"
+                                        <Label text="%nav.currentlyReading"
                                                styleClass="section-title"/>
                                         <HBox
                                               spacing="16.0">
@@ -315,7 +315,7 @@
                                         <VBox spacing="12.0"
                                               HBox.hgrow="ALWAYS">
                                             <children>
-                                                <Label text="Reading Queue"
+                                                <Label text="%dashboard.reading_queue"
                                                        styleClass="section-title"/>
                                                 <VBox fx:id="queueContainer"
                                                       spacing="8.0">
@@ -379,7 +379,7 @@
                                         <VBox prefWidth="260.0"
                                               spacing="10.0">
                                             <children>
-                                                <Label text="Statistics"
+                                                <Label text="%nav.statistics"
                                                        styleClass="section-title"/>
 
                                                 <VBox spacing="10.0">
@@ -405,12 +405,12 @@
 
                                                                 <VBox spacing="2.0">
                                                                     <children>
-                                                                        <Label text="Books Read"
+                                                                        <Label text="%dashboard.books_read"
                                                                                styleClass="stat-label"/>
                                                                         <Label fx:id="booksReadValueLabel"
                                                                                text="24"
                                                                                styleClass="stat-value"/>
-                                                                        <Label text="This year"
+                                                                        <Label text="%dashboard.this_year"
                                                                                styleClass="stat-subtitle"/>
                                                                     </children>
                                                                 </VBox>
@@ -437,12 +437,12 @@
 
                                                                 <VBox spacing="2.0">
                                                                     <children>
-                                                                        <Label text="In Progress"
+                                                                        <Label text="%status.inProgress"
                                                                                styleClass="stat-label"/>
                                                                         <Label fx:id="inProgressValueLabel"
                                                                                text="4"
                                                                                styleClass="stat-value"/>
-                                                                        <Label text="Currently reading"
+                                                                        <Label text="%nav.currentlyReading"
                                                                                styleClass="stat-subtitle"/>
                                                                     </children>
                                                                 </VBox>
@@ -469,11 +469,11 @@
 
                                                                 <VBox spacing="2.0">
                                                                     <children>
-                                                                        <Label text="Pages Read"
+                                                                        <Label text="%dashboard.pages_read"
                                                                                styleClass="stat-label"/>
                                                                         <Label text="8,432"
                                                                                styleClass="stat-value"/>
-                                                                        <Label text="Total"
+                                                                        <Label text="%dashboard.total"
                                                                                styleClass="stat-subtitle"/>
                                                                     </children>
                                                                 </VBox>
@@ -500,11 +500,11 @@
 
                                                                 <VBox spacing="2.0">
                                                                     <children>
-                                                                        <Label text="Reading Streak"
+                                                                        <Label text="%dashboard.reading_streak"
                                                                                styleClass="stat-label"/>
                                                                         <Label text="12"
                                                                                styleClass="stat-value"/>
-                                                                        <Label text="Days in a row"
+                                                                        <Label text="%dashboard.days_in_a_row"
                                                                                styleClass="stat-subtitle"/>
                                                                     </children>
                                                                 </VBox>

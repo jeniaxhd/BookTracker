@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.stage.Window;
 import javafx.util.Duration;
+import sk.upjs.paz.ui.i18n.I18N;
 
 public class SessionBarController {
 
@@ -49,6 +50,17 @@ public class SessionBarController {
         setPlayIcon();
     }
 
+
+    public void refreshI18n() {
+        if (timerCaptionLabel != null) {
+            String t = timerCaptionLabel.getText();
+            if ("Ready to read".equals(t)) timerCaptionLabel.setText(I18N.tr("session.readyToRead"));
+            else if ("Reading now".equals(t)) timerCaptionLabel.setText(I18N.tr("session.readingNow"));
+            else if ("Paused".equals(t)) timerCaptionLabel.setText(I18N.tr("session.paused"));
+            else if ("Stopped".equals(t)) timerCaptionLabel.setText(I18N.tr("session.stopped"));
+            else if ("More (TODO)".equals(t)) timerCaptionLabel.setText(I18N.tr("session.moreTodo"));
+        }
+    }
     // ===== Public API =====
 
     public void startSession(String title, String subtitle, String status) {

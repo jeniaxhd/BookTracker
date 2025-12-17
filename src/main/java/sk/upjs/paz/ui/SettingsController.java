@@ -1,5 +1,6 @@
 package sk.upjs.paz.ui;
 
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -7,6 +8,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import sk.upjs.paz.ui.i18n.I18N;
+
+import java.util.Locale;
 
 public class SettingsController {
 
@@ -40,7 +44,7 @@ public class SettingsController {
     @FXML private ToggleButton pagesGoalToggle;
     @FXML private TextField dailyGoalField;
     @FXML private TextField defaultDurationField;
-    @FXML private ComboBox<String> interfaceLanguageCombo;
+    @FXML private ComboBox<Locale> interfaceLanguageCombo;
     @FXML private Slider readingSpeedSlider;
 
     // Appearance (inside card) - MUST BE ToggleButton (pills)
@@ -61,6 +65,9 @@ public class SettingsController {
     private Image bellLight;
     private Image bellDark;
 
+    // guard щоб не ловити рекурсію/зайві тригери
+    private boolean internalLangChange = false;
+
     @FXML
     private void initialize() {
         // ===== Sidebar group =====
@@ -74,8 +81,15 @@ public class SettingsController {
             settingsNavButton.setSelected(true);
         }
 
-        if (headerTitleLabel != null) headerTitleLabel.setText("Settings");
+        // ===== i18n header title =====
+        if (headerTitleLabel != null) {
+            headerTitleLabel.setText(I18N.tr("settings.title"));
+            I18N.localeProperty().addListener((obs, o, n) ->
+                    headerTitleLabel.setText(I18N.tr("settings.title"))
+            );
+        }
 
+        // user name
         if (userNameLabel != null && AppState.getCurrentUser() != null) {
             userNameLabel.setText(AppState.getCurrentUser().getName());
         }
@@ -106,12 +120,10 @@ public class SettingsController {
             minutesGoalToggle.setToggleGroup(goalTypeGroup);
             pagesGoalToggle.setToggleGroup(goalTypeGroup);
 
-            // prevent unselecting last selected
             goalTypeGroup.selectedToggleProperty().addListener((o, oldT, newT) -> {
                 if (newT == null && oldT != null) oldT.setSelected(true);
             });
 
-            // default
             if (goalTypeGroup.getSelectedToggle() == null) {
                 minutesGoalToggle.setSelected(true);
             }
@@ -123,11 +135,9 @@ public class SettingsController {
             themeLightToggle.setToggleGroup(themeGroup);
             themeDarkToggle.setToggleGroup(themeGroup);
 
-            // initial state from ThemeManager
             if (ThemeManager.isDarkMode()) themeDarkToggle.setSelected(true);
             else themeLightToggle.setSelected(true);
 
-            // prevent unselecting last selected + apply theme
             themeGroup.selectedToggleProperty().addListener((o, oldT, newT) -> {
                 if (newT == null) {
                     if (oldT != null) oldT.setSelected(true);
@@ -160,17 +170,59 @@ public class SettingsController {
         // ===== Defaults (optional) =====
         if (dailyGoalField != null && dailyGoalField.getText().isBlank()) dailyGoalField.setText("30");
         if (defaultDurationField != null && defaultDurationField.getText().isBlank()) defaultDurationField.setText("25");
+        if (readingSpeedSlider != null && readingSpeedSlider.getValue() == 0.0) readingSpeedSlider.setValue(50.0);
 
-        if (interfaceLanguageCombo != null
-                && interfaceLanguageCombo.getItems() != null
-                && !interfaceLanguageCombo.getItems().isEmpty()
-                && interfaceLanguageCombo.getSelectionModel().isEmpty()) {
-            interfaceLanguageCombo.getSelectionModel().selectFirst();
-        }
+        // ===== i18n language combo =====
+        initLanguageCombo();
+    }
 
-        if (readingSpeedSlider != null && readingSpeedSlider.getValue() == 0.0) {
-            readingSpeedSlider.setValue(50.0);
-        }
+    private void initLanguageCombo() {
+        if (interfaceLanguageCombo == null) return;
+
+        interfaceLanguageCombo.setItems(FXCollections.observableArrayList(
+                new Locale("sk"),
+                Locale.ENGLISH
+        ));
+
+        interfaceLanguageCombo.setCellFactory(cb -> new ListCell<>() {
+            @Override
+            protected void updateItem(Locale item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? null : localeToLabel(item));
+            }
+        });
+        interfaceLanguageCombo.setButtonCell(new ListCell<>() {
+            @Override
+            protected void updateItem(Locale item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? null : localeToLabel(item));
+            }
+        });
+
+        // select current (без тригера listener-а)
+        internalLangChange = true;
+        interfaceLanguageCombo.getSelectionModel().select(matchLocale(I18N.getLocale()));
+        internalLangChange = false;
+
+        // user changes language
+        interfaceLanguageCombo.valueProperty().addListener((obs, oldV, newV) -> {
+            if (internalLangChange) return;
+            if (newV == null) return;
+
+            if (!newV.getLanguage().equalsIgnoreCase(I18N.getLocale().getLanguage())) {
+                I18N.setLocale(newV);
+                // SceneNavigator вже слухає localeProperty і сам перезавантажить сторінку,
+                // але refresh() теж ок якщо ти його додав.
+                SceneNavigator.refresh();
+            }
+        });
+
+        // keep combo labels in sync if locale changes elsewhere
+        I18N.localeProperty().addListener((obs, o, n) -> {
+            internalLangChange = true;
+            interfaceLanguageCombo.getSelectionModel().select(matchLocale(n));
+            internalLangChange = false;
+        });
     }
 
     private Image load(String path) {
@@ -178,8 +230,18 @@ public class SettingsController {
         return url == null ? null : new Image(url.toExternalForm());
     }
 
-    // ===== Header theme toggle =====
+    private Locale matchLocale(Locale l) {
+        if (l != null && "sk".equalsIgnoreCase(l.getLanguage())) return new Locale("sk");
+        return Locale.ENGLISH;
+    }
 
+    private String localeToLabel(Locale locale) {
+        return "sk".equalsIgnoreCase(locale.getLanguage())
+                ? I18N.tr("lang.sk")
+                : I18N.tr("lang.en");
+    }
+
+    // ===== Header theme toggle =====
     @FXML
     private void onToggleTheme(ActionEvent event) {
         ThemeManager.toggle();
@@ -190,10 +252,8 @@ public class SettingsController {
 
     private void syncThemeControls() {
         boolean dark = ThemeManager.isDarkMode();
-
         if (themeToggle != null) themeToggle.setSelected(dark);
 
-        // sync pills too
         if (themeLightToggle != null && themeDarkToggle != null) {
             if (dark) themeDarkToggle.setSelected(true);
             else themeLightToggle.setSelected(true);
@@ -202,13 +262,11 @@ public class SettingsController {
 
     private void updateHeaderIcons() {
         boolean dark = ThemeManager.isDarkMode();
-
         if (themeIcon != null) themeIcon.setImage(dark ? sunIcon : moonIcon);
         if (notificationsIcon != null) notificationsIcon.setImage(dark ? bellDark : bellLight);
     }
 
     // ===== Navigation =====
-
     @FXML private void onDashboardSelected(ActionEvent event) { SceneNavigator.showDashboard(); }
     @FXML private void onLibrarySelected(ActionEvent event) { SceneNavigator.showLibrary(); }
     @FXML private void onCurrentlyReadingSelected(ActionEvent event) { SceneNavigator.showCurrentlyReading(); }
@@ -220,12 +278,10 @@ public class SettingsController {
     }
 
     // ===== Header buttons =====
-
     @FXML
     private void onNotifications(ActionEvent event) {
         SceneNavigator.toggleNotifications(notificationsButton);
     }
-
 
     @FXML
     private void onUserProfile(ActionEvent event) {

@@ -16,6 +16,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sk.upjs.paz.ui.dto.ActiveBookCard;
 import sk.upjs.paz.service.CurrentlyReadingService;
+import sk.upjs.paz.ui.i18n.I18N;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -144,15 +145,15 @@ public class CurrentlyReadingController {
 
     private Node loadCard(ActiveBookCard card) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sk/upjs/paz/ui/activeBookCard.fxml"));
-            Node node = loader.load();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sk/upjs/paz/ui/activeBookCard.fxml"),  I18N.getBundle());
+            Parent root = loader.load();
 
             ActiveBookCardController c = loader.getController();
             c.setData(card);
             c.setOnContinue(this::startSessionForCard);
             c.setOnDetails(this::openBookDetailsForCard);
 
-            return node;
+            return root;
         } catch (IOException ex) {
             throw new RuntimeException("Cannot load activeBookCard.fxml", ex);
         }
@@ -255,7 +256,7 @@ public class CurrentlyReadingController {
 
     private void openBookDetailsModal(String bookTitle) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sk/upjs/paz/ui/bookDetailsModal.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sk/upjs/paz/ui/bookDetailsModal.fxml"), I18N.getBundle());
             Parent dialogRoot = loader.load();
 
             BookDetailsModalController c = loader.getController();
@@ -291,7 +292,7 @@ public class CurrentlyReadingController {
 
     private void openModal(String fxmlPath, String title) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath), I18N.getBundle());
             Parent dialogRoot = loader.load();
 
             Scene dialogScene = new Scene(dialogRoot);

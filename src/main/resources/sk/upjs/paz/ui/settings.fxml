@@ -60,23 +60,23 @@
                     </padding>
                     <children>
                         <ToggleButton fx:id="dashboardNavButton"
-                                      text="Dashboard"
+                                      text="%nav.dashboard"
                                       onAction="#onDashboardSelected"
                                       styleClass="sidebar-nav-button"/>
                         <ToggleButton fx:id="libraryNavButton"
-                                      text="Library"
+                                      text="%nav.library"
                                       onAction="#onLibrarySelected"
                                       styleClass="sidebar-nav-button"/>
                         <ToggleButton fx:id="currentlyReadingNavButton"
-                                      text="Currently Reading"
+                                      text="%nav.currentlyReading"
                                       onAction="#onCurrentlyReadingSelected"
                                       styleClass="sidebar-nav-button"/>
                         <ToggleButton fx:id="statisticsNavButton"
-                                      text="Statistics"
+                                      text="%nav.statistics"
                                       onAction="#onStatisticsSelected"
                                       styleClass="sidebar-nav-button"/>
                         <ToggleButton fx:id="settingsNavButton"
-                                      text="Settings"
+                                      text="%nav.settings"
                                       selected="true"
                                       onAction="#onSettingsSelected"
                                       styleClass="sidebar-nav-button,sidebar-nav-button--active"/>
@@ -113,7 +113,7 @@
                                                 <Label fx:id="userNameLabel"
                                                        text="Sarah Chen"
                                                        styleClass="sidebar-user-name"/>
-                                                <Label text="View profile"
+                                                <Label text="%nav.viewProfile"
                                                        styleClass="sidebar-user-subtitle"/>
                                             </children>
                                         </VBox>
@@ -149,11 +149,11 @@
                                 <VBox spacing="4.0">
                                     <children>
                                         <Label fx:id="headerTitleLabel"
-                                               text="Settings"
+                                               text="%nav.settings"
                                                styleClass="header-title"/>
                                         <Label styleClass="header-subtitle"
                                                wrapText="true"
-                                               text="Manage your account, reading preferences, and appearance."/>
+                                               text="%settings.manage_your_account_reading_preferences_and_appear"/>
                                     </children>
                                 </VBox>
 
@@ -229,7 +229,7 @@
                                               spacing="16.0"
                                               styleClass="stat-card">
                                             <children>
-                                                <Label text="Account"
+                                                <Label text="%settings.account"
                                                        styleClass="section-title"/>
 
                                                 <HBox spacing="12.0"
@@ -256,7 +256,7 @@
 
                                                 <VBox spacing="6.0">
                                                     <children>
-                                                        <Label text="Email"
+                                                        <Label text="%common.email"
                                                                styleClass="settings-label"/>
                                                         <Label text="sarah.chen@example.com"
                                                                styleClass="settings-email-box"/>
@@ -264,11 +264,11 @@
                                                 </VBox>
 
                                                 <Button maxWidth="Infinity"
-                                                        text="Manage account"
+                                                        text="%settings.manage_account"
                                                         styleClass="settings-secondary-button"/>
 
                                                 <Label wrapText="true"
-                                                       text="Account details are managed on the web."
+                                                       text="%settings.account_details_are_managed_on_the_web"
                                                        styleClass="settings-helper"/>
 
                                             </children>
@@ -280,23 +280,23 @@
                                               styleClass="stat-card">
                                             <children>
 
-                                                <Label text="Reading preferences"
+                                                <Label text="%settings.reading_preferences"
                                                        styleClass="section-title"/>
 
                                                 <!-- Daily reading goal -->
                                                 <VBox spacing="8.0">
                                                     <children>
-                                                        <Label text="Daily reading goal"
+                                                        <Label text="%settings.daily_reading_goal"
                                                                styleClass="settings-label"/>
 
                                                         <HBox spacing="8.0">
                                                             <children>
                                                                 <ToggleButton fx:id="minutesGoalToggle"
-                                                                              text="Minutes per day"
+                                                                              text="%settings.minutes_per_day"
                                                                               selected="true"
                                                                               styleClass="segmented-pill,segmented-pill--active"/>
                                                                 <ToggleButton fx:id="pagesGoalToggle"
-                                                                              text="Pages per day"
+                                                                              text="%settings.pages_per_day"
                                                                               styleClass="segmented-pill"/>
                                                             </children>
                                                         </HBox>
@@ -308,13 +308,13 @@
                                                                            prefWidth="80.0"
                                                                            promptText="30"
                                                                            styleClass="settings-number-field"/>
-                                                                <Label text="min"
+                                                                <Label text="%settings.min"
                                                                        styleClass="settings-small-label"/>
                                                             </children>
                                                         </HBox>
 
                                                         <Label wrapText="true"
-                                                               text="Used for streaks and progress toward your daily goal."
+                                                               text="%settings.used_for_streaks_and_progress_toward_your_daily_go"
                                                                styleClass="settings-helper"/>
                                                     </children>
                                                 </VBox>
@@ -322,7 +322,7 @@
                                                 <!-- Default session duration -->
                                                 <VBox spacing="6.0">
                                                     <children>
-                                                        <Label text="Default session duration"
+                                                        <Label text="%settings.default_session_duration"
                                                                styleClass="settings-label"/>
                                                         <HBox spacing="8.0"
                                                               alignment="CENTER_LEFT">
@@ -331,12 +331,12 @@
                                                                            prefWidth="80.0"
                                                                            promptText="25"
                                                                            styleClass="settings-number-field"/>
-                                                                <Label text="minutes"
+                                                                <Label text="%settings.minutes"
                                                                        styleClass="settings-small-label"/>
                                                             </children>
                                                         </HBox>
                                                         <Label wrapText="true"
-                                                               text="Used when starting quick sessions."
+                                                               text="%settings.used_when_starting_quick_sessions"
                                                                styleClass="settings-helper"/>
                                                     </children>
                                                 </VBox>
@@ -344,7 +344,7 @@
                                                 <!-- Interface language -->
                                                 <VBox spacing="6.0">
                                                     <children>
-                                                        <Label text="Interface language"
+                                                        <Label text="%settings.interface_language"
                                                                styleClass="settings-label"/>
                                                         <ComboBox fx:id="interfaceLanguageCombo"
                                                                   styleClass="settings-combobox">
@@ -357,7 +357,7 @@
                                                         </ComboBox>
 
                                                         <Label wrapText="true"
-                                                               text="Only labels and messages are affected."
+                                                               text="%settings.only_labels_and_messages_are_affected"
                                                                styleClass="settings-helper"/>
                                                     </children>
                                                 </VBox>
@@ -365,25 +365,25 @@
                                                 <!-- Average reading speed -->
                                                 <VBox spacing="6.0">
                                                     <children>
-                                                        <Label text="Average reading speed"
+                                                        <Label text="%settings.average_reading_speed"
                                                                styleClass="settings-label"/>
                                                         <Slider fx:id="readingSpeedSlider"
                                                                 min="0" max="100" value="50"/>
                                                         <HBox spacing="8.0"
                                                               alignment="CENTER">
                                                             <children>
-                                                                <Label text="Slow"
+                                                                <Label text="%settings.slow"
                                                                        styleClass="settings-small-label"/>
                                                                 <Pane HBox.hgrow="ALWAYS"/>
-                                                                <Label text="Normal"
+                                                                <Label text="%settings.normal"
                                                                        styleClass="settings-small-label"/>
                                                                 <Pane HBox.hgrow="ALWAYS"/>
-                                                                <Label text="Fast"
+                                                                <Label text="%settings.fast"
                                                                        styleClass="settings-small-label"/>
                                                             </children>
                                                         </HBox>
                                                         <Label wrapText="true"
-                                                               text="Helps to estimate remaining time for books."
+                                                               text="%settings.helps_to_estimate_remaining_time_for_books"
                                                                styleClass="settings-helper"/>
                                                     </children>
                                                 </VBox>
@@ -399,7 +399,7 @@
                                       styleClass="stat-card">
                                     <children>
 
-                                        <Label text="Appearance &amp; notifications"
+                                        <Label text="%settings.appearance_and_notifications"
                                                styleClass="section-title"/>
 
                                         <HBox spacing="24.0"
@@ -413,16 +413,16 @@
                                                         <!-- Theme -->
                                                         <VBox spacing="6.0">
                                                             <children>
-                                                                <Label text="Theme"
+                                                                <Label text="%settings.theme"
                                                                        styleClass="settings-label"/>
                                                                 <HBox spacing="8.0">
                                                                     <children>
                                                                         <ToggleButton fx:id="themeLightToggle"
-                                                                                      text="Light"
+                                                                                      text="%settings.light"
                                                                                       styleClass="segmented-pill"/>
 
                                                                         <ToggleButton fx:id="themeDarkToggle"
-                                                                                      text="Dark"
+                                                                                      text="%settings.dark"
                                                                                       styleClass="segmented-pill"/>
 
                                                                     </children>
@@ -433,21 +433,21 @@
                                                         <!-- Density -->
                                                         <VBox spacing="6.0">
                                                             <children>
-                                                                <Label text="Density"
+                                                                <Label text="%settings.density"
                                                                        styleClass="settings-label"/>
                                                                 <HBox spacing="8.0">
                                                                     <children>
                                                                         <ToggleButton fx:id="densityComfortableToggle"
-                                                                                      text="Comfortable"
+                                                                                      text="%settings.comfortable"
                                                                                       selected="true"
                                                                                       styleClass="segmented-pill,segmented-pill--active"/>
                                                                         <ToggleButton fx:id="densityCompactToggle"
-                                                                                      text="Compact"
+                                                                                      text="%settings.compact"
                                                                                       styleClass="segmented-pill"/>
                                                                     </children>
                                                                 </HBox>
                                                                 <Label wrapText="true"
-                                                                       text="Affects spacing in lists and cards."
+                                                                       text="%settings.affects_spacing_in_lists_and_cards"
                                                                        styleClass="settings-helper"/>
                                                             </children>
                                                         </VBox>
@@ -458,7 +458,7 @@
                                                 <!-- Notifications -->
                                                 <VBox spacing="12.0">
                                                     <children>
-                                                        <Label text="Notifications"
+                                                        <Label text="%common.notifications"
                                                                styleClass="settings-label"/>
 
                                                         <HBox spacing="8.0"
@@ -467,9 +467,9 @@
                                                                 <CheckBox fx:id="reminderCheck"/>
                                                                 <VBox spacing="2.0">
                                                                     <children>
-                                                                        <Label text="Reading reminders"
+                                                                        <Label text="%settings.reading_reminders"
                                                                                styleClass="settings-name"/>
-                                                                        <Label text="Remind me if I haven't read today."
+                                                                        <Label text="%settings.remind_me_if_i_haven_t_read_today"
                                                                                styleClass="settings-helper"/>
                                                                     </children>
                                                                 </VBox>
@@ -482,9 +482,9 @@
                                                                 <CheckBox fx:id="goalProgressCheck"/>
                                                                 <VBox spacing="2.0">
                                                                     <children>
-                                                                        <Label text="Goal progress"
+                                                                        <Label text="%settings.goal_progress"
                                                                                styleClass="settings-name"/>
-                                                                        <Label text="Notify me when I reach my daily goal."
+                                                                        <Label text="%settings.notify_me_when_i_reach_my_daily_goal"
                                                                                styleClass="settings-helper"/>
                                                                     </children>
                                                                 </VBox>
@@ -497,9 +497,9 @@
                                                                 <CheckBox fx:id="monthSummaryCheck"/>
                                                                 <VBox spacing="2.0">
                                                                     <children>
-                                                                        <Label text="New month summary"
+                                                                        <Label text="%settings.new_month_summary"
                                                                                styleClass="settings-name"/>
-                                                                        <Label text="Monthly overview of your reading."
+                                                                        <Label text="%settings.monthly_overview_of_your_reading"
                                                                                styleClass="settings-helper"/>
                                                                     </children>
                                                                 </VBox>

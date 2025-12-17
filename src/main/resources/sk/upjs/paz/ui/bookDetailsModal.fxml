@@ -31,7 +31,7 @@
                                        text="Atomic Habits" />
                                 <Label fx:id="subtitleLabel"
                                        styleClass="header-subtitle"
-                                       text="Book details and metadata" />
+                                       text="%bookDetailsModal.book_details_and_metadata" />
                             </children>
                         </VBox>
 
@@ -42,7 +42,7 @@
                             <children>
 
                                 <Button fx:id="editBookButton"
-                                        text="Edit book"
+                                        text="%bookDetailsModal.edit_book"
                                         mnemonicParsing="false"
                                         styleClass="header-secondary-button"/>
 
@@ -51,7 +51,7 @@
                                         mnemonicParsing="false"
                                         onAction="#handleStartSession"
                                         styleClass="header-primary-button"
-                                        text="Start reading session" />
+                                        text="%bookDetailsModal.start_reading_session" />
 
                                 <Button fx:id="closeIconButton"
                                         minWidth="36.0"
@@ -90,7 +90,7 @@
                                        styleClass="book-detail-cover">
                                 <children>
                                     <Label styleClass="book-detail-cover-placeholder"
-                                           text="Book Cover" />
+                                           text="%bookDetailsModal.book_cover" />
                                 </children>
                             </StackPane>
 
@@ -104,7 +104,7 @@
                                           styleClass="book-meta-card">
                                         <children>
                                             <Label styleClass="book-meta-label"
-                                                   text="Year" />
+                                                   text="%common.year" />
                                             <Label fx:id="yearLabel"
                                                    styleClass="book-meta-value"
                                                    text="2020" />
@@ -117,7 +117,7 @@
                                           styleClass="book-meta-card">
                                         <children>
                                             <Label styleClass="book-meta-label"
-                                                   text="Language" />
+                                                   text="%common.language" />
                                             <Label fx:id="languageLabel"
                                                    styleClass="book-meta-value"
                                                    text="EN" />
@@ -130,7 +130,7 @@
                                           styleClass="book-meta-card">
                                         <children>
                                             <Label styleClass="book-meta-label"
-                                                   text="Pages" />
+                                                   text="%common.pages" />
                                             <Label fx:id="pagesLabel"
                                                    styleClass="book-meta-value"
                                                    text="320" />
@@ -148,7 +148,7 @@
                                            text="Productivity" />
                                     <Label fx:id="statusLabel"
                                            styleClass="status-pill--in-progress"
-                                           text="In Progress" />
+                                           text="%status.inProgress" />
                                 </children>
                             </HBox>
 
@@ -161,7 +161,7 @@
                             <VBox spacing="8.0">
                                 <children>
                                     <Label styleClass="section-title"
-                                           text="About this book" />
+                                           text="%bookDetailsModal.about_this_book" />
 
                                     <Label fx:id="descriptionLabel"
                                            maxWidth="420.0"
@@ -175,7 +175,7 @@
                             <VBox spacing="12.0">
                                 <children>
                                     <Label styleClass="section-title"
-                                           text="About the author" />
+                                           text="%bookDetailsModal.about_the_author" />
 
                                     <!-- author row -->
                                     <HBox alignment="CENTER_LEFT"
@@ -235,12 +235,12 @@
                     <children>
 
                         <Label styleClass="stat-subtitle"
-                               text="You can edit this information later from your Library." />
+                               text="%bookDetailsModal.you_can_edit_this_information_later_from_your_libr" />
 
                         <Pane HBox.hgrow="ALWAYS" />
 
                         <Button fx:id="closeButton"
-                                text="Close"
+                                text="%common.close"
                                 mnemonicParsing="false"
                                 onAction="#handleClose"
                                 styleClass="header-secondary-button"/>
@@ -250,7 +250,7 @@
                                 mnemonicParsing="false"
                                 onAction="#handleStartSession"
                                 styleClass="header-primary-button"
-                                text="Start reading session" />
+                                text="%bookDetailsModal.start_reading_session" />
 
                     </children>
                 </HBox>

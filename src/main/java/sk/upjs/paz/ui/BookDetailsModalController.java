@@ -10,6 +10,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import sk.upjs.paz.ui.i18n.I18N;
 
 import java.io.IOException;
 
@@ -90,7 +91,7 @@ public class BookDetailsModalController {
 
     private void openReadingSessionBar() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sk/upjs/paz/ui/sessionBar.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sk/upjs/paz/ui/sessionBar.fxml"), I18N.getBundle());
             Parent dialogRoot = loader.load();
 
             Scene dialogScene = new Scene(dialogRoot);

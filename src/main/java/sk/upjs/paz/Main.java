@@ -35,7 +35,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
         SceneNavigator.init(stage);
-        SceneNavigator.showDashboard();
+        SceneNavigator.showLogin("yevhen@gmail.com");
     }
 
 }

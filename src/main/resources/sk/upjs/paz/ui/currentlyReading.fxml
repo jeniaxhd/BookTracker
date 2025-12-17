@@ -52,24 +52,24 @@
                     </padding>
                     <children>
                         <ToggleButton fx:id="dashboardNavButton"
-                                      text="Dashboard"
+                                      text="%nav.dashboard"
                                       onAction="#onDashboardSelected"
                                       styleClass="sidebar-nav-button"/>
                         <ToggleButton fx:id="libraryNavButton"
-                                      text="Library"
+                                      text="%nav.library"
                                       onAction="#onLibrarySelected"
                                       styleClass="sidebar-nav-button"/>
                         <ToggleButton fx:id="currentlyReadingNavButton"
-                                      text="Currently Reading"
+                                      text="%nav.currentlyReading"
                                       selected="true"
                                       onAction="#onCurrentlyReadingSelected"
                                       styleClass="sidebar-nav-button,sidebar-nav-button--active"/>
                         <ToggleButton fx:id="statisticsNavButton"
-                                      text="Statistics"
+                                      text="%nav.statistics"
                                       onAction="#onStatisticsSelected"
                                       styleClass="sidebar-nav-button"/>
                         <ToggleButton fx:id="settingsNavButton"
-                                      text="Settings"
+                                      text="%nav.settings"
                                       onAction="#onSettingsSelected"
                                       styleClass="sidebar-nav-button"/>
                     </children>
@@ -136,9 +136,9 @@
                                 <VBox spacing="4.0">
                                     <children>
                                         <Label fx:id="headerTitleLabel"
-                                               text="Currently Reading"
+                                               text="%nav.currentlyReading"
                                                styleClass="header-title"/>
-                                        <Label text="Continue your active books and log your latest reading sessions."
+                                        <Label text="%currentlyReading.continue_your_active_books_and_log_your_latest_rea"
                                                wrapText="true"
                                                styleClass="header-subtitle"/>
                                     </children>
@@ -184,7 +184,7 @@
                                         </ToggleButton>
 
                                         <Button fx:id="startSessionButton"
-                                                text="Start session"
+                                                text="%currentlyReading.start_session"
                                                 onAction="#onStartSession"
                                                 styleClass="header-primary-button">
                                             <graphic>
@@ -216,22 +216,22 @@
                                 <VBox spacing="16.0">
                                     <children>
 
-                                        <Label text="Active books"
+                                        <Label text="%currentlyReading.active_books"
                                                styleClass="section-title"/>
 
-                                        <Label text="Showing books you're currently reading."
+                                        <Label text="%currentlyReading.showing_books_you_re_currently_reading"
                                                styleClass="header-subtitle"/>
 
                                         <HBox spacing="8.0">
                                             <children>
-                                                <ToggleButton text="All"
+                                                <ToggleButton text="%common.all"
                                                               selected="true"
                                                               styleClass="filter-chip,filter-chip--active"/>
-                                                <ToggleButton text="High priority"
+                                                <ToggleButton text="%currentlyReading.high_priority"
                                                               styleClass="filter-chip"/>
-                                                <ToggleButton text="Finishing soon"
+                                                <ToggleButton text="%currentlyReading.finishing_soon"
                                                               styleClass="filter-chip"/>
-                                                <ToggleButton text="Recently started"
+                                                <ToggleButton text="%currentlyReading.recently_started"
                                                               styleClass="filter-chip"/>
                                             </children>
                                         </HBox>
@@ -255,11 +255,11 @@
                                             <VBox spacing="10.0"
                                                   styleClass="stat-card">
                                                 <children>
-                                                    <Label text="Today's reading"
+                                                    <Label text="%currentlyReading.today_s_reading"
                                                            styleClass="section-title"/>
                                                     <Label text="42 min"
                                                            styleClass="stat-value"/>
-                                                    <Label text="Time read so far today"
+                                                    <Label text="%currentlyReading.time_read_so_far_today"
                                                            styleClass="stat-label"/>
 
                                                     <VBox spacing="4.0">
@@ -277,7 +277,7 @@
                                             <VBox spacing="10.0"
                                                   styleClass="stat-card">
                                                 <children>
-                                                    <Label text="Reading streak"
+                                                    <Label text="%dashboard.reading_streak"
                                                            styleClass="section-title"/>
                                                     <Label text="10 days"
                                                            styleClass="stat-value"/>
@@ -327,12 +327,12 @@
                                             <VBox spacing="10.0"
                                                   styleClass="stat-card">
                                                 <children>
-                                                    <Label text="Quick stats"
+                                                    <Label text="%currentlyReading.quick_stats"
                                                            styleClass="section-title"/>
 
                                                     <HBox spacing="8.0" alignment="CENTER_LEFT">
                                                         <children>
-                                                            <Label text="Books in progress"
+                                                            <Label text="%currentlyReading.books_in_progress"
                                                                    styleClass="stat-label"/>
                                                             <Pane HBox.hgrow="ALWAYS"/>
                                                             <Label text="4"
@@ -342,7 +342,7 @@
 
                                                     <HBox spacing="8.0" alignment="CENTER_LEFT">
                                                         <children>
-                                                            <Label text="Pages read this week"
+                                                            <Label text="%currentlyReading.pages_read_this_week"
                                                                    styleClass="stat-label"/>
                                                             <Pane HBox.hgrow="ALWAYS"/>
                                                             <Label text="320"
