@@ -201,7 +201,8 @@ CREATE TABLE IF NOT EXISTS `review` (
   INDEX `fk_Review_User1_idx` (`user_id` ASC) VISIBLE,
   CONSTRAINT `fk_Review_Book1`
     FOREIGN KEY (`book_id`)
-    REFERENCES `book` (`id`),
+    REFERENCES `book` (`id`)
+    ON DELETE CASCADE,
   CONSTRAINT `fk_Review_User1`
     FOREIGN KEY (`user_id`)
     REFERENCES `user` (`id`))
@@ -224,7 +225,8 @@ CREATE TABLE IF NOT EXISTS `user_has_book` (
   INDEX `fk_user_has_book_user1_idx` (`user_id` ASC) VISIBLE,
   CONSTRAINT `fk_user_has_book_book1`
     FOREIGN KEY (`book_id`)
-    REFERENCES `book` (`id`),
+    REFERENCES `book` (`id`)
+    ON DELETE CASCADE,
   CONSTRAINT `fk_user_has_book_user1`
     FOREIGN KEY (`user_id`)
     REFERENCES `user` (`id`))

@@ -1,6 +1,7 @@
 package sk.upjs.paz.dao;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import sk.upjs.paz.dao.*;
 import sk.upjs.paz.dao.jdbc.*;
 
 public final class DB {

@@ -38,7 +38,7 @@ public class AuthorJdbcDao implements AuthorDao {
 
         KeyHolder kh = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
-            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = con.prepareStatement(sql, new String[]{"id"});
             ps.setString(1, author.getName());
             ps.setString(2, author.getCountry());
             ps.setString(3, author.getBio());
@@ -46,9 +46,11 @@ public class AuthorJdbcDao implements AuthorDao {
             return ps;
         }, kh);
 
-        if (kh.getKey() != null) {
-            author.setId(kh.getKey().longValue());
+        Number key = kh.getKey();
+        if (key == null) {
+            throw new IllegalStateException("No generated key returned");
         }
+        author.setId(key.longValue());
     }
 
     @Override
@@ -74,7 +76,7 @@ public class AuthorJdbcDao implements AuthorDao {
             return Optional.ofNullable(
                     jdbcTemplate.queryForObject("SELECT * FROM author WHERE id = ?", mapper, id)
             );
-        } catch (EmptyStackException e) {
+        } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }

@@ -46,12 +46,10 @@ public class UserHasBookJdbcDao implements UserHasBookDao {
     @Override
     public boolean exists(long userId, long bookId) {
         Integer v = jdbcTemplate.queryForObject(
-                "SELECT 1 FROM user_has_book WHERE user_id = ? AND book_id = ? LIMIT 1",
-                Integer.class,
-                userId,
-                bookId
+                "SELECT EXISTS(SELECT 1 FROM user_has_book WHERE user_id = ? AND book_id = ?)",
+                Integer.class, userId, bookId
         );
-        return v != null;
+        return v != null && v == 1;
     }
 
     @Override
