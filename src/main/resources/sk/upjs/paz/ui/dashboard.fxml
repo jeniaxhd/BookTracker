@@ -239,7 +239,7 @@
                                     <children>
                                         <Label text="Currently Reading"
                                                styleClass="section-title"/>
-                                        <HBox fx:id="currentlyReadingContainer"
+                                        <HBox
                                               spacing="16.0">
                                             <children>
 

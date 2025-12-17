@@ -2,11 +2,15 @@ package sk.upjs.paz.ui;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import sk.upjs.paz.entity.User;
+import sk.upjs.paz.service.AuthService;
 import sk.upjs.paz.service.ServiceFactory;
 
-import java.util.Optional;
+import java.util.prefs.Preferences;
 
 public class LoginController {
 
@@ -15,43 +19,66 @@ public class LoginController {
     @FXML private CheckBox rememberMeCheckBox;
     @FXML private Label errorLabel;
 
+    private final AuthService authService =
+            new AuthService(ServiceFactory.INSTANCE.getUserService());
+
+    // Remember-me storage
+    private final Preferences prefs = Preferences.userNodeForPackage(LoginController.class);
+    private static final String PREF_REMEMBER = "rememberMe";
+    private static final String PREF_EMAIL = "rememberedEmail";
+
     @FXML
     private void initialize() {
         clearError();
+
+        boolean remember = prefs.getBoolean(PREF_REMEMBER, false);
+        String savedEmail = prefs.get(PREF_EMAIL, "");
+
+        if (rememberMeCheckBox != null) {
+            rememberMeCheckBox.setSelected(remember);
+        }
+        if (remember && emailField != null && savedEmail != null && !savedEmail.isBlank()) {
+            emailField.setText(savedEmail);
+        }
     }
 
     @FXML
     private void onSignIn(ActionEvent event) {
         clearError();
 
-        String email = emailField.getText() != null ? emailField.getText().trim() : "";
-        String password = passwordField.getText() != null ? passwordField.getText() : "";
+        String email = safeText(emailField);
+        String password = passwordField != null && passwordField.getText() != null
+                ? passwordField.getText()
+                : "";
 
         if (email.isEmpty() || password.isEmpty()) {
             showError("Please fill in both email and password.");
             return;
         }
 
-        var userOpt = sk.upjs.paz.service.ServiceFactory.INSTANCE.getUserService().getByEmail(email);
-        if (userOpt.isEmpty()) {
-            showError("No user with this email (demo mode).");
-            return;
+        // ✅ Remember email (save/remove)
+        if (rememberMeCheckBox != null && rememberMeCheckBox.isSelected()) {
+            prefs.putBoolean(PREF_REMEMBER, true);
+            prefs.put(PREF_EMAIL, email);
+        } else {
+            prefs.putBoolean(PREF_REMEMBER, false);
+            prefs.remove(PREF_EMAIL);
         }
 
-        AppState.setCurrentUser(userOpt.get());
-        SceneNavigator.showDashboard();
+        try {
+            User u = authService.login(email, password);
+            AppState.setCurrentUser(u);
+            SceneNavigator.showDashboard();
+        } catch (Exception ex) {
+            showError(ex.getMessage());
+        }
     }
-
 
     @FXML
     private void onCreateAccount(ActionEvent event) {
         SceneNavigator.showRegister();
     }
 
-    @FXML
-    private void onGoogleSignIn(ActionEvent event) {
-        showError("Google sign-in is not implemented yet.");
-    }
 
     @FXML
     private void onForgotPassword(ActionEvent event) {
@@ -71,6 +98,16 @@ public class LoginController {
             errorLabel.setText("");
             errorLabel.setVisible(false);
             errorLabel.setManaged(false);
+        }
+    }
+
+    private String safeText(TextField field) {
+        return field != null && field.getText() != null ? field.getText().trim() : "";
+    }
+
+    public void prefillEmail(String email) {
+        if (emailField != null && email != null) {
+            emailField.setText(email);
         }
     }
 }

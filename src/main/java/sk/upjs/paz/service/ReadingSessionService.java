@@ -1,7 +1,7 @@
 package sk.upjs.paz.service;
 
 import sk.upjs.paz.entity.ReadingSession;
-import sk.upjs.paz.enums.Bookstate;
+import sk.upjs.paz.enums.BookState;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +21,6 @@ public interface ReadingSessionService {
 
     ReadingSession startNewSession(Long userId, Long bookId, int startPage);
 
-    void finishSession(Long sessionId, int endPage, int durationMinutes, Bookstate finalState);
+    void finishSession(Long sessionId, int endPage, int durationMinutes, BookState finalState);
 
 }

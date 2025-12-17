@@ -120,16 +120,15 @@
                                                         <VBox spacing="4.0" HBox.hgrow="ALWAYS">
                                                             <children>
                                                                 <Label text="Category"/>
-                                                                <ComboBox fx:id="categoryBox"
+                                                                <TextField fx:id="categoryField"
                                                                           promptText="Select category"/>
                                                             </children>
                                                         </VBox>
 
                                                         <VBox spacing="4.0" HBox.hgrow="ALWAYS">
                                                             <children>
-                                                                <Label text="Format"/>
-                                                                <ComboBox fx:id="formatBox"
-                                                                          promptText="Select format"/>
+                                                                <Label text="Year"/>
+                                                                <TextField fx:id="yearField" promptText="e.g. 2020"/>
                                                             </children>
                                                         </VBox>
 

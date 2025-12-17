@@ -1358,3 +1358,43 @@
     -fx-padding: 0 4 0 4;
     -fx-cursor: hand;
 }
+/* ===== AUTOCOMPLETE (ContextMenu) – rounded + accent ===== */
+
+.context-menu {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 14;
+    -fx-border-color: #E8E6E3;
+    -fx-border-radius: 14;
+
+    -fx-padding: 6;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 14, 0, 0, 6);
+}
+
+/* прибирає “квадратність” у деяких скінах */
+.context-menu .menu-item {
+    -fx-background-color: transparent;
+    -fx-background-radius: 12;
+    -fx-background-insets: 0;
+    -fx-padding: 8 12 8 12;
+}
+
+/* текст по дефолту */
+.context-menu .menu-item .label {
+    -fx-text-fill: #C08552;  /* твій теплий акцент */
+    -fx-font-size: 12px;
+}
+
+/* hover / focused — заливка твоїм кольором */
+.context-menu .menu-item:hover,
+.context-menu .menu-item:focused {
+    -fx-background-color: #D49A5A;
+}
+
+/* текст на заливці — білий */
+.context-menu .menu-item:hover .label,
+.context-menu .menu-item:focused .label {
+    -fx-text-fill: white;
+}

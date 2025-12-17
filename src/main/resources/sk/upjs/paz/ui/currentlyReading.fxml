@@ -3,9 +3,9 @@
 <?import java.net.URL?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
-<?import javafx.scene.image.ImageView?>
 
 <BorderPane
         fx:id="root"
@@ -15,7 +15,6 @@
         xmlns="http://javafx.com/javafx/17.0.12"
         xmlns:fx="http://javafx.com/fxml/1"
         fx:controller="sk.upjs.paz.ui.CurrentlyReadingController">
-
 
     <!-- ========== SIDEBAR ========== -->
     <left>
@@ -188,7 +187,6 @@
                                                 text="Start session"
                                                 onAction="#onStartSession"
                                                 styleClass="header-primary-button">
-
                                             <graphic>
                                                 <Label text="+"
                                                        styleClass="header-primary-icon"/>
@@ -245,170 +243,10 @@
                                 <HBox spacing="24.0">
                                     <children>
 
-                                        <!-- LEFT: active book cards -->
-                                        <VBox spacing="16.0" HBox.hgrow="ALWAYS">
-
-                                            <!-- Card 1 -->
-                                            <VBox spacing="12.0"
-                                                  styleClass="book-card">
-                                                <padding>
-                                                    <Insets top="16" right="20" bottom="16" left="20"/>
-                                                </padding>
-                                                <children>
-                                                    <HBox spacing="16.0" alignment="CENTER_LEFT">
-                                                        <children>
-                                                            <StackPane prefWidth="80.0"
-                                                                       prefHeight="120.0"
-                                                                       styleClass="book-cover"/>
-                                                            <VBox spacing="8.0">
-                                                                <children>
-                                                                    <Label text="Atomic Habits"
-                                                                           styleClass="book-title"/>
-                                                                    <Label text="James Clear"
-                                                                           styleClass="book-author"/>
-                                                                    <Label text="Productivity"
-                                                                           styleClass="book-category-pill"/>
-
-                                                                    <VBox spacing="4.0">
-                                                                        <children>
-                                                                            <ProgressBar progress="0.58"
-                                                                                         styleClass="book-progress-bar"/>
-                                                                            <HBox spacing="6.0"
-                                                                                  alignment="CENTER_LEFT">
-                                                                                <children>
-                                                                                    <Label text="187 / 304 pages"
-                                                                                           styleClass="book-progress-text"/>
-                                                                                    <Pane HBox.hgrow="ALWAYS"/>
-                                                                                    <Label text="12h 30m"
-                                                                                           styleClass="book-meta-text"/>
-                                                                                </children>
-                                                                            </HBox>
-                                                                        </children>
-                                                                    </VBox>
-
-                                                                    <HBox spacing="8.0">
-                                                                        <children>
-                                                                            <Label text="In Progress"
-                                                                                   styleClass="book-status-pill"/>
-                                                                            <Label text="Reading today"
-                                                                                   styleClass="book-status-pill"/>
-                                                                        </children>
-                                                                    </HBox>
-
-                                                                    <HBox spacing="8.0">
-                                                                        <children>
-                                                                            <Button text="Continue"
-                                                                                    onAction="#onContinue"
-                                                                                    userData="Atomic Habits"
-                                                                                    styleClass="header-primary-button"/>
-
-                                                                            <Hyperlink text="View details"
-                                                                                       onAction="#onViewDetails"
-                                                                                       userData="Atomic Habits"
-                                                                                       styleClass="book-link"/>
-
-
-                                                                        </children>
-                                                                    </HBox>
-
-                                                                </children>
-                                                            </VBox>
-                                                        </children>
-                                                    </HBox>
-                                                </children>
-                                            </VBox>
-
-                                            <!-- Card 2 -->
-                                            <VBox spacing="12.0"
-                                                  styleClass="book-card">
-                                                <padding>
-                                                    <Insets top="16" right="20" bottom="16" left="20"/>
-                                                </padding>
-                                                <children>
-                                                    <HBox spacing="16.0" alignment="CENTER_LEFT">
-                                                        <children>
-                                                            <StackPane prefWidth="80.0"
-                                                                       prefHeight="120.0"
-                                                                       styleClass="book-cover"/>
-                                                            <VBox spacing="8.0">
-                                                                <children>
-                                                                    <Label text="The Midnight Library"
-                                                                           styleClass="book-title"/>
-                                                                    <Label text="Matt Haig"
-                                                                           styleClass="book-author"/>
-                                                                    <Label text="Fiction"
-                                                                           styleClass="book-category-pill"/>
-
-                                                                    <VBox spacing="4.0">
-                                                                        <children>
-                                                                            <ProgressBar progress="0.32"
-                                                                                         styleClass="book-progress-bar"/>
-                                                                            <HBox spacing="6.0"
-                                                                                  alignment="CENTER_LEFT">
-                                                                                <children>
-                                                                                    <Label text="92 / 288 pages"
-                                                                                           styleClass="book-progress-text"/>
-                                                                                    <Pane HBox.hgrow="ALWAYS"/>
-                                                                                    <Label text="6h 15m"
-                                                                                           styleClass="book-meta-text"/>
-                                                                                </children>
-                                                                            </HBox>
-                                                                        </children>
-                                                                    </VBox>
-
-                                                                    <HBox spacing="8.0">
-                                                                        <children>
-                                                                            <Label text="In Progress"
-                                                                                   styleClass="book-status-pill"/>
-                                                                            <Label text="Finishing soon"
-                                                                                   styleClass="book-status-pill"/>
-                                                                        </children>
-                                                                    </HBox>
-
-                                                                    <HBox spacing="8.0">
-                                                                        <children>
-                                                                            <Button text="Continue"
-                                                                                    onAction="#onContinue"
-                                                                                    userData="The Midnight Library"
-                                                                                    styleClass="header-primary-button"/>
-
-                                                                            <Hyperlink text="View details"
-                                                                                       onAction="#onViewDetails"
-                                                                                       userData="The Midnight Library"
-                                                                                       styleClass="book-link"/>
-
-
-                                                                        </children>
-                                                                    </HBox>
-
-                                                                </children>
-                                                            </VBox>
-                                                        </children>
-                                                    </HBox>
-                                                </children>
-                                            </VBox>
-
-                                            <Button text=""
-                                                    onAction="#onAddAnotherBook"
-                                                    prefWidth="210.0"
-                                                    styleClass="library-book-card-placeholder"
-                                                    maxWidth="210.0">
-                                                <graphic>
-                                                    <VBox alignment="CENTER" spacing="8.0">
-                                                        <children>
-                                                            <Label text="+" styleClass="book-card-placeholder-icon"/>
-                                                            <Label text="Add another book"
-                                                                   prefHeight="180.0"
-                                                                   minHeight="180.0"
-                                                                   maxHeight="180.0"
-                                                                   styleClass="library-book-card-placeholder-text"/>
-                                                        </children>
-                                                    </VBox>
-                                                </graphic>
-                                            </Button>
-
-
-                                        </VBox>
+                                        <!-- LEFT: active book cards (dynamic from DB) -->
+                                        <VBox fx:id="cardsBox"
+                                              spacing="16.0"
+                                              HBox.hgrow="ALWAYS"/>
 
                                         <!-- RIGHT: side stats -->
                                         <VBox prefWidth="260.0" spacing="16.0">

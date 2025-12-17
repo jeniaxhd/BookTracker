@@ -4,12 +4,12 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
-
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
+
 <BorderPane
-        prefHeight="700.0"
-        prefWidth="1100.0"
+        prefHeight="540.0"
+        prefWidth="860.0"
         xmlns="http://javafx.com/javafx/17.0.12"
         xmlns:fx="http://javafx.com/fxml/1"
         fx:controller="sk.upjs.paz.ui.LoginController"
@@ -22,13 +22,14 @@
 
     <!-- LEFT WARM PANEL -->
     <left>
-        <VBox prefWidth="420.0"
-              spacing="24.0"
+        <VBox prefWidth="360.0"
+              spacing="22.0"
               styleClass="auth-left"
               BorderPane.alignment="CENTER">
             <padding>
                 <Insets top="32" right="32" bottom="32" left="32"/>
             </padding>
+
             <children>
 
                 <!-- Logo + app name -->
@@ -45,103 +46,58 @@
                 </HBox>
 
                 <!-- Hero text -->
-                <VBox spacing="12.0">
+                <VBox spacing="10.0">
                     <children>
                         <Label wrapText="true"
                                text="Your calm space to track reading, build habits, and reflect on books."
                                styleClass="auth-hero-title"/>
                         <Label wrapText="true"
-                               text="Continue your reading journey where you left off."
+                               text="Sign in and continue your reading journey."
                                styleClass="auth-hero-subtitle"/>
                     </children>
                 </VBox>
 
-                <!-- Current book preview card -->
-                <VBox spacing="16.0"
-                      styleClass="auth-book-card">
+                <!-- Simple feature list (keeps left panel meaningful) -->
+                <VBox spacing="10.0" styleClass="auth-features">
                     <children>
-                        <HBox spacing="12.0">
-                            <children>
-                                <Region prefWidth="56.0" prefHeight="80.0"
-                                        styleClass="auth-book-cover"/>
-                                <VBox spacing="4.0" alignment="CENTER_LEFT">
-                                    <children>
-                                        <Label text="The Midnight Library"
-                                               styleClass="auth-book-title"
-                                               wrapText="true"/>
-                                        <Label text="Matt Haig"
-                                               styleClass="auth-book-author"/>
-                                        <Label text="In Progress"
-                                               styleClass="auth-book-status-pill"/>
-                                    </children>
-                                </VBox>
-                            </children>
-                        </HBox>
-
-                        <VBox spacing="6.0">
-                            <children>
-                                <Label text="Progress"
-                                       styleClass="auth-book-progress-label"/>
-                                <HBox spacing="8.0" alignment="CENTER_LEFT">
-                                    <children>
-                                        <ProgressBar prefWidth="260.0"
-                                                     progress="0.67"
-                                                     styleClass="auth-book-progress-bar"/>
-                                        <Label text="67%"
-                                               styleClass="auth-book-progress-percent"/>
-                                    </children>
-                                </HBox>
-                            </children>
-                        </VBox>
+                        <Label text="• Track books and progress" styleClass="auth-feature-text"/>
+                        <Label text="• Save notes and reviews" styleClass="auth-feature-text"/>
+                        <Label text="• View your statistics" styleClass="auth-feature-text"/>
                     </children>
                 </VBox>
-
-                <!-- Small stat -->
-                <HBox spacing="8.0" alignment="CENTER_LEFT">
-                    <children>
-                        <Label text="📈" styleClass="auth-stat-icon"/>
-                        <Label text="24 books read this year"
-                               styleClass="auth-stat-text"/>
-                    </children>
-                </HBox>
 
                 <Pane VBox.vgrow="ALWAYS"/>
             </children>
         </VBox>
     </left>
 
-    <!-- RIGHT SIDE: LOGIN FORM (VERTICALLY CENTERED) -->
+    <!-- RIGHT SIDE: LOGIN FORM -->
     <center>
-        <VBox styleClass="auth-right"
-              BorderPane.alignment="CENTER">
+        <StackPane styleClass="auth-right" BorderPane.alignment="CENTER">
             <padding>
-                <Insets top="40" right="72" bottom="40" left="56"/>
+                <Insets top="36" right="72" bottom="36" left="56"/>
             </padding>
+
             <children>
 
-                <!-- Top spacer for vertical centering -->
-                <Pane VBox.vgrow="ALWAYS"/>
-
-                <!-- Actual login content -->
-                <VBox spacing="24.0"
-                      maxWidth="520.0"
-                      alignment="CENTER"
-                      VBox.vgrow="NEVER">
+                <!-- Card -->
+                <VBox spacing="18.0"
+                      maxWidth="460.0"
+                      styleClass="auth-card"
+                      alignment="CENTER_LEFT">
 
                     <!-- Title -->
-                    <VBox spacing="8.0">
+                    <VBox spacing="6.0">
                         <children>
-
-                            <!-- Row with icon + title -->
-                            <HBox spacing="8.0" alignment="CENTER_LEFT">
+                            <HBox spacing="10.0" alignment="CENTER_LEFT">
                                 <children>
-                                    <ImageView fitWidth="28.0" fitHeight="28.0" preserveRatio="true">
+                                    <ImageView fitWidth="26.0" fitHeight="26.0" preserveRatio="true">
                                         <image>
                                             <Image url="@../../../../img/logoForLogin/waving-hand.png"/>
                                         </image>
                                     </ImageView>
 
-                                    <Label text="Welcome back !!"
+                                    <Label text="Welcome back"
                                            styleClass="auth-title"/>
                                 </children>
                             </HBox>
@@ -152,61 +108,29 @@
                         </children>
                     </VBox>
 
-                    <!-- Google button -->
-                    <Button fx:id="googleButton"
-                            maxWidth="Infinity"
-                            styleClass="auth-google-button"
-                            onAction="#onGoogleSignIn">
-                        <graphic>
-                            <HBox alignment="CENTER" spacing="8.0">
-                                <children>
-                                    <ImageView fitWidth="20.0" fitHeight="20.0" preserveRatio="true">
-                                        <image>
-                                            <Image url="@../../../../img/logoForLogin/google.png"/>
-                                        </image>
-                                    </ImageView>
-                                    <Label text="Continue with Google"
-                                           styleClass="auth-google-text"/>
-                                </children>
-                            </HBox>
-                        </graphic>
-                    </Button>
-
-
-                    <!-- Divider -->
-                    <HBox alignment="CENTER" spacing="12.0">
-                        <children>
-                            <Region HBox.hgrow="ALWAYS"
-                                    styleClass="auth-divider-line"/>
-                            <Label text="or continue with email"
-                                   styleClass="auth-divider-text"/>
-                            <Region HBox.hgrow="ALWAYS"
-                                    styleClass="auth-divider-line"/>
-                        </children>
-                    </HBox>
-
                     <!-- Form -->
-                    <VBox spacing="16.0">
+                    <VBox spacing="12.0" maxWidth="Infinity">
                         <children>
+
                             <!-- Email -->
-                            <VBox spacing="6.0">
+                            <VBox spacing="6.0" maxWidth="Infinity">
                                 <children>
-                                    <Label text="Email"
-                                           styleClass="auth-field-label"/>
+                                    <Label text="Email" styleClass="auth-field-label"/>
                                     <TextField fx:id="emailField"
                                                promptText="you@example.com"
-                                               styleClass="auth-input"/>
+                                               styleClass="auth-input"
+                                               maxWidth="Infinity"/>
                                 </children>
                             </VBox>
 
                             <!-- Password -->
-                            <VBox spacing="6.0">
+                            <VBox spacing="6.0" maxWidth="Infinity">
                                 <children>
-                                    <Label text="Password"
-                                           styleClass="auth-field-label"/>
+                                    <Label text="Password" styleClass="auth-field-label"/>
                                     <PasswordField fx:id="passwordField"
                                                    promptText="Enter your password"
-                                                   styleClass="auth-input"/>
+                                                   styleClass="auth-input"
+                                                   maxWidth="Infinity"/>
                                 </children>
                             </VBox>
 
@@ -241,7 +165,7 @@
                     </VBox>
 
                     <!-- Bottom text -->
-                    <HBox alignment="CENTER" spacing="4.0">
+                    <HBox alignment="CENTER" spacing="6.0" maxWidth="Infinity">
                         <children>
                             <Label text="Don't have an account?"
                                    styleClass="auth-bottom-text"/>
@@ -251,12 +175,9 @@
                                        onAction="#onCreateAccount"/>
                         </children>
                     </HBox>
+
                 </VBox>
-
-                <!-- Bottom spacer for vertical centering -->
-                <Pane VBox.vgrow="ALWAYS"/>
-
             </children>
-        </VBox>
+        </StackPane>
     </center>
 </BorderPane>

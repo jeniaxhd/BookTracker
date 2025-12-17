@@ -26,6 +26,9 @@ public class DaoFactory {
     private final UserDao userDao;
     private final ReviewDao reviewDao;
     private final ReadingSessionDao readingSessionDao;
+    private final UserHasBookDao userHasBookDao;
+    private final CurrentlyReadingDao currentlyReadingDao;
+
 
     private DaoFactory() throws SQLException {
         this.connection = DbUtil.getConnection();
@@ -37,6 +40,8 @@ public class DaoFactory {
         this.userDao = new UserJdbcDao(connection);
         this.reviewDao = new ReviewJdbcDao(connection);
         this.readingSessionDao = new ReadingSessionJdbcDao(connection);
+        this.userHasBookDao = new UserHasBookJdbcDao(connection);
+        this.currentlyReadingDao = new CurrentlyReadingJdbcDao(connection);
     }
 
     public BookDao getBookDao() {
@@ -70,4 +75,8 @@ public class DaoFactory {
     public UserDao getUserDao() {
         return userDao;
     }
+
+    public UserHasBookDao getUserHasBookDao() {return userHasBookDao;}
+    public CurrentlyReadingDao getCurrentlyReadingDao() {return currentlyReadingDao;}
+
 }

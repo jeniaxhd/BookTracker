@@ -19,7 +19,7 @@ public class UserJdbcDao implements UserDao {
 
     @Override
     public void add(User user) {
-        String sql = "INSERT INTO user(name, mail, createdAt, readBooks) VALUES(?, ?, ?, ?)";
+        String sql = "INSERT INTO user (name, mail, password_hash, createdAt, readBooks) VALUES (?, ?, ?, ?, ?)";
 
         LocalDateTime created = user.getCreatedAt();
         if (created == null) {
@@ -30,8 +30,9 @@ public class UserJdbcDao implements UserDao {
         try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, user.getName());
             ps.setString(2, user.getEmail());
-            ps.setTimestamp(3, Timestamp.valueOf(created));
-            ps.setInt(4, user.getReadBooks());
+            ps.setString(3, user.getPasswordHash());
+            ps.setTimestamp(4, Timestamp.valueOf(created));
+            ps.setInt(5, user.getReadBooks());
 
             ps.executeUpdate();
 
@@ -44,6 +45,7 @@ public class UserJdbcDao implements UserDao {
             throw new RuntimeException(e);
         }
     }
+
 
     @Override
     public void delete(Long id) {
@@ -146,22 +148,30 @@ public class UserJdbcDao implements UserDao {
 
     @Override
     public Optional<User> getByEmail(String email) {
-        String sql = "SELECT * FROM user WHERE mail = ?";
+        String sql = "SELECT id, name, mail, password_hash, createdAt, readBooks FROM `user` WHERE mail = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, email);
 
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return Optional.of(mapRow(rs));
-                }
+                if (!rs.next()) return Optional.empty();
+
+                User u = new User();
+                u.setId(rs.getLong("id"));
+                u.setName(rs.getString("name"));
+                u.setEmail(rs.getString("mail"));
+                u.setPasswordHash(rs.getString("password_hash"));
+                Timestamp ts = rs.getTimestamp("createdAt");
+                if (ts != null) u.setCreatedAt(ts.toLocalDateTime());
+                u.setReadBooks(rs.getInt("readBooks"));
+
+                return Optional.of(u);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-        return Optional.empty();
     }
+
 
     @Override
     public void updateReadBooks(Long userId, int newCount) {

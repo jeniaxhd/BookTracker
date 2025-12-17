@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="sk.upjs.paz.ui.currentlyreading.ActiveBookCardController"
+      spacing="12.0"
+      styleClass="book-card">
+
+    <padding>
+        <Insets top="16" right="20" bottom="16" left="20"/>
+    </padding>
+
+    <children>
+        <HBox spacing="16.0" alignment="CENTER_LEFT">
+            <children>
+
+                <StackPane fx:id="coverPane"
+                           prefWidth="80.0"
+                           prefHeight="120.0"
+                           styleClass="book-cover"/>
+
+                <VBox spacing="8.0">
+                    <children>
+                        <Label fx:id="titleLabel" styleClass="book-title"/>
+                        <Label fx:id="authorLabel" styleClass="book-author"/>
+                        <Label fx:id="categoryLabel" styleClass="book-category-pill"/>
+
+                        <VBox spacing="4.0">
+                            <children>
+                                <ProgressBar fx:id="progressBar" styleClass="book-progress-bar"/>
+                                <HBox spacing="6.0" alignment="CENTER_LEFT">
+                                    <children>
+                                        <Label fx:id="pagesLabel" styleClass="book-progress-text"/>
+                                        <Pane HBox.hgrow="ALWAYS"/>
+                                        <Label fx:id="timeLabel" styleClass="book-meta-text"/>
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+
+                        <HBox spacing="8.0">
+                            <children>
+                                <Label fx:id="statusPill" styleClass="book-status-pill"/>
+                            </children>
+                        </HBox>
+
+                        <HBox spacing="8.0">
+                            <children>
+                                <Button fx:id="continueButton"
+                                        text="Continue"
+                                        onAction="#onContinue"
+                                        styleClass="header-primary-button"/>
+
+                                <Hyperlink fx:id="detailsLink"
+                                           text="View details"
+                                           onAction="#onViewDetails"
+                                           styleClass="book-link"/>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+
+            </children>
+        </HBox>
+    </children>
+</VBox>

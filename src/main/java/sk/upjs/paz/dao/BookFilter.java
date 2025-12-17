@@ -1,7 +1,7 @@
 package sk.upjs.paz.dao;
 
 import sk.upjs.paz.entity.Genre;
-import sk.upjs.paz.enums.Bookstate;
+import sk.upjs.paz.enums.BookState;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ public class BookFilter {
     private Integer fromYear;
     private Integer toYear;
     private List<Genre> genres;
-    private Bookstate state;
+    private BookState state;
     private double fromAverageRating;
     private double toAverageRating;
     private int fromPagesCount;
@@ -63,11 +63,11 @@ public class BookFilter {
         this.genres = genres;
     }
 
-    public Bookstate getState() {
+    public BookState getState() {
         return state;
     }
 
-    public void setState(Bookstate state) {
+    public void setState(BookState state) {
         this.state = state;
     }
 

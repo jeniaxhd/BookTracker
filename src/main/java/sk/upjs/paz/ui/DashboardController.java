@@ -2,15 +2,11 @@ package sk.upjs.paz.ui;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 
 public class DashboardController {
@@ -71,8 +67,13 @@ public class DashboardController {
     @FXML
     private VBox contentRoot;
 
+    // CHANGED: HBox -> FlowPane (wrap on resize)
     @FXML
-    private HBox currentlyReadingContainer;
+    private FlowPane currentlyReadingContainer;
+
+    // CHANGED: add bottomFlow to wrap Queue + Statistics when window is narrow
+    @FXML
+    private FlowPane bottomFlow;
 
     @FXML
     private VBox queueContainer;
@@ -86,14 +87,13 @@ public class DashboardController {
     @FXML
     private Button userProfileButton;
 
-
     // Icons used on light and dark background
-    private Image searchLight;   // for light theme
-    private Image searchDark;    // for dark theme
-    private Image bellLight;     // for light theme
-    private Image bellDark;      // for dark theme
-    private Image moonIcon;      // theme toggle icon in light theme
-    private Image sunIcon;       // theme toggle icon in dark theme
+    private Image searchLight;
+    private Image searchDark;
+    private Image bellLight;
+    private Image bellDark;
+    private Image moonIcon;
+    private Image sunIcon;
 
     @FXML
     private void initialize() {
@@ -113,8 +113,6 @@ public class DashboardController {
             userNameLabel.setText(AppState.getCurrentUser().getName());
         }
 
-
-
         // Load icon images
         searchLight = load("/img/logoLight/search.png");
         searchDark = load("/img/logoDark/search.png");
@@ -123,7 +121,7 @@ public class DashboardController {
         moonIcon = load("/img/logoLight/moon.png");
         sunIcon = load("/img/logoDark/sun.png");
 
-        // When the scene is attached, apply default (light) theme and icons
+        // Apply theme when scene becomes available
         root.sceneProperty().addListener((obs, oldScene, newScene) -> {
             if (newScene != null) {
                 ThemeManager.apply(newScene);
@@ -135,7 +133,20 @@ public class DashboardController {
             updateIconsForTheme();
         }
 
+        // Responsive wrapping for FlowPanes based on ScrollPane viewport width
+        if (contentScrollPane != null) {
+            contentScrollPane.viewportBoundsProperty().addListener((obs, oldB, b) -> {
+                double w = b.getWidth();
+                double wrap = Math.max(320, w - 10);
 
+                if (currentlyReadingContainer != null) {
+                    currentlyReadingContainer.setPrefWrapLength(wrap);
+                }
+                if (bottomFlow != null) {
+                    bottomFlow.setPrefWrapLength(wrap);
+                }
+            });
+        }
 
         // Example initial values for stats
         if (booksReadValueLabel != null) {
@@ -151,16 +162,13 @@ public class DashboardController {
         return url == null ? null : new Image(url.toExternalForm());
     }
 
-
     // ========== THEME TOGGLE ==========
 
     @FXML
     private void onToggleTheme(ActionEvent event) {
         ThemeManager.toggle();
-
         var scene = root.getScene();
         ThemeManager.apply(scene);
-
         updateIconsForTheme();
     }
 
@@ -178,9 +186,8 @@ public class DashboardController {
 
     @FXML
     private void onDashboardSelected(ActionEvent event) {
-        //already here
+        // already here
     }
-
 
     @FXML
     private void onLibrarySelected(ActionEvent event) {
@@ -204,10 +211,20 @@ public class DashboardController {
 
     // ========== HEADER BUTTONS ==========
 
-
     @FXML
     private void onSearch(ActionEvent event) {
-        // TODO: open search UI or dialog
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Search");
+        dialog.setHeaderText("Search books");
+        dialog.setContentText("Title / author / tag:");
+
+//        dialog.showAndWait().ifPresent(q -> {
+//            String query = q == null ? "" : q.trim();
+//            if (!query.isBlank()) {
+//                AppState.setPendingSearchQuery(query);
+//                SceneNavigator.showLibrary();
+//            }
+//        });
     }
 
     @FXML
@@ -224,5 +241,4 @@ public class DashboardController {
     private void onAddBook(ActionEvent event) {
         SceneNavigator.showAddBookModal(root.getScene().getWindow());
     }
-
 }

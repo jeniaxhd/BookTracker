@@ -193,24 +193,24 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 -- Table `user_has_book`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `user_has_book` (
-  `user_id` BIGINT UNSIGNED NOT NULL,
-  `book_id` BIGINT UNSIGNED NOT NULL,
-  `bookstate` ENUM('READING', 'FINISHED', 'WANT_TO_READ', 'ABANDONED', 'NOT_STARTED') NOT NULL DEFAULT 'NOT_STARTED',
-  PRIMARY KEY (`user_id`, `book_id`),
-  INDEX `fk_user_has_book_book1_idx` (`book_id` ASC) VISIBLE,
-  INDEX `fk_user_has_book_user1_idx` (`user_id` ASC) VISIBLE,
-  CONSTRAINT `fk_user_has_book_book1`
-    FOREIGN KEY (`book_id`)
-    REFERENCES `book` (`id`),
-  CONSTRAINT `fk_user_has_book_user1`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `user` (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+    CREATE TABLE IF NOT EXISTS `user_has_book` (
+      `user_id` BIGINT UNSIGNED NOT NULL,
+      `book_id` BIGINT UNSIGNED NOT NULL,
+      `bookstate` ENUM('READING', 'FINISHED', 'WANT_TO_READ', 'ABANDONED', 'NOT_STARTED') NOT NULL DEFAULT 'NOT_STARTED',
+      PRIMARY KEY (`user_id`, `book_id`),
+      INDEX `fk_user_has_book_book1_idx` (`book_id` ASC) VISIBLE,
+      INDEX `fk_user_has_book_user1_idx` (`user_id` ASC) VISIBLE,
+      CONSTRAINT `fk_user_has_book_book1`
+        FOREIGN KEY (`book_id`)
+        REFERENCES `book` (`id`),
+      CONSTRAINT `fk_user_has_book_user1`
+        FOREIGN KEY (`user_id`)
+        REFERENCES `user` (`id`))
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
 
 
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+    SET SQL_MODE=@OLD_SQL_MODE;
+    SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+    SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

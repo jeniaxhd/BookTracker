@@ -56,55 +56,6 @@
                     </children>
                 </VBox>
 
-                <!-- Preview card -->
-                <VBox spacing="16.0"
-                      styleClass="auth-book-card">
-                    <children>
-                        <HBox spacing="12.0">
-                            <children>
-                                <Region prefWidth="56.0" prefHeight="80.0"
-                                        styleClass="auth-book-cover"/>
-                                <VBox spacing="4.0" alignment="CENTER_LEFT">
-                                    <children>
-                                        <Label text="The Midnight Library"
-                                               styleClass="auth-book-title"
-                                               wrapText="true"/>
-                                        <Label text="Matt Haig"
-                                               styleClass="auth-book-author"/>
-                                        <Label text="In Progress"
-                                               styleClass="auth-book-status-pill"/>
-                                    </children>
-                                </VBox>
-                            </children>
-                        </HBox>
-
-                        <VBox spacing="6.0">
-                            <children>
-                                <Label text="Progress"
-                                       styleClass="auth-book-progress-label"/>
-                                <HBox spacing="8.0" alignment="CENTER_LEFT">
-                                    <children>
-                                        <ProgressBar prefWidth="260.0"
-                                                     progress="0.67"
-                                                     styleClass="auth-book-progress-bar"/>
-                                        <Label text="67%"
-                                               styleClass="auth-book-progress-percent"/>
-                                    </children>
-                                </HBox>
-                            </children>
-                        </VBox>
-                    </children>
-                </VBox>
-
-                <!-- Small stats -->
-                <HBox spacing="8.0" alignment="CENTER_LEFT">
-                    <children>
-                        <Label text="📈" styleClass="auth-stat-icon"/>
-                        <Label text="24 books finished · Current streak: 10 days"
-                               styleClass="auth-stat-text"/>
-                    </children>
-                </HBox>
-
                 <!-- Spacer pushes last text down -->
                 <Pane VBox.vgrow="ALWAYS"/>
 
@@ -143,39 +94,6 @@
                                    styleClass="auth-subtitle"/>
                         </children>
                     </VBox>
-
-                    <!-- Google button -->
-                    <Button fx:id="googleButton"
-                            maxWidth="Infinity"
-                            styleClass="auth-google-button"
-                            onAction="#onGoogleSignIn">
-                        <graphic>
-                            <HBox alignment="CENTER" spacing="8.0">
-                                <children>
-                                    <ImageView fitWidth="20.0" fitHeight="20.0" preserveRatio="true">
-                                        <image>
-                                            <Image url="@../../../../img/logoForLogin/google.png"/>
-                                        </image>
-                                    </ImageView>
-                                    <Label text="Continue with Google"
-                                           styleClass="auth-google-text"/>
-                                </children>
-                            </HBox>
-                        </graphic>
-                    </Button>
-
-
-                    <!-- Divider -->
-                    <HBox alignment="CENTER" spacing="12.0">
-                        <children>
-                            <Region HBox.hgrow="ALWAYS"
-                                    styleClass="auth-divider-line"/>
-                            <Label text="or sign up with email"
-                                   styleClass="auth-divider-text"/>
-                            <Region HBox.hgrow="ALWAYS"
-                                    styleClass="auth-divider-line"/>
-                        </children>
-                    </HBox>
 
                     <!-- Form fields -->
                     <VBox spacing="16.0">

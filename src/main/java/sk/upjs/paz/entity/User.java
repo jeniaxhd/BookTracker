@@ -6,6 +6,7 @@ public class User {
     private Long id;
     private String name;
     private String email;
+    private String passwordHash;
     private LocalDateTime createdAt;
     private int readBooks;
 
@@ -58,6 +59,14 @@ public class User {
             throw new IllegalArgumentException("Invalid email: " + email);
         }
         this.email = email;
+    }
+    public String getPasswordHash() { return passwordHash; }
+
+    public void setPasswordHash(String passwordHash) {
+        if (passwordHash == null || passwordHash.isBlank()) {
+            throw new IllegalArgumentException("passwordHash cannot be blank");
+        }
+        this.passwordHash = passwordHash;
     }
 
     public int getReadBooks() {

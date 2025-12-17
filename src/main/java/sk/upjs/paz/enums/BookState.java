@@ -1,9 +1,9 @@
 package sk.upjs.paz.enums;
 
-public enum Bookstate {
-    NOT_READING,
+public enum BookState {
     READING,
     FINISHED,
     WANT_TO_READ,
-    ABANDONED
+    ABANDONED,
+    NOT_STARTED
 }

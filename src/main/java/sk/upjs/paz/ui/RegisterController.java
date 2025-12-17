@@ -8,6 +8,8 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import sk.upjs.paz.service.AuthService;
+import sk.upjs.paz.service.ServiceFactory;
 
 public class RegisterController {
 
@@ -38,6 +40,8 @@ public class RegisterController {
     @FXML
     private Hyperlink loginLink;
 
+
+
     @FXML
     private void initialize() {
         // Hide error label on start
@@ -46,6 +50,8 @@ public class RegisterController {
             errorLabel.setManaged(false);
         }
     }
+    private final AuthService authService =
+            new AuthService(ServiceFactory.INSTANCE.getUserService());
 
     @FXML
     private void onSignUp(ActionEvent event) {
@@ -53,34 +59,31 @@ public class RegisterController {
 
         String fullName = safeText(fullNameField);
         String email = safeText(emailField);
-        String password = safeText(passwordField);
-        String confirmPassword = safeText(confirmPasswordField);
+        String pass = safeText(passwordField);
+        String confirm = safeText(confirmPasswordField);
 
-        if (fullName.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+        if (fullName.isEmpty() || email.isEmpty() || pass.isEmpty() || confirm.isEmpty()) {
             showError("Please fill in all fields.");
             return;
         }
-
-        if (!password.equals(confirmPassword)) {
+        if (!pass.equals(confirm)) {
             showError("Passwords do not match.");
             return;
         }
-
-        if (password.length() < 6) {
+        if (pass.length() < 6) {
             showError("Password should be at least 6 characters long.");
             return;
         }
 
-        // TODO: replace with real registration logic using database
-        boolean registrationOk = fakeRegistration(email);
+        try {
 
-        if (!registrationOk) {
-            showError("An account with this email already exists.");
-            return;
+            authService.register(fullName, email, pass);
+
+
+            SceneNavigator.showLogin();
+        } catch (Exception ex) {
+            showError(ex.getMessage());
         }
-
-        // Navigate to dashboard after successful registration (for now)
-        SceneNavigator.showDashboard();
     }
     @FXML
     private void onGoogleSignIn(ActionEvent event) {
@@ -115,10 +118,5 @@ public class RegisterController {
 
     private String safeText(TextField field) {
         return field != null && field.getText() != null ? field.getText().trim() : "";
-    }
-
-    private boolean fakeRegistration(String email) {
-        // Temporary fake logic: assume "test@example.com" is already taken
-        return !email.equalsIgnoreCase("test@example.com");
     }
 }

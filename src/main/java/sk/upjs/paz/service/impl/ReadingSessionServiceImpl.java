@@ -6,7 +6,7 @@ import sk.upjs.paz.dao.UserDao;
 import sk.upjs.paz.entity.Book;
 import sk.upjs.paz.entity.ReadingSession;
 import sk.upjs.paz.entity.User;
-import sk.upjs.paz.enums.Bookstate;
+import sk.upjs.paz.enums.BookState;
 import sk.upjs.paz.service.ReadingSessionService;
 
 import java.time.LocalDate;
@@ -72,7 +72,7 @@ public class ReadingSessionServiceImpl implements ReadingSessionService {
         ReadingSession session = new ReadingSession();
         session.setUser(user);
         session.setBook(book);
-        session.setState(Bookstate.READING);
+        session.setState(BookState.READING);
         session.setStart(LocalDateTime.now());
         session.setDuration(0);
         session.setEndPage(startPage);
@@ -87,7 +87,7 @@ public class ReadingSessionServiceImpl implements ReadingSessionService {
     public void finishSession(Long sessionId,
                               int endPage,
                               int durationMinutes,
-                              Bookstate finalState) {
+                              BookState finalState) {
         ReadingSession session = readingSessionDao.getById(sessionId)
                 .orElseThrow(() -> new IllegalArgumentException("ReadingSession with id " + sessionId + " not found"));
 
@@ -101,7 +101,7 @@ public class ReadingSessionServiceImpl implements ReadingSessionService {
             throw new IllegalArgumentException("finalState cannot be null");
         }
         
-        Bookstate previousState = session.getState();
+        BookState previousState = session.getState();
 
         session.setEndPage(endPage);
         session.setDuration(durationMinutes);
@@ -110,7 +110,7 @@ public class ReadingSessionServiceImpl implements ReadingSessionService {
 
         readingSessionDao.update(session);
 
-        if (finalState == Bookstate.FINISHED && previousState != Bookstate.FINISHED) {
+        if (finalState == BookState.FINISHED && previousState != BookState.FINISHED) {
             if (session.getUser() == null || session.getUser().getId() == null) {
                 throw new IllegalStateException("ReadingSession user is null or has null id");
             }

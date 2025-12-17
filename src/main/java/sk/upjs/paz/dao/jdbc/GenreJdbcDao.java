@@ -18,7 +18,7 @@ public class GenreJdbcDao implements GenreDao {
 
     @Override
     public void add(Genre genre) {
-        String sql = "INSERT INTO genre(genre_name) VALUES (?)";
+        String sql = "INSERT INTO genre(name) VALUES (?)";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, genre.name()); // або genre.genreName() якщо у рекорді поле інакше
@@ -30,7 +30,7 @@ public class GenreJdbcDao implements GenreDao {
 
     @Override
     public void update(Genre genre) {
-        String sql = "UPDATE genre SET genre_name = ? WHERE id = ?";
+        String sql = "UPDATE genre SET name = ? WHERE id = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, genre.name());
@@ -104,7 +104,7 @@ public class GenreJdbcDao implements GenreDao {
 
     @Override
     public List<Genre> getByName(String name) {
-        String sql = "SELECT id, genre_name FROM genre WHERE genre_name = ?";
+        String sql = "SELECT id, name FROM genre WHERE name = ?";
         List<Genre> result = new ArrayList<>();
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -115,7 +115,7 @@ public class GenreJdbcDao implements GenreDao {
                     result.add(
                             new Genre(
                                     rs.getLong("id"),
-                                    rs.getString("genre_name")
+                                    rs.getString("name")
                             )
                     );
                 }

@@ -9,7 +9,7 @@ public class ReadingSession {
     private Long id;
     private Book book;
     private User user;
-    private Bookstate state;
+    private BookState state;
     private LocalDateTime start;
     private int duration;
     private int endPage;
@@ -17,7 +17,7 @@ public class ReadingSession {
 
     public ReadingSession(){}
 
-    public ReadingSession(Long id, Book book, User user, Bookstate state, LocalDateTime start,
+    public ReadingSession(Long id, Book book, User user, BookState state, LocalDateTime start,
                           int duration, int endPage, LocalDate lastTimeRead){
         this.id = id;
         this.user = user;
@@ -28,7 +28,7 @@ public class ReadingSession {
         this.endPage = endPage;
         this.lastTimeRead = lastTimeRead;
     }
-    public ReadingSession(Book book, User user, Bookstate state, LocalDateTime start,
+    public ReadingSession(Book book, User user, BookState state, LocalDateTime start,
                           int duration, int endPage, LocalDate lastTimeRead){
         this.user = user;
         this.book = book;
@@ -63,10 +63,10 @@ public class ReadingSession {
         this.user = user;
     }
 
-    public Bookstate getState() {
-        return state != null ? state : Bookstate.NOT_READING;
+    public BookState getState() {
+        return state != null ? state : BookState.NOT_STARTED;
     }
-    public void setState(Bookstate state) {
+    public void setState(BookState state) {
         this.state = state;
     }
 
@@ -109,11 +109,11 @@ public class ReadingSession {
 
         this.endPage = newEndPage;
 
-        if (state != Bookstate.FINISHED && state != Bookstate.ABANDONED) {
+        if (state != BookState.FINISHED && state != BookState.ABANDONED) {
             if (book != null && endPage >= book.getPages()) {
-                state = Bookstate.FINISHED;
+                state = BookState.FINISHED;
             } else {
-                state = Bookstate.READING;
+                state = BookState.READING;
             }
         }
 

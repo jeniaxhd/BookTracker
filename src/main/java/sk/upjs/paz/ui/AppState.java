@@ -2,14 +2,10 @@ package sk.upjs.paz.ui;
 
 import sk.upjs.paz.entity.User;
 
-import java.time.LocalDateTime;
-
 public final class AppState {
-    private static User currentUser = new User(1L, "Robert", "hh11@gmail.com", LocalDateTime.now(), 1);
+    private static User currentUser; // null by default
 
-
-    private AppState() {
-    }
+    private AppState() {}
 
     public static User getCurrentUser() {
         return currentUser;

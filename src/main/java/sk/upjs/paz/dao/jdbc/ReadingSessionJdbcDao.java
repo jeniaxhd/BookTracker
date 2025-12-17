@@ -4,7 +4,7 @@ import sk.upjs.paz.dao.ReadingSessionDao;
 import sk.upjs.paz.entity.Book;
 import sk.upjs.paz.entity.ReadingSession;
 import sk.upjs.paz.entity.User;
-import sk.upjs.paz.enums.Bookstate;
+import sk.upjs.paz.enums.BookState;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -128,13 +128,13 @@ public class ReadingSessionJdbcDao implements ReadingSessionDao {
         user.setId(userId);
         s.setUser(user);
 
-        Bookstate state = loadBookState(userId, bookId);
+        BookState state = loadBookState(userId, bookId);
         s.setState(state);
 
         return s;
     }
 
-    private Bookstate loadBookState(long userId, long bookId) throws SQLException {
+    private BookState loadBookState(long userId, long bookId) throws SQLException {
         String sql = "SELECT bookstate FROM user_has_book WHERE user_id = ? AND book_id = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -145,7 +145,7 @@ public class ReadingSessionJdbcDao implements ReadingSessionDao {
                 if (rs.next()) {
                     String stateStr = rs.getString("bookstate");
                     if (stateStr != null) {
-                        return Bookstate.valueOf(stateStr);
+                        return BookState.valueOf(stateStr);
                     }
                 }
             }
@@ -251,7 +251,7 @@ public class ReadingSessionJdbcDao implements ReadingSessionDao {
     }
 
     @Override
-    public void updateBookState(Long userId, Long bookId, Bookstate newState) {
+    public void updateBookState(Long userId, Long bookId, BookState newState) {
         String sql = "UPDATE user_has_book SET bookstate = ? WHERE user_id = ? AND book_id = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {

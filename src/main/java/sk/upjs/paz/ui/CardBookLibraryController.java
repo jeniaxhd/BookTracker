@@ -39,7 +39,7 @@ public class CardBookLibraryController {
     @FXML
     private Label titleLabel;
 
-    public void setData(ReadingSession readingSession){
+    public void setData(ReadingSession readingSession) {
         titleLabel.setText(readingSession.getBook().getTitle());
         statusLabel.setText(readingSession.getState().toString());
         pages.setText(String.valueOf(readingSession.getEndPage()));
@@ -56,6 +56,7 @@ public class CardBookLibraryController {
                 "Author unknown"
         ));
     }
+
     private void setCover(String coverPath) {
         coverLabel.getChildren().clear();
 

@@ -1232,3 +1232,40 @@
     -fx-text-fill: #A0A0B0;
     -fx-font-size: 10px;
 }
+/* ===== AUTOCOMPLETE (ContextMenu) – DARK ===== */
+
+.context-menu {
+    -fx-background-color: #1B1C23;
+    -fx-background-radius: 14;
+    -fx-border-color: #25262E;
+    -fx-border-radius: 14;
+
+    -fx-padding: 6;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.55), 18, 0, 0, 8);
+}
+
+.context-menu .menu-item {
+    -fx-background-color: transparent;
+    -fx-background-radius: 12;
+    -fx-background-insets: 0;
+    -fx-padding: 8 12 8 12;
+}
+
+.context-menu .menu-item .label {
+    -fx-text-fill: #F5F5F7;
+    -fx-font-size: 12px;
+}
+
+/* hover/focus -> твій “гарний” акцент */
+.context-menu .menu-item:hover,
+.context-menu .menu-item:focused {
+    -fx-background-color: #D49A5A;
+}
+
+.context-menu .menu-item:hover .label,
+.context-menu .menu-item:focused .label {
+    -fx-text-fill: #111214;
+}

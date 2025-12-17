@@ -20,13 +20,12 @@ public class BookJdbcDao implements BookDao {
 
     @Override
     public void add(Book book) {
-        String sql = "INSERT INTO book(title, description, year, pages, cover_path) " +
-                "VALUES(?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO book(title, description, year, pages, cover_path) VALUES(?, ?, ?, ?, ?)";
 
         try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, book.getTitle());
             ps.setString(2, book.getDescription());
-            ps.setInt(3, book.getYear());
+            ps.setObject(3, book.getYear(), Types.INTEGER); // null-safe
             ps.setInt(4, book.getPages());
             ps.setString(5, book.getCoverPath());
 
@@ -34,8 +33,7 @@ public class BookJdbcDao implements BookDao {
 
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next()) {
-                    long id = rs.getLong(1);
-                    book.setId(id);
+                    book.setId(rs.getLong(1));
                 }
             }
         } catch (SQLException e) {
@@ -66,13 +64,11 @@ public class BookJdbcDao implements BookDao {
         }
     }
 
-    // 🔹 зв’язки книга–жанр (Genre = record)
     private void insertBookGenres(Book book) {
         String linkSql = "INSERT INTO book_has_genre(book_id, genre_id) VALUES(?, ?)";
 
         try (PreparedStatement ps = conn.prepareStatement(linkSql)) {
             for (Genre genre : book.getGenre()) {
-                // genre.id() – компонент рекорда (типу Long id)
                 if (genre == null || genre.id() == null) continue;
                 ps.setLong(1, book.getId());
                 ps.setLong(2, genre.id());
@@ -109,13 +105,12 @@ public class BookJdbcDao implements BookDao {
 
     @Override
     public void update(Book book) {
-        String sql = "UPDATE book SET title = ?, description = ?, year = ?, pages = ?, cover_path = ? " +
-                "WHERE id = ?";
+        String sql = "UPDATE book SET title = ?, description = ?, year = ?, pages = ?, cover_path = ? WHERE id = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, book.getTitle());
             ps.setString(2, book.getDescription());
-            ps.setInt(3, book.getYear());
+            ps.setObject(3, book.getYear(), Types.INTEGER); // null-safe
             ps.setInt(4, book.getPages());
             ps.setString(5, book.getCoverPath());
             ps.setLong(6, book.getId());
@@ -124,7 +119,6 @@ public class BookJdbcDao implements BookDao {
             throw new RuntimeException(e);
         }
 
-        // спочатку чистимо всі зв’язки, потім знову додаємо актуальні
         String deleteAuthorLinksSql = "DELETE FROM book_has_author WHERE book_id = ?";
         String deleteGenreLinksSql = "DELETE FROM book_has_genre WHERE book_id = ?";
 
@@ -151,18 +145,16 @@ public class BookJdbcDao implements BookDao {
         b.setId(rs.getLong("id"));
         b.setTitle(rs.getString("title"));
         b.setDescription(rs.getString("description"));
-        b.setYear(rs.getInt("year"));
+        b.setYear(rs.getObject("year", Integer.class)); // null-safe
         b.setPages(rs.getInt("pages"));
         b.setCoverPath(rs.getString("cover_path"));
 
         double avg = loadAverageRating(rs.getLong("id"));
         b.setAverageRating(avg);
 
-        // 🔹 жанри через join-таблицю
         List<Genre> genres = loadGenresForBook(b.getId());
         b.setGenre(genres);
 
-        // 🔹 автори як і раніше
         List<Author> authors = loadAuthorsForBook(b.getId());
         b.setAuthors(authors);
 
@@ -184,7 +176,6 @@ public class BookJdbcDao implements BookDao {
         return 0.0;
     }
 
-    // 🔹 жанри для книги (Genre = record)
     private List<Genre> loadGenresForBook(long bookId) throws SQLException {
         String sql = "SELECT g.id, g.name " +
                 "FROM genre g " +
@@ -278,6 +269,7 @@ public class BookJdbcDao implements BookDao {
                 "FROM book b " +
                 "JOIN book_has_author ba ON b.id = ba.book_id " +
                 "WHERE ba.author_id = ?";
+
         List<Book> books = new ArrayList<>();
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -300,22 +292,19 @@ public class BookJdbcDao implements BookDao {
             return List.of();
         }
 
-        // формуємо ?, ?, ?, ...
         String placeholders = String.join(",", genres.stream().map(g -> "?").toList());
 
-        String sql =
-                "SELECT DISTINCT b.* " +
-                        "FROM book b " +
-                        "JOIN book_has_genre bg ON b.id = bg.book_id " +
-                        "WHERE bg.genre_id IN (" + placeholders + ")";
+        String sql = "SELECT DISTINCT b.* " +
+                "FROM book b " +
+                "JOIN book_has_genre bg ON b.id = bg.book_id " +
+                "WHERE bg.genre_id IN (" + placeholders + ")";
 
         List<Book> books = new ArrayList<>();
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
-
             int i = 1;
             for (Genre g : genres) {
-                ps.setLong(i++, g.id());   // Genre = record(id, name)
+                ps.setLong(i++, g.id());
             }
 
             try (ResultSet rs = ps.executeQuery()) {
@@ -323,14 +312,12 @@ public class BookJdbcDao implements BookDao {
                     books.add(mapRow(rs));
                 }
             }
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
         return books;
     }
-
 
     @Override
     public List<Book> getByGenre(Genre genre) {
@@ -340,6 +327,7 @@ public class BookJdbcDao implements BookDao {
                 "FROM book b " +
                 "JOIN book_has_genre bg ON b.id = bg.book_id " +
                 "WHERE bg.genre_id = ?";
+
         List<Book> books = new ArrayList<>();
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -377,6 +365,8 @@ public class BookJdbcDao implements BookDao {
 
     @Override
     public List<Book> getByYear(Integer year) {
+        if (year == null) return List.of();
+
         String sql = "SELECT * FROM book WHERE year = ?";
         List<Book> books = new ArrayList<>();
 
@@ -466,7 +456,6 @@ public class BookJdbcDao implements BookDao {
             throw new RuntimeException(e);
         }
 
-        // додатковий фільтр по рейтингу в Java
         if (ratingFrom != null || ratingTo != null) {
             books.removeIf(b -> {
                 double r = b.getAverageRating();
