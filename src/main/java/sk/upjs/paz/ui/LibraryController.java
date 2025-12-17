@@ -1,5 +1,6 @@
 package sk.upjs.paz.ui;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -112,7 +113,7 @@ public class LibraryController {
             ThemeManager.apply(root.getScene());
             updateIconsForTheme();
         }
-        loadBooks();
+        Platform.runLater(this::loadBooks);
     }
 
     private Image load(String path) {
@@ -200,12 +201,17 @@ public class LibraryController {
     }
 
     private void loadBooks(){
-        long userId = AppState.getCurrentUser().getId();
+        var user = AppState.getCurrentUser();
+        if (user == null) {
+            Platform.runLater(SceneNavigator::showLogin);
+            return;
+        }
+        long userId = user.getId();
         ReadingSessionDao dao = DaoFactory.INSTANCE.getReadingSessionDao();
         List<ReadingSession> sessions = dao.getByUser(userId);
         allBooksContainer.getChildren().clear();
         for (ReadingSession session : sessions) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("./bookCardLibrary.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sk/upjs/paz/ui/bookCardLibrary.fxml"));
             try {
                 Parent root = loader.load();
 
