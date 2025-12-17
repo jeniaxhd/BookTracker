@@ -1,81 +1,31 @@
 package sk.upjs.paz.dao.jdbc;
 
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import sk.upjs.paz.dao.ReviewDao;
 import sk.upjs.paz.entity.Book;
 import sk.upjs.paz.entity.Review;
 import sk.upjs.paz.entity.User;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class ReviewJdbcDao implements ReviewDao {
 
-    private final Connection conn;
+    private final JdbcTemplate jdbcTemplate;
 
-    public ReviewJdbcDao(Connection conn) {
-        this.conn = conn;
+    public ReviewJdbcDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
-    @Override
-    public void add(Review review) {
-        String sql = "INSERT INTO review(rating, comment, createdAt, book_id, user_id) VALUES(?, ?, ?, ?, ?)";
-
-        LocalDateTime created = review.getCreatedAt();
-        if (created == null) {
-            created = LocalDateTime.now();
-            review.setCreatedAt(created);
-        }
-
-        try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            ps.setInt(1, review.getRating());
-            ps.setString(2, review.getComment());
-            ps.setTimestamp(3, Timestamp.valueOf(created));
-            ps.setLong(4, review.getBook().getId());
-            ps.setLong(5, review.getUser().getId());
-
-            ps.executeUpdate();
-
-            try (ResultSet rs = ps.getGeneratedKeys()) {
-                if (rs.next()) {
-                    review.setId(rs.getLong(1));
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-
-    @Override
-    public void update(Review review) {
-        String sql = "UPDATE review SET rating = ?, comment = ? WHERE id = ?";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, review.getRating());
-            ps.setString(2, review.getComment());
-            ps.setLong(3, review.getId());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void delete(Long id) {
-        String sql = "DELETE FROM review WHERE id = ?";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setLong(1, id);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private Review mapRow(ResultSet rs) throws SQLException {
+    private final RowMapper<Review> mapper = (rs, rowNum) -> {
         Review r = new Review();
         r.setId(rs.getLong("id"));
         r.setRating(rs.getInt("rating"));
@@ -95,102 +45,90 @@ public class ReviewJdbcDao implements ReviewDao {
         r.setUser(u);
 
         return r;
+    };
+
+    @Override
+    public void add(Review review) {
+        String sql = "INSERT INTO review(rating, comment, createdAt, book_id, user_id) VALUES(?, ?, ?, ?, ?)";
+
+        LocalDateTime created = review.getCreatedAt();
+        if (created == null) {
+            created = LocalDateTime.now();
+            review.setCreatedAt(created);
+        }
+
+        KeyHolder kh = new GeneratedKeyHolder();
+        LocalDateTime finalCreated = created;
+
+        jdbcTemplate.update(con -> {
+            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, review.getRating());
+            ps.setString(2, review.getComment());
+            ps.setTimestamp(3, Timestamp.valueOf(finalCreated));
+            ps.setLong(4, review.getBook().getId());
+            ps.setLong(5, review.getUser().getId());
+            return ps;
+        }, kh);
+
+        if (kh.getKey() != null) {
+            review.setId(kh.getKey().longValue());
+        }
+    }
+
+    @Override
+    public void update(Review review) {
+        jdbcTemplate.update(
+                "UPDATE review SET rating = ?, comment = ? WHERE id = ?",
+                review.getRating(),
+                review.getComment(),
+                review.getId()
+        );
+    }
+
+    @Override
+    public void delete(Long id) {
+        jdbcTemplate.update("DELETE FROM review WHERE id = ?", id);
     }
 
     @Override
     public List<Review> getByBook(Long bookId) {
-        List<Review> list = new ArrayList<>();
-        String sql = "SELECT * FROM review WHERE book_id = ? ";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setLong(1, bookId);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    list.add(mapRow(rs));
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return list;
+        return jdbcTemplate.query("SELECT * FROM review WHERE book_id = ?", mapper, bookId);
     }
 
     @Override
     public List<Review> getByUser(Long userId) {
-        List<Review> list = new ArrayList<>();
-        String sql = "SELECT * FROM review WHERE user_id = ?";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setLong(1, userId);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    list.add(mapRow(rs));
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return list;
+        return jdbcTemplate.query("SELECT * FROM review WHERE user_id = ?", mapper, userId);
     }
 
     @Override
     public Optional<Review> getById(Long id) {
-        String sql = "SELECT * FROM review WHERE id = ?";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setLong(1, id);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return Optional.of(mapRow(rs));
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        try {
+            return Optional.ofNullable(
+                    jdbcTemplate.queryForObject("SELECT * FROM review WHERE id = ?", mapper, id)
+            );
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
         }
-
-        return Optional.empty();
     }
 
     @Override
     public Optional<Review> getByUserAndBook(Long userId, Long bookId) {
-        String sql = "SELECT * FROM review WHERE user_id = ? AND book_id = ?";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setLong(1, userId);
-            ps.setLong(2, bookId);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return Optional.of(mapRow(rs));
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        try {
+            return Optional.ofNullable(
+                    jdbcTemplate.queryForObject(
+                            "SELECT * FROM review WHERE user_id = ? AND book_id = ?",
+                            mapper,
+                            userId,
+                            bookId
+                    )
+            );
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
         }
-
-        return Optional.empty();
     }
 
     @Override
     public List<Review> getAll() {
-        List<Review> list = new ArrayList<>();
-        String sql = "SELECT * FROM review";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-
-            while (rs.next()) {
-                list.add(mapRow(rs));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return list;
+        return jdbcTemplate.query("SELECT * FROM review", mapper);
     }
 }

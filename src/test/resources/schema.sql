@@ -20,6 +20,8 @@ USE `booktracker` ;
 -- -----------------------------------------------------
 -- Table `country`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `country` ;
+
 CREATE TABLE IF NOT EXISTS `country` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `country_name` VARCHAR(45) NOT NULL,
@@ -32,6 +34,8 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 -- Table `author`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `author` ;
+
 CREATE TABLE IF NOT EXISTS `author` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(100) NOT NULL,
@@ -52,6 +56,8 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 -- Table `book`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `book` ;
+
 CREATE TABLE IF NOT EXISTS `book` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `title` VARCHAR(255) NOT NULL,
@@ -69,6 +75,8 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 -- Table `book_has_author`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `book_has_author` ;
+
 CREATE TABLE IF NOT EXISTS `book_has_author` (
   `book_id` BIGINT UNSIGNED NOT NULL,
   `author_id` BIGINT UNSIGNED NOT NULL,
@@ -91,6 +99,8 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 -- Table `genre`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `genre` ;
+
 CREATE TABLE IF NOT EXISTS `genre` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
@@ -104,6 +114,8 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 -- Table `book_has_genre`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `book_has_genre` ;
+
 CREATE TABLE IF NOT EXISTS `book_has_genre` (
   `book_id` BIGINT UNSIGNED NOT NULL,
   `genre_id` BIGINT UNSIGNED NOT NULL,
@@ -125,6 +137,8 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 -- Table `user`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `user` ;
+
 CREATE TABLE IF NOT EXISTS `user` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(50) NOT NULL,
@@ -135,6 +149,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   PRIMARY KEY (`id`),
   UNIQUE INDEX `mail_UNIQUE` (`mail` ASC) VISIBLE)
 ENGINE = InnoDB
+AUTO_INCREMENT = 2
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -142,6 +157,8 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 -- Table `readingsession`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `readingSession` ;
+
 CREATE TABLE IF NOT EXISTS `readingSession` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `start` DATETIME NULL DEFAULT NULL,
@@ -162,6 +179,7 @@ CREATE TABLE IF NOT EXISTS `readingSession` (
     REFERENCES `user` (`id`)
     ON DELETE CASCADE)
 ENGINE = InnoDB
+AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -169,6 +187,8 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 -- Table `review`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `review` ;
+
 CREATE TABLE IF NOT EXISTS `review` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `rating` INT UNSIGNED NOT NULL,
@@ -193,24 +213,26 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 -- Table `user_has_book`
 -- -----------------------------------------------------
-    CREATE TABLE IF NOT EXISTS `user_has_book` (
-      `user_id` BIGINT UNSIGNED NOT NULL,
-      `book_id` BIGINT UNSIGNED NOT NULL,
-      `bookstate` ENUM('READING', 'FINISHED', 'WANT_TO_READ', 'ABANDONED', 'NOT_STARTED') NOT NULL DEFAULT 'NOT_STARTED',
-      PRIMARY KEY (`user_id`, `book_id`),
-      INDEX `fk_user_has_book_book1_idx` (`book_id` ASC) VISIBLE,
-      INDEX `fk_user_has_book_user1_idx` (`user_id` ASC) VISIBLE,
-      CONSTRAINT `fk_user_has_book_book1`
-        FOREIGN KEY (`book_id`)
-        REFERENCES `book` (`id`),
-      CONSTRAINT `fk_user_has_book_user1`
-        FOREIGN KEY (`user_id`)
-        REFERENCES `user` (`id`))
-    ENGINE = InnoDB
-    DEFAULT CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_0900_ai_ci;
+DROP TABLE IF EXISTS `user_has_book` ;
+
+CREATE TABLE IF NOT EXISTS `user_has_book` (
+  `user_id` BIGINT UNSIGNED NOT NULL,
+  `book_id` BIGINT UNSIGNED NOT NULL,
+  `bookstate` ENUM('READING', 'FINISHED', 'WANT_TO_READ', 'ABANDONED', 'NOT_STARTED') NOT NULL DEFAULT 'NOT_STARTED',
+  PRIMARY KEY (`user_id`, `book_id`),
+  INDEX `fk_user_has_book_book1_idx` (`book_id` ASC) VISIBLE,
+  INDEX `fk_user_has_book_user1_idx` (`user_id` ASC) VISIBLE,
+  CONSTRAINT `fk_user_has_book_book1`
+    FOREIGN KEY (`book_id`)
+    REFERENCES `book` (`id`),
+  CONSTRAINT `fk_user_has_book_user1`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `user` (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
-    SET SQL_MODE=@OLD_SQL_MODE;
-    SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-    SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

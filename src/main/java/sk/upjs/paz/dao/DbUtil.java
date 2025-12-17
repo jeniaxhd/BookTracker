@@ -1,24 +1,67 @@
 package sk.upjs.paz.dao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+import org.springframework.jdbc.core.JdbcTemplate;
 
-public class DbUtil {
+import javax.sql.DataSource;
 
-    private static final String URL = "jdbc:mysql://localhost:3308 /booktracker";
-    private static final String USER = "booktracker_user";
-    private static final String PASSWORD = "BookTrackerYevhenVadym2025";
+public final class DbUtil {
 
-    static {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Cannot load MySQL driver", e);
-        }
+    private static HikariDataSource dataSource;
+    private static JdbcTemplate jdbcTemplate;
+
+    private DbUtil() {
     }
 
-    public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASSWORD);
+    public static synchronized DataSource getDataSource() {
+        if (dataSource == null) {
+            HikariConfig cfg = new HikariConfig();
+
+            String url = getenv("DB_URL",
+                    "jdbc:mysql://localhost:3308/booktracker?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC");
+            String user = getenv("DB_USER", "booktracker_user");
+            String pass = getenv("DB_PASS", "BookTrackerYevhenVadym2025");
+
+
+            cfg.setJdbcUrl(url);
+            cfg.setUsername(user);
+            cfg.setPassword(pass);
+
+            cfg.setDriverClassName("com.mysql.cj.jdbc.Driver");
+
+            // pool settings (нормальні дефолти)
+            cfg.setMaximumPoolSize(Integer.parseInt(getenv("DB_POOL_MAX", "10")));
+            cfg.setMinimumIdle(Integer.parseInt(getenv("DB_POOL_MIN", "2")));
+            cfg.setPoolName("BookTrackerPool");
+
+            // (опціонально) таймаути
+            cfg.setConnectionTimeout(Long.parseLong(getenv("DB_CONN_TIMEOUT_MS", "30000")));
+            cfg.setIdleTimeout(Long.parseLong(getenv("DB_IDLE_TIMEOUT_MS", "600000")));
+            cfg.setMaxLifetime(Long.parseLong(getenv("DB_MAX_LIFETIME_MS", "1800000")));
+
+            dataSource = new HikariDataSource(cfg);
+        }
+        return dataSource;
+    }
+
+    public static synchronized JdbcTemplate getJdbcTemplate() {
+        if (jdbcTemplate == null) {
+            jdbcTemplate = new JdbcTemplate(getDataSource());
+        }
+        return jdbcTemplate;
+    }
+
+    public static synchronized void shutdown() {
+        if (dataSource != null) {
+            dataSource.close();
+            dataSource = null;
+        }
+        jdbcTemplate = null;
+    }
+
+    private static String getenv(String key, String def) {
+        String v = System.getenv(key);
+        return (v == null || v.isBlank()) ? def : v;
     }
 }

@@ -1,104 +1,35 @@
 package sk.upjs.paz.dao.jdbc;
 
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import sk.upjs.paz.dao.ReadingSessionDao;
 import sk.upjs.paz.entity.Book;
 import sk.upjs.paz.entity.ReadingSession;
 import sk.upjs.paz.entity.User;
 import sk.upjs.paz.enums.BookState;
 
-import java.sql.*;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.sql.Types;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class ReadingSessionJdbcDao implements ReadingSessionDao {
 
-    private final Connection conn;
+    private final JdbcTemplate jdbcTemplate;
 
-    public ReadingSessionJdbcDao(Connection conn) {
-        this.conn = conn;
+    public ReadingSessionJdbcDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
-    @Override
-    public void add(ReadingSession readingSession) {
-        String sql = "INSERT INTO readingSession(start, duration, endPage, lastTimeRead, book_id, user_id) VALUES(?, ?, ?, ?, ?, ?)";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            if (readingSession.getStart() != null) {
-                ps.setTimestamp(1, Timestamp.valueOf(readingSession.getStart()));
-            } else {
-                ps.setNull(1, Types.TIMESTAMP);
-            }
-
-            ps.setInt(2, readingSession.getDuration());
-            ps.setInt(3, readingSession.getEndPage());
-
-            if (readingSession.getLastTimeRead() != null) {
-                ps.setDate(4, Date.valueOf(readingSession.getLastTimeRead()));
-            } else {
-                ps.setNull(4, Types.DATE);
-            }
-
-            ps.setLong(5, readingSession.getBook().getId());
-            ps.setLong(6, readingSession.getUser().getId());
-
-            ps.executeUpdate();
-
-            try (ResultSet rs = ps.getGeneratedKeys()) {
-                if (rs.next()) {
-                    readingSession.setId(rs.getLong(1));
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void update(ReadingSession readingSession) {
-        String sql = "UPDATE readingSession SET start = ?, duration = ?, endPage = ?, lastTimeRead = ?,book_id = ?, user_id = ? WHERE id = ?";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            if (readingSession.getStart() != null) {
-                ps.setTimestamp(1, Timestamp.valueOf(readingSession.getStart()));
-            } else {
-                ps.setNull(1, Types.TIMESTAMP);
-            }
-
-            ps.setInt(2, readingSession.getDuration());
-            ps.setInt(3, readingSession.getEndPage());
-
-            if (readingSession.getLastTimeRead() != null) {
-                ps.setDate(4, Date.valueOf(readingSession.getLastTimeRead()));
-            } else {
-                ps.setNull(4, Types.DATE);
-            }
-
-            ps.setLong(5, readingSession.getBook().getId());
-            ps.setLong(6, readingSession.getUser().getId());
-            ps.setLong(7, readingSession.getId());
-
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void delete(Long id) {
-        String sql = "DELETE FROM readingSession WHERE id = ?";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setLong(1, id);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private ReadingSession mapRow(ResultSet rs) throws SQLException {
+    private final RowMapper<ReadingSession> mapper = (rs, rowNum) -> {
         ReadingSession s = new ReadingSession();
         long id = rs.getLong("id");
         s.setId(id);
@@ -132,139 +63,134 @@ public class ReadingSessionJdbcDao implements ReadingSessionDao {
         s.setState(state);
 
         return s;
+    };
+
+    @Override
+    public void add(ReadingSession readingSession) {
+        String sql = "INSERT INTO readingSession(start, duration, endPage, lastTimeRead, book_id, user_id) VALUES(?, ?, ?, ?, ?, ?)";
+        KeyHolder kh = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(con -> {
+            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+            if (readingSession.getStart() != null) {
+                ps.setTimestamp(1, Timestamp.valueOf(readingSession.getStart()));
+            } else {
+                ps.setNull(1, Types.TIMESTAMP);
+            }
+
+            ps.setInt(2, readingSession.getDuration());
+            ps.setInt(3, readingSession.getEndPage());
+
+            if (readingSession.getLastTimeRead() != null) {
+                ps.setDate(4, Date.valueOf(readingSession.getLastTimeRead()));
+            } else {
+                ps.setNull(4, Types.DATE);
+            }
+
+            ps.setLong(5, readingSession.getBook().getId());
+            ps.setLong(6, readingSession.getUser().getId());
+
+            return ps;
+        }, kh);
+
+        if (kh.getKey() != null) {
+            readingSession.setId(kh.getKey().longValue());
+        }
     }
 
-    private BookState loadBookState(long userId, long bookId) throws SQLException {
-        String sql = "SELECT bookstate FROM user_has_book WHERE user_id = ? AND book_id = ?";
+    @Override
+    public void update(ReadingSession readingSession) {
+        String sql = "UPDATE readingSession SET start = ?, duration = ?, endPage = ?, lastTimeRead = ?, book_id = ?, user_id = ? WHERE id = ?";
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setLong(1, userId);
-            ps.setLong(2, bookId);
+        jdbcTemplate.update(con -> {
+            PreparedStatement ps = con.prepareStatement(sql);
 
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    String stateStr = rs.getString("bookstate");
-                    if (stateStr != null) {
-                        return BookState.valueOf(stateStr);
-                    }
-                }
+            if (readingSession.getStart() != null) {
+                ps.setTimestamp(1, Timestamp.valueOf(readingSession.getStart()));
+            } else {
+                ps.setNull(1, Types.TIMESTAMP);
             }
+
+            ps.setInt(2, readingSession.getDuration());
+            ps.setInt(3, readingSession.getEndPage());
+
+            if (readingSession.getLastTimeRead() != null) {
+                ps.setDate(4, Date.valueOf(readingSession.getLastTimeRead()));
+            } else {
+                ps.setNull(4, Types.DATE);
+            }
+
+            ps.setLong(5, readingSession.getBook().getId());
+            ps.setLong(6, readingSession.getUser().getId());
+            ps.setLong(7, readingSession.getId());
+
+            return ps;
+        });
+    }
+
+    @Override
+    public void delete(Long id) {
+        jdbcTemplate.update("DELETE FROM readingSession WHERE id = ?", id);
+    }
+
+    private BookState loadBookState(long userId, long bookId) {
+        try {
+            String stateStr = jdbcTemplate.queryForObject(
+                    "SELECT bookstate FROM user_has_book WHERE user_id = ? AND book_id = ?",
+                    String.class,
+                    userId,
+                    bookId
+            );
+            return stateStr == null ? null : BookState.valueOf(stateStr);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
         }
-        return null;
     }
 
     @Override
     public Optional<ReadingSession> getById(Long id) {
-        String sql = "SELECT * FROM readingSession WHERE id = ?";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setLong(1, id);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return Optional.of(mapRow(rs));
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        try {
+            return Optional.ofNullable(
+                    jdbcTemplate.queryForObject("SELECT * FROM readingSession WHERE id = ?", mapper, id)
+            );
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
         }
-
-        return Optional.empty();
     }
 
     @Override
     public List<ReadingSession> getByUser(Long userId) {
-        String sql = "SELECT * FROM readingSession WHERE user_id = ?";
-        List<ReadingSession> sessions = new ArrayList<>();
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setLong(1, userId);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    sessions.add(mapRow(rs));
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return sessions;
+        return jdbcTemplate.query("SELECT * FROM readingSession WHERE user_id = ?", mapper, userId);
     }
 
     @Override
     public List<ReadingSession> getByBook(Long bookId) {
-        String sql = "SELECT * FROM readingSession WHERE book_id = ?";
-        List<ReadingSession> sessions = new ArrayList<>();
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setLong(1, bookId);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    sessions.add(mapRow(rs));
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return sessions;
+        return jdbcTemplate.query("SELECT * FROM readingSession WHERE book_id = ?", mapper, bookId);
     }
 
     @Override
     public Optional<ReadingSession> getByUserAndBook(Long userId, Long bookId) {
         String sql = "SELECT * FROM readingSession WHERE user_id = ? AND book_id = ? ORDER BY start DESC LIMIT 1";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setLong(1, userId);
-            ps.setLong(2, bookId);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return Optional.of(mapRow(rs));
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, mapper, userId, bookId));
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
         }
-
-        return Optional.empty();
     }
 
     @Override
     public List<ReadingSession> getAll() {
-        String sql = "SELECT * FROM readingSession";
-        List<ReadingSession> sessions = new ArrayList<>();
-
-        try (PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-
-            while (rs.next()) {
-                sessions.add(mapRow(rs));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return sessions;
+        return jdbcTemplate.query("SELECT * FROM readingSession", mapper);
     }
 
     @Override
     public void updateBookState(Long userId, Long bookId, BookState newState) {
-        String sql = "UPDATE user_has_book SET bookstate = ? WHERE user_id = ? AND book_id = ?";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            if (newState != null) {
-                ps.setString(1, newState.name());
-            } else {
-                ps.setNull(1, Types.VARCHAR);
-            }
-            ps.setLong(2, userId);
-            ps.setLong(3, bookId);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        jdbcTemplate.update(
+                "UPDATE user_has_book SET bookstate = ? WHERE user_id = ? AND book_id = ?",
+                newState != null ? newState.name() : null,
+                userId,
+                bookId
+        );
     }
 }

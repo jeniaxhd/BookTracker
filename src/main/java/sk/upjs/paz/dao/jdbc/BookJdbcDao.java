@@ -1,155 +1,50 @@
 package sk.upjs.paz.dao.jdbc;
 
+import org.springframework.dao.*;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.transaction.support.TransactionTemplate;
 import sk.upjs.paz.dao.BookDao;
 import sk.upjs.paz.entity.Author;
 import sk.upjs.paz.entity.Book;
 import sk.upjs.paz.entity.Genre;
 
-import java.sql.*;
+import javax.sql.DataSource;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class BookJdbcDao implements BookDao {
 
-    private final Connection conn;
+    private final JdbcTemplate jdbcTemplate;
+    private final TransactionTemplate tx;
 
-    public BookJdbcDao(Connection conn) {
-        this.conn = conn;
+    public BookJdbcDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+        DataSource ds = jdbcTemplate.getDataSource();
+        if (ds == null) {
+            throw new IllegalStateException("JdbcTemplate has no DataSource");
+        }
+        this.tx = new TransactionTemplate(new DataSourceTransactionManager(ds));
     }
 
-    @Override
-    public void add(Book book) {
-        String sql = "INSERT INTO book(title, description, year, pages, cover_path) VALUES(?, ?, ?, ?, ?)";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            ps.setString(1, book.getTitle());
-            ps.setString(2, book.getDescription());
-            ps.setObject(3, book.getYear(), Types.INTEGER); // null-safe
-            ps.setInt(4, book.getPages());
-            ps.setString(5, book.getCoverPath());
-
-            ps.executeUpdate();
-
-            try (ResultSet rs = ps.getGeneratedKeys()) {
-                if (rs.next()) {
-                    book.setId(rs.getLong(1));
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        if (book.getAuthors() != null && book.getId() != null) {
-            insertBookAuthors(book);
-        }
-        if (book.getGenre() != null && book.getId() != null) {
-            insertBookGenres(book);
-        }
-    }
-
-    private void insertBookAuthors(Book book) {
-        String linkSql = "INSERT INTO book_has_author(book_id, author_id) VALUES(?, ?)";
-
-        try (PreparedStatement ps = conn.prepareStatement(linkSql)) {
-            for (Author author : book.getAuthors()) {
-                if (author == null || author.getId() == null) continue;
-                ps.setLong(1, book.getId());
-                ps.setLong(2, author.getId());
-                ps.addBatch();
-            }
-            ps.executeBatch();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private void insertBookGenres(Book book) {
-        String linkSql = "INSERT INTO book_has_genre(book_id, genre_id) VALUES(?, ?)";
-
-        try (PreparedStatement ps = conn.prepareStatement(linkSql)) {
-            for (Genre genre : book.getGenre()) {
-                if (genre == null || genre.id() == null) continue;
-                ps.setLong(1, book.getId());
-                ps.setLong(2, genre.id());
-                ps.addBatch();
-            }
-            ps.executeBatch();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void delete(Long id) {
-        String deleteAuthorLinksSql = "DELETE FROM book_has_author WHERE book_id = ?";
-        String deleteGenreLinksSql = "DELETE FROM book_has_genre WHERE book_id = ?";
-        String deleteBookSql = "DELETE FROM book WHERE id = ?";
-
-        try (PreparedStatement ps1 = conn.prepareStatement(deleteAuthorLinksSql);
-             PreparedStatement ps2 = conn.prepareStatement(deleteGenreLinksSql);
-             PreparedStatement ps3 = conn.prepareStatement(deleteBookSql)) {
-
-            ps1.setLong(1, id);
-            ps1.executeUpdate();
-
-            ps2.setLong(1, id);
-            ps2.executeUpdate();
-
-            ps3.setLong(1, id);
-            ps3.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void update(Book book) {
-        String sql = "UPDATE book SET title = ?, description = ?, year = ?, pages = ?, cover_path = ? WHERE id = ?";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, book.getTitle());
-            ps.setString(2, book.getDescription());
-            ps.setObject(3, book.getYear(), Types.INTEGER); // null-safe
-            ps.setInt(4, book.getPages());
-            ps.setString(5, book.getCoverPath());
-            ps.setLong(6, book.getId());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        String deleteAuthorLinksSql = "DELETE FROM book_has_author WHERE book_id = ?";
-        String deleteGenreLinksSql = "DELETE FROM book_has_genre WHERE book_id = ?";
-
-        try (PreparedStatement ps = conn.prepareStatement(deleteAuthorLinksSql)) {
-            ps.setLong(1, book.getId());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        try (PreparedStatement ps = conn.prepareStatement(deleteGenreLinksSql)) {
-            ps.setLong(1, book.getId());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        insertBookAuthors(book);
-        insertBookGenres(book);
-    }
-
-    private Book mapRow(ResultSet rs) throws SQLException {
+    private final RowMapper<Book> mapper = (rs, rowNum) -> {
         Book b = new Book();
         b.setId(rs.getLong("id"));
         b.setTitle(rs.getString("title"));
         b.setDescription(rs.getString("description"));
-        b.setYear(rs.getObject("year", Integer.class)); // null-safe
+        b.setYear(rs.getObject("year", Integer.class));
         b.setPages(rs.getInt("pages"));
         b.setCoverPath(rs.getString("cover_path"));
 
-        double avg = loadAverageRating(rs.getLong("id"));
+        double avg = loadAverageRating(b.getId());
         b.setAverageRating(avg);
 
         List<Genre> genres = loadGenresForBook(b.getId());
@@ -159,164 +54,203 @@ public class BookJdbcDao implements BookDao {
         b.setAuthors(authors);
 
         return b;
-    }
+    };
 
-    private double loadAverageRating(long bookId) throws SQLException {
-        String sql = "SELECT AVG(rating) AS avg_rating FROM review WHERE book_id = ?";
+    @Override
+    public void add(Book book) {
+        tx.execute(status -> {
+            String sql = "INSERT INTO book(title, description, year, pages, cover_path) VALUES(?, ?, ?, ?, ?)";
+            KeyHolder kh = new GeneratedKeyHolder();
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setLong(1, bookId);
+            jdbcTemplate.update(con -> {
+                PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                ps.setString(1, book.getTitle());
+                ps.setString(2, book.getDescription());
+                ps.setObject(3, book.getYear(), Types.INTEGER);
+                ps.setInt(4, book.getPages());
+                ps.setString(5, book.getCoverPath());
+                return ps;
+            }, kh);
 
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getDouble("avg_rating");
+            if (kh.getKey() != null) {
+                book.setId(kh.getKey().longValue());
+            }
+
+            if (book.getId() != null) {
+                if (book.getAuthors() != null) {
+                    insertBookAuthors(book);
+                }
+                if (book.getGenre() != null) {
+                    insertBookGenres(book);
                 }
             }
-        }
-        return 0.0;
+            return null;
+        });
     }
 
-    private List<Genre> loadGenresForBook(long bookId) throws SQLException {
+    private void insertBookAuthors(Book book) {
+        if (book.getAuthors() == null || book.getAuthors().isEmpty() || book.getId() == null) return;
+
+        List<Author> authors = book.getAuthors().stream()
+                .filter(a -> a != null && a.getId() != null)
+                .toList();
+
+        if (authors.isEmpty()) return;
+
+        String sql = "INSERT INTO book_has_author(book_id, author_id) VALUES(?, ?)";
+
+        jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws java.sql.SQLException {
+                ps.setLong(1, book.getId());
+                ps.setLong(2, authors.get(i).getId());
+            }
+
+            @Override
+            public int getBatchSize() {
+                return authors.size();
+            }
+        });
+    }
+
+    private void insertBookGenres(Book book) {
+        if (book.getGenre() == null || book.getGenre().isEmpty() || book.getId() == null) return;
+
+        List<Genre> genres = book.getGenre().stream()
+                .filter(g -> g != null && g.id() != null)
+                .toList();
+
+        if (genres.isEmpty()) return;
+
+        String sql = "INSERT INTO book_has_genre(book_id, genre_id) VALUES(?, ?)";
+
+        jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws java.sql.SQLException {
+                ps.setLong(1, book.getId());
+                ps.setLong(2, genres.get(i).id());
+            }
+
+            @Override
+            public int getBatchSize() {
+                return genres.size();
+            }
+        });
+    }
+
+    @Override
+    public void delete(Long id) {
+        tx.execute(status -> {
+            jdbcTemplate.update("DELETE FROM book_has_author WHERE book_id = ?", id);
+            jdbcTemplate.update("DELETE FROM book_has_genre WHERE book_id = ?", id);
+            jdbcTemplate.update("DELETE FROM book WHERE id = ?", id);
+            return null;
+        });
+    }
+
+    @Override
+    public void update(Book book) {
+        tx.execute(status -> {
+            String sql = "UPDATE book SET title = ?, description = ?, year = ?, pages = ?, cover_path = ? WHERE id = ?";
+
+            jdbcTemplate.update(con -> {
+                PreparedStatement ps = con.prepareStatement(sql);
+                ps.setString(1, book.getTitle());
+                ps.setString(2, book.getDescription());
+                ps.setObject(3, book.getYear(), Types.INTEGER);
+                ps.setInt(4, book.getPages());
+                ps.setString(5, book.getCoverPath());
+                ps.setLong(6, book.getId());
+                return ps;
+            });
+
+            jdbcTemplate.update("DELETE FROM book_has_author WHERE book_id = ?", book.getId());
+            jdbcTemplate.update("DELETE FROM book_has_genre WHERE book_id = ?", book.getId());
+
+            insertBookAuthors(book);
+            insertBookGenres(book);
+            return null;
+        });
+    }
+
+    private double loadAverageRating(long bookId) {
+        Double v = jdbcTemplate.queryForObject(
+                "SELECT AVG(rating) FROM review WHERE book_id = ?",
+                Double.class,
+                bookId
+        );
+        return v == null ? 0.0 : v;
+    }
+
+    private List<Genre> loadGenresForBook(long bookId) {
         String sql = "SELECT g.id, g.name " +
                 "FROM genre g " +
                 "JOIN book_has_genre bg ON g.id = bg.genre_id " +
                 "WHERE bg.book_id = ?";
 
-        List<Genre> genres = new ArrayList<>();
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setLong(1, bookId);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    Genre g = new Genre(
-                            rs.getLong("id"),
-                            rs.getString("name")
-                    );
-                    genres.add(g);
-                }
-            }
-        }
-        return genres;
+        return jdbcTemplate.query(sql, (rs, rowNum) -> new Genre(rs.getLong("id"), rs.getString("name")), bookId);
     }
 
-    private List<Author> loadAuthorsForBook(long bookId) throws SQLException {
+    private List<Author> loadAuthorsForBook(long bookId) {
         String sql = "SELECT a.id, a.name, a.country, a.bio " +
                 "FROM author a " +
                 "JOIN book_has_author ba ON a.id = ba.author_id " +
                 "WHERE ba.book_id = ?";
 
-        List<Author> authors = new ArrayList<>();
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setLong(1, bookId);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    Author a = new Author();
-                    a.setId(rs.getLong("id"));
-                    a.setName(rs.getString("name"));
-                    a.setCountry(rs.getString("country"));
-                    a.setBio(rs.getString("bio"));
-                    authors.add(a);
-                }
-            }
-        }
-
-        return authors;
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            Author a = new Author();
+            a.setId(rs.getLong("id"));
+            a.setName(rs.getString("name"));
+            a.setCountry(rs.getString("country"));
+            a.setBio(rs.getString("bio"));
+            return a;
+        }, bookId);
     }
 
     @Override
     public Optional<Book> getById(Long id) {
-        String sql = "SELECT * FROM book WHERE id = ?";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setLong(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return Optional.of(mapRow(rs));
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * FROM book WHERE id = ?", mapper, id));
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
         }
-        return Optional.empty();
     }
 
     @Override
     public List<Book> getAll() {
-        String sql = "SELECT * FROM book";
-        List<Book> books = new ArrayList<>();
-
-        try (PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-
-            while (rs.next()) {
-                books.add(mapRow(rs));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return books;
+        return jdbcTemplate.query("SELECT * FROM book", mapper);
     }
 
     @Override
     public List<Book> getByAuthor(Author author) {
-        if (author == null || author.getId() == null) {
-            return List.of();
-        }
+        if (author == null || author.getId() == null) return List.of();
 
         String sql = "SELECT b.* " +
                 "FROM book b " +
                 "JOIN book_has_author ba ON b.id = ba.book_id " +
                 "WHERE ba.author_id = ?";
 
-        List<Book> books = new ArrayList<>();
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setLong(1, author.getId());
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    books.add(mapRow(rs));
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return books;
+        return jdbcTemplate.query(sql, mapper, author.getId());
     }
 
     @Override
     public List<Book> getByGenres(List<Genre> genres) {
-        if (genres == null || genres.isEmpty()) {
-            return List.of();
-        }
+        if (genres == null || genres.isEmpty()) return List.of();
 
-        String placeholders = String.join(",", genres.stream().map(g -> "?").toList());
+        List<Long> ids = genres.stream()
+                .filter(g -> g != null && g.id() != null)
+                .map(Genre::id)
+                .toList();
 
+        if (ids.isEmpty()) return List.of();
+
+        String placeholders = String.join(",", ids.stream().map(x -> "?").toList());
         String sql = "SELECT DISTINCT b.* " +
                 "FROM book b " +
                 "JOIN book_has_genre bg ON b.id = bg.book_id " +
                 "WHERE bg.genre_id IN (" + placeholders + ")";
 
-        List<Book> books = new ArrayList<>();
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            int i = 1;
-            for (Genre g : genres) {
-                ps.setLong(i++, g.id());
-            }
-
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    books.add(mapRow(rs));
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return books;
+        return jdbcTemplate.query(sql, mapper, ids.toArray());
     }
 
     @Override
@@ -328,81 +262,23 @@ public class BookJdbcDao implements BookDao {
                 "JOIN book_has_genre bg ON b.id = bg.book_id " +
                 "WHERE bg.genre_id = ?";
 
-        List<Book> books = new ArrayList<>();
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setLong(1, genre.id());
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    books.add(mapRow(rs));
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return books;
+        return jdbcTemplate.query(sql, mapper, genre.id());
     }
 
     @Override
     public List<Book> getByTitle(String title) {
-        String sql = "SELECT * FROM book WHERE title LIKE ?";
-        List<Book> books = new ArrayList<>();
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, "%" + title + "%");
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    books.add(mapRow(rs));
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return books;
+        return jdbcTemplate.query("SELECT * FROM book WHERE title LIKE ?", mapper, "%" + title + "%");
     }
 
     @Override
     public List<Book> getByYear(Integer year) {
         if (year == null) return List.of();
-
-        String sql = "SELECT * FROM book WHERE year = ?";
-        List<Book> books = new ArrayList<>();
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, year);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    books.add(mapRow(rs));
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return books;
+        return jdbcTemplate.query("SELECT * FROM book WHERE year = ?", mapper, year);
     }
 
     @Override
     public List<Book> getRandom(int limit) {
-        String sql = "SELECT * FROM book ORDER BY RAND() LIMIT ?";
-
-        List<Book> result = new ArrayList<>();
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, limit);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    result.add(mapRow(rs));
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Error loading random books", e);
-        }
-
-        return result;
+        return jdbcTemplate.query("SELECT * FROM book ORDER BY RAND() LIMIT ?", mapper, limit);
     }
 
     @Override
@@ -427,7 +303,6 @@ public class BookJdbcDao implements BookDao {
             params.add(yearTo);
             where = true;
         }
-
         if (pagesFrom != null) {
             sb.append(where ? " AND" : " WHERE").append(" pages >= ?");
             params.add(pagesFrom);
@@ -439,22 +314,7 @@ public class BookJdbcDao implements BookDao {
             where = true;
         }
 
-        List<Book> books = new ArrayList<>();
-
-        try (PreparedStatement ps = conn.prepareStatement(sb.toString())) {
-            for (int i = 0; i < params.size(); i++) {
-                ps.setObject(i + 1, params.get(i));
-            }
-
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    books.add(mapRow(rs));
-                }
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        List<Book> books = jdbcTemplate.query(sb.toString(), mapper, params.toArray());
 
         if (ratingFrom != null || ratingTo != null) {
             books.removeIf(b -> {

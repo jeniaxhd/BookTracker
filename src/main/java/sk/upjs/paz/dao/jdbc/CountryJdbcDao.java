@@ -1,130 +1,64 @@
 package sk.upjs.paz.dao.jdbc;
 
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import sk.upjs.paz.dao.CountryDao;
 import sk.upjs.paz.entity.Country;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class CountryJdbcDao implements CountryDao {
-    private final Connection conn;
 
-    public CountryJdbcDao(Connection conn) {
-        this.conn = conn;
+    private final JdbcTemplate jdbcTemplate;
+
+    public CountryJdbcDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
+
+    private final RowMapper<Country> mapper = (rs, rowNum) ->
+            new Country(rs.getLong("id"), rs.getString("country_name"));
 
     @Override
     public void add(Country country) {
-        String sql = "INSERT INTO country(country_name) VALUES (?)";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, country.name()); // якщо в рекорді поле інакше, то country.countryName()
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException("Error adding country: " + country, e);
-        }
+        jdbcTemplate.update("INSERT INTO country(country_name) VALUES (?)", country.name());
     }
 
     @Override
     public void update(Country country) {
-        String sql = "UPDATE country SET country_name = ? WHERE id = ?";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, country.name());
-            ps.setLong(2, country.id());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException("Error updating country with id: " + country.id(), e);
-        }
+        jdbcTemplate.update("UPDATE country SET country_name = ? WHERE id = ?", country.name(), country.id());
     }
 
     @Override
     public void delete(Long id) {
-        String sql = "DELETE FROM country WHERE id = ?";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setLong(1, id);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException("Error deleting country with id: " + id, e);
-        }
+        jdbcTemplate.update("DELETE FROM country WHERE id = ?", id);
     }
 
     @Override
     public List<Country> getAll() {
-        String sql = "SELECT id, country_name FROM country ORDER BY id";
-        List<Country> countries = new ArrayList<>();
-
-        try (PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-
-            while (rs.next()) {
-                countries.add(
-                        new Country(
-                                rs.getLong("id"),
-                                rs.getString("country_name")
-                        )
-                );
-            }
-
-            return countries;
-
-        } catch (SQLException e) {
-            throw new RuntimeException("Error loading countries", e);
-        }
+        return jdbcTemplate.query("SELECT id, country_name FROM country ORDER BY id", mapper);
     }
 
     @Override
     public Optional<Country> getById(Long id) {
-        String sql = "SELECT id, country_name FROM country WHERE id = ?";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setLong(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-
-                if (rs.next()) {
-                    return Optional.of(
-                            new Country(
-                                    rs.getLong("id"),
-                                    rs.getString("country_name")
-                            )
-                    );
-                }
-                return Optional.empty();
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException("Error getting country by id: " + id, e);
+        try {
+            return Optional.ofNullable(
+                    jdbcTemplate.queryForObject("SELECT id, country_name FROM country WHERE id = ?", mapper, id)
+            );
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
         }
     }
 
     @Override
     public Optional<Country> getByName(String name) {
-        String sql = "SELECT id, country_name FROM country WHERE country_name = ?";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, name);
-            try (ResultSet rs = ps.executeQuery()) {
-
-                if (rs.next()) {
-                    return Optional.of(
-                            new Country(
-                                    rs.getLong("id"),
-                                    rs.getString("country_name")
-                            )
-                    );
-                }
-                return Optional.empty();
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException("Error getting country by name: " + name, e);
+        try {
+            return Optional.ofNullable(
+                    jdbcTemplate.queryForObject("SELECT id, country_name FROM country WHERE country_name = ?", mapper, name)
+            );
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
         }
     }
-
 }
