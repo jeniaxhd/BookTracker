@@ -13,6 +13,7 @@
             fx:controller="sk.upjs.paz.ui.AddBookModalController"
             styleClass="dashboard-root,addbook-window">
 
+    \
     <!-- ===== HEADER ===== -->
     <top>
         <VBox styleClass="header,addbook-header">
