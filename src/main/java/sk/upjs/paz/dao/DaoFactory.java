@@ -18,6 +18,7 @@ public final class DaoFactory {
     private final ReadingSessionDao readingSessionDao;
     private final UserHasBookDao userHasBookDao;
     private final CurrentlyReadingDao currentlyReadingDao;
+    private final StatisticsDao statisticsDao;
 
     private DaoFactory() {
         this.jdbcTemplate = DbUtil.getJdbcTemplate();
@@ -31,6 +32,7 @@ public final class DaoFactory {
         this.readingSessionDao = new ReadingSessionJdbcDao(jdbcTemplate);
         this.userHasBookDao = new UserHasBookJdbcDao(jdbcTemplate);
         this.currentlyReadingDao = new CurrentlyReadingJdbcDao(jdbcTemplate);
+        this.statisticsDao = new StatisticsJdbcDao(jdbcTemplate);
     }
 
     public BookDao getBookDao() { return bookDao; }
@@ -42,6 +44,7 @@ public final class DaoFactory {
     public ReadingSessionDao getReadingSessionDao() { return readingSessionDao; }
     public UserHasBookDao getUserHasBookDao() { return userHasBookDao; }
     public CurrentlyReadingDao getCurrentlyReadingDao() { return currentlyReadingDao; }
+    public StatisticsDao getStatisticsDao() { return statisticsDao; }
 
     public JdbcTemplate getJdbcTemplate() { return jdbcTemplate; }
 }

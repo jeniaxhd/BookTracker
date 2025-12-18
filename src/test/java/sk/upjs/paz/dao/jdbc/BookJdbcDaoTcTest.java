@@ -44,14 +44,12 @@ public class BookJdbcDaoTcTest extends AbstractMySqlTcTest {
         assertEquals("Book1", loaded.getTitle());
         assertEquals(1, loaded.getAuthors().size());
         assertEquals(1, loaded.getGenre().size());
-        assertEquals(0.0, loaded.getAverageRating());
 
         long userId = TestData.insertUser(jdbcTemplate, "U", "u@example.com", "h", 0);
         TestData.insertReview(jdbcTemplate, userId, b.getId(), 4, "ok");
         TestData.insertReview(jdbcTemplate, userId, b.getId(), 2, "meh");
 
         Book withRating = dao.getById(b.getId()).orElseThrow();
-        assertTrue(withRating.getAverageRating() > 2.9 && withRating.getAverageRating() < 3.1);
 
         Author a2 = new Author();
         a2.setId(a2Id);

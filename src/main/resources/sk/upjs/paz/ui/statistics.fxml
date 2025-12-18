@@ -3,12 +3,13 @@
 <?import java.net.URL?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.chart.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.image.ImageView?>
 
 <BorderPane fx:id="root"
-            xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="sk.upjs.paz.ui.StatisticsController"
             styleClass="dashboard-root">
@@ -29,7 +30,7 @@
                             <children>
                                 <StackPane prefWidth="32.0" prefHeight="32.0" styleClass="sidebar-logo-circle">
                                     <children>
-                                        <Label text="B" styleClass="sidebar-logo-letter"/>
+                                        <Label text="" styleClass="sidebar-logo-letter"/>
                                     </children>
                                 </StackPane>
                                 <Label text="%app.name" styleClass="sidebar-logo-text"/>
@@ -76,12 +77,14 @@
                                     <children>
                                         <StackPane prefWidth="32.0" prefHeight="32.0" styleClass="sidebar-user-avatar">
                                             <children>
-                                                <Label text="S" styleClass="sidebar-user-initials"/>
+                                                <Label fx:id="userInitialsLabel"
+                                                       text="Y"
+                                                       styleClass="sidebar-user-initials"/>
                                             </children>
                                         </StackPane>
                                         <VBox spacing="2.0">
                                             <children>
-                                                <Label fx:id="userNameLabel" text="Sarah Chen" styleClass="sidebar-user-name"/>
+                                                <Label fx:id="userNameLabel" text="%userProfile.user_name" styleClass="sidebar-user-name"/>
                                                 <Label text="%nav.viewProfile" styleClass="sidebar-user-subtitle"/>
                                             </children>
                                         </VBox>
@@ -115,7 +118,7 @@
                                 <VBox spacing="4.0">
                                     <children>
                                         <Label fx:id="headerTitleLabel" text="%nav.statistics" styleClass="header-title"/>
-                                        <Label text="See how your reading habits evolve over time."
+                                        <Label text="%statistics.subtitle"
                                                wrapText="true"
                                                styleClass="header-subtitle"/>
                                     </children>
@@ -128,7 +131,7 @@
                                     <children>
                                         <ComboBox fx:id="timeRangeCombo"
                                                   prefWidth="140.0"
-                                                  promptText="Last 30 days"
+                                                  promptText=""
                                                   styleClass="filter-combobox"/>
 
                                         <Button fx:id="notificationsButton"
@@ -193,13 +196,20 @@
                                             <HBox alignment="CENTER_LEFT" spacing="8.0">
                                                 <children>
                                                     <Label text="%statistics.pages_read_over_time" styleClass="section-title"/>
-                                                    <Label text="Last 30 days" styleClass="stat-subtitle"/>
+                                                    <Label fx:id="mainRangeLabel" text="" styleClass="stat-subtitle"/>
                                                 </children>
                                             </HBox>
 
                                             <StackPane prefHeight="260.0">
                                                 <children>
-                                                    <Label text="%statistics.line_chart_placeholder" styleClass="stat-subtitle"/>
+                                                    <LineChart fx:id="pagesLineChart" animated="false" legendVisible="false" createSymbols="false">
+                                                        <xAxis>
+                                                            <CategoryAxis />
+                                                        </xAxis>
+                                                        <yAxis>
+                                                            <NumberAxis />
+                                                        </yAxis>
+                                                    </LineChart>
                                                 </children>
                                             </StackPane>
 
@@ -210,21 +220,21 @@
                                                     <VBox spacing="4.0">
                                                         <children>
                                                             <Label text="%statistics.total_pages" styleClass="stat-label"/>
-                                                            <Label text="1,240" styleClass="stat-value"/>
+                                                            <Label fx:id="totalPagesValueLabel" text="" styleClass="stat-value"/>
                                                         </children>
                                                     </VBox>
 
                                                     <VBox spacing="4.0">
                                                         <children>
                                                             <Label text="%statistics.average_per_day" styleClass="stat-label"/>
-                                                            <Label text="42" styleClass="stat-value"/>
+                                                            <Label fx:id="avgPerDayValueLabel" text="" styleClass="stat-value"/>
                                                         </children>
                                                     </VBox>
 
                                                     <VBox spacing="4.0">
                                                         <children>
                                                             <Label text="%statistics.best_day" styleClass="stat-label"/>
-                                                            <Label text="120 pages" styleClass="stat-value"/>
+                                                            <Label fx:id="bestDayValueLabel" text="" styleClass="stat-value"/>
                                                         </children>
                                                     </VBox>
 
@@ -242,8 +252,8 @@
                                         <VBox spacing="12.0" styleClass="stat-card">
                                             <children>
                                                 <Label text="%statistics.current_streak" styleClass="section-title"/>
-                                                <Label text="10 days" styleClass="stat-value"/>
-                                                <Label text="Best streak: 21 days" styleClass="stat-subtitle"/>
+                                                <Label fx:id="currentStreakValueLabel" text="" styleClass="stat-value"/>
+                                                <Label fx:id="bestStreakLabel" text="" styleClass="stat-subtitle"/>
 
                                                 <GridPane hgap="6.0" vgap="6.0">
                                                     <children>
@@ -295,7 +305,7 @@
                                                                 <Label text="📚" styleClass="stats-row-icon"/>
                                                                 <Label text="%statistics.books_finished" styleClass="stats-row-label"/>
                                                                 <Pane HBox.hgrow="ALWAYS"/>
-                                                                <Label text="24" styleClass="stats-row-value"/>
+                                                                <Label fx:id="booksFinishedValueLabel" text="" styleClass="stats-row-value"/>
                                                             </children>
                                                         </HBox>
 
@@ -304,7 +314,7 @@
                                                                 <Label text="📄" styleClass="stats-row-icon"/>
                                                                 <Label text="%statistics.pages_read" styleClass="stats-row-label"/>
                                                                 <Pane HBox.hgrow="ALWAYS"/>
-                                                                <Label text="7,340" styleClass="stats-row-value"/>
+                                                                <Label fx:id="pagesReadThisYearValueLabel" text="" styleClass="stats-row-value"/>
                                                             </children>
                                                         </HBox>
 
@@ -313,7 +323,7 @@
                                                                 <Label text="📆" styleClass="stats-row-icon"/>
                                                                 <Label text="%statistics.active_reading_days" styleClass="stats-row-label"/>
                                                                 <Pane HBox.hgrow="ALWAYS"/>
-                                                                <Label text="112" styleClass="stats-row-value"/>
+                                                                <Label fx:id="activeDaysThisYearValueLabel" text="" styleClass="stats-row-value"/>
                                                             </children>
                                                         </HBox>
 
@@ -322,7 +332,7 @@
                                                                 <Label text="⏱" styleClass="stats-row-icon"/>
                                                                 <Label text="%statistics.avg_session_length" styleClass="stats-row-label"/>
                                                                 <Pane HBox.hgrow="ALWAYS"/>
-                                                                <Label text="32 min" styleClass="stats-row-value"/>
+                                                                <Label fx:id="avgSessionLengthThisYearValueLabel" text="" styleClass="stats-row-value"/>
                                                             </children>
                                                         </HBox>
                                                     </children>
@@ -336,12 +346,19 @@
                                 <!-- ROW 2 -->
                                 <VBox spacing="12.0" styleClass="stat-card">
                                     <children>
-                                        <Label text="%statistics.books_finished_per_month" styleClass="section-title"/>
-                                        <Label text="This year: 24 books finished" styleClass="stat-subtitle"/>
+                                        <Label text="%statistics.pages_read_per_month" styleClass="section-title"/>
+                                        <Label fx:id="barChartSubtitleLabel" text="" styleClass="stat-subtitle"/>
 
                                         <StackPane prefHeight="220.0" styleClass="stats-bar-chart-placeholder">
                                             <children>
-                                                <Label text="%statistics.bar_chart_placeholder" styleClass="stat-subtitle"/>
+                                                <BarChart fx:id="pagesBarChart" animated="false" legendVisible="false" categoryGap="8.0" barGap="2.0">
+                                                    <xAxis>
+                                                        <CategoryAxis />
+                                                    </xAxis>
+                                                    <yAxis>
+                                                        <NumberAxis />
+                                                    </yAxis>
+                                                </BarChart>
                                             </children>
                                         </StackPane>
                                     </children>

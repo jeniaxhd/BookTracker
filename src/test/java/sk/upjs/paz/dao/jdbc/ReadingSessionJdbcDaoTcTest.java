@@ -34,7 +34,7 @@ public class ReadingSessionJdbcDaoTcTest extends AbstractMySqlTcTest {
         s.setStart(LocalDateTime.now().minusHours(1));
         s.setDuration(30);
         s.setEndPage(25);
-        s.setLastTimeRead(LocalDate.now());
+        s.setLastTimeRead(LocalDateTime.now());
 
         dao.add(s);
         assertNotNull(s.getId());

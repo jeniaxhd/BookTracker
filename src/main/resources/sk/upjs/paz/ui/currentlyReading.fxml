@@ -87,7 +87,7 @@
                                         <StackPane prefWidth="32.0" prefHeight="32.0"
                                                    styleClass="sidebar-user-avatar">
                                             <children>
-                                                <Label text="S"
+                                                <Label text="Y"
                                                        styleClass="sidebar-user-initials"/>
                                             </children>
                                         </StackPane>
@@ -240,50 +240,19 @@
                                             <VBox spacing="10.0" styleClass="stat-card">
                                                 <children>
                                                     <Label text="%currentlyReading.today_s_reading" styleClass="section-title"/>
-                                                    <Label text="42 min" styleClass="stat-value"/>
+                                                    <Label fx:id="todayMinutesLabel" text="0 min" styleClass="stat-value"/>
                                                     <Label text="%currentlyReading.time_read_so_far_today" styleClass="stat-label"/>
 
                                                     <VBox spacing="4.0">
                                                         <children>
-                                                            <ProgressBar progress="0.7"
+                                                            <ProgressBar fx:id="todayGoalProgressBar"
+                                                                         progress="0.0"
                                                                          styleClass="book-progress-bar"/>
-                                                            <Label text="70% of daily goal (60 min)"
+                                                            <Label fx:id="todayGoalSubtitleLabel"
+                                                                   text="0%"
                                                                    styleClass="stat-subtitle"/>
                                                         </children>
                                                     </VBox>
-                                                </children>
-                                            </VBox>
-
-                                            <VBox spacing="10.0" styleClass="stat-card">
-                                                <children>
-                                                    <Label text="%currentlyReading.reading_streak" styleClass="section-title"/>
-                                                    <Label text="10 days" styleClass="stat-value"/>
-                                                    <Label text="%currentlyReading.in_a_row" styleClass="stat-label"/>
-
-                                                    <HBox spacing="4.0">
-                                                        <children>
-                                                            <Rectangle width="12.0" height="12.0" arcWidth="6.0" arcHeight="6.0"
-                                                                       styleClass="streak-day,streak-day--active"/>
-                                                            <Rectangle width="12.0" height="12.0" arcWidth="6.0" arcHeight="6.0"
-                                                                       styleClass="streak-day,streak-day--active"/>
-                                                            <Rectangle width="12.0" height="12.0" arcWidth="6.0" arcHeight="6.0"
-                                                                       styleClass="streak-day,streak-day--active"/>
-                                                            <Rectangle width="12.0" height="12.0" arcWidth="6.0" arcHeight="6.0"
-                                                                       styleClass="streak-day,streak-day--active"/>
-                                                            <Rectangle width="12.0" height="12.0" arcWidth="6.0" arcHeight="6.0"
-                                                                       styleClass="streak-day,streak-day--active"/>
-                                                            <Rectangle width="12.0" height="12.0" arcWidth="6.0" arcHeight="6.0"
-                                                                       styleClass="streak-day,streak-day--active"/>
-                                                            <Rectangle width="12.0" height="12.0" arcWidth="6.0" arcHeight="6.0"
-                                                                       styleClass="streak-day,streak-day--active"/>
-                                                            <Rectangle width="12.0" height="12.0" arcWidth="6.0" arcHeight="6.0"
-                                                                       styleClass="streak-day,streak-day--empty"/>
-                                                            <Rectangle width="12.0" height="12.0" arcWidth="6.0" arcHeight="6.0"
-                                                                       styleClass="streak-day,streak-day--empty"/>
-                                                            <Rectangle width="12.0" height="12.0" arcWidth="6.0" arcHeight="6.0"
-                                                                       styleClass="streak-day,streak-day--empty"/>
-                                                        </children>
-                                                    </HBox>
                                                 </children>
                                             </VBox>
 
@@ -295,7 +264,7 @@
                                                         <children>
                                                             <Label text="%currentlyReading.books_in_progress" styleClass="stat-label"/>
                                                             <Pane HBox.hgrow="ALWAYS"/>
-                                                            <Label text="4" styleClass="stat-label"/>
+                                                            <Label fx:id="booksInProgressValueLabel" text="0" styleClass="stat-label"/>
                                                         </children>
                                                     </HBox>
 
@@ -303,7 +272,7 @@
                                                         <children>
                                                             <Label text="%currentlyReading.pages_read_this_week" styleClass="stat-label"/>
                                                             <Pane HBox.hgrow="ALWAYS"/>
-                                                            <Label text="320" styleClass="stat-label"/>
+                                                            <Label fx:id="pagesThisWeekValueLabel" text="0" styleClass="stat-label"/>
                                                         </children>
                                                     </HBox>
 
@@ -311,7 +280,7 @@
                                                         <children>
                                                             <Label text="%currentlyReading.sessions_this_week" styleClass="stat-label"/>
                                                             <Pane HBox.hgrow="ALWAYS"/>
-                                                            <Label text="6" styleClass="stat-label"/>
+                                                            <Label fx:id="sessionsThisWeekValueLabel" text="0" styleClass="stat-label"/>
                                                         </children>
                                                     </HBox>
                                                 </children>

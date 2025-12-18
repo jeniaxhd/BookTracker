@@ -16,6 +16,7 @@ public class ServiceFactory {
     private final UserService userService;
     private final UserHasBookService userHasBookService;
     private final CurrentlyReadingService currentlyReadingService;
+    private final StatisticsService statisticsService;
 
 
     private ServiceFactory() {
@@ -41,6 +42,7 @@ public class ServiceFactory {
         this.userService = new UserServiceImpl(daoFactory.getUserDao());
         this.userHasBookService = new UserHasBookServiceImpl(daoFactory.getUserHasBookDao());
         this.currentlyReadingService = new CurrentlyReadingServiceImpl(daoFactory.getCurrentlyReadingDao());
+        this.statisticsService = new StatisticsServiceImpl(daoFactory.getStatisticsDao());
     }
 
     public AuthorService getAuthorService() {
@@ -74,5 +76,7 @@ public class ServiceFactory {
     public UserHasBookService getUserHasBookService() {return userHasBookService;}
 
     public CurrentlyReadingService getCurrentlyReadingService() {return currentlyReadingService;}
+
+    public StatisticsService getStatisticsService() {return statisticsService;}
 
 }

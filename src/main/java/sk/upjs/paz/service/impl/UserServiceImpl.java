@@ -87,7 +87,6 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("User ID cannot be null when updating");
         }
 
-        // ці перевірки дублюють логіку entity частково, але безпечні:
         if (user.getName() == null || user.getName().isBlank()) {
             throw new IllegalArgumentException("Name cannot be blank");
         }

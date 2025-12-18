@@ -13,6 +13,9 @@
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="sk.upjs.paz.ui.UserProfileController"
             styleClass="dashboard-root">
+    <fx:define>
+        <ToggleGroup fx:id="themeGroup"/>
+    </fx:define>
 
     <!-- ===== SIDEBAR ===== -->
     <left>
@@ -291,9 +294,14 @@
                                                 <children>
                                                     <ToggleButton fx:id="themeLightToggle"
                                                                   text="%settings.light"
+                                                                  toggleGroup="$themeGroup"
+                                                                  onAction="#onThemeSelected"
                                                                   styleClass="segmented-pill"/>
+
                                                     <ToggleButton fx:id="themeDarkToggle"
                                                                   text="%settings.dark"
+                                                                  toggleGroup="$themeGroup"
+                                                                  onAction="#onThemeSelected"
                                                                   styleClass="segmented-pill"/>
                                                 </children>
                                             </FlowPane>

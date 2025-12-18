@@ -20,6 +20,7 @@ public class UserProfileController {
 
     @FXML private ToggleButton themeLightToggle;
     @FXML private ToggleButton themeDarkToggle;
+    @FXML private ToggleGroup themeGroup;
 
     // sidebar user
     @FXML private Label userInitialsLabel;
@@ -80,7 +81,41 @@ public class UserProfileController {
         }
 
         setupLanguageCombo();
+        themeLightToggle.setUserData("light");
+        themeDarkToggle.setUserData("dark");
+
+        // Стартовий стан (постав як тобі треба: light/dark або з налаштувань)
+        themeLightToggle.setSelected(true);
+        applyTheme(false);
+
+        // Синхронізація: коли клацаєш іконку в хедері — перемикає pills
+        themeToggle.selectedProperty().addListener((obs, oldV, dark) -> {
+            if (dark) themeDarkToggle.setSelected(true);
+            else themeLightToggle.setSelected(true);
+            applyTheme(dark);
+        });
     }
+    @FXML
+    private void onThemeSelected() {
+        boolean dark = themeDarkToggle.isSelected();
+
+        ThemeManager.setDarkMode(dark);
+
+        themeToggle.setSelected(dark);
+
+        ThemeManager.apply(root.getScene());
+    }
+
+    private void applyTheme(boolean dark) {
+        root.getStyleClass().removeAll("dark-theme", "light-theme");
+        root.getStyleClass().add(dark ? "dark-theme" : "light-theme");
+    }
+
+    @FXML
+    private void onToggleTheme() {
+        themeToggle.setSelected(!themeToggle.isSelected());
+    }
+
 
     private void setupLanguageCombo() {
         if (interfaceLanguageCombo == null) return;

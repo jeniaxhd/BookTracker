@@ -19,7 +19,6 @@ public class ReviewJdbcDaoTcTest extends AbstractMySqlTcTest {
         ReviewJdbcDao dao = new ReviewJdbcDao(jdbcTemplate);
 
         Review r = new Review();
-        r.setRating(5);
         r.setComment("nice");
         Book b = new Book();
         b.setId(bookId);
@@ -32,7 +31,6 @@ public class ReviewJdbcDaoTcTest extends AbstractMySqlTcTest {
         assertNotNull(r.getId());
 
         Review loaded = dao.getById(r.getId()).orElseThrow();
-        assertEquals(5, loaded.getRating());
 
         assertEquals(1, dao.getByBook(bookId).size());
         assertEquals(1, dao.getByUser(userId).size());

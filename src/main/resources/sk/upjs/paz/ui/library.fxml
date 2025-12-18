@@ -66,7 +66,7 @@
                                     <children>
                                         <StackPane prefHeight="32.0" prefWidth="32.0" styleClass="sidebar-user-avatar">
                                             <children>
-                                                <Label styleClass="sidebar-user-initials" text="S"/>
+                                                <Label styleClass="sidebar-user-initials" text="Y"/>
                                             </children>
                                         </StackPane>
 

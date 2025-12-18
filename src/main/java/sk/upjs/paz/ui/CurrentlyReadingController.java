@@ -10,13 +10,20 @@ import javafx.scene.image.ImageView;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import sk.upjs.paz.entity.ReadingSession;
+import sk.upjs.paz.service.ReadingSessionService;
 import sk.upjs.paz.service.CurrentlyReadingService;
 import sk.upjs.paz.ui.dto.ActiveBookCard;
 import sk.upjs.paz.ui.i18n.I18N;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CurrentlyReadingController {
 
@@ -51,13 +58,26 @@ public class CurrentlyReadingController {
     // Container for cards
     @FXML private VBox cardsBox;
 
+    // Side stats: today's reading
+    @FXML private Label todayMinutesLabel;
+    @FXML private ProgressBar todayGoalProgressBar;
+    @FXML private Label todayGoalSubtitleLabel;
+
+    // Side stats: quick stats
+    @FXML private Label booksInProgressValueLabel;
+    @FXML private Label pagesThisWeekValueLabel;
+    @FXML private Label sessionsThisWeekValueLabel;
+
     private CurrentlyReadingService currentlyReadingService;
+    private ReadingSessionService readingSessionService;
     private List<ActiveBookCard> cachedCards = new ArrayList<>();
 
     // Icons
     private Image searchLight, searchDark;
 
     private Image moonIcon, sunIcon;
+
+    private static final int DAILY_GOAL_MINUTES = 60;
 
     public void setCurrentlyReadingService(CurrentlyReadingService s) {
         this.currentlyReadingService = s;
@@ -106,6 +126,13 @@ public class CurrentlyReadingController {
             }
         }
 
+        if (readingSessionService == null) {
+            try {
+                readingSessionService = sk.upjs.paz.service.ServiceFactory.INSTANCE.getReadingSessionService();
+            } catch (Exception ignored) {
+            }
+        }
+
         refresh();
     }
 
@@ -116,6 +143,7 @@ public class CurrentlyReadingController {
         if (!AppState.isLoggedIn()) {
             cardsBox.getChildren().clear();
             cachedCards = new ArrayList<>();
+            renderSideStatsEmpty();
             return;
         }
 
@@ -131,10 +159,150 @@ public class CurrentlyReadingController {
         task.setOnSucceeded(e -> {
             cachedCards = task.getValue() != null ? task.getValue() : new ArrayList<>();
             renderCards(cachedCards);
+
+            // Side stats depend on active books + reading sessions
+            refreshSideStats(userId, cachedCards);
         });
 
         task.setOnFailed(e -> {
             if (task.getException() != null) task.getException().printStackTrace();
+        });
+
+        Thread t = new Thread(task);
+        t.setDaemon(true);
+        t.start();
+    }
+
+    private void renderSideStatsEmpty() {
+        if (todayMinutesLabel != null) todayMinutesLabel.setText("0 min");
+        if (todayGoalProgressBar != null) todayGoalProgressBar.setProgress(0);
+        if (todayGoalSubtitleLabel != null) todayGoalSubtitleLabel.setText("0%");
+
+        if (booksInProgressValueLabel != null) booksInProgressValueLabel.setText("0");
+        if (pagesThisWeekValueLabel != null) pagesThisWeekValueLabel.setText("0");
+        if (sessionsThisWeekValueLabel != null) sessionsThisWeekValueLabel.setText("0");
+    }
+
+    private record SideStats(int minutesToday,
+                             int dailyGoalMinutes,
+                             int booksInProgress,
+                             int pagesThisWeek,
+                             int sessionsThisWeek) {
+    }
+
+    private void refreshSideStats(long userId, List<ActiveBookCard> activeBooks) {
+        if (readingSessionService == null) {
+            // Still update the “books in progress” number; others stay empty.
+            if (booksInProgressValueLabel != null) {
+                booksInProgressValueLabel.setText(String.valueOf(activeBooks != null ? activeBooks.size() : 0));
+            }
+            return;
+        }
+
+        final int booksInProgress = activeBooks != null ? activeBooks.size() : 0;
+
+        Task<SideStats> task = new Task<>() {
+            @Override
+            protected SideStats call() {
+                List<ReadingSession> sessions = readingSessionService.getSessionsForUser(userId);
+                if (sessions == null) sessions = List.of();
+
+                LocalDate today = LocalDate.now();
+                LocalDate weekStart = today.minusDays(6); // last 7 days incl. today
+
+                int minutesToday = 0;
+                int sessionsThisWeek = 0;
+
+                // Baselines (latest endPage before weekStart)
+                Map<Long, Integer> baselineEndPage = new HashMap<>();
+                Map<Long, List<ReadingSession>> sessionsInWeekByBook = new HashMap<>();
+
+                for (ReadingSession s : sessions) {
+                    if (s == null || s.getUser() == null || s.getBook() == null) continue;
+                    if (s.getUser().getId() == null || s.getBook().getId() == null) continue;
+
+                    LocalDateTime ts = s.getLastTimeRead();
+                    if (ts == null) ts = s.getStart();
+                    if (ts == null) continue;
+
+                    LocalDate d = ts.toLocalDate();
+
+                    if (d.isEqual(today)) {
+                        minutesToday += Math.max(0, s.getDuration());
+                    }
+
+                    if (!d.isBefore(weekStart)) {
+                        sessionsThisWeek++;
+                        sessionsInWeekByBook.computeIfAbsent(s.getBook().getId(), k -> new ArrayList<>()).add(s);
+                    } else {
+                        // keep baseline as the latest endPage before weekStart
+                        long bookId = s.getBook().getId();
+                        Integer prev = baselineEndPage.get(bookId);
+                        int endPage = Math.max(0, s.getEndPage());
+                        if (prev == null) {
+                            baselineEndPage.put(bookId, endPage);
+                        } else {
+                            // choose the bigger endPage as baseline (best-effort approximation)
+                            baselineEndPage.put(bookId, Math.max(prev, endPage));
+                        }
+                    }
+                }
+
+                // Compute pages progressed this week from endPage deltas per book.
+                int pagesThisWeek = 0;
+                for (Map.Entry<Long, List<ReadingSession>> entry : sessionsInWeekByBook.entrySet()) {
+                    long bookId = entry.getKey();
+                    List<ReadingSession> list = entry.getValue();
+                    list.sort(Comparator.comparing(s -> {
+                        LocalDateTime ts = s.getLastTimeRead();
+                        return ts != null ? ts : (s.getStart() != null ? s.getStart() : LocalDateTime.MIN);
+                    }));
+
+                    int prevEnd = baselineEndPage.getOrDefault(bookId, 0);
+                    for (ReadingSession s : list) {
+                        int curEnd = Math.max(0, s.getEndPage());
+                        int delta = curEnd - prevEnd;
+                        if (delta > 0) pagesThisWeek += delta;
+                        prevEnd = Math.max(prevEnd, curEnd);
+                    }
+                }
+
+                return new SideStats(minutesToday, DAILY_GOAL_MINUTES, booksInProgress, pagesThisWeek, sessionsThisWeek);
+            }
+        };
+
+        task.setOnSucceeded(e -> {
+            SideStats s = task.getValue();
+            if (s == null) {
+                renderSideStatsEmpty();
+                return;
+            }
+
+            // Today minutes
+            if (todayMinutesLabel != null) todayMinutesLabel.setText(s.minutesToday + " min");
+
+            // Goal progress
+            double progress = s.dailyGoalMinutes > 0 ? Math.min(1.0, (double) s.minutesToday / (double) s.dailyGoalMinutes) : 0.0;
+            if (todayGoalProgressBar != null) todayGoalProgressBar.setProgress(progress);
+
+            int pct = s.dailyGoalMinutes > 0 ? (int) Math.round(progress * 100.0) : 0;
+            if (todayGoalSubtitleLabel != null) {
+                // e.g. "70% of daily goal (60 min)"
+                todayGoalSubtitleLabel.setText(I18N.tr("currentlyReading.daily_goal_progress", pct, s.dailyGoalMinutes));
+            }
+
+            // Quick stats
+            if (booksInProgressValueLabel != null) booksInProgressValueLabel.setText(String.valueOf(s.booksInProgress));
+            if (pagesThisWeekValueLabel != null) pagesThisWeekValueLabel.setText(String.valueOf(s.pagesThisWeek));
+            if (sessionsThisWeekValueLabel != null) sessionsThisWeekValueLabel.setText(String.valueOf(s.sessionsThisWeek));
+        });
+
+        task.setOnFailed(e -> {
+            if (task.getException() != null) task.getException().printStackTrace();
+            // Still show books-in-progress at least
+            if (booksInProgressValueLabel != null) {
+                booksInProgressValueLabel.setText(String.valueOf(booksInProgress));
+            }
         });
 
         Thread t = new Thread(task);
