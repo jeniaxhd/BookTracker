@@ -11,6 +11,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import sk.upjs.paz.service.ServiceFactory;
+import sk.upjs.paz.ui.i18n.I18N;
 
 import java.io.IOException;
 
@@ -190,7 +191,7 @@ public class LibraryController {
 
             var book = bookOpt.get();
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sk/upjs/paz/ui/cards/bookCardLibrary.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sk/upjs/paz/ui/cards/bookCardLibrary.fxml"), I18N.getBundle());
             try {
                 Parent cardRoot = loader.load();
                 BookCardLibraryController controller = loader.getController();

@@ -25,10 +25,10 @@
                             <children>
                                 <StackPane prefHeight="32.0" prefWidth="32.0" styleClass="sidebar-logo-circle">
                                     <children>
-                                        <Label styleClass="sidebar-logo-letter" text="B"/>
+                                        <Label styleClass="sidebar-logo-letter" text=""/>
                                     </children>
                                 </StackPane>
-                                <Label styleClass="sidebar-logo-text" text="BookTrack"/>
+                                <Label styleClass="sidebar-logo-text" text="%app.name"/>
                             </children>
                         </HBox>
                     </children>
@@ -42,13 +42,13 @@
                     </padding>
                     <children>
                         <ToggleButton fx:id="dashboardNavButton" onAction="#onDashboardSelected"
-                                      styleClass="sidebar-nav-button" text="Dashboard"/>
+                                      styleClass="sidebar-nav-button" text="%nav.dashboard"/>
                         <ToggleButton fx:id="libraryNavButton" onAction="#onLibrarySelected" selected="true"
-                                      styleClass="sidebar-nav-button,sidebar-nav-button--active" text="Library"/>
+                                      styleClass="sidebar-nav-button,sidebar-nav-button--active" text="%nav.library"/>
                         <ToggleButton fx:id="currentlyReadingNavButton" onAction="#onCurrentlyReadingSelected"
-                                      styleClass="sidebar-nav-button" text="Currently Reading"/>
+                                      styleClass="sidebar-nav-button" text="%nav.currentlyReading"/>
                         <ToggleButton fx:id="statisticsNavButton" onAction="#onStatisticsSelected"
-                                      styleClass="sidebar-nav-button" text="Statistics"/>
+                                      styleClass="sidebar-nav-button" text="%nav.statistics"/>
                     </children>
                 </VBox>
 
@@ -66,14 +66,14 @@
                                     <children>
                                         <StackPane prefHeight="32.0" prefWidth="32.0" styleClass="sidebar-user-avatar">
                                             <children>
-                                                <Label styleClass="sidebar-user-initials" text="S"/>
+                                                <Label styleClass="sidebar-user-initials" text=""/>
                                             </children>
                                         </StackPane>
 
                                         <VBox spacing="2.0">
                                             <children>
-                                                <Label fx:id="userNameLabel" styleClass="sidebar-user-name" text="Sarah Chen"/>
-                                                <Label styleClass="sidebar-user-subtitle" text="View profile"/>
+                                                <Label fx:id="userNameLabel" styleClass="sidebar-user-name" text=""/>
+                                                <Label styleClass="sidebar-user-subtitle" text="%nav.viewProfile"/>
                                             </children>
                                         </VBox>
                                     </children>
@@ -103,9 +103,9 @@
 
                                 <VBox spacing="4.0">
                                     <children>
-                                        <Label fx:id="headerTitleLabel" styleClass="header-title" text="Library"/>
+                                        <Label fx:id="headerTitleLabel" styleClass="header-title" text="%nav.library"/>
                                         <Label styleClass="header-subtitle"
-                                               text="Browse, search, and organize all your books."
+                                               text="%library.browse_search_and_organize_all_your_books"
                                                wrapText="true"/>
                                     </children>
                                 </VBox>
@@ -119,7 +119,7 @@
                                         <!-- Let it stretch/shrink -->
                                         <TextField fx:id="searchField"
                                                    maxWidth="Infinity"
-                                                   promptText="Search by title, author, or tag..."
+                                                   promptText="%library.search_by_title_author_or_tag"
                                                    styleClass="header-search-field"
                                                    HBox.hgrow="ALWAYS"/>
 
@@ -132,9 +132,9 @@
                                         </ToggleButton>
 
                                         <Button fx:id="addBookButton" onAction="#onAddBook"
-                                                styleClass="header-primary-button" text="Add Book">
+                                                styleClass="header-primary-button" text="%common.addBook">
                                             <graphic>
-                                                <Label styleClass="header-primary-icon" text="+"/>
+                                                <Label styleClass="header-primary-icon" text=""/>
                                             </graphic>
                                         </Button>
 
@@ -160,7 +160,7 @@
                                 <!-- FILTERS -->
                                 <VBox spacing="12.0">
                                     <children>
-                                        <Label styleClass="section-title" text="Filters"/>
+                                        <Label styleClass="section-title" text="%library.filters"/>
 
                                         <!-- CHANGED: chips wrap -->
                                         <FlowPane fx:id="statusChipsFlow"
@@ -169,11 +169,11 @@
                                                   prefWrapLength="900">
                                             <children>
                                                 <ToggleButton selected="true"
-                                                              styleClass="filter-chip,filter-chip--active" text="All"/>
-                                                <ToggleButton styleClass="filter-chip" text="In Progress"/>
-                                                <ToggleButton styleClass="filter-chip" text="Finished"/>
-                                                <ToggleButton styleClass="filter-chip" text="Not started"/>
-                                                <ToggleButton styleClass="filter-chip" text="Abandoned"/>
+                                                              styleClass="filter-chip,filter-chip--active" text="%common.all"/>
+                                                <ToggleButton styleClass="filter-chip" text="%status.inProgress"/>
+                                                <ToggleButton styleClass="filter-chip" text="%library.finished"/>
+                                                <ToggleButton styleClass="filter-chip" text="%library.not_started"/>
+                                                <ToggleButton styleClass="filter-chip" text="%library.abandoned"/>
                                             </children>
                                         </FlowPane>
 
@@ -185,11 +185,11 @@
                                             <children>
                                                 <ComboBox fx:id="categoryCombo"
                                                           prefWidth="180.0"
-                                                          promptText="Category"
+                                                          promptText="%common.category"
                                                           styleClass="filter-combobox"/>
                                                 <ComboBox fx:id="sortCombo"
                                                           prefWidth="220.0"
-                                                          promptText="Sort by: Recently added"
+                                                          promptText="%library.sort_by_recently_added"
                                                           styleClass="filter-combobox"/>
                                             </children>
                                         </FlowPane>
@@ -199,7 +199,7 @@
                                 <!-- BOOK GRID -->
                                 <VBox spacing="12.0">
                                     <children>
-                                        <Label styleClass="section-title" text="All books"/>
+                                        <Label styleClass="section-title" text="%library.all_books"/>
 
                                         <FlowPane fx:id="allBooksContainer"
                                                   hgap="16.0"

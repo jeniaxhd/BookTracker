@@ -12,6 +12,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import sk.upjs.paz.service.CurrentlyReadingService;
 import sk.upjs.paz.ui.dto.ActiveBookCard;
+import sk.upjs.paz.ui.i18n.I18N;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -150,7 +151,7 @@ public class CurrentlyReadingController {
 
     private Node loadCard(ActiveBookCard card) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sk/upjs/paz/ui/cards/activeBookCard.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sk/upjs/paz/ui/cards/activeBookCard.fxml"), I18N.getBundle());
             Node node = loader.load();
 
             ActiveBookCardController c = loader.getController();

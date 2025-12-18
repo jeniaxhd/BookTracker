@@ -2,10 +2,7 @@ package sk.upjs.paz.ui;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -17,6 +14,10 @@ import sk.upjs.paz.service.UserService;
 public class UserProfileController {
 
     @FXML private BorderPane root;
+    @FXML private ComboBox<String> interfaceLanguageCombo;
+
+    @FXML private ToggleButton themeLightToggle;
+    @FXML private ToggleButton themeDarkToggle;
 
     // sidebar user
     @FXML private Label userInitialsLabel;
@@ -75,7 +76,35 @@ public class UserProfileController {
             editBox.setVisible(false);
             editBox.setManaged(false);
         }
+        if (interfaceLanguageCombo != null) {
+            interfaceLanguageCombo.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+                if (newVal == null) return;
+
+                if (newVal.equalsIgnoreCase("Slovak")) {
+                    sk.upjs.paz.ui.i18n.I18N.setLocale(new java.util.Locale("sk"));
+                } else {
+                    sk.upjs.paz.ui.i18n.I18N.setLocale(java.util.Locale.ENGLISH);
+                }
+
+                SceneNavigator.showUserProfile();
+            });
+        }
     }
+
+    @FXML
+    private void onThemeLight(ActionEvent e) {
+        ThemeManager.setDarkMode(false);
+        ThemeManager.apply(root.getScene());
+        updateIconsForTheme();
+    }
+
+    @FXML
+    private void onThemeDark(ActionEvent e) {
+        ThemeManager.setDarkMode(true);
+        ThemeManager.apply(root.getScene());
+        updateIconsForTheme();
+    }
+
 
     private Image load(String path) {
         var url = getClass().getResource(path);
@@ -88,6 +117,9 @@ public class UserProfileController {
         if (themeToggle != null) themeToggle.setSelected(dark);
         if (themeIcon != null) themeIcon.setImage(dark ? sunIcon : moonIcon);
         if (notificationsIcon != null) notificationsIcon.setImage(dark ? bellDark : bellLight);
+
+        if (themeLightToggle != null) themeLightToggle.setSelected(!dark);
+        if (themeDarkToggle != null) themeDarkToggle.setSelected(dark);
     }
 
     private void loadUser() {

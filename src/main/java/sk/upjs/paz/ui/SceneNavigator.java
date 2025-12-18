@@ -403,10 +403,12 @@ public final class SceneNavigator {
             if (url == null) throw new IllegalStateException("Missing FXML: " + fxmlPath);
 
             FXMLLoader loader = new FXMLLoader(url);
+            loader.setResources(sk.upjs.paz.ui.i18n.I18N.getBundle());
             return loader.load();
 
         } catch (IOException e) {
             throw new RuntimeException("Cannot load: " + fxmlPath, e);
         }
     }
+
 }

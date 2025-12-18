@@ -22,15 +22,15 @@
                    prefHeight="220.0"
                    styleClass="library-book-cover">
             <children>
-                <Label styleClass="book-cover-placeholder-text" text="Cover"/>
+                <Label styleClass="book-cover-placeholder-text" text="%common.cover"/>
             </children>
         </StackPane>
 
         <VBox spacing="4.0">
             <children>
-                <Label fx:id="titleLabel" styleClass="library-book-title" text="Title" wrapText="true"/>
-                <Label fx:id="authorLabel" styleClass="library-book-author" text="Author"/>
-                <Label fx:id="genreLabel" styleClass="book-category-pill" text="Genre"/>
+                <Label fx:id="titleLabel" styleClass="library-book-title" text="%common.title" wrapText="true"/>
+                <Label fx:id="authorLabel" styleClass="library-book-author" text="%addBookModal.author"/>
+                <Label fx:id="genreLabel" styleClass="book-category-pill" text="%common.genre"/>
             </children>
         </VBox>
 
@@ -40,7 +40,7 @@
                     <children>
                         <Label fx:id="pages" styleClass="book-progress-text" text=""/>
                         <Pane HBox.hgrow="ALWAYS"/>
-                        <Label fx:id="statusLabel" styleClass="book-status-pill" text="NOT_STARTED"/>
+                        <Label fx:id="statusLabel" styleClass="book-status-pill" text="%library.not_started"/>
                     </children>
                 </HBox>
                 <HBox alignment="CENTER_LEFT" spacing="6.0">

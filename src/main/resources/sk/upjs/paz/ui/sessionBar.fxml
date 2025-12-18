@@ -28,13 +28,13 @@
             <VBox spacing="2.0">
                 <children>
                     <Label fx:id="bookTitleLabel"
-                           text="Atomic Habits"
+                           text=""
                            styleClass="session-book-title"/>
                     <Label fx:id="bookSubtitleLabel"
-                           text="James Clear · Productivity"
+                           text=""
                            styleClass="session-book-subtitle"/>
                     <Label fx:id="statusPillLabel"
-                           text="In Progress"
+                           text="%status.inProgress"
                            styleClass="session-status-pill"/>
                 </children>
             </VBox>
@@ -48,10 +48,10 @@
     <VBox spacing="4.0" alignment="CENTER">
         <children>
             <Label fx:id="timerLabel"
-                   text="12:50"
+                   text=""
                    styleClass="session-timer-text"/>
             <Label fx:id="timerCaptionLabel"
-                   text="Reading now"
+                   text="%sessionBar.reading_now"
                    styleClass="session-timer-caption"/>
         </children>
     </VBox>
@@ -69,7 +69,7 @@
                     styleClass="session-control-main">
                 <graphic>
                     <!-- start in "pause" state, you can change text in controller -->
-                    <Label text="⏸"/>
+                    <Label text=""/>
                 </graphic>
             </Button>
 
@@ -78,7 +78,7 @@
                     onAction="#handleStop"
                     styleClass="session-control-secondary">
                 <graphic>
-                    <Label text="■"/>
+                    <Label text=""/>
                 </graphic>
             </Button>
 
@@ -87,7 +87,7 @@
                     onAction="#handleMore"
                     styleClass="session-control-more">
                 <graphic>
-                    <Label text="⋯"/>
+                    <Label text=""/>
                 </graphic>
             </Button>
 

@@ -24,10 +24,10 @@
     <!-- Header -->
     <HBox alignment="CENTER_LEFT" spacing="10.0">
         <children>
-            <Label text="Notifications" styleClass="section-title"/>
+            <Label text="%common.notifications" styleClass="section-title"/>
             <Pane HBox.hgrow="ALWAYS"/>
             <Button fx:id="markAllReadButton"
-                    text="Mark all read"
+                    text="%notificationsPopover.mark_all_read"
                     onAction="#onMarkAllRead"
                     styleClass="ghost-button"/>
         </children>
@@ -43,18 +43,18 @@
                 <children>
                     <StackPane prefWidth="34.0" prefHeight="34.0" styleClass="stat-icon,stat-icon-gold">
                         <children>
-                            <Label text="🔔" styleClass="stat-icon-emoji"/>
+                            <Label text="" styleClass="stat-icon-emoji"/>
                         </children>
                     </StackPane>
 
                     <VBox spacing="2.0" HBox.hgrow="ALWAYS">
                         <children>
-                            <Label text="Reading session saved" styleClass="queue-title"/>
-                            <Label text="You added 32 minutes to your streak" styleClass="book-meta-text"/>
+                            <Label text="%notificationsPopover.reading_session_saved" styleClass="queue-title"/>
+                            <Label text="" styleClass="book-meta-text"/>
                         </children>
                     </VBox>
 
-                    <Label text="2m" styleClass="book-meta-text"/>
+                    <Label text="" styleClass="book-meta-text"/>
                 </children>
             </HBox>
 
@@ -62,18 +62,18 @@
                 <children>
                     <StackPane prefWidth="34.0" prefHeight="34.0" styleClass="stat-icon,stat-icon-blue">
                         <children>
-                            <Label text="📚" styleClass="stat-icon-emoji"/>
+                            <Label text="" styleClass="stat-icon-emoji"/>
                         </children>
                     </StackPane>
 
                     <VBox spacing="2.0" HBox.hgrow="ALWAYS">
                         <children>
-                            <Label text="Book added to Library" styleClass="queue-title"/>
-                            <Label text="Atomic Habits · Productivity" styleClass="book-meta-text"/>
+                            <Label text="%notificationsPopover.book_added_to_library" styleClass="queue-title"/>
+                            <Label text="" styleClass="book-meta-text"/>
                         </children>
                     </VBox>
 
-                    <Label text="1h" styleClass="book-meta-text"/>
+                    <Label text="" styleClass="book-meta-text"/>
                 </children>
             </HBox>
 
@@ -81,18 +81,18 @@
                 <children>
                     <StackPane prefWidth="34.0" prefHeight="34.0" styleClass="stat-icon,stat-icon-green">
                         <children>
-                            <Label text="🔥" styleClass="stat-icon-emoji"/>
+                            <Label text="" styleClass="stat-icon-emoji"/>
                         </children>
                     </StackPane>
 
                     <VBox spacing="2.0" HBox.hgrow="ALWAYS">
                         <children>
-                            <Label text="Streak milestone" styleClass="queue-title"/>
-                            <Label text="7 days in a row" styleClass="book-meta-text"/>
+                            <Label text="%notificationsPopover.streak_milestone" styleClass="queue-title"/>
+                            <Label text="" styleClass="book-meta-text"/>
                         </children>
                     </VBox>
 
-                    <Label text="Yesterday" styleClass="book-meta-text"/>
+                    <Label text="%notificationsPopover.yesterday" styleClass="book-meta-text"/>
                 </children>
             </HBox>
 
@@ -105,11 +105,11 @@
     <HBox alignment="CENTER_RIGHT" spacing="10.0">
         <children>
             <Button fx:id="viewAllButton"
-                    text="View all"
+                    text="%notificationsPopover.view_all"
                     onAction="#onViewAll"
                     styleClass="header-secondary-button"/>
             <Button fx:id="closeButton"
-                    text="Close"
+                    text="%common.close"
                     onAction="#onClose"
                     styleClass="header-primary-button"/>
         </children>
