@@ -11,6 +11,8 @@ import sk.upjs.paz.entity.User;
 import sk.upjs.paz.service.ServiceFactory;
 import sk.upjs.paz.service.UserService;
 
+import java.util.Locale;
+
 public class UserProfileController {
 
     @FXML private BorderPane root;
@@ -27,7 +29,7 @@ public class UserProfileController {
     // profile card
     @FXML private Label profileAvatarText;
     @FXML private Label profileNameLabel;
-    @FXML private Label profileMetaLabel;   // make sure fx:id matches in FXML
+    @FXML private Label profileMetaLabel;
     @FXML private Label emailValueLabel;
 
     // edit box
@@ -71,24 +73,45 @@ public class UserProfileController {
 
         loadUser();
 
-        // hide edit box by default (optional, but usually needed)
+        // hide edit box by default
         if (editBox != null) {
             editBox.setVisible(false);
             editBox.setManaged(false);
         }
-        if (interfaceLanguageCombo != null) {
-            interfaceLanguageCombo.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
-                if (newVal == null) return;
 
-                if (newVal.equalsIgnoreCase("Slovak")) {
-                    sk.upjs.paz.ui.i18n.I18N.setLocale(new java.util.Locale("sk"));
-                } else {
-                    sk.upjs.paz.ui.i18n.I18N.setLocale(java.util.Locale.ENGLISH);
-                }
+        setupLanguageCombo();
+    }
 
-                SceneNavigator.showUserProfile();
-            });
+    private void setupLanguageCombo() {
+        if (interfaceLanguageCombo == null) return;
+
+        // 1) items (2 languages)
+        interfaceLanguageCombo.getItems().setAll("English", "Slovak");
+
+        // 2) show active language immediately (IMPORTANT)
+        Locale current = sk.upjs.paz.ui.i18n.I18N.getLocale();
+        String active = "English";
+        if (current != null && "sk".equalsIgnoreCase(current.getLanguage())) {
+            active = "Slovak";
         }
+        interfaceLanguageCombo.getSelectionModel().select(active);
+
+        // 3) listener for changes
+        interfaceLanguageCombo.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal == null) return;
+            if (newVal.equals(oldVal)) return;
+
+            if (newVal.equalsIgnoreCase("Slovak")) {
+                sk.upjs.paz.ui.i18n.I18N.setLocale(new Locale("sk"));
+            } else if (newVal.equalsIgnoreCase("English")) {
+                sk.upjs.paz.ui.i18n.I18N.setLocale(Locale.ENGLISH);
+            } else {
+                return;
+            }
+
+            // reload page so texts refresh
+            SceneNavigator.showUserProfile();
+        });
     }
 
     @FXML
@@ -104,7 +127,6 @@ public class UserProfileController {
         ThemeManager.apply(root.getScene());
         updateIconsForTheme();
     }
-
 
     private Image load(String path) {
         var url = getClass().getResource(path);

@@ -13,6 +13,7 @@ import javafx.stage.Window;
 import sk.upjs.paz.entity.Book;
 import sk.upjs.paz.enums.BookState;
 import sk.upjs.paz.service.ServiceFactory;
+import sk.upjs.paz.ui.i18n.I18N;
 
 import java.io.IOException;
 import java.net.URL;
@@ -38,17 +39,21 @@ public final class SceneNavigator {
         primaryStage.show();
     }
 
-    public static void showDashboard() { setPage("/sk/upjs/paz/ui/dashboard.fxml", "Dashboard"); }
-    public static void showLibrary() { setPage("/sk/upjs/paz/ui/library.fxml", "Library"); }
-    public static void showCurrentlyReading() { setPage("/sk/upjs/paz/ui/currentlyReading.fxml", "Currently Reading"); }
-    public static void showStatistics() { setPage("/sk/upjs/paz/ui/statistics.fxml", "Statistics"); }
-    public static void showUserProfile() { setPage("/sk/upjs/paz/ui/userProfile.fxml", "Profile"); }
-    public static void showLogin() { setPage("/sk/upjs/paz/ui/login.fxml", "Login"); }
-    public static void showRegister() { setPage("/sk/upjs/paz/ui/register.fxml", "Register"); }
+    // ===== Pages =====
+
+    public static void showDashboard() { setPage("/sk/upjs/paz/ui/dashboard.fxml", tr("window.dashboard", "Dashboard")); }
+    public static void showLibrary() { setPage("/sk/upjs/paz/ui/library.fxml", tr("window.library", "Library")); }
+    public static void showCurrentlyReading() { setPage("/sk/upjs/paz/ui/currentlyReading.fxml", tr("window.currentlyReading", "Currently Reading")); }
+    public static void showStatistics() { setPage("/sk/upjs/paz/ui/statistics.fxml", tr("window.statistics", "Statistics")); }
+    public static void showUserProfile() { setPage("/sk/upjs/paz/ui/userProfile.fxml", tr("window.profile", "Profile")); }
+    public static void showLogin() { setPage("/sk/upjs/paz/ui/login.fxml", tr("window.login", "Login")); }
+    public static void showRegister() { setPage("/sk/upjs/paz/ui/register.fxml", tr("window.register", "Register")); }
 
     private static void setPage(String fxmlPath, String title) {
-        Parent root = loadRoot(fxmlPath);
+        // важливо: якщо popover залишився відкритим — він може перехоплювати кліки
+        hideNotificationsIfOpen();
 
+        Parent root = loadRoot(fxmlPath);
         boolean isAuth = isAuthPage(fxmlPath);
 
         Scene scene;
@@ -63,10 +68,8 @@ public final class SceneNavigator {
         primaryStage.setTitle(title);
         ThemeManager.apply(scene);
 
-        // Only apply MIN size always (safe for responsive layout)
         applyWindowMinSizeFor(fxmlPath);
 
-        // Apply initial width/height ONLY on first show OR when switching between auth/main areas
         if (firstShow || (isAuth != lastWasAuth)) {
             applyInitialWindowSizeFor(fxmlPath);
             primaryStage.centerOnScreen();
@@ -96,7 +99,6 @@ public final class SceneNavigator {
             primaryStage.setMinWidth(940);
             primaryStage.setMinHeight(640);
         } else {
-            // Keep this reasonably small so you can demonstrate responsiveness
             primaryStage.setMinWidth(900);
             primaryStage.setMinHeight(600);
         }
@@ -155,7 +157,6 @@ public final class SceneNavigator {
         long sessionId = SessionBarHost.getActiveSessionId();
         long userId = SessionBarHost.getActiveUserId();
         long bookId = SessionBarHost.getActiveBookId();
-
         if (sessionId <= 0 || userId <= 0 || bookId <= 0) return;
 
         var readingSessionService = ServiceFactory.INSTANCE.getReadingSessionService();
@@ -167,7 +168,7 @@ public final class SceneNavigator {
 
         var session = sessionOpt.get();
 
-        String bookTitle = bookService.getById(bookId).map(Book::getTitle).orElse("Current book");
+        String bookTitle = bookService.getById(bookId).map(Book::getTitle).orElse(tr("book.current", "Current book"));
 
         String statusText = "READING";
         var dt = session.getStart();
@@ -180,15 +181,8 @@ public final class SceneNavigator {
         String endPage = "";
 
         EndSessionController controller = showEndSessionModal(
-                primaryStage,
-                bookTitle,
-                "",
-                statusText,
-                "",
-                startTime,
-                durationMinutes,
-                startPage,
-                endPage
+                primaryStage, bookTitle, "", statusText, "",
+                startTime, durationMinutes, startPage, endPage
         );
 
         if (controller == null) return;
@@ -216,7 +210,7 @@ public final class SceneNavigator {
             URL url = SceneNavigator.class.getResource("/sk/upjs/paz/ui/addBookModal.fxml");
             if (url == null) throw new IllegalStateException("Missing FXML: /sk/upjs/paz/ui/addBookModal.fxml");
 
-            FXMLLoader loader = new FXMLLoader(url);
+            FXMLLoader loader = newLoader(url);
             Parent dialogRoot = loader.load();
 
             AddBookModalController controller = loader.getController();
@@ -232,11 +226,11 @@ public final class SceneNavigator {
             ThemeManager.apply(dialogScene);
 
             Stage dialogStage = new Stage();
-            dialogStage.setTitle("Add Book");
+            dialogStage.setTitle(tr("modal.addBook.title", "Add Book"));
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.initOwner(owner);
             dialogStage.setScene(dialogScene);
-            dialogStage.setResizable(true); // allow resizing if needed
+            dialogStage.setResizable(true);
             dialogStage.showAndWait();
 
         } catch (IOException e) {
@@ -249,7 +243,7 @@ public final class SceneNavigator {
             URL url = SceneNavigator.class.getResource("/sk/upjs/paz/ui/bookDetailsModal.fxml");
             if (url == null) throw new IllegalStateException("Missing FXML: /sk/upjs/paz/ui/bookDetailsModal.fxml");
 
-            FXMLLoader loader = new FXMLLoader(url);
+            FXMLLoader loader = newLoader(url);
             Parent dialogRoot = loader.load();
 
             BookDetailsModalController controller = loader.getController();
@@ -270,11 +264,11 @@ public final class SceneNavigator {
             ThemeManager.apply(dialogScene);
 
             Stage dialogStage = new Stage();
-            dialogStage.setTitle("Book details");
+            dialogStage.setTitle(tr("modal.bookDetails.title", "Book details"));
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.initOwner(owner);
             dialogStage.setScene(dialogScene);
-            dialogStage.setResizable(true); // allow resizing if needed
+            dialogStage.setResizable(true);
             dialogStage.showAndWait();
 
         } catch (IOException e) {
@@ -313,7 +307,7 @@ public final class SceneNavigator {
             URL url = SceneNavigator.class.getResource("/sk/upjs/paz/ui/endSession.fxml");
             if (url == null) throw new IllegalStateException("Missing FXML: /sk/upjs/paz/ui/endSession.fxml");
 
-            FXMLLoader loader = new FXMLLoader(url);
+            FXMLLoader loader = newLoader(url);
             Parent dialogRoot = loader.load();
             EndSessionController controller = loader.getController();
 
@@ -327,11 +321,11 @@ public final class SceneNavigator {
             ThemeManager.apply(dialogScene);
 
             Stage dialogStage = new Stage();
-            dialogStage.setTitle("End session");
+            dialogStage.setTitle(tr("modal.endSession.title", "End session"));
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.initOwner(owner);
             dialogStage.setScene(dialogScene);
-            dialogStage.setResizable(true); // allow resizing if needed
+            dialogStage.setResizable(true);
             dialogStage.showAndWait();
 
             return controller;
@@ -365,6 +359,12 @@ public final class SceneNavigator {
         notificationsPopup.show(primaryStage, x, y);
     }
 
+    private static void hideNotificationsIfOpen() {
+        if (notificationsPopup != null && notificationsPopup.isShowing()) {
+            notificationsPopup.hide();
+        }
+    }
+
     public static void syncFloatingOverlaysTheme() {
         if (notificationsRoot != null) {
             notificationsRoot.getStylesheets().clear();
@@ -384,7 +384,7 @@ public final class SceneNavigator {
             URL url = SceneNavigator.class.getResource("/sk/upjs/paz/ui/notificationsPopover.fxml");
             if (url == null) throw new IllegalStateException("Missing FXML: /sk/upjs/paz/ui/notificationsPopover.fxml");
 
-            FXMLLoader loader = new FXMLLoader(url);
+            FXMLLoader loader = newLoader(url);
             notificationsRoot = loader.load();
             notificationsController = loader.getController();
             notificationsController.setPopup(notificationsPopup);
@@ -397,13 +397,14 @@ public final class SceneNavigator {
         }
     }
 
+    // ===== FXML loading with i18n =====
+
     private static Parent loadRoot(String fxmlPath) {
         try {
             URL url = SceneNavigator.class.getResource(fxmlPath);
             if (url == null) throw new IllegalStateException("Missing FXML: " + fxmlPath);
 
-            FXMLLoader loader = new FXMLLoader(url);
-            loader.setResources(sk.upjs.paz.ui.i18n.I18N.getBundle());
+            FXMLLoader loader = newLoader(url);
             return loader.load();
 
         } catch (IOException e) {
@@ -411,4 +412,17 @@ public final class SceneNavigator {
         }
     }
 
+    private static FXMLLoader newLoader(URL url) {
+        FXMLLoader loader = new FXMLLoader(url);
+        loader.setResources(I18N.getBundle());
+        return loader;
+    }
+
+    private static String tr(String key, String fallback) {
+        try {
+            return I18N.getBundle().getString(key);
+        } catch (Exception e) {
+            return fallback;
+        }
+    }
 }

@@ -2,88 +2,54 @@ package sk.upjs.paz.ui;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Window;
+
+import java.util.ResourceBundle;
 
 public class DashboardController {
 
-    @FXML
-    private BorderPane root;
+    @FXML private BorderPane root;
 
     // Sidebar navigation
-    @FXML
-    private ToggleButton dashboardNavButton;
-
-    @FXML
-    private ToggleButton libraryNavButton;
-
-    @FXML
-    private ToggleButton currentlyReadingNavButton;
-
-    @FXML
-    private ToggleButton statisticsNavButton;
-
-
+    @FXML private ToggleButton dashboardNavButton;
+    @FXML private ToggleButton libraryNavButton;
+    @FXML private ToggleButton currentlyReadingNavButton;
+    @FXML private ToggleButton statisticsNavButton;
 
     // Header actions
-    @FXML
-    private ToggleButton themeToggle;
+    @FXML private ToggleButton themeToggle;
+    @FXML private Button addBookButton;
+    @FXML private Button notificationsButton;
+    @FXML private Button userProfileButton;
 
-    @FXML
-    private Button addBookButton;
-
-
-
-    @FXML
-    private Button notificationsButton;
-
-    // Header icons (PNG)
-    @FXML
-    private ImageView searchIcon;
-
-    @FXML
-    private ImageView notificationsIcon;
-
-    @FXML
-    private ImageView themeIcon;
+    // Header icons
+    @FXML private ImageView searchIcon;
+    @FXML private ImageView notificationsIcon;
+    @FXML private ImageView themeIcon;
 
     // Header / user labels
-    @FXML
-    private Label headerTitleLabel;
-
-    @FXML
-    private Label userNameLabel;
+    @FXML private Label headerTitleLabel;
+    @FXML private Label userNameLabel;
 
     // Main content
-    @FXML
-    private ScrollPane contentScrollPane;
+    @FXML private ScrollPane contentScrollPane;
+    @FXML private VBox contentRoot;
+    @FXML private FlowPane currentlyReadingContainer;
+    @FXML private FlowPane bottomFlow;
 
-    @FXML
-    private VBox contentRoot;
+    @FXML private VBox queueContainer;
+    @FXML private Label booksReadValueLabel;
+    @FXML private Label inProgressValueLabel;
 
-    // CHANGED: HBox -> FlowPane (wrap on resize)
-    @FXML
-    private FlowPane currentlyReadingContainer;
-
-    // CHANGED: add bottomFlow to wrap Queue + Statistics when window is narrow
-    @FXML
-    private FlowPane bottomFlow;
-
-    @FXML
-    private VBox queueContainer;
-
-    @FXML
-    private Label booksReadValueLabel;
-
-    @FXML
-    private Label inProgressValueLabel;
-
-    @FXML
-    private Button userProfileButton;
+    // i18n bundle injected by FXMLLoader
+    @FXML private ResourceBundle resources;
 
     // Icons used on light and dark background
     private Image searchLight;
@@ -95,79 +61,85 @@ public class DashboardController {
 
     @FXML
     private void initialize() {
-        // Group sidebar buttons so only one can be active at a time
+        // Defensive: ensure UI is clickable
+        root.setDisable(false);
+        root.setMouseTransparent(false);
+
+        setupNavToggleGroup();
+        setupUserHeader();
+        loadIcons();
+        setupTheme();
+        setupResponsiveWrapping();
+        setupDemoStats();
+    }
+
+    private void setupNavToggleGroup() {
         ToggleGroup navGroup = new ToggleGroup();
-        dashboardNavButton.setToggleGroup(navGroup);
-        libraryNavButton.setToggleGroup(navGroup);
-        currentlyReadingNavButton.setToggleGroup(navGroup);
-        statisticsNavButton.setToggleGroup(navGroup);
+        if (dashboardNavButton != null) dashboardNavButton.setToggleGroup(navGroup);
+        if (libraryNavButton != null) libraryNavButton.setToggleGroup(navGroup);
+        if (currentlyReadingNavButton != null) currentlyReadingNavButton.setToggleGroup(navGroup);
+        if (statisticsNavButton != null) statisticsNavButton.setToggleGroup(navGroup);
 
-        dashboardNavButton.setSelected(true);
+        if (dashboardNavButton != null) dashboardNavButton.setSelected(true);
+    }
 
-        if (headerTitleLabel != null) {
-            headerTitleLabel.setText("Dashboard");
+    private void setupUserHeader() {
+        // Do NOT override i18n headerTitleLabel here if it's set via FXML (%key).
+        if (userNameLabel != null) {
+            var user = AppState.getCurrentUser();
+            userNameLabel.setText(user != null ? safe(user.getName()) : "");
         }
-        if (userNameLabel != null && AppState.getCurrentUser() != null) {
-            userNameLabel.setText(AppState.getCurrentUser().getName());
-        }
+    }
 
-        // Load icon images
-        searchLight = load("/sk/upjs/paz/ui/img/logoLight/search.png");
-        searchDark = load("/sk/upjs/paz/ui/img/logoDark/search.png");
-        bellLight = load("/sk/upjs/paz/ui/img/logoLight/bell.png");
-        bellDark = load("/sk/upjs/paz/ui/img/logoDark/bell.png");
-        moonIcon = load("/sk/upjs/paz/ui/img/logoLight/moon.png");
-        sunIcon = load("/sk/upjs/paz/ui/img/logoDark/sun.png");
+    private void loadIcons() {
+        searchLight = loadImage("/sk/upjs/paz/ui/img/logoLight/search.png");
+        searchDark  = loadImage("/sk/upjs/paz/ui/img/logoDark/search.png");
+        bellLight   = loadImage("/sk/upjs/paz/ui/img/logoLight/bell.png");
+        bellDark    = loadImage("/sk/upjs/paz/ui/img/logoDark/bell.png");
+        moonIcon    = loadImage("/sk/upjs/paz/ui/img/logoLight/moon.png");
+        sunIcon     = loadImage("/sk/upjs/paz/ui/img/logoDark/sun.png");
+    }
 
-        // Apply theme when scene becomes available
+    private void setupTheme() {
         root.sceneProperty().addListener((obs, oldScene, newScene) -> {
             if (newScene != null) {
                 ThemeManager.apply(newScene);
                 updateIconsForTheme();
             }
         });
-        if (root.getScene() != null) {
-            ThemeManager.apply(root.getScene());
+
+        Scene scene = root.getScene();
+        if (scene != null) {
+            ThemeManager.apply(scene);
             updateIconsForTheme();
         }
+    }
 
-        // Responsive wrapping for FlowPanes based on ScrollPane viewport width
-        if (contentScrollPane != null) {
-            contentScrollPane.viewportBoundsProperty().addListener((obs, oldB, b) -> {
-                double w = b.getWidth();
-                double wrap = Math.max(320, w - 10);
+    private void setupResponsiveWrapping() {
+        if (contentScrollPane == null) return;
 
-                if (currentlyReadingContainer != null) {
-                    currentlyReadingContainer.setPrefWrapLength(wrap);
-                }
-                if (bottomFlow != null) {
-                    bottomFlow.setPrefWrapLength(wrap);
-                }
-            });
-        }
+        contentScrollPane.viewportBoundsProperty().addListener((obs, oldB, b) -> {
+            double w = b.getWidth();
+            double wrap = Math.max(320, w - 10);
 
-        // Example initial values for stats
-        if (booksReadValueLabel != null) {
+            if (currentlyReadingContainer != null) currentlyReadingContainer.setPrefWrapLength(wrap);
+            if (bottomFlow != null) bottomFlow.setPrefWrapLength(wrap);
+        });
+    }
+
+    private void setupDemoStats() {
+        // Replace later with real values from DB/service.
+        if (booksReadValueLabel != null && isBlank(booksReadValueLabel.getText())) {
             booksReadValueLabel.setText("24");
         }
-        if (inProgressValueLabel != null) {
+        if (inProgressValueLabel != null && isBlank(inProgressValueLabel.getText())) {
             inProgressValueLabel.setText("4");
         }
     }
 
-    private Image load(String path) {
+    private Image loadImage(String path) {
         var url = getClass().getResource(path);
-        return url == null ? null : new Image(url.toExternalForm());
-    }
-
-    // ========== THEME TOGGLE ==========
-
-    @FXML
-    private void onToggleTheme(ActionEvent event) {
-        ThemeManager.toggle();
-        var scene = root.getScene();
-        ThemeManager.apply(scene);
-        updateIconsForTheme();
+        return (url == null) ? null : new Image(url.toExternalForm());
     }
 
     private void updateIconsForTheme() {
@@ -178,6 +150,18 @@ public class DashboardController {
         if (themeIcon != null) themeIcon.setImage(dark ? sunIcon : moonIcon);
 
         if (themeToggle != null) themeToggle.setSelected(dark);
+    }
+
+    // ========== THEME TOGGLE ==========
+
+    @FXML
+    private void onToggleTheme(ActionEvent event) {
+        ThemeManager.toggle();
+        Scene scene = root.getScene();
+        if (scene != null) {
+            ThemeManager.apply(scene);
+            updateIconsForTheme();
+        }
     }
 
     // ========== NAVIGATION HANDLERS ==========
@@ -202,28 +186,24 @@ public class DashboardController {
         SceneNavigator.showStatistics();
     }
 
-
     // ========== HEADER BUTTONS ==========
 
     @FXML
     private void onSearch(ActionEvent event) {
         TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Search");
-        dialog.setHeaderText("Search books");
-        dialog.setContentText("Title / author / tag:");
 
-//        dialog.showAndWait().ifPresent(q -> {
-//            String query = q == null ? "" : q.trim();
-//            if (!query.isBlank()) {
-//                AppState.setPendingSearchQuery(query);
-//                SceneNavigator.showLibrary();
-//            }
-//        });
+        dialog.setTitle(tr("search.title", "Search"));
+        dialog.setHeaderText(tr("search.header", "Search books"));
+        dialog.setContentText(tr("search.prompt", "Title / author / tag:"));
+
+        dialog.showAndWait();
     }
 
     @FXML
     private void onNotifications(ActionEvent event) {
-        SceneNavigator.toggleNotifications(notificationsButton);
+        if (notificationsButton != null) {
+            SceneNavigator.toggleNotifications(notificationsButton);
+        }
     }
 
     @FXML
@@ -233,6 +213,41 @@ public class DashboardController {
 
     @FXML
     private void onAddBook(ActionEvent event) {
-        SceneNavigator.showAddBookModal(root.getScene().getWindow());
+        Window w = (root != null && root.getScene() != null) ? root.getScene().getWindow() : null;
+
+        if (AppState.getCurrentUser() == null) {
+            showAlert(Alert.AlertType.WARNING,
+                    tr("auth.required.title", "Login required"),
+                    tr("auth.required.msg", "Please login first."));
+            return;
+        }
+
+        SceneNavigator.showAddBookModal(w);
+    }
+
+    // ========== Helpers ==========
+
+    private String tr(String key, String fallback) {
+        try {
+            return (resources != null) ? resources.getString(key) : fallback;
+        } catch (Exception ignored) {
+            return fallback;
+        }
+    }
+
+    private void showAlert(Alert.AlertType type, String title, String message) {
+        Alert a = new Alert(type);
+        a.setTitle(title);
+        a.setHeaderText(null);
+        a.setContentText(message);
+        a.showAndWait();
+    }
+
+    private static String safe(String s) {
+        return s == null ? "" : s;
+    }
+
+    private static boolean isBlank(String s) {
+        return s == null || s.trim().isEmpty();
     }
 }

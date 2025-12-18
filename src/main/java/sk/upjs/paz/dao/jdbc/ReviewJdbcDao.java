@@ -48,7 +48,7 @@ public class ReviewJdbcDao implements ReviewDao {
 
     @Override
     public void add(Review review) {
-        String sql = "INSERT INTO review(rating, comment, createdAt, book_id, user_id) VALUES(?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO review (comment, createdAt, book_id, user_id) VALUES (?, ?, ?, ?)";
 
         LocalDateTime created = review.getCreatedAt();
         if (created == null) {
@@ -61,10 +61,10 @@ public class ReviewJdbcDao implements ReviewDao {
 
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(2, review.getComment());
-            ps.setTimestamp(3, Timestamp.valueOf(finalCreated));
-            ps.setLong(4, review.getBook().getId());
-            ps.setLong(5, review.getUser().getId());
+            ps.setString(1, review.getComment());
+            ps.setTimestamp(2, Timestamp.valueOf(finalCreated));
+            ps.setLong(3, review.getBook().getId());
+            ps.setLong(4, review.getUser().getId());
             return ps;
         }, kh);
 
@@ -72,15 +72,19 @@ public class ReviewJdbcDao implements ReviewDao {
             review.setId(kh.getKey().longValue());
         }
     }
-
     @Override
     public void update(Review review) {
         jdbcTemplate.update(
-                "UPDATE review SET  comment = ? WHERE id = ?",
+                "UPDATE review SET comment = ?, createdAt = ?, book_id = ?, user_id = ? WHERE id = ?",
                 review.getComment(),
+                Timestamp.valueOf(review.getCreatedAt() != null ? review.getCreatedAt() : LocalDateTime.now()),
+                review.getBook().getId(),
+                review.getUser().getId(),
                 review.getId()
         );
     }
+
+
 
     @Override
     public void delete(Long id) {
