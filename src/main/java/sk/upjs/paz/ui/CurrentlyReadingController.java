@@ -27,46 +27,57 @@ import java.util.Map;
 
 public class CurrentlyReadingController {
 
-    @FXML private BorderPane root;
+    @FXML
+    private BorderPane root;
 
-    // Sidebar navigation
-    @FXML private ToggleButton dashboardNavButton;
-    @FXML private ToggleButton libraryNavButton;
-    @FXML private ToggleButton currentlyReadingNavButton;
-    @FXML private ToggleButton statisticsNavButton;
+    @FXML
+    private ToggleButton dashboardNavButton;
+    @FXML
+    private ToggleButton libraryNavButton;
+    @FXML
+    private ToggleButton currentlyReadingNavButton;
+    @FXML
+    private ToggleButton statisticsNavButton;
+    @FXML
+    private Button userProfileButton;
+    @FXML
+    private Label userNameLabel;
+    @FXML
+    private Label headerTitleLabel;
 
 
-    // User / header
-    @FXML private Button userProfileButton;
-    @FXML private Label userNameLabel;
-    @FXML private Label headerTitleLabel;
+    @FXML
+    private ToggleButton themeToggle;
+    @FXML
+    private Button startSessionButton;
 
-    // Header actions
+    @FXML
+    private ImageView searchIcon;
 
-    @FXML private ToggleButton themeToggle;
-    @FXML private Button startSessionButton;
+    @FXML
+    private ImageView themeIcon;
 
-    // Header icons
-    @FXML private ImageView searchIcon;
+    @FXML
+    private ScrollPane contentScrollPane;
+    @FXML
+    private VBox contentRoot;
 
-    @FXML private ImageView themeIcon;
+    @FXML
+    private VBox cardsBox;
 
-    // Content
-    @FXML private ScrollPane contentScrollPane;
-    @FXML private VBox contentRoot;
+    @FXML
+    private Label todayMinutesLabel;
+    @FXML
+    private ProgressBar todayGoalProgressBar;
+    @FXML
+    private Label todayGoalSubtitleLabel;
 
-    // Container for cards
-    @FXML private VBox cardsBox;
-
-    // Side stats: today's reading
-    @FXML private Label todayMinutesLabel;
-    @FXML private ProgressBar todayGoalProgressBar;
-    @FXML private Label todayGoalSubtitleLabel;
-
-    // Side stats: quick stats
-    @FXML private Label booksInProgressValueLabel;
-    @FXML private Label pagesThisWeekValueLabel;
-    @FXML private Label sessionsThisWeekValueLabel;
+    @FXML
+    private Label booksInProgressValueLabel;
+    @FXML
+    private Label pagesThisWeekValueLabel;
+    @FXML
+    private Label sessionsThisWeekValueLabel;
 
     private CurrentlyReadingService currentlyReadingService;
     private ReadingSessionService readingSessionService;
@@ -117,12 +128,12 @@ public class CurrentlyReadingController {
             updateIconsForTheme();
         }
 
-        // If service was not injected via SceneNavigator, try lazy fallback
+        // If service was not injected via SceneNavigator
         if (currentlyReadingService == null) {
             try {
                 currentlyReadingService = sk.upjs.paz.service.ServiceFactory.INSTANCE.getCurrentlyReadingService();
             } catch (Exception ignored) {
-                // Service may not exist yet; controller can still work if injected later
+                // Service may not exist
             }
         }
 
@@ -192,7 +203,7 @@ public class CurrentlyReadingController {
 
     private void refreshSideStats(long userId, List<ActiveBookCard> activeBooks) {
         if (readingSessionService == null) {
-            // Still update the “books in progress” number; others stay empty.
+            // Still update the “books in progress” number
             if (booksInProgressValueLabel != null) {
                 booksInProgressValueLabel.setText(String.valueOf(activeBooks != null ? activeBooks.size() : 0));
             }
@@ -213,7 +224,7 @@ public class CurrentlyReadingController {
                 int minutesToday = 0;
                 int sessionsThisWeek = 0;
 
-                // Baselines (latest endPage before weekStart)
+
                 Map<Long, Integer> baselineEndPage = new HashMap<>();
                 Map<Long, List<ReadingSession>> sessionsInWeekByBook = new HashMap<>();
 
@@ -242,7 +253,7 @@ public class CurrentlyReadingController {
                         if (prev == null) {
                             baselineEndPage.put(bookId, endPage);
                         } else {
-                            // choose the bigger endPage as baseline (best-effort approximation)
+                            // choose the bigger endPage as baseline
                             baselineEndPage.put(bookId, Math.max(prev, endPage));
                         }
                     }
@@ -294,7 +305,8 @@ public class CurrentlyReadingController {
             // Quick stats
             if (booksInProgressValueLabel != null) booksInProgressValueLabel.setText(String.valueOf(s.booksInProgress));
             if (pagesThisWeekValueLabel != null) pagesThisWeekValueLabel.setText(String.valueOf(s.pagesThisWeek));
-            if (sessionsThisWeekValueLabel != null) sessionsThisWeekValueLabel.setText(String.valueOf(s.sessionsThisWeek));
+            if (sessionsThisWeekValueLabel != null)
+                sessionsThisWeekValueLabel.setText(String.valueOf(s.sessionsThisWeek));
         });
 
         task.setOnFailed(e -> {
@@ -356,7 +368,6 @@ public class CurrentlyReadingController {
         // Show session bar with context so end-session can update DB
         SceneNavigator.startSessionBar(userId, card.bookId(), sessionId, card.title(), subtitle, "READING");
 
-        // Optional: refresh cards so the state/progress updates immediately
         refresh();
     }
 
@@ -364,7 +375,7 @@ public class CurrentlyReadingController {
     private void openBookDetailsForCard(ActiveBookCard card) {
         if (root == null || root.getScene() == null) return;
 
-        // Open the details modal by bookId (new API)
+
         SceneNavigator.showBookDetailsModal(root.getScene().getWindow(), card.bookId());
     }
 
@@ -373,8 +384,7 @@ public class CurrentlyReadingController {
         return url == null ? null : new Image(url.toExternalForm());
     }
 
-    // ===== Theme =====
-
+    //Theme
     @FXML
     private void onToggleTheme(ActionEvent event) {
         ThemeManager.toggle();
@@ -393,7 +403,7 @@ public class CurrentlyReadingController {
         if (themeIcon != null) themeIcon.setImage(dark ? sunIcon : moonIcon);
     }
 
-    // ===== Navigation =====
+    //Navigation
 
     @FXML
     private void onDashboardSelected(ActionEvent event) {
@@ -415,11 +425,9 @@ public class CurrentlyReadingController {
         SceneNavigator.showStatistics();
     }
 
-    // ===== Header actions =====
-
     @FXML
     private void onSearch(ActionEvent event) {
-        // later
+
     }
 
 

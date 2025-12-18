@@ -33,13 +33,12 @@ public class LibraryController {
     private ToggleButton statisticsNavButton;
 
 
-    // User profile
+
     @FXML
     private Button userProfileButton;
     @FXML
     private Label userNameLabel;
 
-    // Header
     @FXML
     private Label headerTitleLabel;
     @FXML
@@ -58,7 +57,6 @@ public class LibraryController {
     @FXML
     private Button addBookButton;
 
-    // Content (do NOT clear this - it contains your whole layout from FXML)
     @FXML
     private ScrollPane contentScrollPane;
     @FXML
@@ -115,7 +113,7 @@ public class LibraryController {
         return url == null ? null : new Image(url.toExternalForm());
     }
 
-    // ===== THEME TOGGLE =====
+    // THEME TOGGLE
 
     @FXML
     private void onToggleTheme(ActionEvent event) {
@@ -133,7 +131,7 @@ public class LibraryController {
         if (filterIcon != null) filterIcon.setImage(dark ? filterDark : filterLight);
     }
 
-    // ===== NAVIGATION =====
+    //NAVIGATION
 
     @FXML
     private void onDashboardSelected(ActionEvent event) {
@@ -155,7 +153,7 @@ public class LibraryController {
         SceneNavigator.showStatistics();
     }
 
-    // ===== HEADER ACTIONS =====
+    // HEADER ACTIONS
 
     @FXML
     private void onAddBook(ActionEvent event) {

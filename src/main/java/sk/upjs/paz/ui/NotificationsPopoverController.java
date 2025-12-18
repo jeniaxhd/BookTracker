@@ -23,7 +23,7 @@ public class NotificationsPopoverController {
 
     @FXML
     private void initialize() {
-        // Nothing required
+
     }
 
     @FXML
@@ -38,7 +38,7 @@ public class NotificationsPopoverController {
 
     @FXML
     private void onViewAll() {
-        // Placeholder: open Statistics (or create a Notifications page later)
+        // Placeholder: open Statistics
         SceneNavigator.showStatistics();
         hide();
     }

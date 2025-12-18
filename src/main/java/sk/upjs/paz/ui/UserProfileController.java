@@ -84,11 +84,10 @@ public class UserProfileController {
         themeLightToggle.setUserData("light");
         themeDarkToggle.setUserData("dark");
 
-        // Стартовий стан (постав як тобі треба: light/dark або з налаштувань)
         themeLightToggle.setSelected(true);
         applyTheme(false);
 
-        // Синхронізація: коли клацаєш іконку в хедері — перемикає pills
+
         themeToggle.selectedProperty().addListener((obs, oldV, dark) -> {
             if (dark) themeDarkToggle.setSelected(true);
             else themeLightToggle.setSelected(true);
@@ -120,10 +119,10 @@ public class UserProfileController {
     private void setupLanguageCombo() {
         if (interfaceLanguageCombo == null) return;
 
-        // 1) items (2 languages)
+        // items (2 languages)
         interfaceLanguageCombo.getItems().setAll("English", "Slovak");
 
-        // 2) show active language immediately (IMPORTANT)
+        // show active language immediately (IMPORTANT)
         Locale current = sk.upjs.paz.ui.i18n.I18N.getLocale();
         String active = "English";
         if (current != null && "sk".equalsIgnoreCase(current.getLanguage())) {
@@ -131,7 +130,7 @@ public class UserProfileController {
         }
         interfaceLanguageCombo.getSelectionModel().select(active);
 
-        // 3) listener for changes
+        // listener for changes
         interfaceLanguageCombo.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal == null) return;
             if (newVal.equals(oldVal)) return;
@@ -210,7 +209,7 @@ public class UserProfileController {
         }
     }
 
-    // ===== Edit profile =====
+    // Edit profile
 
     @FXML
     private void onEditProfile(ActionEvent e) {
@@ -259,7 +258,7 @@ public class UserProfileController {
         SceneNavigator.showLogin();
     }
 
-    // ===== Header actions =====
+    // Header actions
 
     @FXML
     private void onNotifications(ActionEvent e) {
@@ -274,7 +273,7 @@ public class UserProfileController {
         SceneNavigator.syncFloatingOverlaysTheme();
     }
 
-    // ===== Sidebar navigation =====
+    // Sidebar navigation
 
     @FXML private void onDashboardSelected(ActionEvent e) { SceneNavigator.showDashboard(); }
     @FXML private void onLibrarySelected(ActionEvent e) { SceneNavigator.showLibrary(); }

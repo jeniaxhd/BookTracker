@@ -132,7 +132,7 @@ public class EndSessionController {
         if (pagesReadLabel != null) pagesReadLabel.setText(String.valueOf(diff));
     }
 
-    // ===== Cover loading (fixed) =====
+    //Cover loading
 
     private void loadCoverSmart(String coverPath) {
         if (coverImageView == null) return;
@@ -145,13 +145,13 @@ public class EndSessionController {
 
         String path = coverPath.trim();
 
-        // 1) If it's an external URL / file URL
+        // If it's an external URL / file URL
         if (path.startsWith("http://") || path.startsWith("https://") || path.startsWith("file:")) {
             trySetImage(path);
             return;
         }
 
-        // 2) Try as classpath resource with leading slash
+        // Try as classpath resource with leading slash
         if (!path.startsWith("/")) {
             URL url = getClass().getResource("/" + path);
             if (url != null) {
@@ -160,15 +160,14 @@ public class EndSessionController {
             }
         }
 
-        // 3) Try as classpath resource as-is (if path already begins with "/")
+        // Try as classpath resource as-is
         URL url = getClass().getResource(path);
         if (url != null) {
             trySetImage(url.toExternalForm());
             return;
         }
 
-        // 4) Try as local file path
-        // (e.g. "C:\\covers\\x.png" or "./covers/x.png")
+        // Try as local file path
         trySetImage("file:" + path);
     }
 
@@ -180,7 +179,7 @@ public class EndSessionController {
         }
     }
 
-    // ===== Parsing helpers =====
+    //Parsing helpers
 
     private int parseIntOrZero(TextField f) {
         if (f == null) return 0;
@@ -222,7 +221,7 @@ public class EndSessionController {
         }
     }
 
-    // ===== UI helpers =====
+    //UI helpers
 
     private void setLabel(Label label, String text) {
         if (label == null) return;

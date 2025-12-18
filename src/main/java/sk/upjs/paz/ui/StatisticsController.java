@@ -106,7 +106,7 @@ public class StatisticsController {
         return url == null ? null : new Image(url.toExternalForm());
     }
 
-    // ===== THEME =====
+    //  THEME
     @FXML
     private void onToggleTheme(ActionEvent event) {
         ThemeManager.toggle();
@@ -122,7 +122,7 @@ public class StatisticsController {
         if (notificationsIcon != null) notificationsIcon.setImage(dark ? bellDark : bellLight);
     }
 
-    // ===== NAVIGATION =====
+    // NAVIGATION
     @FXML
     private void onDashboardSelected(ActionEvent event) {
         SceneNavigator.showDashboard();

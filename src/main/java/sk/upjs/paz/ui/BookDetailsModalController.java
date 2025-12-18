@@ -89,10 +89,10 @@ public class BookDetailsModalController {
         setText(genreLabel, formatGenres(loadedBook.getGenre(), "—"));
 
 
-        // Fill book UI first (so even if review fails, page is not broken)
+        // Fill book UI first
         fillBookUI();
 
-        // Review should never crash the screen
+
         safeLoadReview();
     }
 
@@ -203,7 +203,7 @@ public class BookDetailsModalController {
         String normalized = coverPath.trim();
 
         try {
-            // URL / file URL
+            // URL
             if (normalized.startsWith("file:") || normalized.startsWith("http://") || normalized.startsWith("https://")) {
                 coverImageView.setImage(new Image(normalized, true));
                 hideCoverPlaceholder();
@@ -219,7 +219,7 @@ public class BookDetailsModalController {
                 return;
             }
 
-            // File system path
+            // File
             Path p = Paths.get(normalized);
             if (Files.exists(p)) {
                 coverImageView.setImage(new Image(p.toUri().toString(), true));

@@ -22,7 +22,7 @@ public class LoginController {
     private final AuthService authService =
             new AuthService(ServiceFactory.INSTANCE.getUserService());
 
-    // Remember-me storage
+
     private final Preferences prefs = Preferences.userNodeForPackage(LoginController.class);
     private static final String PREF_REMEMBER = "rememberMe";
     private static final String PREF_EMAIL = "rememberedEmail";
@@ -56,7 +56,7 @@ public class LoginController {
             return;
         }
 
-        // ✅ Remember email (save/remove)
+        // Remember email (save/remove)
         if (rememberMeCheckBox != null && rememberMeCheckBox.isSelected()) {
             prefs.putBoolean(PREF_REMEMBER, true);
             prefs.put(PREF_EMAIL, email);
