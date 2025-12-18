@@ -274,4 +274,5 @@ public class CurrentlyReadingController {
             refresh(); // reload cards after modal closes
         }
     }
+
 }
