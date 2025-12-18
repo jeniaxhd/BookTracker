@@ -33,7 +33,7 @@
                                            prefWidth="32.0"
                                            styleClass="sidebar-logo-circle">
                                     <children>
-                                        <Label text=""
+                                        <Label text="B"
                                                styleClass="sidebar-logo-letter"/>
                                     </children>
                                 </StackPane>
@@ -92,14 +92,15 @@
                                                    prefWidth="32.0"
                                                    styleClass="sidebar-user-avatar">
                                             <children>
-                                                <Label fx:id="userInitialsLabel" text="" styleClass="sidebar-user-initials"/>
+                                                <Label text="S"
+                                                       styleClass="sidebar-user-initials"/>
                                             </children>
                                         </StackPane>
 
                                         <VBox spacing="2.0">
                                             <children>
                                                 <Label fx:id="userNameLabel"
-                                                       text="%userProfile.user_name"
+                                                       text="Stano Krajci"
                                                        styleClass="sidebar-user-name"/>
                                                 <Label text="%nav.viewProfile"
                                                        styleClass="sidebar-user-subtitle"/>
@@ -200,7 +201,7 @@
                                                 onAction="#onAddBook"
                                                 styleClass="header-primary-button">
                                             <graphic>
-                                                <Label text="" styleClass="header-primary-icon"/>
+                                                <Label text="+" styleClass="header-primary-icon"/>
                                             </graphic>
                                         </Button>
                                     </children>
@@ -250,10 +251,10 @@
 
                                                         <VBox spacing="6.0">
                                                             <children>
-                                                                <Label text=""
+                                                                <Label text="The Midnight Library"
                                                                        wrapText="true"
                                                                        styleClass="book-title"/>
-                                                                <Label text=""
+                                                                <Label text="Matt Haig"
                                                                        styleClass="book-author"/>
                                                             </children>
                                                         </VBox>
@@ -264,7 +265,7 @@
                                                                              styleClass="book-progress-bar"/>
                                                                 <HBox alignment="CENTER_LEFT" spacing="8.0">
                                                                     <children>
-                                                                        <Label text=""
+                                                                        <Label text="187 / 304 pages"
                                                                                styleClass="book-progress-text"/>
                                                                         <Pane HBox.hgrow="ALWAYS"/>
                                                                         <Label text="%status.inProgress"
@@ -282,7 +283,7 @@
                                                       spacing="8.0"
                                                       styleClass="book-card-placeholder">
                                                     <children>
-                                                        <Label text=""
+                                                        <Label text="+"
                                                                styleClass="book-card-placeholder-icon"/>
                                                         <Label text="%dashboard.add_another_book"
                                                                maxWidth="180.0"
@@ -315,14 +316,14 @@
                                                           spacing="12.0"
                                                           styleClass="queue-card">
                                                         <children>
-                                                            <Label text="" styleClass="queue-drag-handle"/>
+                                                            <Label text="☰" styleClass="queue-drag-handle"/>
                                                             <VBox spacing="4.0">
                                                                 <children>
-                                                                    <Label text=""
+                                                                    <Label text="Thinking, Fast and Slow"
                                                                            styleClass="queue-title"/>
                                                                     <HBox alignment="CENTER_LEFT" spacing="8.0">
                                                                         <children>
-                                                                            <Label text=""
+                                                                            <Label text="Psychology"
                                                                                    styleClass="queue-pill,queue-pill-psychology"/>
                                                                             <Label text="%dashboard.next_week"
                                                                                    styleClass="queue-date"/>
@@ -338,14 +339,14 @@
                                                           spacing="12.0"
                                                           styleClass="queue-card">
                                                         <children>
-                                                            <Label text="" styleClass="queue-drag-handle"/>
+                                                            <Label text="☰" styleClass="queue-drag-handle"/>
                                                             <VBox spacing="4.0">
                                                                 <children>
-                                                                    <Label text=""
+                                                                    <Label text="The Power of Now"
                                                                            styleClass="queue-title"/>
                                                                     <HBox alignment="CENTER_LEFT" spacing="8.0">
                                                                         <children>
-                                                                            <Label text=""
+                                                                            <Label text="Mindfulness"
                                                                                    styleClass="queue-pill,queue-pill-mindfulness"/>
                                                                         </children>
                                                                     </HBox>
@@ -376,7 +377,7 @@
                                                                            minHeight="32.0" maxHeight="32.0"
                                                                            styleClass="stat-icon,stat-icon-gold">
                                                                     <children>
-                                                                        <Label text="" styleClass="stat-icon-emoji"/>
+                                                                        <Label text="📚" styleClass="stat-icon-emoji"/>
                                                                     </children>
                                                                 </StackPane>
 
@@ -384,7 +385,7 @@
                                                                     <children>
                                                                         <Label text="%dashboard.books_read" styleClass="stat-label"/>
                                                                         <Label fx:id="booksReadValueLabel"
-                                                                               text=""
+                                                                               text="24"
                                                                                styleClass="stat-value"/>
                                                                         <Label text="%dashboard.this_year" styleClass="stat-subtitle"/>
                                                                     </children>
@@ -401,7 +402,7 @@
                                                                            minHeight="32.0" maxHeight="32.0"
                                                                            styleClass="stat-icon,stat-icon-blue">
                                                                     <children>
-                                                                        <Label text="" styleClass="stat-icon-emoji"/>
+                                                                        <Label text="📖" styleClass="stat-icon-emoji"/>
                                                                     </children>
                                                                 </StackPane>
 
@@ -409,7 +410,7 @@
                                                                     <children>
                                                                         <Label text="%status.inProgress" styleClass="stat-label"/>
                                                                         <Label fx:id="inProgressValueLabel"
-                                                                               text=""
+                                                                               text="4"
                                                                                styleClass="stat-value"/>
                                                                         <Label text="%status.currentlyReading" styleClass="stat-subtitle"/>
                                                                     </children>
@@ -426,14 +427,14 @@
                                                                            minHeight="32.0" maxHeight="32.0"
                                                                            styleClass="stat-icon,stat-icon-green">
                                                                     <children>
-                                                                        <Label text="" styleClass="stat-icon-emoji"/>
+                                                                        <Label text="📄" styleClass="stat-icon-emoji"/>
                                                                     </children>
                                                                 </StackPane>
 
                                                                 <VBox spacing="2.0">
                                                                     <children>
                                                                         <Label text="%dashboard.pages_read" styleClass="stat-label"/>
-                                                                        <Label text="" styleClass="stat-value"/>
+                                                                        <Label text="8,432" styleClass="stat-value"/>
                                                                         <Label text="%dashboard.total" styleClass="stat-subtitle"/>
                                                                     </children>
                                                                 </VBox>
@@ -449,14 +450,14 @@
                                                                            minHeight="32.0" maxHeight="32.0"
                                                                            styleClass="stat-icon,stat-icon-pink">
                                                                     <children>
-                                                                        <Label text="" styleClass="stat-icon-emoji"/>
+                                                                        <Label text="📈" styleClass="stat-icon-emoji"/>
                                                                     </children>
                                                                 </StackPane>
 
                                                                 <VBox spacing="2.0">
                                                                     <children>
                                                                         <Label text="%dashboard.reading_streak" styleClass="stat-label"/>
-                                                                        <Label text="" styleClass="stat-value"/>
+                                                                        <Label text="12" styleClass="stat-value"/>
                                                                         <Label text="%dashboard.days_in_a_row" styleClass="stat-subtitle"/>
                                                                     </children>
                                                                 </VBox>

@@ -43,7 +43,7 @@
                                 <StackPane prefWidth="40.0" prefHeight="40.0"
                                            styleClass="auth-logo-circle">
                                     <children>
-                                        <Label text="" styleClass="auth-logo-letter"/>
+                                        <Label text="B" styleClass="auth-logo-letter"/>
                                     </children>
                                 </StackPane>
                                 <Label text="%app.name" styleClass="auth-logo-text"/>
@@ -153,7 +153,7 @@
                                                    styleClass="auth-remember"/>
                                             <Hyperlink text="%register.privacy_policy"
                                                        styleClass="auth-bottom-link"/>
-                                            <Label text=""
+                                            <Label text="."
                                                    styleClass="auth-remember"/>
                                         </children>
                                     </FlowPane>

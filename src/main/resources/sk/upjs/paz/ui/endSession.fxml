@@ -71,19 +71,19 @@
                                 <VBox spacing="4.0">
                                     <children>
                                         <Label fx:id="bookTitleLabel"
-                                               text=""
+                                               text="%addBookModal.book_title"
                                                styleClass="session-end-book-title"/>
                                         <Label fx:id="bookMetaLabel"
-                                               text=""
+                                               text="Author · Genre"
                                                styleClass="session-end-book-meta"/>
 
                                         <HBox spacing="8.0">
                                             <children>
                                                 <Label fx:id="statusPill"
-                                                       text="%status.currentlyReading"
+                                                       text="READING"
                                                        styleClass="session-status-pill"/>
                                                 <Label fx:id="currentPageLabel"
-                                                       text=""
+                                                       text="Current page: 0"
                                                        styleClass="session-end-book-meta"/>
                                             </children>
                                         </HBox>
@@ -107,7 +107,7 @@
                                                     <Label text="%endSession.start_time" styleClass="session-end-field-label"/>
                                                     <TextField fx:id="startTimeField"
                                                                maxWidth="Infinity"
-                                                               promptText=""
+                                                               promptText="2025-12-18 00:43"
                                                                styleClass="text-field"/>
                                                 </children>
                                             </VBox>
@@ -117,7 +117,7 @@
                                                     <Label text="%endSession.duration_min" styleClass="session-end-field-label"/>
                                                     <TextField fx:id="durationField"
                                                                maxWidth="Infinity"
-                                                               promptText=""
+                                                               promptText="32"
                                                                styleClass="text-field"/>
                                                 </children>
                                             </VBox>
@@ -141,7 +141,7 @@
                                                     <Label text="%endSession.start_page" styleClass="session-end-field-label"/>
                                                     <TextField fx:id="startPageField"
                                                                maxWidth="Infinity"
-                                                               promptText=""
+                                                               promptText="164"
                                                                styleClass="text-field"/>
                                                 </children>
                                             </VBox>
@@ -151,7 +151,7 @@
                                                     <Label text="%endSession.end_page" styleClass="session-end-field-label"/>
                                                     <TextField fx:id="endPageField"
                                                                maxWidth="Infinity"
-                                                               promptText=""
+                                                               promptText="188"
                                                                styleClass="text-field"/>
                                                 </children>
                                             </VBox>
@@ -160,9 +160,9 @@
 
                                     <HBox spacing="8.0" alignment="CENTER_LEFT">
                                         <children>
-                                            <Label text="%endSession.pages_read" styleClass="session-end-helper-text"/>
+                                            <Label text="Pages read: " styleClass="session-end-helper-text"/>
                                             <Label fx:id="pagesReadLabel"
-                                                   text=""
+                                                   text="0"
                                                    styleClass="session-end-pages-pill"/>
                                         </children>
                                     </HBox>

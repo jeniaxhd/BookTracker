@@ -28,10 +28,10 @@
             <VBox spacing="2.0">
                 <children>
                     <Label fx:id="bookTitleLabel"
-                           text=""
+                           text="Atomic Habits"
                            styleClass="session-book-title"/>
                     <Label fx:id="bookSubtitleLabel"
-                           text=""
+                           text="James Clear · Productivity"
                            styleClass="session-book-subtitle"/>
                     <Label fx:id="statusPillLabel"
                            text="%status.inProgress"
@@ -48,7 +48,7 @@
     <VBox spacing="4.0" alignment="CENTER">
         <children>
             <Label fx:id="timerLabel"
-                   text=""
+                   text="12:50"
                    styleClass="session-timer-text"/>
             <Label fx:id="timerCaptionLabel"
                    text="%sessionBar.reading_now"
@@ -69,7 +69,7 @@
                     styleClass="session-control-main">
                 <graphic>
                     <!-- start in "pause" state, you can change text in controller -->
-                    <Label text=""/>
+                    <Label text="⏸"/>
                 </graphic>
             </Button>
 
@@ -78,7 +78,7 @@
                     onAction="#handleStop"
                     styleClass="session-control-secondary">
                 <graphic>
-                    <Label text=""/>
+                    <Label text="■"/>
                 </graphic>
             </Button>
 
@@ -87,7 +87,7 @@
                     onAction="#handleMore"
                     styleClass="session-control-more">
                 <graphic>
-                    <Label text=""/>
+                    <Label text="⋯"/>
                 </graphic>
             </Button>
 

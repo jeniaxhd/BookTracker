@@ -35,7 +35,7 @@
                                         <Label text="B" styleClass="sidebar-logo-letter"/>
                                     </children>
                                 </StackPane>
-                                <Label text="BookTrack" styleClass="sidebar-logo-text"/>
+                                <Label text="%app.name" styleClass="sidebar-logo-text"/>
                             </children>
                         </HBox>
                     </children>
@@ -50,20 +50,20 @@
                     </padding>
                     <children>
                         <ToggleButton fx:id="dashboardNavButton"
-                                      text="Dashboard"
+                                      text="%nav.dashboard"
                                       onAction="#onDashboardSelected"
                                       styleClass="sidebar-nav-button"/>
                         <ToggleButton fx:id="libraryNavButton"
-                                      text="Library"
+                                      text="%nav.library"
                                       onAction="#onLibrarySelected"
                                       styleClass="sidebar-nav-button"/>
                         <ToggleButton fx:id="currentlyReadingNavButton"
-                                      text="Currently Reading"
+                                      text="%nav.currentlyReading"
                                       selected="true"
                                       onAction="#onCurrentlyReadingSelected"
                                       styleClass="sidebar-nav-button,sidebar-nav-button--active"/>
                         <ToggleButton fx:id="statisticsNavButton"
-                                      text="Statistics"
+                                      text="%nav.statistics"
                                       onAction="#onStatisticsSelected"
                                       styleClass="sidebar-nav-button"/>
                     </children>
@@ -96,7 +96,7 @@
                                                 <Label fx:id="userNameLabel"
                                                        text="Sarah Chen"
                                                        styleClass="sidebar-user-name"/>
-                                                <Label text="View profile"
+                                                <Label text="%nav.viewProfile"
                                                        styleClass="sidebar-user-subtitle"/>
                                             </children>
                                         </VBox>
@@ -128,9 +128,9 @@
                                 <VBox spacing="4.0">
                                     <children>
                                         <Label fx:id="headerTitleLabel"
-                                               text="Currently Reading"
+                                               text="%nav.currentlyReading"
                                                styleClass="header-title"/>
-                                        <Label text="Continue your active books and log your latest reading sessions."
+                                        <Label text="%currentlyReading.continue_your_active_books_and_log_your_latest_rea"
                                                wrapText="true"
                                                styleClass="header-subtitle"/>
                                     </children>
@@ -164,7 +164,7 @@
                                         </ToggleButton>
 
                                         <Button fx:id="startSessionButton"
-                                                text="Start session"
+                                                text="%currentlyReading.start_session"
                                                 onAction="#onStartSession"
                                                 styleClass="header-primary-button">
                                             <graphic>
@@ -195,22 +195,22 @@
                                 <VBox spacing="16.0">
                                     <children>
 
-                                        <Label text="Active books" styleClass="section-title"/>
+                                        <Label text="%currentlyReading.active_books" styleClass="section-title"/>
 
-                                        <Label text="Showing books you're currently reading."
+                                        <Label text="%currentlyReading.showing_books_you_re_currently_reading"
                                                styleClass="header-subtitle"/>
 
                                         <!-- CHANGED: HBox -> FlowPane (wrap chips on resize) -->
                                         <FlowPane hgap="8.0" vgap="8.0" prefWrapLength="900">
                                             <children>
-                                                <ToggleButton text="All"
+                                                <ToggleButton text="%common.all"
                                                               selected="true"
                                                               styleClass="filter-chip,filter-chip--active"/>
-                                                <ToggleButton text="High priority"
+                                                <ToggleButton text="%currentlyReading.high_priority"
                                                               styleClass="filter-chip"/>
-                                                <ToggleButton text="Finishing soon"
+                                                <ToggleButton text="%currentlyReading.finishing_soon"
                                                               styleClass="filter-chip"/>
-                                                <ToggleButton text="Recently started"
+                                                <ToggleButton text="%currentlyReading.recently_started"
                                                               styleClass="filter-chip"/>
                                             </children>
                                         </FlowPane>
@@ -239,9 +239,9 @@
 
                                             <VBox spacing="10.0" styleClass="stat-card">
                                                 <children>
-                                                    <Label text="Today's reading" styleClass="section-title"/>
+                                                    <Label text="%currentlyReading.today_s_reading" styleClass="section-title"/>
                                                     <Label text="42 min" styleClass="stat-value"/>
-                                                    <Label text="Time read so far today" styleClass="stat-label"/>
+                                                    <Label text="%currentlyReading.time_read_so_far_today" styleClass="stat-label"/>
 
                                                     <VBox spacing="4.0">
                                                         <children>
@@ -256,9 +256,9 @@
 
                                             <VBox spacing="10.0" styleClass="stat-card">
                                                 <children>
-                                                    <Label text="Reading streak" styleClass="section-title"/>
+                                                    <Label text="%currentlyReading.reading_streak" styleClass="section-title"/>
                                                     <Label text="10 days" styleClass="stat-value"/>
-                                                    <Label text="In a row" styleClass="stat-label"/>
+                                                    <Label text="%currentlyReading.in_a_row" styleClass="stat-label"/>
 
                                                     <HBox spacing="4.0">
                                                         <children>
@@ -289,11 +289,11 @@
 
                                             <VBox spacing="10.0" styleClass="stat-card">
                                                 <children>
-                                                    <Label text="Quick stats" styleClass="section-title"/>
+                                                    <Label text="%currentlyReading.quick_stats" styleClass="section-title"/>
 
                                                     <HBox spacing="8.0" alignment="CENTER_LEFT">
                                                         <children>
-                                                            <Label text="Books in progress" styleClass="stat-label"/>
+                                                            <Label text="%currentlyReading.books_in_progress" styleClass="stat-label"/>
                                                             <Pane HBox.hgrow="ALWAYS"/>
                                                             <Label text="4" styleClass="stat-label"/>
                                                         </children>
@@ -301,7 +301,7 @@
 
                                                     <HBox spacing="8.0" alignment="CENTER_LEFT">
                                                         <children>
-                                                            <Label text="Pages read this week" styleClass="stat-label"/>
+                                                            <Label text="%currentlyReading.pages_read_this_week" styleClass="stat-label"/>
                                                             <Pane HBox.hgrow="ALWAYS"/>
                                                             <Label text="320" styleClass="stat-label"/>
                                                         </children>
@@ -309,7 +309,7 @@
 
                                                     <HBox spacing="8.0" alignment="CENTER_LEFT">
                                                         <children>
-                                                            <Label text="Sessions this week" styleClass="stat-label"/>
+                                                            <Label text="%currentlyReading.sessions_this_week" styleClass="stat-label"/>
                                                             <Pane HBox.hgrow="ALWAYS"/>
                                                             <Label text="6" styleClass="stat-label"/>
                                                         </children>

@@ -25,7 +25,7 @@
                             <children>
                                 <StackPane prefHeight="32.0" prefWidth="32.0" styleClass="sidebar-logo-circle">
                                     <children>
-                                        <Label styleClass="sidebar-logo-letter" text=""/>
+                                        <Label styleClass="sidebar-logo-letter" text="B"/>
                                     </children>
                                 </StackPane>
                                 <Label styleClass="sidebar-logo-text" text="%app.name"/>
@@ -66,13 +66,13 @@
                                     <children>
                                         <StackPane prefHeight="32.0" prefWidth="32.0" styleClass="sidebar-user-avatar">
                                             <children>
-                                                <Label fx:id="userInitialsLabel" text="" styleClass="sidebar-user-initials"/>
+                                                <Label styleClass="sidebar-user-initials" text="S"/>
                                             </children>
                                         </StackPane>
 
                                         <VBox spacing="2.0">
                                             <children>
-                                                <Label fx:id="userNameLabel" styleClass="sidebar-user-name" text="%userProfile.user_name"/>
+                                                <Label fx:id="userNameLabel" styleClass="sidebar-user-name" text="Sarah Chen"/>
                                                 <Label styleClass="sidebar-user-subtitle" text="%nav.viewProfile"/>
                                             </children>
                                         </VBox>
@@ -134,7 +134,7 @@
                                         <Button fx:id="addBookButton" onAction="#onAddBook"
                                                 styleClass="header-primary-button" text="%common.addBook">
                                             <graphic>
-                                                <Label styleClass="header-primary-icon" text=""/>
+                                                <Label styleClass="header-primary-icon" text="+"/>
                                             </graphic>
                                         </Button>
 

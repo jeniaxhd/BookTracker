@@ -47,7 +47,7 @@
                                 <StackPane prefWidth="40.0" prefHeight="40.0"
                                            styleClass="auth-logo-circle">
                                     <children>
-                                        <Label text="" styleClass="auth-logo-letter"/>
+                                        <Label text="B" styleClass="auth-logo-letter"/>
                                     </children>
                                 </StackPane>
                                 <Label text="%app.name" styleClass="auth-logo-text"/>
@@ -57,7 +57,7 @@
                         <VBox spacing="10.0">
                             <children>
                                 <Label wrapText="true"
-                                       text="%login.tagline"
+                                       text="Your calm space to track reading, build habits, and reflect on books."
                                        styleClass="auth-hero-title"/>
                                 <Label wrapText="true"
                                        text="%login.sign_in_and_continue_your_reading_journey"
@@ -67,9 +67,9 @@
 
                         <VBox spacing="10.0" styleClass="auth-features">
                             <children>
-                                <Label text="%login.track_books_and_progress" styleClass="auth-feature-text"/>
-                                <Label text="%login.save_notes_and_reviews" styleClass="auth-feature-text"/>
-                                <Label text="%login.view_your_statistics" styleClass="auth-feature-text"/>
+                                <Label text="• Track books and progress" styleClass="auth-feature-text"/>
+                                <Label text="• Save notes and reviews" styleClass="auth-feature-text"/>
+                                <Label text="• View your statistics" styleClass="auth-feature-text"/>
                             </children>
                         </VBox>
 
@@ -119,7 +119,7 @@
                                         <children>
                                             <Label text="%common.email" styleClass="auth-field-label"/>
                                             <TextField fx:id="emailField"
-                                                       promptText=""
+                                                       promptText="you@example.com"
                                                        styleClass="auth-input"
                                                        maxWidth="Infinity"/>
                                         </children>

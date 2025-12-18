@@ -49,7 +49,7 @@
                                         minWidth="36.0"
                                         onAction="#handleClose"
                                         styleClass="header-icon-button"
-                                        text=""/>
+                                        text="✕"/>
                             </children>
                         </HBox>
 
@@ -109,7 +109,7 @@
                                             <Label styleClass="book-meta-label" text="%common.year"/>
                                             <Label fx:id="yearLabel"
                                                    styleClass="book-meta-value"
-                                                   text=""/>
+                                                   text="—"/>
                                         </children>
                                     </VBox>
 
@@ -121,7 +121,7 @@
                                             <Label styleClass="book-meta-label" text="%common.pages"/>
                                             <Label fx:id="pagesLabel"
                                                    styleClass="book-meta-value"
-                                                   text=""/>
+                                                   text="—"/>
                                         </children>
                                     </VBox>
 
@@ -132,10 +132,10 @@
                                 <children>
                                     <Label fx:id="genreLabel"
                                            styleClass="tag-pill"
-                                           text=""/>
+                                           text="—"/>
                                     <Label fx:id="statusLabel"
                                            styleClass="status-pill--in-progress"
-                                           text=""/>
+                                           text="—"/>
                                 </children>
                             </HBox>
 
@@ -152,7 +152,7 @@
                                            styleClass="book-title-big"/>
                                     <HBox spacing="8.0" alignment="CENTER_LEFT">
                                         <children>
-                                            <Label text="" styleClass="muted"/>
+                                            <Label text="by" styleClass="muted"/>
                                             <Label fx:id="bookAuthorBigLabel"
                                                    styleClass="book-author-big"/>
                                         </children>
@@ -178,10 +178,10 @@
 
                             <VBox spacing="10.0">
                                 <children>
-                                    <Label styleClass="section-title" text="%bookDetailsModal.your_review"/>
+                                    <Label styleClass="section-title" text="Your review"/>
 
                                     <TextArea fx:id="reviewArea"
-                                              promptText="%bookDetailsModal.write_a_short_review"
+                                              promptText="Write a short review..."
                                               prefRowCount="5"
                                               wrapText="true"
                                               styleClass="text-area"
@@ -190,7 +190,7 @@
                                     <HBox alignment="CENTER_RIGHT">
                                         <children>
                                             <Button fx:id="saveReviewButton"
-                                                    text="%bookDetailsModal.save_review"
+                                                    text="Save review"
                                                     mnemonicParsing="false"
                                                     onAction="#handleSaveReview"
                                                     styleClass="header-secondary-button"/>
