@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+
+<BorderPane
+        xmlns="http://javafx.com/javafx/17.0.12"
+        xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="sk.upjs.paz.ui.RegisterController"
+        styleClass="auth-root">
+
+    <stylesheets>
+        <URL value="@css/auth.css"/>
+    </stylesheets>
+
+    <center>
+        <!-- CHANGED: FlowPane wraps panels on narrow width -->
+        <FlowPane fx:id="authFlow"
+                  hgap="24.0"
+                  vgap="24.0"
+                  alignment="CENTER"
+                  styleClass="auth-right">
+            <padding>
+                <Insets top="40" right="36" bottom="40" left="36"/>
+            </padding>
+
+            <children>
+
+                <!-- LEFT PANEL -->
+                <VBox prefWidth="420.0"
+                      minWidth="260.0"
+                      spacing="24.0"
+                      styleClass="auth-left">
+                    <padding>
+                        <Insets top="32" right="32" bottom="32" left="32"/>
+                    </padding>
+                    <children>
+
+                        <HBox spacing="12.0" alignment="CENTER_LEFT">
+                            <children>
+                                <StackPane prefWidth="40.0" prefHeight="40.0"
+                                           styleClass="auth-logo-circle">
+                                    <children>
+                                        <Label text="" styleClass="auth-logo-letter"/>
+                                    </children>
+                                </StackPane>
+                                <Label text="%app.name" styleClass="auth-logo-text"/>
+                            </children>
+                        </HBox>
+
+                        <VBox spacing="12.0">
+                            <children>
+                                <Label wrapText="true"
+                                       text="%register.create_your_reading_space"
+                                       styleClass="auth-hero-title"/>
+                                <Label wrapText="true"
+                                       text="%register.sign_up_to_track_your_books_reading_sessions_and_p"
+                                       styleClass="auth-hero-subtitle"/>
+                            </children>
+                        </VBox>
+
+                        <Pane VBox.vgrow="ALWAYS"/>
+
+                        <Label text="%register.stay_consistent_remember_what_you_read_and_feel_pr"
+                               wrapText="true"
+                               styleClass="auth-hero-subtitle"/>
+
+                    </children>
+                </VBox>
+
+                <!-- RIGHT SIDE: REGISTER FORM -->
+                <StackPane styleClass="auth-right" BorderPane.alignment="CENTER">
+                    <children>
+
+                        <VBox spacing="24.0"
+                              maxWidth="520.0"
+                              minWidth="340.0"
+                              alignment="CENTER"
+                              styleClass="auth-card">
+
+                            <VBox spacing="8.0">
+                                <children>
+                                    <Label text="%register.create_your_account"
+                                           styleClass="auth-title"/>
+                                    <Label wrapText="true"
+                                           text="%register.start_tracking_your_reading_goals_and_library_in_m"
+                                           styleClass="auth-subtitle"/>
+                                </children>
+                            </VBox>
+
+                            <VBox spacing="16.0" maxWidth="Infinity">
+                                <children>
+
+                                    <VBox spacing="6.0" maxWidth="Infinity">
+                                        <children>
+                                            <Label text="%register.full_name" styleClass="auth-field-label"/>
+                                            <TextField fx:id="fullNameField"
+                                                       maxWidth="Infinity"
+                                                       promptText="%register.enter_your_full_name"
+                                                       styleClass="auth-input"/>
+                                        </children>
+                                    </VBox>
+
+                                    <VBox spacing="6.0" maxWidth="Infinity">
+                                        <children>
+                                            <Label text="%register.email_address" styleClass="auth-field-label"/>
+                                            <TextField fx:id="emailField"
+                                                       maxWidth="Infinity"
+                                                       promptText="%register.enter_your_email"
+                                                       styleClass="auth-input"/>
+                                        </children>
+                                    </VBox>
+
+                                    <VBox spacing="6.0" maxWidth="Infinity">
+                                        <children>
+                                            <Label text="%common.password" styleClass="auth-field-label"/>
+                                            <PasswordField fx:id="passwordField"
+                                                           maxWidth="Infinity"
+                                                           promptText="%register.create_a_password"
+                                                           styleClass="auth-input"/>
+                                        </children>
+                                    </VBox>
+
+                                    <VBox spacing="6.0" maxWidth="Infinity">
+                                        <children>
+                                            <Label text="%register.confirm_password" styleClass="auth-field-label"/>
+                                            <PasswordField fx:id="confirmPasswordField"
+                                                           maxWidth="Infinity"
+                                                           promptText="%register.confirm_your_password"
+                                                           styleClass="auth-input"/>
+                                        </children>
+                                    </VBox>
+
+                                    <HBox alignment="CENTER_LEFT" spacing="8.0">
+                                        <children>
+                                            <CheckBox fx:id="newsletterCheck"/>
+                                            <Label text="%register.send_me_occasional_reading_tips_and_updates"
+                                                   wrapText="true"
+                                                   styleClass="auth-remember"/>
+                                        </children>
+                                    </HBox>
+
+                                    <!-- CHANGED: Terms row wraps -->
+                                    <FlowPane hgap="4.0" vgap="4.0" prefWrapLength="460">
+                                        <children>
+                                            <Label text="%register.by_creating_an_account_you_agree_to_the"
+                                                   styleClass="auth-remember"/>
+                                            <Hyperlink text="%register.terms_of_service"
+                                                       styleClass="auth-bottom-link"/>
+                                            <Label text="%register.and"
+                                                   styleClass="auth-remember"/>
+                                            <Hyperlink text="%register.privacy_policy"
+                                                       styleClass="auth-bottom-link"/>
+                                            <Label text=""
+                                                   styleClass="auth-remember"/>
+                                        </children>
+                                    </FlowPane>
+
+                                    <Label fx:id="errorLabel"
+                                           styleClass="auth-error-label"
+                                           wrapText="true"
+                                           visible="false"
+                                           managed="false"/>
+
+                                    <Button fx:id="createAccountButton"
+                                            text="%register.create_account"
+                                            maxWidth="Infinity"
+                                            styleClass="auth-primary-button"
+                                            onAction="#onSignUp"/>
+
+                                </children>
+                            </VBox>
+
+                            <HBox alignment="CENTER" spacing="4.0">
+                                <children>
+                                    <Label text="%register.already_have_an_account"
+                                           styleClass="auth-bottom-text"/>
+                                    <Hyperlink fx:id="loginLink"
+                                               text="%register.log_in"
+                                               styleClass="auth-bottom-link"
+                                               onAction="#onGoToLogin"/>
+                                </children>
+                            </HBox>
+
+                        </VBox>
+                    </children>
+                </StackPane>
+
+            </children>
+        </FlowPane>
+    </center>
+
+</BorderPane>

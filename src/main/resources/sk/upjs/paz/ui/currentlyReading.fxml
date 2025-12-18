@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+
+<BorderPane
+        fx:id="root"
+        styleClass="dashboard-root"
+        xmlns="http://javafx.com/javafx/17.0.12"
+        xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="sk.upjs.paz.ui.CurrentlyReadingController">
+
+    <!-- ========== SIDEBAR ========== -->
+    <left>
+        <VBox prefWidth="240.0"
+              styleClass="sidebar"
+              BorderPane.alignment="CENTER">
+            <children>
+
+                <!-- Logo -->
+                <VBox spacing="10.0" styleClass="sidebar-header">
+                    <padding>
+                        <Insets top="24" right="24" bottom="16" left="24"/>
+                    </padding>
+                    <children>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                            <children>
+                                <StackPane prefWidth="32.0" prefHeight="32.0"
+                                           styleClass="sidebar-logo-circle">
+                                    <children>
+                                        <Label text="" styleClass="sidebar-logo-letter"/>
+                                    </children>
+                                </StackPane>
+                                <Label text="%app.name" styleClass="sidebar-logo-text"/>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+
+                <Separator/>
+
+                <!-- Navigation -->
+                <VBox spacing="6.0" styleClass="sidebar-nav">
+                    <padding>
+                        <Insets top="16" right="16" bottom="16" left="16"/>
+                    </padding>
+                    <children>
+                        <ToggleButton fx:id="dashboardNavButton"
+                                      text="%nav.dashboard"
+                                      onAction="#onDashboardSelected"
+                                      styleClass="sidebar-nav-button"/>
+                        <ToggleButton fx:id="libraryNavButton"
+                                      text="%nav.library"
+                                      onAction="#onLibrarySelected"
+                                      styleClass="sidebar-nav-button"/>
+                        <ToggleButton fx:id="currentlyReadingNavButton"
+                                      text="%nav.currentlyReading"
+                                      selected="true"
+                                      onAction="#onCurrentlyReadingSelected"
+                                      styleClass="sidebar-nav-button,sidebar-nav-button--active"/>
+                        <ToggleButton fx:id="statisticsNavButton"
+                                      text="%nav.statistics"
+                                      onAction="#onStatisticsSelected"
+                                      styleClass="sidebar-nav-button"/>
+                    </children>
+                </VBox>
+
+                <Pane VBox.vgrow="ALWAYS"/>
+
+                <!-- User profile -->
+                <VBox styleClass="sidebar-user">
+                    <padding>
+                        <Insets top="8" right="16" bottom="24" left="16"/>
+                    </padding>
+                    <children>
+                        <Button fx:id="userProfileButton"
+                                maxWidth="Infinity"
+                                onAction="#onUserProfile"
+                                styleClass="sidebar-user-button">
+                            <graphic>
+                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                    <children>
+                                        <StackPane prefWidth="32.0" prefHeight="32.0"
+                                                   styleClass="sidebar-user-avatar">
+                                            <children>
+                                                <Label fx:id="userInitialsLabel" text="" styleClass="sidebar-user-initials"/>
+                                            </children>
+                                        </StackPane>
+                                        <VBox spacing="2.0">
+                                            <children>
+                                                <Label fx:id="userNameLabel"
+                                                       text="%userProfile.user_name"
+                                                       styleClass="sidebar-user-name"/>
+                                                <Label text="%nav.viewProfile"
+                                                       styleClass="sidebar-user-subtitle"/>
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </HBox>
+                            </graphic>
+                        </Button>
+                    </children>
+                </VBox>
+
+            </children>
+        </VBox>
+    </left>
+
+    <!-- ========== MAIN AREA ========== -->
+    <center>
+        <VBox BorderPane.alignment="CENTER">
+            <children>
+
+                <!-- ===== HEADER ===== -->
+                <VBox styleClass="header">
+                    <children>
+                        <HBox alignment="CENTER_LEFT" spacing="16.0">
+                            <padding>
+                                <Insets top="24" right="32" bottom="24" left="32"/>
+                            </padding>
+
+                            <children>
+                                <VBox spacing="4.0">
+                                    <children>
+                                        <Label fx:id="headerTitleLabel"
+                                               text="%nav.currentlyReading"
+                                               styleClass="header-title"/>
+                                        <Label text="%currentlyReading.continue_your_active_books_and_log_your_latest_rea"
+                                               wrapText="true"
+                                               styleClass="header-subtitle"/>
+                                    </children>
+                                </VBox>
+
+                                <Pane HBox.hgrow="ALWAYS"/>
+
+                                <HBox alignment="CENTER_RIGHT" spacing="8.0">
+                                    <children>
+
+                                        <Button fx:id="searchButton"
+                                                onAction="#onSearch"
+                                                styleClass="header-icon-button">
+                                            <graphic>
+                                                <ImageView fx:id="searchIcon"
+                                                           fitWidth="18.0"
+                                                           fitHeight="18.0"
+                                                           preserveRatio="true"/>
+                                            </graphic>
+                                        </Button>
+
+                                        <ToggleButton fx:id="themeToggle"
+                                                      onAction="#onToggleTheme"
+                                                      styleClass="header-icon-button">
+                                            <graphic>
+                                                <ImageView fx:id="themeIcon"
+                                                           fitWidth="18.0"
+                                                           fitHeight="18.0"
+                                                           preserveRatio="true"/>
+                                            </graphic>
+                                        </ToggleButton>
+
+                                        <Button fx:id="startSessionButton"
+                                                text="%currentlyReading.start_session"
+                                                onAction="#onStartSession"
+                                                styleClass="header-primary-button">
+                                            <graphic>
+                                                <Label text="" styleClass="header-primary-icon"/>
+                                            </graphic>
+                                        </Button>
+
+                                    </children>
+                                </HBox>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+
+                <!-- ===== SCROLLABLE CONTENT ===== -->
+                <ScrollPane fx:id="contentScrollPane"
+                            fitToWidth="true"
+                            hbarPolicy="NEVER"
+                            VBox.vgrow="ALWAYS">
+                    <content>
+                        <VBox fx:id="contentRoot" spacing="24.0">
+                            <padding>
+                                <Insets top="24" right="32" bottom="32" left="32"/>
+                            </padding>
+                            <children>
+
+                                <!-- Active books + filters -->
+                                <VBox spacing="16.0">
+                                    <children>
+
+                                        <Label text="%currentlyReading.active_books" styleClass="section-title"/>
+
+                                        <Label text="%currentlyReading.showing_books_you_re_currently_reading"
+                                               styleClass="header-subtitle"/>
+
+                                        <!-- CHANGED: HBox -> FlowPane (wrap chips on resize) -->
+                                        <FlowPane hgap="8.0" vgap="8.0" prefWrapLength="900">
+                                            <children>
+                                                <ToggleButton text="%common.all"
+                                                              selected="true"
+                                                              styleClass="filter-chip,filter-chip--active"/>
+                                                <ToggleButton text="%currentlyReading.high_priority"
+                                                              styleClass="filter-chip"/>
+                                                <ToggleButton text="%currentlyReading.finishing_soon"
+                                                              styleClass="filter-chip"/>
+                                                <ToggleButton text="%currentlyReading.recently_started"
+                                                              styleClass="filter-chip"/>
+                                            </children>
+                                        </FlowPane>
+
+                                    </children>
+                                </VBox>
+
+                                <!-- Main layout: cards + side stats -->
+                                <!-- CHANGED: HBox -> FlowPane so sidebar stats can drop below -->
+                                <FlowPane fx:id="mainFlow"
+                                          hgap="24.0"
+                                          vgap="24.0"
+                                          prefWrapLength="1000">
+                                    <children>
+
+                                        <!-- LEFT: active book cards -->
+                                        <VBox fx:id="cardsBox"
+                                              spacing="16.0"
+                                              prefWidth="680.0"
+                                              minWidth="320.0"/>
+
+                                        <!-- RIGHT: side stats -->
+                                        <VBox prefWidth="260.0"
+                                              minWidth="240.0"
+                                              spacing="16.0">
+
+                                            <VBox spacing="10.0" styleClass="stat-card">
+                                                <children>
+                                                    <Label text="%currentlyReading.today_s_reading" styleClass="section-title"/>
+                                                    <Label text="" styleClass="stat-value"/>
+                                                    <Label text="%currentlyReading.time_read_so_far_today" styleClass="stat-label"/>
+
+                                                    <VBox spacing="4.0">
+                                                        <children>
+                                                            <ProgressBar progress="0.7"
+                                                                         styleClass="book-progress-bar"/>
+                                                            <Label text=""
+                                                                   styleClass="stat-subtitle"/>
+                                                        </children>
+                                                    </VBox>
+                                                </children>
+                                            </VBox>
+
+                                            <VBox spacing="10.0" styleClass="stat-card">
+                                                <children>
+                                                    <Label text="%currentlyReading.reading_streak" styleClass="section-title"/>
+                                                    <Label text="" styleClass="stat-value"/>
+                                                    <Label text="%currentlyReading.in_a_row" styleClass="stat-label"/>
+
+                                                    <HBox spacing="4.0">
+                                                        <children>
+                                                            <Rectangle width="12.0" height="12.0" arcWidth="6.0" arcHeight="6.0"
+                                                                       styleClass="streak-day,streak-day--active"/>
+                                                            <Rectangle width="12.0" height="12.0" arcWidth="6.0" arcHeight="6.0"
+                                                                       styleClass="streak-day,streak-day--active"/>
+                                                            <Rectangle width="12.0" height="12.0" arcWidth="6.0" arcHeight="6.0"
+                                                                       styleClass="streak-day,streak-day--active"/>
+                                                            <Rectangle width="12.0" height="12.0" arcWidth="6.0" arcHeight="6.0"
+                                                                       styleClass="streak-day,streak-day--active"/>
+                                                            <Rectangle width="12.0" height="12.0" arcWidth="6.0" arcHeight="6.0"
+                                                                       styleClass="streak-day,streak-day--active"/>
+                                                            <Rectangle width="12.0" height="12.0" arcWidth="6.0" arcHeight="6.0"
+                                                                       styleClass="streak-day,streak-day--active"/>
+                                                            <Rectangle width="12.0" height="12.0" arcWidth="6.0" arcHeight="6.0"
+                                                                       styleClass="streak-day,streak-day--active"/>
+                                                            <Rectangle width="12.0" height="12.0" arcWidth="6.0" arcHeight="6.0"
+                                                                       styleClass="streak-day,streak-day--empty"/>
+                                                            <Rectangle width="12.0" height="12.0" arcWidth="6.0" arcHeight="6.0"
+                                                                       styleClass="streak-day,streak-day--empty"/>
+                                                            <Rectangle width="12.0" height="12.0" arcWidth="6.0" arcHeight="6.0"
+                                                                       styleClass="streak-day,streak-day--empty"/>
+                                                        </children>
+                                                    </HBox>
+                                                </children>
+                                            </VBox>
+
+                                            <VBox spacing="10.0" styleClass="stat-card">
+                                                <children>
+                                                    <Label text="%currentlyReading.quick_stats" styleClass="section-title"/>
+
+                                                    <HBox spacing="8.0" alignment="CENTER_LEFT">
+                                                        <children>
+                                                            <Label text="%currentlyReading.books_in_progress" styleClass="stat-label"/>
+                                                            <Pane HBox.hgrow="ALWAYS"/>
+                                                            <Label text="" styleClass="stat-label"/>
+                                                        </children>
+                                                    </HBox>
+
+                                                    <HBox spacing="8.0" alignment="CENTER_LEFT">
+                                                        <children>
+                                                            <Label text="%currentlyReading.pages_read_this_week" styleClass="stat-label"/>
+                                                            <Pane HBox.hgrow="ALWAYS"/>
+                                                            <Label text="" styleClass="stat-label"/>
+                                                        </children>
+                                                    </HBox>
+
+                                                    <HBox spacing="8.0" alignment="CENTER_LEFT">
+                                                        <children>
+                                                            <Label text="%currentlyReading.sessions_this_week" styleClass="stat-label"/>
+                                                            <Pane HBox.hgrow="ALWAYS"/>
+                                                            <Label text="" styleClass="stat-label"/>
+                                                        </children>
+                                                    </HBox>
+                                                </children>
+                                            </VBox>
+
+                                        </VBox>
+                                    </children>
+                                </FlowPane>
+
+                            </children>
+                        </VBox>
+                    </content>
+                </ScrollPane>
+
+            </children>
+        </VBox>
+    </center>
+</BorderPane>
