@@ -1269,3 +1269,33 @@
 .context-menu .menu-item:focused .label {
     -fx-text-fill: #111214;
 }
+.settings-combobox .list-cell {
+    -fx-text-fill: #F5F5F7;
+    -fx-background-color: transparent;
+    -fx-padding: 6 10 6 10;
+}
+
+.settings-combobox .list-view {
+    -fx-background-color: #1B1C23;
+    -fx-background-radius: 14;
+    -fx-border-color: #25262E;
+    -fx-border-radius: 14;
+    -fx-padding: 6;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.55), 18, 0, 0, 8);
+}
+
+.settings-combobox .list-view .list-cell {
+    -fx-background-color: transparent;
+    -fx-background-radius: 12;
+    -fx-padding: 8 12 8 12;
+    -fx-text-fill: #F5F5F7;
+}
+
+.settings-combobox .list-view .list-cell:hover {
+    -fx-background-color: #262730;
+}
+
+.settings-combobox .list-view .list-cell:selected {
+    -fx-background-color: #D49A5A;
+    -fx-text-fill: #111214;
+}
