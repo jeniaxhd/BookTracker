@@ -14,7 +14,7 @@
       styleClass="stat-card">
 
     <stylesheets>
-        <URL value="@../../../../css/lightTheme.css"/>
+        <URL value="@css/lightTheme.css"/>
     </stylesheets>
 
     <padding>
@@ -24,10 +24,10 @@
     <!-- Header -->
     <HBox alignment="CENTER_LEFT" spacing="10.0">
         <children>
-            <Label text="%common.notifications" styleClass="section-title"/>
+            <Label text="Notifications" styleClass="section-title"/>
             <Pane HBox.hgrow="ALWAYS"/>
             <Button fx:id="markAllReadButton"
-                    text="%notificationsPopover.mark_all_read"
+                    text="Mark all read"
                     onAction="#onMarkAllRead"
                     styleClass="ghost-button"/>
         </children>
@@ -49,7 +49,7 @@
 
                     <VBox spacing="2.0" HBox.hgrow="ALWAYS">
                         <children>
-                            <Label text="%notificationsPopover.reading_session_saved" styleClass="queue-title"/>
+                            <Label text="Reading session saved" styleClass="queue-title"/>
                             <Label text="You added 32 minutes to your streak" styleClass="book-meta-text"/>
                         </children>
                     </VBox>
@@ -68,7 +68,7 @@
 
                     <VBox spacing="2.0" HBox.hgrow="ALWAYS">
                         <children>
-                            <Label text="%notificationsPopover.book_added_to_library" styleClass="queue-title"/>
+                            <Label text="Book added to Library" styleClass="queue-title"/>
                             <Label text="Atomic Habits · Productivity" styleClass="book-meta-text"/>
                         </children>
                     </VBox>
@@ -87,12 +87,12 @@
 
                     <VBox spacing="2.0" HBox.hgrow="ALWAYS">
                         <children>
-                            <Label text="%notificationsPopover.streak_milestone" styleClass="queue-title"/>
+                            <Label text="Streak milestone" styleClass="queue-title"/>
                             <Label text="7 days in a row" styleClass="book-meta-text"/>
                         </children>
                     </VBox>
 
-                    <Label text="%notificationsPopover.yesterday" styleClass="book-meta-text"/>
+                    <Label text="Yesterday" styleClass="book-meta-text"/>
                 </children>
             </HBox>
 
@@ -105,11 +105,11 @@
     <HBox alignment="CENTER_RIGHT" spacing="10.0">
         <children>
             <Button fx:id="viewAllButton"
-                    text="%notificationsPopover.view_all"
+                    text="View all"
                     onAction="#onViewAll"
                     styleClass="header-secondary-button"/>
             <Button fx:id="closeButton"
-                    text="%common.close"
+                    text="Close"
                     onAction="#onClose"
                     styleClass="header-primary-button"/>
         </children>

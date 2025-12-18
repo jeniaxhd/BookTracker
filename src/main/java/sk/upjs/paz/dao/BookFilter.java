@@ -12,8 +12,6 @@ public class BookFilter {
     private Integer toYear;
     private List<Genre> genres;
     private BookState state;
-    private double fromAverageRating;
-    private double toAverageRating;
     private int fromPagesCount;
     private int toPagesCount;
 
@@ -85,22 +83,6 @@ public class BookFilter {
 
     public void setSortAsc(boolean sortAsc) {
         this.sortAsc = sortAsc;
-    }
-
-    public double getFromAverageRating() {
-        return fromAverageRating;
-    }
-
-    public void setFromAverageRating(Integer fromAverageRating) {
-        this.fromAverageRating = fromAverageRating;
-    }
-
-    public double getToAverageRating() {
-        return toAverageRating;
-    }
-
-    public void setToAverageRating(double toAverageRating) {
-        this.toAverageRating = toAverageRating;
     }
 
     public Integer getFromPagesCount() {

@@ -6,8 +6,6 @@
 <?import javafx.scene.layout.*?>
 
 <BorderPane fx:id="root"
-            prefWidth="920.0"
-            prefHeight="620.0"
             xmlns="http://javafx.com/javafx/17.0.12"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="sk.upjs.paz.ui.AddBookModalController"
@@ -25,9 +23,8 @@
 
                         <VBox spacing="4.0">
                             <children>
-                                <Label text="%common.addBook"
-                                       styleClass="header-title"/>
-                                <Label text="%addBookModal.add_a_new_book_to_your_library_and_set_up_its_deta"
+                                <Label text="Add Book" styleClass="header-title"/>
+                                <Label text="Add a new book to your library and set up its details."
                                        wrapText="true"
                                        styleClass="header-subtitle"/>
                             </children>
@@ -43,148 +40,130 @@
 
     <!-- ===== MAIN CONTENT ===== -->
     <center>
-        <ScrollPane fitToWidth="true">
+        <ScrollPane fx:id="contentScrollPane"
+                    fitToWidth="true"
+                    hbarPolicy="NEVER">
             <content>
                 <VBox spacing="24.0">
                     <padding>
                         <Insets top="24" right="24" bottom="24" left="24"/>
                     </padding>
-                    <children>
 
-                        <HBox spacing="24.0">
+                    <!-- CHANGED: HBox -> FlowPane so it wraps on narrow width -->
+                    <FlowPane fx:id="mainFlow"
+                              hgap="24.0"
+                              vgap="24.0"
+                              prefWrapLength="820">
+
+                        <!-- LEFT: cover card -->
+                        <VBox prefWidth="320.0"
+                              minWidth="260.0"
+                              spacing="16.0"
+                              styleClass="stat-card,addbook-cover-card">
                             <children>
+                                <Label text="Book cover &amp; preview"
+                                       styleClass="section-title"/>
 
-                                <!-- LEFT: cover card -->
-                                <VBox prefWidth="340.0"
-                                      spacing="16.0"
-                                      styleClass="stat-card,addbook-cover-card">
+                                <VBox alignment="CENTER" spacing="8.0" styleClass="upload-dropzone">
                                     <children>
-                                        <Label text="%addBookModal.book_cover_and_preview"
-                                               styleClass="section-title"/>
-
-                                        <VBox alignment="CENTER" spacing="8.0" styleClass="upload-dropzone">
-                                            <children>
-                                                <ImageView fx:id="coverPreview"
-                                                           fitWidth="220"
-                                                           fitHeight="300"
-                                                           preserveRatio="true"
-                                                />
-                                                <Label fx:id="coverPlaceholderLabel"
-                                                       text="%addBookModal.upload_cover"
-                                                       styleClass="book-card-placeholder-text"/>
-                                            </children>
-                                        </VBox>
-
-                                        <Button fx:id="uploadCoverButton"
-                                                maxWidth="Infinity"
-                                                text="%addBookModal.upload_cover_image"
-                                                onAction="#onUploadCover"
-                                                styleClass="header-primary-button"/>
+                                        <ImageView fx:id="coverPreview"
+                                                   fitWidth="220"
+                                                   fitHeight="300"
+                                                   preserveRatio="true"/>
+                                        <Label fx:id="coverPlaceholderLabel"
+                                               text="Upload cover"
+                                               styleClass="book-card-placeholder-text"/>
                                     </children>
                                 </VBox>
 
-                                <!-- RIGHT: details card -->
-                                <VBox spacing="16.0"
-                                      HBox.hgrow="ALWAYS"
-                                      styleClass="stat-card,addbook-details-card">
+                                <Button fx:id="uploadCoverButton"
+                                        maxWidth="Infinity"
+                                        text="Upload cover image"
+                                        onAction="#onUploadCover"
+                                        styleClass="header-primary-button"/>
+                            </children>
+                        </VBox>
+
+                        <!-- RIGHT: details card -->
+                        <VBox prefWidth="420.0"
+                              minWidth="320.0"
+                              spacing="16.0"
+                              styleClass="stat-card,addbook-details-card">
+                            <children>
+
+                                <Label text="Book details"
+                                       styleClass="section-title"/>
+
+                                <VBox spacing="10.0">
                                     <children>
 
-                                        <Label text="%addBookModal.book_details"
-                                               styleClass="section-title"/>
+                                        <Label text="Basic information"
+                                               styleClass="header-subtitle"/>
 
-                                        <VBox spacing="10.0">
+                                        <VBox spacing="4.0">
+                                            <children>
+                                                <Label text="Book title"/>
+                                                <TextField fx:id="titleField"
+                                                           maxWidth="Infinity"
+                                                           promptText="Enter book title"/>
+                                            </children>
+                                        </VBox>
+
+                                        <VBox spacing="4.0">
+                                            <children>
+                                                <Label text="Author"/>
+                                                <TextField fx:id="authorField"
+                                                           maxWidth="Infinity"
+                                                           promptText="Enter author name"/>
+                                            </children>
+                                        </VBox>
+
+                                        <!-- Row: Category + Year -->
+                                        <HBox spacing="12.0">
                                             <children>
 
-                                                <Label text="%addBookModal.basic_information"
-                                                       styleClass="header-subtitle"/>
-
-                                                <VBox spacing="4.0">
+                                                <VBox spacing="4.0" HBox.hgrow="ALWAYS">
                                                     <children>
-                                                        <Label text="%addBookModal.book_title"/>
-                                                        <TextField fx:id="titleField"
-                                                                   promptText="%addBookModal.enter_book_title"/>
+                                                        <Label text="Category"/>
+                                                        <TextField fx:id="categoryField"
+                                                                   maxWidth="Infinity"
+                                                                   promptText="Select category"/>
                                                     </children>
                                                 </VBox>
 
-                                                <VBox spacing="4.0">
+                                                <VBox spacing="4.0" HBox.hgrow="ALWAYS">
                                                     <children>
-                                                        <Label text="%addBookModal.author"/>
-                                                        <TextField fx:id="authorField"
-                                                                   promptText="%addBookModal.enter_author_name"/>
-                                                    </children>
-                                                </VBox>
-
-                                                <HBox spacing="12.0">
-                                                    <children>
-
-                                                        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
-                                                            <children>
-                                                                <Label text="%common.category"/>
-                                                                <TextField fx:id="categoryField"
-                                                                          promptText="%addBookModal.select_category"/>
-                                                            </children>
-                                                        </VBox>
-
-                                                        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
-                                                            <children>
-                                                                <Label text="%common.year"/>
-                                                                <TextField fx:id="yearField" promptText="e.g. 2020"/>
-                                                            </children>
-                                                        </VBox>
-
-                                                    </children>
-                                                </HBox>
-
-                                                <HBox spacing="12.0">
-                                                    <children>
-
-                                                        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
-                                                            <children>
-                                                                <Label text="%common.pages"/>
-                                                                <TextField fx:id="pagesField"
-                                                                           promptText="e.g. 320"/>
-                                                            </children>
-                                                        </VBox>
-
-                                                        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
-                                                            <children>
-                                                                <Label text="%common.language"/>
-                                                                <TextField fx:id="languageField"
-                                                                           promptText="%addBookModal.e_g_english"/>
-                                                            </children>
-                                                        </VBox>
-
-                                                    </children>
-                                                </HBox>
-
-                                                <VBox spacing="6.0">
-                                                    <children>
-                                                        <Label text="%addBookModal.tags_optional"/>
-                                                        <TextField fx:id="tagsField"
-                                                                   promptText="%addBookModal.type_and_press_enter_to_add_tags"/>
-                                                        <FlowPane fx:id="tagsPane" hgap="8" vgap="8"/>
-                                                    </children>
-                                                </VBox>
-
-                                                <VBox spacing="4.0">
-                                                    <children>
-                                                        <Label text="%addBookModal.notes_optional"/>
-                                                        <TextArea fx:id="notesArea"
-                                                                  prefRowCount="4"
-                                                                  promptText="%addBookModal.thoughts_highlights_expectations"/>
+                                                        <Label text="Year"/>
+                                                        <TextField fx:id="yearField"
+                                                                   maxWidth="Infinity"
+                                                                   promptText="e.g. 2020"/>
                                                     </children>
                                                 </VBox>
 
                                             </children>
-                                        </VBox>
+                                        </HBox>
+
+                                        <!-- Row: Pages -->
+                                        <HBox spacing="12.0">
+                                            <children>
+                                                <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                                                    <children>
+                                                        <Label text="Pages"/>
+                                                        <TextField fx:id="pagesField"
+                                                                   maxWidth="Infinity"
+                                                                   promptText="e.g. 320"/>
+                                                    </children>
+                                                </VBox>
+                                            </children>
+                                        </HBox>
 
                                     </children>
                                 </VBox>
 
                             </children>
-                        </HBox>
+                        </VBox>
 
-                    </children>
+                    </FlowPane>
                 </VBox>
             </content>
         </ScrollPane>
@@ -200,11 +179,11 @@
             </padding>
             <children>
                 <Button fx:id="cancelButton"
-                        text="%common.cancel"
+                        text="Cancel"
                         onAction="#onCancel"
                         styleClass="header-secondary-button"/>
                 <Button fx:id="saveButton"
-                        text="%addBookModal.save_book"
+                        text="Save book"
                         onAction="#onSaveBook"
                         styleClass="header-primary-button"/>
             </children>

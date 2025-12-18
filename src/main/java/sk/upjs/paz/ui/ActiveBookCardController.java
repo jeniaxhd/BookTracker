@@ -5,6 +5,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import sk.upjs.paz.ui.dto.ActiveBookCard;
 
@@ -13,6 +15,7 @@ import java.util.function.Consumer;
 public class ActiveBookCardController {
 
     @FXML private StackPane coverPane;
+    @FXML private ImageView coverImageView;
 
     @FXML private Label titleLabel;
     @FXML private Label authorLabel;
@@ -39,7 +42,7 @@ public class ActiveBookCardController {
         authorLabel.setText(data.authorsText());
         categoryLabel.setText(data.genreName());
 
-        statusPill.setText("In Progress");
+        statusPill.setText("READING");
 
         int total = Math.max(1, data.totalPages());
         int current = Math.max(0, Math.min(data.currentPage(), total));
@@ -47,6 +50,8 @@ public class ActiveBookCardController {
         progressBar.setProgress((double) current / total);
         pagesLabel.setText(current + " / " + total + " pages");
         timeLabel.setText(formatMinutes(data.totalMinutes()));
+
+        applyCover(data.coverPath());
     }
 
     public void setOnContinue(Consumer<ActiveBookCard> onContinue) {
@@ -57,13 +62,6 @@ public class ActiveBookCardController {
         this.onDetails = onDetails;
     }
 
-    private String formatMinutes(int minutes) {
-        int h = minutes / 60;
-        int m = minutes % 60;
-        if (h <= 0) return m + "m";
-        return h + "h " + m + "m";
-    }
-
     @FXML
     private void onContinue() {
         if (onContinue != null && data != null) onContinue.accept(data);
@@ -72,5 +70,34 @@ public class ActiveBookCardController {
     @FXML
     private void onViewDetails() {
         if (onDetails != null && data != null) onDetails.accept(data);
+    }
+
+    private void applyCover(String coverPath) {
+        if (coverImageView == null) return;
+
+        if (coverPath == null || coverPath.trim().isEmpty()) {
+            coverImageView.setImage(null);
+            return;
+        }
+
+        try {
+            if (coverPath.startsWith("/")) {
+                var url = getClass().getResource(coverPath);
+                if (url != null) {
+                    coverImageView.setImage(new Image(url.toExternalForm(), true));
+                    return;
+                }
+            }
+            coverImageView.setImage(new Image(coverPath, true));
+        } catch (Exception ignored) {
+            coverImageView.setImage(null);
+        }
+    }
+
+    private String formatMinutes(int minutes) {
+        int h = minutes / 60;
+        int m = minutes % 60;
+        if (h <= 0) return m + "m";
+        return h + "h " + m + "m";
     }
 }

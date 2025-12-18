@@ -2,182 +2,183 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import java.net.URL?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
 
 <BorderPane
-        prefHeight="540.0"
-        prefWidth="860.0"
         xmlns="http://javafx.com/javafx/17.0.12"
         xmlns:fx="http://javafx.com/fxml/1"
         fx:controller="sk.upjs.paz.ui.LoginController"
         styleClass="auth-root">
 
-    <!-- Shared auth stylesheet -->
     <stylesheets>
-        <URL value="@../../../../css/auth.css"/>
+        <URL value="@css/auth.css"/>
     </stylesheets>
 
-    <!-- LEFT WARM PANEL -->
-    <left>
-        <VBox prefWidth="360.0"
-              spacing="22.0"
-              styleClass="auth-left"
-              BorderPane.alignment="CENTER">
-            <padding>
-                <Insets top="32" right="32" bottom="32" left="32"/>
-            </padding>
-
-            <children>
-
-                <!-- Logo + app name -->
-                <HBox spacing="12.0" alignment="CENTER_LEFT">
-                    <children>
-                        <StackPane prefWidth="40.0" prefHeight="40.0"
-                                   styleClass="auth-logo-circle">
-                            <children>
-                                <Label text="B" styleClass="auth-logo-letter"/>
-                            </children>
-                        </StackPane>
-                        <Label text="BookTrack" styleClass="auth-logo-text"/>
-                    </children>
-                </HBox>
-
-                <!-- Hero text -->
-                <VBox spacing="10.0">
-                    <children>
-                        <Label wrapText="true"
-                               text="Your calm space to track reading, build habits, and reflect on books."
-                               styleClass="auth-hero-title"/>
-                        <Label wrapText="true"
-                               text="%login.sign_in_and_continue_your_reading_journey"
-                               styleClass="auth-hero-subtitle"/>
-                    </children>
-                </VBox>
-
-                <!-- Simple feature list (keeps left panel meaningful) -->
-                <VBox spacing="10.0" styleClass="auth-features">
-                    <children>
-                        <Label text="%login.track_books_and_progress" styleClass="auth-feature-text"/>
-                        <Label text="%login.save_notes_and_reviews" styleClass="auth-feature-text"/>
-                        <Label text="%login.view_your_statistics" styleClass="auth-feature-text"/>
-                    </children>
-                </VBox>
-
-                <Pane VBox.vgrow="ALWAYS"/>
-            </children>
-        </VBox>
-    </left>
-
-    <!-- RIGHT SIDE: LOGIN FORM -->
+    <!-- Header area (optional): keep empty; we’ll put everything in center for wrapping -->
     <center>
-        <StackPane styleClass="auth-right" BorderPane.alignment="CENTER">
+        <!-- CHANGED: FlowPane wraps panels on narrow width -->
+        <FlowPane fx:id="authFlow"
+                  hgap="24.0"
+                  vgap="24.0"
+                  alignment="CENTER"
+                  styleClass="auth-right">
             <padding>
-                <Insets top="36" right="72" bottom="36" left="56"/>
+                <Insets top="36" right="36" bottom="36" left="36"/>
             </padding>
 
             <children>
 
-                <!-- Card -->
-                <VBox spacing="18.0"
-                      maxWidth="460.0"
-                      styleClass="auth-card"
-                      alignment="CENTER_LEFT">
+                <!-- LEFT WARM PANEL -->
+                <VBox prefWidth="360.0"
+                      minWidth="260.0"
+                      spacing="22.0"
+                      styleClass="auth-left">
+                    <padding>
+                        <Insets top="32" right="32" bottom="32" left="32"/>
+                    </padding>
 
-                    <!-- Title -->
-                    <VBox spacing="6.0">
-                        <children>
-                            <HBox spacing="10.0" alignment="CENTER_LEFT">
-                                <children>
-                                    <ImageView fitWidth="26.0" fitHeight="26.0" preserveRatio="true">
-                                        <image>
-                                            <Image url="@../../../../img/logoForLogin/waving-hand.png"/>
-                                        </image>
-                                    </ImageView>
+                    <children>
 
-                                    <Label text="%login.welcome_back"
-                                           styleClass="auth-title"/>
-                                </children>
-                            </HBox>
+                        <HBox spacing="12.0" alignment="CENTER_LEFT">
+                            <children>
+                                <StackPane prefWidth="40.0" prefHeight="40.0"
+                                           styleClass="auth-logo-circle">
+                                    <children>
+                                        <Label text="B" styleClass="auth-logo-letter"/>
+                                    </children>
+                                </StackPane>
+                                <Label text="BookTrack" styleClass="auth-logo-text"/>
+                            </children>
+                        </HBox>
 
-                            <Label wrapText="true"
-                                   text="%login.sign_in_to_continue_tracking_your_reading_with_boo"
-                                   styleClass="auth-subtitle"/>
-                        </children>
-                    </VBox>
+                        <VBox spacing="10.0">
+                            <children>
+                                <Label wrapText="true"
+                                       text="Your calm space to track reading, build habits, and reflect on books."
+                                       styleClass="auth-hero-title"/>
+                                <Label wrapText="true"
+                                       text="Sign in and continue your reading journey."
+                                       styleClass="auth-hero-subtitle"/>
+                            </children>
+                        </VBox>
 
-                    <!-- Form -->
-                    <VBox spacing="12.0" maxWidth="Infinity">
-                        <children>
+                        <VBox spacing="10.0" styleClass="auth-features">
+                            <children>
+                                <Label text="• Track books and progress" styleClass="auth-feature-text"/>
+                                <Label text="• Save notes and reviews" styleClass="auth-feature-text"/>
+                                <Label text="• View your statistics" styleClass="auth-feature-text"/>
+                            </children>
+                        </VBox>
 
-                            <!-- Email -->
-                            <VBox spacing="6.0" maxWidth="Infinity">
-                                <children>
-                                    <Label text="Email" styleClass="auth-field-label"/>
-                                    <TextField fx:id="emailField"
-                                               promptText="you@example.com"
-                                               styleClass="auth-input"
-                                               maxWidth="Infinity"/>
-                                </children>
-                            </VBox>
-
-                            <!-- Password -->
-                            <VBox spacing="6.0" maxWidth="Infinity">
-                                <children>
-                                    <Label text="%common.password" styleClass="auth-field-label"/>
-                                    <PasswordField fx:id="passwordField"
-                                                   promptText="%login.enter_your_password"
-                                                   styleClass="auth-input"
-                                                   maxWidth="Infinity"/>
-                                </children>
-                            </VBox>
-
-                            <!-- Remember + Forgot -->
-                            <HBox alignment="CENTER_LEFT" spacing="8.0">
-                                <children>
-                                    <CheckBox fx:id="rememberMeCheckBox"
-                                              text="%login.remember_me"
-                                              styleClass="auth-remember"/>
-                                    <Pane HBox.hgrow="ALWAYS"/>
-                                    <Hyperlink fx:id="forgotPasswordLink"
-                                               text="%login.forgot_password"
-                                               styleClass="auth-forgot-link"
-                                               onAction="#onForgotPassword"/>
-                                </children>
-                            </HBox>
-
-                            <!-- Error label -->
-                            <Label fx:id="errorLabel"
-                                   styleClass="auth-error-label"
-                                   wrapText="true"
-                                   visible="false"
-                                   managed="false"/>
-
-                            <!-- Sign in -->
-                            <Button fx:id="signInButton"
-                                    text="%login.sign_in"
-                                    maxWidth="Infinity"
-                                    styleClass="auth-primary-button"
-                                    onAction="#onSignIn"/>
-                        </children>
-                    </VBox>
-
-                    <!-- Bottom text -->
-                    <HBox alignment="CENTER" spacing="6.0" maxWidth="Infinity">
-                        <children>
-                            <Label text="%login.don_t_have_an_account"
-                                   styleClass="auth-bottom-text"/>
-                            <Hyperlink fx:id="createAccountLink"
-                                       text="%login.create_one"
-                                       styleClass="auth-bottom-link"
-                                       onAction="#onCreateAccount"/>
-                        </children>
-                    </HBox>
-
+                        <Pane VBox.vgrow="ALWAYS"/>
+                    </children>
                 </VBox>
+
+                <!-- RIGHT SIDE: LOGIN FORM -->
+                <StackPane styleClass="auth-right" BorderPane.alignment="CENTER">
+                    <padding>
+                        <Insets top="0" right="0" bottom="0" left="0"/>
+                    </padding>
+
+                    <children>
+
+                        <VBox spacing="18.0"
+                              maxWidth="460.0"
+                              minWidth="320.0"
+                              styleClass="auth-card"
+                              alignment="CENTER_LEFT">
+
+                            <VBox spacing="6.0">
+                                <children>
+                                    <HBox spacing="10.0" alignment="CENTER_LEFT">
+                                        <children>
+                                            <ImageView fitWidth="26.0" fitHeight="26.0" preserveRatio="true">
+                                                <image>
+                                                    <Image url="@img/logoForLogin/waving-hand.png"/>
+                                                </image>
+                                            </ImageView>
+
+                                            <Label text="Welcome back"
+                                                   styleClass="auth-title"/>
+                                        </children>
+                                    </HBox>
+
+                                    <Label wrapText="true"
+                                           text="Sign in to continue tracking your reading with BookTrack."
+                                           styleClass="auth-subtitle"/>
+                                </children>
+                            </VBox>
+
+                            <VBox spacing="12.0" maxWidth="Infinity">
+                                <children>
+
+                                    <VBox spacing="6.0" maxWidth="Infinity">
+                                        <children>
+                                            <Label text="Email" styleClass="auth-field-label"/>
+                                            <TextField fx:id="emailField"
+                                                       promptText="you@example.com"
+                                                       styleClass="auth-input"
+                                                       maxWidth="Infinity"/>
+                                        </children>
+                                    </VBox>
+
+                                    <VBox spacing="6.0" maxWidth="Infinity">
+                                        <children>
+                                            <Label text="Password" styleClass="auth-field-label"/>
+                                            <PasswordField fx:id="passwordField"
+                                                           promptText="Enter your password"
+                                                           styleClass="auth-input"
+                                                           maxWidth="Infinity"/>
+                                        </children>
+                                    </VBox>
+
+                                    <HBox alignment="CENTER_LEFT" spacing="8.0">
+                                        <children>
+                                            <CheckBox fx:id="rememberMeCheckBox"
+                                                      text="Remember me"
+                                                      styleClass="auth-remember"/>
+                                            <Pane HBox.hgrow="ALWAYS"/>
+                                            <Hyperlink fx:id="forgotPasswordLink"
+                                                       text="Forgot password?"
+                                                       styleClass="auth-forgot-link"
+                                                       onAction="#onForgotPassword"/>
+                                        </children>
+                                    </HBox>
+
+                                    <Label fx:id="errorLabel"
+                                           styleClass="auth-error-label"
+                                           wrapText="true"
+                                           visible="false"
+                                           managed="false"/>
+
+                                    <Button fx:id="signInButton"
+                                            text="Sign In"
+                                            maxWidth="Infinity"
+                                            styleClass="auth-primary-button"
+                                            onAction="#onSignIn"/>
+                                </children>
+                            </VBox>
+
+                            <HBox alignment="CENTER" spacing="6.0" maxWidth="Infinity">
+                                <children>
+                                    <Label text="Don't have an account?"
+                                           styleClass="auth-bottom-text"/>
+                                    <Hyperlink fx:id="createAccountLink"
+                                               text="Create one"
+                                               styleClass="auth-bottom-link"
+                                               onAction="#onCreateAccount"/>
+                                </children>
+                            </HBox>
+
+                        </VBox>
+                    </children>
+                </StackPane>
+
             </children>
-        </StackPane>
+        </FlowPane>
     </center>
+
 </BorderPane>

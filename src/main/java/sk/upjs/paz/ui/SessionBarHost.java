@@ -1,104 +1,145 @@
 package sk.upjs.paz.ui;
 
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
+import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
+
+import java.io.IOException;
 
 public final class SessionBarHost {
 
-    private static Parent barRoot;
+    private static BorderPane attachedRoot;
+    private static Node barNode;
     private static SessionBarController controller;
 
-    private static BorderPane attachedTo;
-    private static boolean visible = false;
+    private static long activeUserId;
+    private static long activeBookId;
+    private static long activeSessionId;
 
-    private SessionBarHost() {}
+    private static String activeTitle;
+    private static String activeSubtitle;
+    private static String activeStatus;
 
-    public static void attach(BorderPane pageRoot) {
-        if (pageRoot == null) return;
+    private static String activeCoverPath;
+    private static int activeTotalPages;
+    private static int activeStartPage;
 
-        ensureLoaded();
-
-        // Detach from previous root if it still contains the bar
-        if (attachedTo != null && attachedTo != pageRoot) {
-            if (attachedTo.getBottom() == barRoot) {
-                attachedTo.setBottom(null);
-            }
-        }
-
-        attachedTo = pageRoot;
-
-        if (visible) {
-            attachedTo.setBottom(barRoot);
-        }
+    private SessionBarHost() {
     }
 
-    public static void show(BorderPane pageRoot, String title, String subtitle, String status) {
+    public static void attach(BorderPane pageRoot) {
+        attachedRoot = pageRoot;
+    }
+
+    public static void show(BorderPane pageRoot,
+                            String title,
+                            String subtitle,
+                            String status,
+                            long userId,
+                            long bookId,
+                            long sessionId,
+                            String coverPath,
+                            int totalPages,
+                            int startPage) {
+
+        attachedRoot = pageRoot;
+
+        activeTitle = title;
+        activeSubtitle = subtitle;
+        activeStatus = status;
+
+        activeUserId = userId;
+        activeBookId = bookId;
+        activeSessionId = sessionId;
+
+        activeCoverPath = coverPath;
+        activeTotalPages = totalPages;
+        activeStartPage = startPage;
+
         ensureLoaded();
-        attach(pageRoot);
 
-        visible = true;
-
-        if (attachedTo != null) {
-            attachedTo.setBottom(barRoot);
+        if (attachedRoot != null) {
+            attachedRoot.setBottom(barNode);
         }
 
         if (controller != null) {
-            controller.setBookTitle(title != null ? title : "Current book");
-            controller.setBookSubtitle(subtitle != null ? subtitle : "");
-            controller.setStatusText(status != null ? status : "");
+            controller.startSession(title, subtitle, status);
         }
     }
 
     public static void hide() {
-        visible = false;
-        detachFromParent();
-        attachedTo = null;
-    }
+        if (attachedRoot != null) attachedRoot.setBottom(null);
+        if (controller != null) controller.stopAndReset();
 
-    public static boolean isVisible() {
-        return visible;
-    }
-
-    public static SessionBarController getController() {
-        ensureLoaded();
-        return controller;
-    }
-
-    private static void detachFromParent() {
-        if (barRoot == null) return;
-
-        var parent = barRoot.getParent();
-
-        // Most common case: bar is in BorderPane.bottom
-        if (parent instanceof BorderPane bp) {
-            if (bp.getBottom() == barRoot) {
-                bp.setBottom(null);
-            }
-            return;
-        }
-
-        // Fallback: if someone put it into a Pane
-        if (parent instanceof Pane pane) {
-            pane.getChildren().remove(barRoot);
-        }
+        activeUserId = 0;
+        activeBookId = 0;
+        activeSessionId = 0;
+        activeCoverPath = null;
+        activeTotalPages = 0;
+        activeStartPage = 0;
     }
 
     private static void ensureLoaded() {
-        if (barRoot != null) return;
-
-        var url = SessionBarHost.class.getResource("/sk/upjs/paz/ui/sessionBar.fxml");
-        if (url == null) {
-            throw new IllegalStateException("Missing FXML: /fxml/sessionBar.fxml");
-        }
+        if (barNode != null && controller != null) return;
 
         try {
+            var url = SessionBarHost.class.getResource("/sk/upjs/paz/ui/sessionBar.fxml");
+            if (url == null) throw new IllegalStateException("Missing FXML: /sk/upjs/paz/ui/sessionBar.fxml");
+
             FXMLLoader loader = new FXMLLoader(url);
-            barRoot = loader.load();
+            barNode = loader.load();
             controller = loader.getController();
-        } catch (Exception e) {
+
+        } catch (IOException e) {
             throw new RuntimeException("Cannot load sessionBar.fxml", e);
         }
     }
+
+    public static long getActiveUserId() {
+        return activeUserId;
+    }
+
+    public static long getActiveBookId() {
+        return activeBookId;
+    }
+
+    public static long getActiveSessionId() {
+        return activeSessionId;
+    }
+
+    public static String getActiveTitle() {
+        return activeTitle;
+    }
+
+    public static String getActiveSubtitle() {
+        return activeSubtitle;
+    }
+
+    public static String getActiveStatus() {
+        return activeStatus;
+    }
+
+    public static String getActiveCoverPath() {
+        return activeCoverPath;
+    }
+
+    public static int getActiveTotalPages() {
+        return activeTotalPages;
+    }
+
+    public static int getActiveStartPage() {
+        return activeStartPage;
+    }
+
+    // Зручний overload без cover/сторінок (дефолти)
+    public static void show(BorderPane pageRoot,
+                            String title,
+                            String subtitle,
+                            String status,
+                            long userId,
+                            long bookId,
+                            long sessionId) {
+        show(pageRoot, title, subtitle, status, userId, bookId, sessionId, null, 0, 0);
+    }
+
 }

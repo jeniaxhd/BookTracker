@@ -43,11 +43,11 @@ public class ReadingSessionJdbcDao implements ReadingSessionDao {
         s.setDuration(rs.getInt("duration"));
         s.setEndPage(rs.getInt("endPage"));
 
-        Date lastDate = rs.getDate("lastTimeRead");
-        if (lastDate != null) {
-            LocalDate lastTimeRead = lastDate.toLocalDate();
-            s.setLastTimeRead(lastTimeRead);
+        Timestamp lastTs = rs.getTimestamp("lastTimeRead");
+        if (lastTs != null) {
+            s.setLastTimeRead(lastTs.toLocalDateTime());
         }
+
 
         long bookId = rs.getLong("book_id");
         Book book = new Book();
@@ -83,10 +83,11 @@ public class ReadingSessionJdbcDao implements ReadingSessionDao {
             ps.setInt(3, readingSession.getEndPage());
 
             if (readingSession.getLastTimeRead() != null) {
-                ps.setDate(4, Date.valueOf(readingSession.getLastTimeRead()));
+                ps.setTimestamp(4, Timestamp.valueOf(readingSession.getLastTimeRead()));
             } else {
-                ps.setNull(4, Types.DATE);
+                ps.setNull(4, Types.TIMESTAMP);
             }
+
 
             ps.setLong(5, readingSession.getBook().getId());
             ps.setLong(6, readingSession.getUser().getId());
@@ -116,10 +117,11 @@ public class ReadingSessionJdbcDao implements ReadingSessionDao {
             ps.setInt(3, readingSession.getEndPage());
 
             if (readingSession.getLastTimeRead() != null) {
-                ps.setDate(4, Date.valueOf(readingSession.getLastTimeRead()));
+                ps.setTimestamp(4, Timestamp.valueOf(readingSession.getLastTimeRead()));
             } else {
-                ps.setNull(4, Types.DATE);
+                ps.setNull(4, Types.TIMESTAMP);
             }
+
 
             ps.setLong(5, readingSession.getBook().getId());
             ps.setLong(6, readingSession.getUser().getId());

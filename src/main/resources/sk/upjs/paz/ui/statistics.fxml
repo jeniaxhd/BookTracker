@@ -5,11 +5,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
-
 <?import javafx.scene.image.ImageView?>
+
 <BorderPane fx:id="root"
-            prefHeight="800.0"
-            prefWidth="1200.0"
             xmlns="http://javafx.com/javafx/17.0.12"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="sk.upjs.paz.ui.StatisticsController"
@@ -22,26 +20,19 @@
               BorderPane.alignment="CENTER">
             <children>
 
-                <!-- Logo -->
-                <VBox spacing="10.0"
-                      styleClass="sidebar-header">
+                <VBox spacing="10.0" styleClass="sidebar-header">
                     <padding>
                         <Insets top="24" right="24" bottom="16" left="24"/>
                     </padding>
                     <children>
-                        <HBox alignment="CENTER_LEFT"
-                              spacing="10.0">
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
                             <children>
-                                <StackPane prefWidth="32.0"
-                                           prefHeight="32.0"
-                                           styleClass="sidebar-logo-circle">
+                                <StackPane prefWidth="32.0" prefHeight="32.0" styleClass="sidebar-logo-circle">
                                     <children>
-                                        <Label text="B"
-                                               styleClass="sidebar-logo-letter"/>
+                                        <Label text="B" styleClass="sidebar-logo-letter"/>
                                     </children>
                                 </StackPane>
-                                <Label text="BookTrack"
-                                       styleClass="sidebar-logo-text"/>
+                                <Label text="BookTrack" styleClass="sidebar-logo-text"/>
                             </children>
                         </HBox>
                     </children>
@@ -49,40 +40,28 @@
 
                 <Separator/>
 
-                <!-- Navigation -->
-                <VBox spacing="6.0"
-                      styleClass="sidebar-nav">
+                <VBox spacing="6.0" styleClass="sidebar-nav">
                     <padding>
                         <Insets top="16" right="16" bottom="16" left="16"/>
                     </padding>
                     <children>
-                        <ToggleButton fx:id="dashboardNavButton"
-                                      text="%nav.dashboard"
+                        <ToggleButton fx:id="dashboardNavButton" text="Dashboard"
                                       onAction="#onDashboardSelected"
                                       styleClass="sidebar-nav-button"/>
-                        <ToggleButton fx:id="libraryNavButton"
-                                      text="%nav.library"
+                        <ToggleButton fx:id="libraryNavButton" text="Library"
                                       onAction="#onLibrarySelected"
                                       styleClass="sidebar-nav-button"/>
-                        <ToggleButton fx:id="currentlyReadingNavButton"
-                                      text="%nav.currentlyReading"
+                        <ToggleButton fx:id="currentlyReadingNavButton" text="Currently Reading"
                                       onAction="#onCurrentlyReadingSelected"
                                       styleClass="sidebar-nav-button"/>
-                        <ToggleButton fx:id="statisticsNavButton"
-                                      text="%nav.statistics"
-                                      selected="true"
+                        <ToggleButton fx:id="statisticsNavButton" text="Statistics" selected="true"
                                       onAction="#onStatisticsSelected"
                                       styleClass="sidebar-nav-button,sidebar-nav-button--active"/>
-                        <ToggleButton fx:id="settingsNavButton"
-                                      text="%nav.settings"
-                                      onAction="#onSettingsSelected"
-                                      styleClass="sidebar-nav-button"/>
                     </children>
                 </VBox>
 
                 <Pane VBox.vgrow="ALWAYS"/>
 
-                <!-- User profile -->
                 <VBox styleClass="sidebar-user">
                     <padding>
                         <Insets top="8" right="16" bottom="24" left="16"/>
@@ -95,21 +74,15 @@
                             <graphic>
                                 <HBox alignment="CENTER_LEFT" spacing="10.0">
                                     <children>
-                                        <StackPane prefWidth="32.0"
-                                                   prefHeight="32.0"
-                                                   styleClass="sidebar-user-avatar">
+                                        <StackPane prefWidth="32.0" prefHeight="32.0" styleClass="sidebar-user-avatar">
                                             <children>
-                                                <Label text="S"
-                                                       styleClass="sidebar-user-initials"/>
+                                                <Label text="S" styleClass="sidebar-user-initials"/>
                                             </children>
                                         </StackPane>
                                         <VBox spacing="2.0">
                                             <children>
-                                                <Label fx:id="userNameLabel"
-                                                       text="Sarah Chen"
-                                                       styleClass="sidebar-user-name"/>
-                                                <Label text="%nav.viewProfile"
-                                                       styleClass="sidebar-user-subtitle"/>
+                                                <Label fx:id="userNameLabel" text="Sarah Chen" styleClass="sidebar-user-name"/>
+                                                <Label text="View profile" styleClass="sidebar-user-subtitle"/>
                                             </children>
                                         </VBox>
                                     </children>
@@ -125,8 +98,7 @@
 
     <!-- ========== MAIN AREA ========== -->
     <center>
-        <VBox
-              BorderPane.alignment="CENTER">
+        <VBox BorderPane.alignment="CENTER">
             <children>
 
                 <!-- HEADER -->
@@ -140,12 +112,9 @@
                             </padding>
 
                             <children>
-                                <!-- Title + subtitle -->
                                 <VBox spacing="4.0">
                                     <children>
-                                        <Label fx:id="headerTitleLabel"
-                                               text="%nav.statistics"
-                                               styleClass="header-title"/>
+                                        <Label fx:id="headerTitleLabel" text="Statistics" styleClass="header-title"/>
                                         <Label text="See how your reading habits evolve over time."
                                                wrapText="true"
                                                styleClass="header-subtitle"/>
@@ -154,9 +123,8 @@
 
                                 <Pane HBox.hgrow="ALWAYS"/>
 
-                                <!-- Time range + export -->
-                                <HBox spacing="8.0"
-                                      alignment="CENTER_RIGHT">
+                                <!-- (optional wrap-friendly) -->
+                                <FlowPane hgap="8.0" vgap="8.0" alignment="CENTER_RIGHT" prefWrapLength="420">
                                     <children>
                                         <ComboBox fx:id="timeRangeCombo"
                                                   prefWidth="140.0"
@@ -174,7 +142,6 @@
                                             </graphic>
                                         </Button>
 
-
                                         <ToggleButton fx:id="themeToggle"
                                                       onAction="#onToggleTheme"
                                                       styleClass="header-icon-button">
@@ -187,11 +154,11 @@
                                         </ToggleButton>
 
                                         <Button fx:id="exportButton"
-                                                text="%statistics.export_report"
+                                                text="Export report"
                                                 onAction="#onExportReport"
                                                 styleClass="header-primary-button"/>
                                     </children>
-                                </HBox>
+                                </FlowPane>
 
                             </children>
                         </HBox>
@@ -201,265 +168,184 @@
                 <!-- SCROLLABLE CONTENT -->
                 <ScrollPane fx:id="contentScrollPane"
                             fitToWidth="true"
+                            hbarPolicy="NEVER"
                             VBox.vgrow="ALWAYS">
                     <content>
-                        <VBox fx:id="contentRoot"
-                              spacing="24.0">
+                        <VBox fx:id="contentRoot" spacing="24.0">
                             <padding>
                                 <Insets top="24" right="32" bottom="32" left="32"/>
                             </padding>
                             <children>
 
-                                <!-- ROW 1: main chart + streak + year glance -->
-                                <HBox spacing="24.0">
-                                    <children>
+                                <!-- ROW 1: CHANGED HBox -> FlowPane (wrap on narrow) -->
+                                <FlowPane fx:id="row1Flow"
+                                          hgap="24.0"
+                                          vgap="24.0"
+                                          prefWrapLength="1000">
 
-                                        <!-- MAIN CHART CARD -->
-                                        <VBox spacing="16.0"
-                                              HBox.hgrow="ALWAYS"
-                                              styleClass="stat-card,stats-main">
-                                            <children>
+                                    <!-- MAIN CHART CARD -->
+                                    <VBox spacing="16.0"
+                                          prefWidth="720.0"
+                                          minWidth="320.0"
+                                          styleClass="stat-card,stats-main">
+                                        <children>
 
-                                                <HBox alignment="CENTER_LEFT"
-                                                      spacing="8.0">
-                                                    <children>
-                                                        <Label text="%statistics.pages_read_over_time"
-                                                               styleClass="section-title"/>
-                                                        <Label text="Last 30 days"
-                                                               styleClass="stat-subtitle"/>
-                                                    </children>
-                                                </HBox>
-
-                                                <StackPane prefHeight="260.0">
-                                                    <children>
-                                                        <Label text="%statistics.line_chart_placeholder"
-                                                               styleClass="stat-subtitle"/>
-                                                    </children>
-                                                </StackPane>
-
-                                                <HBox spacing="32.0">
-                                                    <children>
-
-                                                        <VBox spacing="4.0">
-                                                            <children>
-                                                                <Label text="%statistics.total_pages"
-                                                                       styleClass="stat-label"/>
-                                                                <Label text="1,240"
-                                                                       styleClass="stat-value"/>
-                                                            </children>
-                                                        </VBox>
-
-                                                        <VBox spacing="4.0">
-                                                            <children>
-                                                                <Label text="%statistics.average_per_day"
-                                                                       styleClass="stat-label"/>
-                                                                <Label text="42"
-                                                                       styleClass="stat-value"/>
-                                                            </children>
-                                                        </VBox>
-
-                                                        <VBox spacing="4.0">
-                                                            <children>
-                                                                <Label text="%statistics.best_day"
-                                                                       styleClass="stat-label"/>
-                                                                <Label text="120 pages"
-                                                                       styleClass="stat-value"/>
-                                                            </children>
-                                                        </VBox>
-
-                                                    </children>
-                                                </HBox>
-
-                                            </children>
-                                        </VBox>
-
-                                        <!-- RIGHT COLUMN -->
-                                        <VBox prefWidth="280.0"
-                                              spacing="16.0">
-
-                                            <!-- CURRENT STREAK -->
-                                            <VBox spacing="12.0"
-                                                  styleClass="stat-card">
+                                            <HBox alignment="CENTER_LEFT" spacing="8.0">
                                                 <children>
-                                                    <Label text="%statistics.current_streak"
-                                                           styleClass="section-title"/>
-
-                                                    <Label text="10 days"
-                                                           styleClass="stat-value"/>
-
-                                                    <Label text="Best streak: 21 days"
-                                                           styleClass="stat-subtitle"/>
-
-                                                    <GridPane hgap="6.0"
-                                                              vgap="6.0">
-                                                        <children>
-                                                            <!-- row 0 -->
-                                                            <Rectangle width="18.0" height="18.0"
-                                                                       GridPane.rowIndex="0"
-                                                                       GridPane.columnIndex="0"
-                                                                       styleClass="streak-day,streak-day--active"/>
-                                                            <Rectangle width="18.0" height="18.0"
-                                                                       GridPane.rowIndex="0"
-                                                                       GridPane.columnIndex="1"
-                                                                       styleClass="streak-day,streak-day--active"/>
-                                                            <Rectangle width="18.0" height="18.0"
-                                                                       GridPane.rowIndex="0"
-                                                                       GridPane.columnIndex="2"
-                                                                       styleClass="streak-day,streak-day--active"/>
-                                                            <Rectangle width="18.0" height="18.0"
-                                                                       GridPane.rowIndex="0"
-                                                                       GridPane.columnIndex="3"
-                                                                       styleClass="streak-day,streak-day--empty"/>
-                                                            <Rectangle width="18.0" height="18.0"
-                                                                       GridPane.rowIndex="0"
-                                                                       GridPane.columnIndex="4"
-                                                                       styleClass="streak-day,streak-day--active"/>
-
-                                                            <!-- row 1 -->
-                                                            <Rectangle width="18.0" height="18.0"
-                                                                       GridPane.rowIndex="1"
-                                                                       GridPane.columnIndex="0"
-                                                                       styleClass="streak-day,streak-day--active"/>
-                                                            <Rectangle width="18.0" height="18.0"
-                                                                       GridPane.rowIndex="1"
-                                                                       GridPane.columnIndex="1"
-                                                                       styleClass="streak-day,streak-day--active"/>
-                                                            <Rectangle width="18.0" height="18.0"
-                                                                       GridPane.rowIndex="1"
-                                                                       GridPane.columnIndex="2"
-                                                                       styleClass="streak-day,streak-day--active"/>
-                                                            <Rectangle width="18.0" height="18.0"
-                                                                       GridPane.rowIndex="1"
-                                                                       GridPane.columnIndex="3"
-                                                                       styleClass="streak-day,streak-day--active"/>
-                                                            <Rectangle width="18.0" height="18.0"
-                                                                       GridPane.rowIndex="1"
-                                                                       GridPane.columnIndex="4"
-                                                                       styleClass="streak-day,streak-day--active"/>
-
-                                                            <!-- row 2 -->
-                                                            <Rectangle width="18.0" height="18.0"
-                                                                       GridPane.rowIndex="2"
-                                                                       GridPane.columnIndex="0"
-                                                                       styleClass="streak-day,streak-day--empty"/>
-                                                            <Rectangle width="18.0" height="18.0"
-                                                                       GridPane.rowIndex="2"
-                                                                       GridPane.columnIndex="1"
-                                                                       styleClass="streak-day,streak-day--active"/>
-                                                            <Rectangle width="18.0" height="18.0"
-                                                                       GridPane.rowIndex="2"
-                                                                       GridPane.columnIndex="2"
-                                                                       styleClass="streak-day,streak-day--active"/>
-                                                            <Rectangle width="18.0" height="18.0"
-                                                                       GridPane.rowIndex="2"
-                                                                       GridPane.columnIndex="3"
-                                                                       styleClass="streak-day,streak-day--active"/>
-                                                            <Rectangle width="18.0" height="18.0"
-                                                                       GridPane.rowIndex="2"
-                                                                       GridPane.columnIndex="4"
-                                                                       styleClass="streak-day,streak-day--active"/>
-                                                        </children>
-                                                    </GridPane>
-
+                                                    <Label text="Pages read over time" styleClass="section-title"/>
+                                                    <Label text="Last 30 days" styleClass="stat-subtitle"/>
                                                 </children>
-                                            </VBox>
+                                            </HBox>
 
-                                            <!-- YEAR AT A GLANCE -->
-                                            <VBox spacing="12.0"
-                                                  styleClass="stat-card">
+                                            <StackPane prefHeight="260.0">
                                                 <children>
-                                                    <Label text="%statistics.this_year_at_a_glance"
-                                                           styleClass="section-title"/>
+                                                    <Label text="Line chart placeholder" styleClass="stat-subtitle"/>
+                                                </children>
+                                            </StackPane>
 
-                                                    <VBox spacing="8.0">
+                                            <!-- also can wrap if needed -->
+                                            <FlowPane hgap="32.0" vgap="12.0" prefWrapLength="720">
+                                                <children>
+
+                                                    <VBox spacing="4.0">
                                                         <children>
+                                                            <Label text="Total pages" styleClass="stat-label"/>
+                                                            <Label text="1,240" styleClass="stat-value"/>
+                                                        </children>
+                                                    </VBox>
 
-                                                            <HBox spacing="8.0"
-                                                                  alignment="CENTER_LEFT">
-                                                                <children>
-                                                                    <Label text="📚"
-                                                                           styleClass="stats-row-icon"/>
-                                                                    <Label text="%statistics.books_finished"
-                                                                           styleClass="stats-row-label"/>
-                                                                    <Pane HBox.hgrow="ALWAYS"/>
-                                                                    <Label text="24"
-                                                                           styleClass="stats-row-value"/>
-                                                                </children>
-                                                            </HBox>
+                                                    <VBox spacing="4.0">
+                                                        <children>
+                                                            <Label text="Average per day" styleClass="stat-label"/>
+                                                            <Label text="42" styleClass="stat-value"/>
+                                                        </children>
+                                                    </VBox>
 
-                                                            <HBox spacing="8.0"
-                                                                  alignment="CENTER_LEFT">
-                                                                <children>
-                                                                    <Label text="📄"
-                                                                           styleClass="stats-row-icon"/>
-                                                                    <Label text="%dashboard.pages_read"
-                                                                           styleClass="stats-row-label"/>
-                                                                    <Pane HBox.hgrow="ALWAYS"/>
-                                                                    <Label text="7,340"
-                                                                           styleClass="stats-row-value"/>
-                                                                </children>
-                                                            </HBox>
-
-                                                            <HBox spacing="8.0"
-                                                                  alignment="CENTER_LEFT">
-                                                                <children>
-                                                                    <Label text="📆"
-                                                                           styleClass="stats-row-icon"/>
-                                                                    <Label text="%statistics.active_reading_days"
-                                                                           styleClass="stats-row-label"/>
-                                                                    <Pane HBox.hgrow="ALWAYS"/>
-                                                                    <Label text="112"
-                                                                           styleClass="stats-row-value"/>
-                                                                </children>
-                                                            </HBox>
-
-                                                            <HBox spacing="8.0"
-                                                                  alignment="CENTER_LEFT">
-                                                                <children>
-                                                                    <Label text="⏱"
-                                                                           styleClass="stats-row-icon"/>
-                                                                    <Label text="%statistics.avg_session_length"
-                                                                           styleClass="stats-row-label"/>
-                                                                    <Pane HBox.hgrow="ALWAYS"/>
-                                                                    <Label text="32 min"
-                                                                           styleClass="stats-row-value"/>
-                                                                </children>
-                                                            </HBox>
-
+                                                    <VBox spacing="4.0">
+                                                        <children>
+                                                            <Label text="Best day" styleClass="stat-label"/>
+                                                            <Label text="120 pages" styleClass="stat-value"/>
                                                         </children>
                                                     </VBox>
 
                                                 </children>
-                                            </VBox>
+                                            </FlowPane>
 
-                                        </VBox>
+                                        </children>
+                                    </VBox>
 
-                                    </children>
-                                </HBox>
+                                    <!-- RIGHT COLUMN -->
+                                    <VBox prefWidth="280.0"
+                                          minWidth="260.0"
+                                          spacing="16.0">
 
-                                <!-- ROW 2: books per month -->
-                                <HBox spacing="24.0">
-                                    <children>
-                                        <VBox spacing="12.0"
-                                              HBox.hgrow="ALWAYS"
-                                              styleClass="stat-card">
+                                        <VBox spacing="12.0" styleClass="stat-card">
                                             <children>
-                                                <Label text="%statistics.books_finished_per_month"
-                                                       styleClass="section-title"/>
-                                                <Label text="This year: 24 books finished"
-                                                       styleClass="stat-subtitle"/>
+                                                <Label text="Current streak" styleClass="section-title"/>
+                                                <Label text="10 days" styleClass="stat-value"/>
+                                                <Label text="Best streak: 21 days" styleClass="stat-subtitle"/>
 
-                                                <StackPane prefHeight="220.0"
-                                                           styleClass="stats-bar-chart-placeholder">
+                                                <GridPane hgap="6.0" vgap="6.0">
                                                     <children>
-                                                        <Label text="%statistics.bar_chart_placeholder"
-                                                               styleClass="stat-subtitle"/>
+                                                        <Rectangle width="18.0" height="18.0" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                                                                   styleClass="streak-day,streak-day--active"/>
+                                                        <Rectangle width="18.0" height="18.0" GridPane.rowIndex="0" GridPane.columnIndex="1"
+                                                                   styleClass="streak-day,streak-day--active"/>
+                                                        <Rectangle width="18.0" height="18.0" GridPane.rowIndex="0" GridPane.columnIndex="2"
+                                                                   styleClass="streak-day,streak-day--active"/>
+                                                        <Rectangle width="18.0" height="18.0" GridPane.rowIndex="0" GridPane.columnIndex="3"
+                                                                   styleClass="streak-day,streak-day--empty"/>
+                                                        <Rectangle width="18.0" height="18.0" GridPane.rowIndex="0" GridPane.columnIndex="4"
+                                                                   styleClass="streak-day,streak-day--active"/>
+
+                                                        <Rectangle width="18.0" height="18.0" GridPane.rowIndex="1" GridPane.columnIndex="0"
+                                                                   styleClass="streak-day,streak-day--active"/>
+                                                        <Rectangle width="18.0" height="18.0" GridPane.rowIndex="1" GridPane.columnIndex="1"
+                                                                   styleClass="streak-day,streak-day--active"/>
+                                                        <Rectangle width="18.0" height="18.0" GridPane.rowIndex="1" GridPane.columnIndex="2"
+                                                                   styleClass="streak-day,streak-day--active"/>
+                                                        <Rectangle width="18.0" height="18.0" GridPane.rowIndex="1" GridPane.columnIndex="3"
+                                                                   styleClass="streak-day,streak-day--active"/>
+                                                        <Rectangle width="18.0" height="18.0" GridPane.rowIndex="1" GridPane.columnIndex="4"
+                                                                   styleClass="streak-day,streak-day--active"/>
+
+                                                        <Rectangle width="18.0" height="18.0" GridPane.rowIndex="2" GridPane.columnIndex="0"
+                                                                   styleClass="streak-day,streak-day--empty"/>
+                                                        <Rectangle width="18.0" height="18.0" GridPane.rowIndex="2" GridPane.columnIndex="1"
+                                                                   styleClass="streak-day,streak-day--active"/>
+                                                        <Rectangle width="18.0" height="18.0" GridPane.rowIndex="2" GridPane.columnIndex="2"
+                                                                   styleClass="streak-day,streak-day--active"/>
+                                                        <Rectangle width="18.0" height="18.0" GridPane.rowIndex="2" GridPane.columnIndex="3"
+                                                                   styleClass="streak-day,streak-day--active"/>
+                                                        <Rectangle width="18.0" height="18.0" GridPane.rowIndex="2" GridPane.columnIndex="4"
+                                                                   styleClass="streak-day,streak-day--active"/>
                                                     </children>
-                                                </StackPane>
+                                                </GridPane>
                                             </children>
                                         </VBox>
+
+                                        <VBox spacing="12.0" styleClass="stat-card">
+                                            <children>
+                                                <Label text="This year at a glance" styleClass="section-title"/>
+
+                                                <VBox spacing="8.0">
+                                                    <children>
+                                                        <HBox spacing="8.0" alignment="CENTER_LEFT">
+                                                            <children>
+                                                                <Label text="📚" styleClass="stats-row-icon"/>
+                                                                <Label text="Books finished" styleClass="stats-row-label"/>
+                                                                <Pane HBox.hgrow="ALWAYS"/>
+                                                                <Label text="24" styleClass="stats-row-value"/>
+                                                            </children>
+                                                        </HBox>
+
+                                                        <HBox spacing="8.0" alignment="CENTER_LEFT">
+                                                            <children>
+                                                                <Label text="📄" styleClass="stats-row-icon"/>
+                                                                <Label text="Pages read" styleClass="stats-row-label"/>
+                                                                <Pane HBox.hgrow="ALWAYS"/>
+                                                                <Label text="7,340" styleClass="stats-row-value"/>
+                                                            </children>
+                                                        </HBox>
+
+                                                        <HBox spacing="8.0" alignment="CENTER_LEFT">
+                                                            <children>
+                                                                <Label text="📆" styleClass="stats-row-icon"/>
+                                                                <Label text="Active reading days" styleClass="stats-row-label"/>
+                                                                <Pane HBox.hgrow="ALWAYS"/>
+                                                                <Label text="112" styleClass="stats-row-value"/>
+                                                            </children>
+                                                        </HBox>
+
+                                                        <HBox spacing="8.0" alignment="CENTER_LEFT">
+                                                            <children>
+                                                                <Label text="⏱" styleClass="stats-row-icon"/>
+                                                                <Label text="Avg session length" styleClass="stats-row-label"/>
+                                                                <Pane HBox.hgrow="ALWAYS"/>
+                                                                <Label text="32 min" styleClass="stats-row-value"/>
+                                                            </children>
+                                                        </HBox>
+                                                    </children>
+                                                </VBox>
+                                            </children>
+                                        </VBox>
+
+                                    </VBox>
+                                </FlowPane>
+
+                                <!-- ROW 2 -->
+                                <VBox spacing="12.0" styleClass="stat-card">
+                                    <children>
+                                        <Label text="Books finished per month" styleClass="section-title"/>
+                                        <Label text="This year: 24 books finished" styleClass="stat-subtitle"/>
+
+                                        <StackPane prefHeight="220.0" styleClass="stats-bar-chart-placeholder">
+                                            <children>
+                                                <Label text="Bar chart placeholder" styleClass="stat-subtitle"/>
+                                            </children>
+                                        </StackPane>
                                     </children>
-                                </HBox>
+                                </VBox>
 
                             </children>
                         </VBox>

@@ -1,26 +1,18 @@
 package sk.upjs.paz.ui;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import sk.upjs.paz.dao.DaoFactory;
-import sk.upjs.paz.dao.ReadingSessionDao;
-import sk.upjs.paz.entity.ReadingSession;
-import sk.upjs.paz.ui.i18n.I18N;
+import sk.upjs.paz.service.ServiceFactory;
 
 import java.io.IOException;
-import java.util.List;
 
 public class LibraryController {
 
@@ -38,8 +30,7 @@ public class LibraryController {
     private ToggleButton currentlyReadingNavButton;
     @FXML
     private ToggleButton statisticsNavButton;
-    @FXML
-    private ToggleButton settingsNavButton;
+
 
     // User profile
     @FXML
@@ -81,40 +72,41 @@ public class LibraryController {
 
     @FXML
     private void initialize() {
-        // Sidebar group
+        // Sidebar toggle group
         ToggleGroup navGroup = new ToggleGroup();
         dashboardNavButton.setToggleGroup(navGroup);
         libraryNavButton.setToggleGroup(navGroup);
         currentlyReadingNavButton.setToggleGroup(navGroup);
         statisticsNavButton.setToggleGroup(navGroup);
-        settingsNavButton.setToggleGroup(navGroup);
         libraryNavButton.setSelected(true);
 
-        if (headerTitleLabel != null) headerTitleLabel.setText("Library");
+        if (headerTitleLabel != null) {
+            headerTitleLabel.setText("Library");
+        }
 
         if (userNameLabel != null && AppState.getCurrentUser() != null) {
             userNameLabel.setText(AppState.getCurrentUser().getName());
         }
 
         // Load icons (safe)
-        moonIcon = load("/img/logoLight/moon.png");
-        sunIcon = load("/img/logoDark/sun.png");
+        moonIcon = load("/sk/upjs/paz/ui/img/logoLight/moon.png");
+        sunIcon = load("/sk/upjs/paz/ui/img/logoDark/sun.png");
 
-        filterLight = load("/img/logoLight/settings.png");
-        filterDark = load("/img/logoDark/settings.png");
 
-        // Apply theme + icons when scene is attached
+        // Apply theme when scene is attached
         root.sceneProperty().addListener((obs, oldScene, newScene) -> {
             if (newScene != null) {
                 ThemeManager.apply(newScene);
                 updateIconsForTheme();
             }
         });
+
         if (root.getScene() != null) {
             ThemeManager.apply(root.getScene());
             updateIconsForTheme();
         }
-        Platform.runLater(this::loadBooks);
+
+        loadBooks();
     }
 
     private Image load(String path) {
@@ -149,7 +141,6 @@ public class LibraryController {
 
     @FXML
     private void onLibrarySelected(ActionEvent event) {
-        // already here
         libraryNavButton.setSelected(true);
     }
 
@@ -163,32 +154,12 @@ public class LibraryController {
         SceneNavigator.showStatistics();
     }
 
-    @FXML
-    private void onSettingsSelected(ActionEvent event) {
-        SceneNavigator.showSettings();
-    }
-
     // ===== HEADER ACTIONS =====
 
     @FXML
     private void onAddBook(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sk/upjs/paz/ui/addBookModal.fxml"), I18N.getBundle());
-            Parent dialogRoot = loader.load();
-
-            Scene dialogScene = new Scene(dialogRoot);
-            ThemeManager.apply(dialogScene);
-
-            Stage dialogStage = new Stage();
-            dialogStage.setTitle("Add Book");
-            dialogStage.initModality(Modality.WINDOW_MODAL);
-            dialogStage.initOwner(root.getScene().getWindow());
-            dialogStage.setScene(dialogScene);
-            dialogStage.showAndWait();
-
-        } catch (IOException e) {
-            throw new RuntimeException("Cannot open addBookModal.fxml", e);
-        }
+        SceneNavigator.showAddBookModal(root.getScene().getWindow()); // Use navigator to inject services
+        loadBooks(); // Refresh after modal closes
     }
 
     @FXML
@@ -196,34 +167,38 @@ public class LibraryController {
         SceneNavigator.showUserProfile();
     }
 
-    @FXML
-    private void onTopSettings(ActionEvent event) {
-        SceneNavigator.showSettings();
-    }
 
-    private void loadBooks(){
-        var user = AppState.getCurrentUser();
-        if (user == null) {
-            Platform.runLater(SceneNavigator::showLogin);
-            return;
+    private void loadBooks() {
+        if (AppState.getCurrentUser() == null) {
+            return; // User is not logged in
         }
-        long userId = user.getId();
-        ReadingSessionDao dao = DaoFactory.INSTANCE.getReadingSessionDao();
-        List<ReadingSession> sessions = dao.getByUser(userId);
+
+        long userId = AppState.getCurrentUser().getId();
+
+        var userHasBookService = ServiceFactory.INSTANCE.getUserHasBookService();
+        var bookService = ServiceFactory.INSTANCE.getBookService();
+
+        var links = userHasBookService.listByUser(userId);
+
         allBooksContainer.getChildren().clear();
-        for (ReadingSession session : sessions) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sk/upjs/paz/ui/bookCardLibrary.fxml"), I18N.getBundle());
+
+        for (var link : links) {
+            var bookOpt = bookService.getById(link.bookId());
+            if (bookOpt.isEmpty()) {
+                continue; // Skip missing book records
+            }
+
+            var book = bookOpt.get();
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sk/upjs/paz/ui/cards/bookCardLibrary.fxml"));
             try {
-                Parent root = loader.load();
-
-                CardBookLibraryController controller = loader.getController();
-                controller.setData(session);
-                allBooksContainer.getChildren().add(root);
-
+                Parent cardRoot = loader.load();
+                BookCardLibraryController controller = loader.getController();
+                controller.setData(book, link.state());
+                allBooksContainer.getChildren().add(cardRoot);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-
         }
     }
 }

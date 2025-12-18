@@ -51,10 +51,10 @@ public class UserProfileController {
     @FXML
     private void initialize() {
         // load icons
-        bellLight = load("/img/logoLight/bell.png");
-        bellDark  = load("/img/logoDark/bell.png");
-        moonIcon  = load("/img/logoLight/moon.png");
-        sunIcon   = load("/img/logoDark/sun.png");
+        bellLight = load("/sk/upjs/paz/ui/img/logoLight/bell.png");
+        bellDark  = load("/sk/upjs/paz/ui/img/logoDark/bell.png");
+        moonIcon  = load("/sk/upjs/paz/ui/img/logoLight/moon.png");
+        sunIcon   = load("/sk/upjs/paz/ui/img/logoDark/sun.png");
 
         // apply theme when scene appears and refresh icons
         root.sceneProperty().addListener((obs, oldScene, newScene) -> {
@@ -191,6 +191,5 @@ public class UserProfileController {
     @FXML private void onLibrarySelected(ActionEvent e) { SceneNavigator.showLibrary(); }
     @FXML private void onCurrentlyReadingSelected(ActionEvent e) { SceneNavigator.showCurrentlyReading(); }
     @FXML private void onStatisticsSelected(ActionEvent e) { SceneNavigator.showStatistics(); }
-    @FXML private void onSettingsSelected(ActionEvent e) { SceneNavigator.showSettings(); }
     @FXML private void onUserProfile(ActionEvent e) { SceneNavigator.showUserProfile(); }
 }

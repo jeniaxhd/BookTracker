@@ -3,22 +3,15 @@
 <?import java.net.URL?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 
 <BorderPane fx:id="root"
-            prefWidth="720.0"
-            prefHeight="560.0"
             xmlns="http://javafx.com/javafx/17.0.12"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="sk.upjs.paz.ui.EndSessionController"
             styleClass="dashboard-root">
 
-    <!-- use main app styles -->
-    <stylesheets>
-        <URL value="@../../../../css/lightTheme.css"/>
-    </stylesheets>
-
-    <!-- TOP HEADER -->
     <top>
         <VBox styleClass="session-end-header">
             <padding>
@@ -29,9 +22,8 @@
                     <children>
                         <VBox spacing="4.0">
                             <children>
-                                <Label text="%endSession.end_reading_session"
-                                       styleClass="session-end-title"/>
-                                <Label text="%endSession.review_your_reading_and_save_this_session"
+                                <Label text="End reading session" styleClass="session-end-title"/>
+                                <Label text="Review your reading and save this session."
                                        wrapText="true"
                                        styleClass="session-end-subtitle"/>
                             </children>
@@ -39,228 +31,172 @@
 
                         <Pane HBox.hgrow="ALWAYS"/>
 
-                        <!-- Discard button (text only) -->
-                        <Button text="%endSession.discard"
+                        <Button text="Discard"
                                 onAction="#handleDiscard"
                                 styleClass="session-end-discard-button"/>
-
-                        <!-- Close icon (X) -->
-                        <Button text="✕"
-                                onAction="#handleClose"
-                                styleClass="header-icon-button"/>
                     </children>
                 </HBox>
             </children>
         </VBox>
     </top>
 
-    <!-- MAIN CONTENT -->
     <center>
-        <VBox spacing="16.0">
-            <padding>
-                <Insets top="0" right="24" bottom="16" left="24"/>
-            </padding>
-            <children>
-
-                <!-- Book summary card -->
-                <HBox spacing="12.0"
-                      alignment="CENTER_LEFT"
-                      styleClass="session-end-book-card">
+        <!-- CHANGED: make center scrollable for small window heights -->
+        <ScrollPane fx:id="contentScrollPane"
+                    fitToWidth="true"
+                    hbarPolicy="NEVER">
+            <content>
+                <VBox spacing="16.0">
+                    <padding>
+                        <Insets top="0" right="24" bottom="16" left="24"/>
+                    </padding>
                     <children>
-                        <StackPane prefWidth="48.0"
-                                   prefHeight="72.0"
-                                   styleClass="session-end-cover-placeholder"/>
-                        <VBox spacing="4.0">
-                            <children>
-                                <Label fx:id="bookTitleLabel"
-                                       text="Atomic Habits"
-                                       styleClass="session-end-book-title"/>
-                                <Label fx:id="bookMetaLabel"
-                                       text="James Clear · Productivity"
-                                       styleClass="session-end-book-meta"/>
 
-                                <HBox spacing="8.0">
+                        <HBox spacing="12.0"
+                              alignment="CENTER_LEFT"
+                              styleClass="session-end-book-card">
+                            <children>
+
+                                <StackPane prefWidth="48.0"
+                                           prefHeight="72.0"
+                                           styleClass="session-end-cover-placeholder">
                                     <children>
-                                        <Label fx:id="statusPill"
-                                               text="In Progress"
-                                               styleClass="session-status-pill"/>
-                                        <Label fx:id="currentPageLabel"
-                                               text="Current page: 187 / 320"
+                                        <ImageView fx:id="coverImageView"
+                                                   fitWidth="48.0"
+                                                   fitHeight="72.0"
+                                                   preserveRatio="false"/>
+                                    </children>
+                                </StackPane>
+
+                                <VBox spacing="4.0">
+                                    <children>
+                                        <Label fx:id="bookTitleLabel"
+                                               text="Book title"
+                                               styleClass="session-end-book-title"/>
+                                        <Label fx:id="bookMetaLabel"
+                                               text="Author · Genre"
                                                styleClass="session-end-book-meta"/>
-                                    </children>
-                                </HBox>
-                            </children>
-                        </VBox>
-                    </children>
-                </HBox>
 
-                <!-- GRID: time + notes + pages + feeling -->
-                <GridPane hgap="24.0" vgap="20.0">
-                    <columnConstraints>
-                        <ColumnConstraints percentWidth="50"/>
-                        <ColumnConstraints percentWidth="50"/>
-                    </columnConstraints>
-
-                    <!-- Session time -->
-                    <children>
-                        <VBox spacing="8.0"
-                              GridPane.rowIndex="0"
-                              GridPane.columnIndex="0">
-                            <children>
-                                <Label text="%endSession.session_time"
-                                       styleClass="session-end-section-title"/>
-
-                                <HBox spacing="12.0">
-                                    <children>
-                                        <VBox spacing="4.0">
+                                        <HBox spacing="8.0">
                                             <children>
-                                                <Label text="%endSession.start_time"
-                                                       styleClass="session-end-field-label"/>
-                                                <TextField fx:id="startTimeField"
-                                                           promptText="10:14"
-                                                           styleClass="text-field"/>
+                                                <Label fx:id="statusPill"
+                                                       text="READING"
+                                                       styleClass="session-status-pill"/>
+                                                <Label fx:id="currentPageLabel"
+                                                       text="Current page: 0"
+                                                       styleClass="session-end-book-meta"/>
                                             </children>
-                                        </VBox>
-
-                                        <VBox spacing="4.0">
-                                            <children>
-                                                <Label text="%endSession.duration_min"
-                                                       styleClass="session-end-field-label"/>
-                                                <TextField fx:id="durationField"
-                                                           promptText="32"
-                                                           styleClass="text-field"/>
-                                            </children>
-                                        </VBox>
-                                    </children>
-                                </HBox>
-
-                                <Label text="%endSession.you_can_adjust_the_duration_if_needed"
-                                       styleClass="session-end-helper-text"/>
-                            </children>
-                        </VBox>
-
-                        <!-- Session notes -->
-                        <VBox spacing="8.0"
-                              GridPane.rowIndex="0"
-                              GridPane.columnIndex="1">
-                            <children>
-                                <Label text="%endSession.session_notes_optional"
-                                       styleClass="session-end-section-title"/>
-                                <TextArea fx:id="notesArea"
-                                          promptText="%endSession.what_did_you_read_any_insights_quotes_or_thoughts"
-                                          prefRowCount="4"
-                                          wrapText="true"
-                                          styleClass="text-area"/>
-                            </children>
-                        </VBox>
-
-                        <!-- Pages -->
-                        <VBox spacing="8.0"
-                              GridPane.rowIndex="1"
-                              GridPane.columnIndex="0">
-                            <children>
-                                <Label text="%common.pages"
-                                       styleClass="session-end-section-title"/>
-                                <HBox spacing="12.0">
-                                    <children>
-                                        <VBox spacing="4.0">
-                                            <children>
-                                                <Label text="%endSession.start_page"
-                                                       styleClass="session-end-field-label"/>
-                                                <TextField fx:id="startPageField"
-                                                           promptText="164"
-                                                           styleClass="text-field"/>
-                                            </children>
-                                        </VBox>
-
-                                        <VBox spacing="4.0">
-                                            <children>
-                                                <Label text="%endSession.end_page"
-                                                       styleClass="session-end-field-label"/>
-                                                <TextField fx:id="endPageField"
-                                                           promptText="188"
-                                                           styleClass="text-field"/>
-                                            </children>
-                                        </VBox>
-                                    </children>
-                                </HBox>
-
-                                <HBox spacing="8.0" alignment="CENTER_LEFT">
-                                    <children>
-                                        <Label text="%dashboard.pages_read"
-                                               styleClass="session-end-helper-text"/>
-                                        <Label fx:id="pagesReadLabel"
-                                               text="24"
-                                               styleClass="session-end-pages-pill"/>
-                                    </children>
-                                </HBox>
-
-                                <Label text="%endSession.we_will_calculate_pages_read_from_these_values"
-                                       styleClass="session-end-helper-text"/>
-                            </children>
-                        </VBox>
-
-                        <!-- Feeling -->
-                        <VBox spacing="8.0"
-                              GridPane.rowIndex="1"
-                              GridPane.columnIndex="1">
-                            <children>
-                                <Label text="%endSession.how_did_this_session_feel"
-                                       styleClass="session-end-section-title"/>
-
-                                <FlowPane hgap="8.0" vgap="8.0">
-                                    <children>
-                                        <ToggleButton fx:id="deepFocusToggle"
-                                                      text="%endSession.deep_focus"
-                                                      selected="true"
-                                                      styleClass="session-feel-pill,session-feel-pill--active"/>
-                                        <ToggleButton fx:id="lightReadingToggle"
-                                                      text="%endSession.light_reading"
-                                                      styleClass="session-feel-pill"/>
-                                        <ToggleButton fx:id="studyToggle"
-                                                      text="%endSession.study"
-                                                      styleClass="session-feel-pill"/>
-                                        <ToggleButton fx:id="relaxToggle"
-                                                      text="%endSession.relax"
-                                                      styleClass="session-feel-pill"/>
-                                    </children>
-                                </FlowPane>
-
-                                <VBox spacing="6.0">
-                                    <children>
-                                        <CheckBox fx:id="countToGoalCheck"
-                                                  text="%endSession.count_toward_today_s_reading_goal"
-                                                  selected="true"/>
-                                        <CheckBox fx:id="markFinishedCheck"
-                                                  text="%endSession.mark_book_as_finished"/>
+                                        </HBox>
                                     </children>
                                 </VBox>
                             </children>
-                        </VBox>
-                    </children>
-                </GridPane>
+                        </HBox>
 
-            </children>
-        </VBox>
+                        <!-- Single-column layout -->
+                        <VBox spacing="20.0">
+
+                            <!-- Session time -->
+                            <VBox spacing="8.0">
+                                <children>
+                                    <Label text="Session time" styleClass="session-end-section-title"/>
+
+                                    <HBox spacing="12.0">
+                                        <children>
+                                            <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                                                <children>
+                                                    <Label text="Start time" styleClass="session-end-field-label"/>
+                                                    <TextField fx:id="startTimeField"
+                                                               maxWidth="Infinity"
+                                                               promptText="2025-12-18 00:43"
+                                                               styleClass="text-field"/>
+                                                </children>
+                                            </VBox>
+
+                                            <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                                                <children>
+                                                    <Label text="Duration (min)" styleClass="session-end-field-label"/>
+                                                    <TextField fx:id="durationField"
+                                                               maxWidth="Infinity"
+                                                               promptText="32"
+                                                               styleClass="text-field"/>
+                                                </children>
+                                            </VBox>
+                                        </children>
+                                    </HBox>
+
+                                    <Label text="You can adjust the duration if needed."
+                                           styleClass="session-end-helper-text"/>
+                                </children>
+                            </VBox>
+
+                            <!-- Pages -->
+                            <VBox spacing="8.0">
+                                <children>
+                                    <Label text="Pages" styleClass="session-end-section-title"/>
+
+                                    <HBox spacing="12.0">
+                                        <children>
+                                            <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                                                <children>
+                                                    <Label text="Start page" styleClass="session-end-field-label"/>
+                                                    <TextField fx:id="startPageField"
+                                                               maxWidth="Infinity"
+                                                               promptText="164"
+                                                               styleClass="text-field"/>
+                                                </children>
+                                            </VBox>
+
+                                            <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                                                <children>
+                                                    <Label text="End page" styleClass="session-end-field-label"/>
+                                                    <TextField fx:id="endPageField"
+                                                               maxWidth="Infinity"
+                                                               promptText="188"
+                                                               styleClass="text-field"/>
+                                                </children>
+                                            </VBox>
+                                        </children>
+                                    </HBox>
+
+                                    <HBox spacing="8.0" alignment="CENTER_LEFT">
+                                        <children>
+                                            <Label text="Pages read: " styleClass="session-end-helper-text"/>
+                                            <Label fx:id="pagesReadLabel"
+                                                   text="0"
+                                                   styleClass="session-end-pages-pill"/>
+                                        </children>
+                                    </HBox>
+
+                                    <Label text="We will calculate pages read from these values."
+                                           styleClass="session-end-helper-text"/>
+                                </children>
+                            </VBox>
+
+                        </VBox>
+
+                    </children>
+                </VBox>
+            </content>
+        </ScrollPane>
     </center>
 
-    <!-- BOTTOM BAR -->
     <bottom>
         <HBox alignment="CENTER_LEFT" spacing="12.0">
             <padding>
                 <Insets top="12" right="24" bottom="16" left="24"/>
             </padding>
             <children>
-                <Label text="%endSession.you_can_edit_this_session_later_in_statistics"
+                <Label text="You can edit this session later in Statistics."
+                       wrapText="true"
                        styleClass="session-end-helper-text"/>
 
                 <Pane HBox.hgrow="ALWAYS"/>
 
-                <Button text="%common.cancel"
+                <Button text="Cancel"
                         onAction="#handleCancel"
                         styleClass="session-end-cancel-button"/>
 
-                <Button text="%endSession.save_session"
+                <Button text="Save session"
                         onAction="#handleSave"
                         styleClass="header-primary-button"/>
             </children>

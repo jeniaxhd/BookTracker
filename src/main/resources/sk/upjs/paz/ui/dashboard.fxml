@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
@@ -9,8 +8,6 @@
 
 <BorderPane
         fx:id="root"
-        prefHeight="800.0"
-        prefWidth="1200.0"
         styleClass="dashboard-root"
         xmlns="http://javafx.com/javafx/17.0.12"
         xmlns:fx="http://javafx.com/fxml/1"
@@ -18,7 +15,7 @@
 
     <!-- LEFT: SIDEBAR -->
     <left>
-        <VBox prefWidth="240.0"
+        <VBox
               styleClass="sidebar"
               BorderPane.alignment="CENTER">
             <children>
@@ -57,25 +54,21 @@
                     </padding>
                     <children>
                         <ToggleButton fx:id="dashboardNavButton"
-                                      text="%nav.dashboard"
+                                      text="Dashboard"
                                       selected="true"
                                       onAction="#onDashboardSelected"
                                       styleClass="sidebar-nav-button,sidebar-nav-button--active"/>
                         <ToggleButton fx:id="libraryNavButton"
-                                      text="%nav.library"
+                                      text="Library"
                                       onAction="#onLibrarySelected"
                                       styleClass="sidebar-nav-button"/>
                         <ToggleButton fx:id="currentlyReadingNavButton"
-                                      text="%nav.currentlyReading"
+                                      text="Currently Reading"
                                       onAction="#onCurrentlyReadingSelected"
                                       styleClass="sidebar-nav-button"/>
                         <ToggleButton fx:id="statisticsNavButton"
-                                      text="%nav.statistics"
+                                      text="Statistics"
                                       onAction="#onStatisticsSelected"
-                                      styleClass="sidebar-nav-button"/>
-                        <ToggleButton fx:id="settingsNavButton"
-                                      text="%nav.settings"
-                                      onAction="#onSettingsSelected"
                                       styleClass="sidebar-nav-button"/>
                     </children>
                 </VBox>
@@ -109,7 +102,7 @@
                                                 <Label fx:id="userNameLabel"
                                                        text="Stano Krajci"
                                                        styleClass="sidebar-user-name"/>
-                                                <Label text="%nav.viewProfile"
+                                                <Label text="View profile"
                                                        styleClass="sidebar-user-subtitle"/>
                                             </children>
                                         </VBox>
@@ -125,13 +118,11 @@
 
     <!-- CENTER: MAIN AREA -->
     <center>
-        <VBox
-              BorderPane.alignment="CENTER">
+        <VBox BorderPane.alignment="CENTER">
             <children>
 
                 <!-- Header -->
-                <VBox
-                      styleClass="header">
+                <VBox styleClass="header">
                     <children>
                         <HBox alignment="CENTER_LEFT"
                               spacing="16.0"
@@ -146,9 +137,9 @@
                                 <VBox spacing="4.0">
                                     <children>
                                         <Label fx:id="headerTitleLabel"
-                                               text="%nav.dashboard"
+                                               text="Dashboard"
                                                styleClass="header-title"/>
-                                        <Label text="%dashboard.track_your_reading_progress_and_organize_your_book"
+                                        <Label text="Track your reading progress and organize your books."
                                                wrapText="true"
                                                styleClass="header-subtitle"/>
                                     </children>
@@ -157,8 +148,7 @@
                                 <Pane HBox.hgrow="ALWAYS"/>
 
                                 <!-- Right actions -->
-                                <HBox alignment="CENTER_RIGHT"
-                                      spacing="8.0">
+                                <HBox alignment="CENTER_RIGHT" spacing="8.0">
                                     <children>
 
                                         <Button fx:id="searchButton"
@@ -207,12 +197,11 @@
                                         </ToggleButton>
 
                                         <Button fx:id="addBookButton"
-                                                text="%common.addBook"
+                                                text="Add Book"
                                                 onAction="#onAddBook"
                                                 styleClass="header-primary-button">
                                             <graphic>
-                                                <Label text="+"
-                                                       styleClass="header-primary-icon"/>
+                                                <Label text="+" styleClass="header-primary-icon"/>
                                             </graphic>
                                         </Button>
                                     </children>
@@ -225,10 +214,10 @@
                 <!-- Scrollable content -->
                 <ScrollPane fx:id="contentScrollPane"
                             fitToWidth="true"
+                            hbarPolicy="NEVER"
                             VBox.vgrow="ALWAYS">
                     <content>
-                        <VBox fx:id="contentRoot"
-                              spacing="32.0">
+                        <VBox fx:id="contentRoot" spacing="32.0">
                             <padding>
                                 <Insets top="24" right="32" bottom="32" left="32"/>
                             </padding>
@@ -237,10 +226,13 @@
                                 <!-- Currently Reading section -->
                                 <VBox spacing="16.0">
                                     <children>
-                                        <Label text="%nav.currentlyReading"
+                                        <Label text="Currently Reading"
                                                styleClass="section-title"/>
-                                        <HBox
-                                              spacing="16.0">
+
+                                        <!-- CHANGED: HBox -> FlowPane (wraps on resize) -->
+                                        <FlowPane hgap="16.0"
+                                                  vgap="16.0"
+                                                  prefWrapLength="900">
                                             <children>
 
                                                 <!-- Example book card -->
@@ -271,8 +263,7 @@
                                                             <children>
                                                                 <ProgressBar progress="0.61"
                                                                              styleClass="book-progress-bar"/>
-                                                                <HBox alignment="CENTER_LEFT"
-                                                                      spacing="8.0">
+                                                                <HBox alignment="CENTER_LEFT" spacing="8.0">
                                                                     <children>
                                                                         <Label text="187 / 304 pages"
                                                                                styleClass="book-progress-text"/>
@@ -303,36 +294,34 @@
                                                 </VBox>
 
                                             </children>
-                                        </HBox>
+                                        </FlowPane>
                                     </children>
                                 </VBox>
 
-                                <!-- Bottom grid: Queue + Statistics -->
-                                <HBox spacing="24.0">
+                                <!-- Bottom area: Queue + Statistics -->
+                                <!-- CHANGED: HBox -> FlowPane so it stacks on narrow windows -->
+                                <FlowPane hgap="24.0"
+                                          vgap="24.0"
+                                          prefWrapLength="1000">
                                     <children>
 
                                         <!-- Reading queue -->
-                                        <VBox spacing="12.0"
-                                              HBox.hgrow="ALWAYS">
+                                        <VBox spacing="12.0" prefWidth="620.0">
                                             <children>
-                                                <Label text="%dashboard.reading_queue"
+                                                <Label text="Reading Queue"
                                                        styleClass="section-title"/>
-                                                <VBox fx:id="queueContainer"
-                                                      spacing="8.0">
+                                                <VBox fx:id="queueContainer" spacing="8.0">
 
-                                                    <!-- Queue item 1 -->
                                                     <HBox alignment="CENTER_LEFT"
                                                           spacing="12.0"
                                                           styleClass="queue-card">
                                                         <children>
-                                                            <Label text="☰"
-                                                                   styleClass="queue-drag-handle"/>
+                                                            <Label text="☰" styleClass="queue-drag-handle"/>
                                                             <VBox spacing="4.0">
                                                                 <children>
                                                                     <Label text="Thinking, Fast and Slow"
                                                                            styleClass="queue-title"/>
-                                                                    <HBox alignment="CENTER_LEFT"
-                                                                          spacing="8.0">
+                                                                    <HBox alignment="CENTER_LEFT" spacing="8.0">
                                                                         <children>
                                                                             <Label text="Psychology"
                                                                                    styleClass="queue-pill,queue-pill-psychology"/>
@@ -343,23 +332,19 @@
                                                                 </children>
                                                             </VBox>
                                                             <Pane HBox.hgrow="ALWAYS"/>
-
                                                         </children>
                                                     </HBox>
 
-                                                    <!-- Queue item 2 -->
                                                     <HBox alignment="CENTER_LEFT"
                                                           spacing="12.0"
                                                           styleClass="queue-card">
                                                         <children>
-                                                            <Label text="☰"
-                                                                   styleClass="queue-drag-handle"/>
+                                                            <Label text="☰" styleClass="queue-drag-handle"/>
                                                             <VBox spacing="4.0">
                                                                 <children>
                                                                     <Label text="The Power of Now"
                                                                            styleClass="queue-title"/>
-                                                                    <HBox alignment="CENTER_LEFT"
-                                                                          spacing="8.0">
+                                                                    <HBox alignment="CENTER_LEFT" spacing="8.0">
                                                                         <children>
                                                                             <Label text="Mindfulness"
                                                                                    styleClass="queue-pill,queue-pill-mindfulness"/>
@@ -375,137 +360,105 @@
                                             </children>
                                         </VBox>
 
-                                        <!-- Statistics column (compact, like reference) -->
-                                        <VBox prefWidth="260.0"
-                                              spacing="10.0">
+                                        <!-- Statistics column -->
+                                        <VBox prefWidth="260.0" spacing="10.0">
                                             <children>
-                                                <Label text="%nav.statistics"
-                                                       styleClass="section-title"/>
+                                                <Label text="Statistics" styleClass="section-title"/>
 
                                                 <VBox spacing="10.0">
                                                     <children>
 
-                                                        <!-- Books read -->
                                                         <HBox alignment="CENTER_LEFT"
                                                               spacing="10.0"
                                                               styleClass="stat-card">
                                                             <children>
-                                                                <StackPane prefWidth="32.0"
-                                                                           prefHeight="32.0"
-                                                                           minWidth="32.0"
-                                                                           maxWidth="32.0"
-                                                                           minHeight="32.0"
-                                                                           maxHeight="32.0"
+                                                                <StackPane prefWidth="32.0" prefHeight="32.0"
+                                                                           minWidth="32.0" maxWidth="32.0"
+                                                                           minHeight="32.0" maxHeight="32.0"
                                                                            styleClass="stat-icon,stat-icon-gold">
                                                                     <children>
-                                                                        <Label text="📚"
-                                                                               styleClass="stat-icon-emoji"/>
+                                                                        <Label text="📚" styleClass="stat-icon-emoji"/>
                                                                     </children>
                                                                 </StackPane>
 
                                                                 <VBox spacing="2.0">
                                                                     <children>
-                                                                        <Label text="%dashboard.books_read"
-                                                                               styleClass="stat-label"/>
+                                                                        <Label text="Books Read" styleClass="stat-label"/>
                                                                         <Label fx:id="booksReadValueLabel"
                                                                                text="24"
                                                                                styleClass="stat-value"/>
-                                                                        <Label text="%dashboard.this_year"
-                                                                               styleClass="stat-subtitle"/>
+                                                                        <Label text="This year" styleClass="stat-subtitle"/>
                                                                     </children>
                                                                 </VBox>
                                                             </children>
                                                         </HBox>
 
-                                                        <!-- In progress -->
                                                         <HBox alignment="CENTER_LEFT"
                                                               spacing="10.0"
                                                               styleClass="stat-card">
                                                             <children>
-                                                                <StackPane prefWidth="32.0"
-                                                                           prefHeight="32.0"
-                                                                           minWidth="32.0"
-                                                                           maxWidth="32.0"
-                                                                           minHeight="32.0"
-                                                                           maxHeight="32.0"
+                                                                <StackPane prefWidth="32.0" prefHeight="32.0"
+                                                                           minWidth="32.0" maxWidth="32.0"
+                                                                           minHeight="32.0" maxHeight="32.0"
                                                                            styleClass="stat-icon,stat-icon-blue">
                                                                     <children>
-                                                                        <Label text="📖"
-                                                                               styleClass="stat-icon-emoji"/>
+                                                                        <Label text="📖" styleClass="stat-icon-emoji"/>
                                                                     </children>
                                                                 </StackPane>
 
                                                                 <VBox spacing="2.0">
                                                                     <children>
-                                                                        <Label text="%status.inProgress"
-                                                                               styleClass="stat-label"/>
+                                                                        <Label text="In Progress" styleClass="stat-label"/>
                                                                         <Label fx:id="inProgressValueLabel"
                                                                                text="4"
                                                                                styleClass="stat-value"/>
-                                                                        <Label text="%nav.currentlyReading"
-                                                                               styleClass="stat-subtitle"/>
+                                                                        <Label text="Currently reading" styleClass="stat-subtitle"/>
                                                                     </children>
                                                                 </VBox>
                                                             </children>
                                                         </HBox>
 
-                                                        <!-- Pages read -->
                                                         <HBox alignment="CENTER_LEFT"
                                                               spacing="10.0"
                                                               styleClass="stat-card">
                                                             <children>
-                                                                <StackPane prefWidth="32.0"
-                                                                           prefHeight="32.0"
-                                                                           minWidth="32.0"
-                                                                           maxWidth="32.0"
-                                                                           minHeight="32.0"
-                                                                           maxHeight="32.0"
+                                                                <StackPane prefWidth="32.0" prefHeight="32.0"
+                                                                           minWidth="32.0" maxWidth="32.0"
+                                                                           minHeight="32.0" maxHeight="32.0"
                                                                            styleClass="stat-icon,stat-icon-green">
                                                                     <children>
-                                                                        <Label text="📄"
-                                                                               styleClass="stat-icon-emoji"/>
+                                                                        <Label text="📄" styleClass="stat-icon-emoji"/>
                                                                     </children>
                                                                 </StackPane>
 
                                                                 <VBox spacing="2.0">
                                                                     <children>
-                                                                        <Label text="%dashboard.pages_read"
-                                                                               styleClass="stat-label"/>
-                                                                        <Label text="8,432"
-                                                                               styleClass="stat-value"/>
-                                                                        <Label text="%dashboard.total"
-                                                                               styleClass="stat-subtitle"/>
+                                                                        <Label text="Pages Read" styleClass="stat-label"/>
+                                                                        <Label text="8,432" styleClass="stat-value"/>
+                                                                        <Label text="Total" styleClass="stat-subtitle"/>
                                                                     </children>
                                                                 </VBox>
                                                             </children>
                                                         </HBox>
 
-                                                        <!-- Reading streak -->
                                                         <HBox alignment="CENTER_LEFT"
                                                               spacing="10.0"
                                                               styleClass="stat-card">
                                                             <children>
-                                                                <StackPane prefWidth="32.0"
-                                                                           prefHeight="32.0"
-                                                                           minWidth="32.0"
-                                                                           maxWidth="32.0"
-                                                                           minHeight="32.0"
-                                                                           maxHeight="32.0"
+                                                                <StackPane prefWidth="32.0" prefHeight="32.0"
+                                                                           minWidth="32.0" maxWidth="32.0"
+                                                                           minHeight="32.0" maxHeight="32.0"
                                                                            styleClass="stat-icon,stat-icon-pink">
                                                                     <children>
-                                                                        <Label text="📈"
-                                                                               styleClass="stat-icon-emoji"/>
+                                                                        <Label text="📈" styleClass="stat-icon-emoji"/>
                                                                     </children>
                                                                 </StackPane>
 
                                                                 <VBox spacing="2.0">
                                                                     <children>
-                                                                        <Label text="%dashboard.reading_streak"
-                                                                               styleClass="stat-label"/>
-                                                                        <Label text="12"
-                                                                               styleClass="stat-value"/>
-                                                                        <Label text="%dashboard.days_in_a_row"
-                                                                               styleClass="stat-subtitle"/>
+                                                                        <Label text="Reading Streak" styleClass="stat-label"/>
+                                                                        <Label text="12" styleClass="stat-value"/>
+                                                                        <Label text="Days in a row" styleClass="stat-subtitle"/>
                                                                     </children>
                                                                 </VBox>
                                                             </children>
@@ -517,7 +470,7 @@
                                         </VBox>
 
                                     </children>
-                                </HBox>
+                                </FlowPane>
 
                             </children>
                         </VBox>

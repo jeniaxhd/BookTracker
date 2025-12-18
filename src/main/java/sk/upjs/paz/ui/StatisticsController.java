@@ -6,7 +6,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
 
 public class StatisticsController {
 
@@ -22,8 +21,7 @@ public class StatisticsController {
     private ToggleButton currentlyReadingNavButton;
     @FXML
     private ToggleButton statisticsNavButton;
-    @FXML
-    private ToggleButton settingsNavButton;
+
 
     // User
     @FXML
@@ -65,7 +63,7 @@ public class StatisticsController {
         libraryNavButton.setToggleGroup(navGroup);
         currentlyReadingNavButton.setToggleGroup(navGroup);
         statisticsNavButton.setToggleGroup(navGroup);
-        settingsNavButton.setToggleGroup(navGroup);
+
         statisticsNavButton.setSelected(true);
 
         // Header
@@ -83,10 +81,10 @@ public class StatisticsController {
         }
 
         // Icons (safe)
-        bellLight = load("/img/logoLight/bell.png");
-        bellDark = load("/img/logoDark/bell.png");
-        moonIcon = load("/img/logoLight/moon.png");
-        sunIcon = load("/img/logoDark/sun.png");
+        bellLight = load("/sk/upjs/paz/ui/img/logoLight/bell.png");
+        bellDark = load("/sk/upjs/paz/ui/img/logoDark/bell.png");
+        moonIcon = load("/sk/upjs/paz/ui/img/logoLight/moon.png");
+        sunIcon = load("/sk/upjs/paz/ui/img/logoDark/sun.png");
 
         // Apply theme when scene is attached + sync icons
         root.sceneProperty().addListener((obs, oldScene, newScene) -> {
@@ -143,11 +141,6 @@ public class StatisticsController {
     @FXML
     private void onStatisticsSelected(ActionEvent event) {
         statisticsNavButton.setSelected(true);
-    }
-
-    @FXML
-    private void onSettingsSelected(ActionEvent event) {
-        SceneNavigator.showSettings();
     }
 
     // ===== HEADER ACTIONS =====

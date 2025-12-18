@@ -214,9 +214,7 @@ public class BookServiceImpl implements BookService {
                 filter.getFromYear(),
                 filter.getToYear(),
                 filter.getFromPagesCount(),
-                filter.getToPagesCount(),
-                filter.getFromAverageRating(),
-                filter.getToAverageRating()
+                filter.getToPagesCount()
         );
 
         return books.stream()
@@ -242,7 +240,7 @@ public class BookServiceImpl implements BookService {
                                         b2.getYear() == null ? 0 : b2.getYear()
                                 );
                         case "pages" -> Integer.compare(b1.getPages(), b2.getPages());
-                        case "rating" -> Double.compare(b1.getAverageRating(), b2.getAverageRating());
+
                         default -> 0;
                     };
 
