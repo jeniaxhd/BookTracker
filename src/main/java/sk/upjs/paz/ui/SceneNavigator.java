@@ -268,13 +268,21 @@ public final class SceneNavigator {
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.initOwner(owner);
             dialogStage.setScene(dialogScene);
+
+            // ✅ prispôsobivý layout: вікно можна регулювати + гарні розміри
             dialogStage.setResizable(true);
+            dialogStage.setWidth(920);
+            dialogStage.setHeight(720);
+            dialogStage.setMinWidth(720);
+            dialogStage.setMinHeight(520);
+
             dialogStage.showAndWait();
 
         } catch (IOException e) {
             throw new RuntimeException("Cannot open bookDetailsModal.fxml", e);
         }
     }
+
 
     public static EndSessionController showEndSessionModal(
             Window owner,

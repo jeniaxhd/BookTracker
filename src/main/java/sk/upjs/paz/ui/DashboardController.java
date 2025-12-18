@@ -1,7 +1,10 @@
 package sk.upjs.paz.ui;
 
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -10,7 +13,17 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Window;
+import sk.upjs.paz.entity.Book;
+import sk.upjs.paz.entity.UserBookLink;
+import sk.upjs.paz.enums.BookState;
+import sk.upjs.paz.service.ServiceFactory;
+import sk.upjs.paz.service.UserHasBookService;
 
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class DashboardController {
@@ -24,6 +37,7 @@ public class DashboardController {
     @FXML private ToggleButton statisticsNavButton;
 
     // Header actions
+    @FXML private Button searchButton;
     @FXML private ToggleButton themeToggle;
     @FXML private Button addBookButton;
     @FXML private Button notificationsButton;
@@ -41,6 +55,8 @@ public class DashboardController {
     // Main content
     @FXML private ScrollPane contentScrollPane;
     @FXML private VBox contentRoot;
+
+    // IMPORTANT: must exist in FXML
     @FXML private FlowPane currentlyReadingContainer;
     @FXML private FlowPane bottomFlow;
 
@@ -59,8 +75,12 @@ public class DashboardController {
     private Image moonIcon;
     private Image sunIcon;
 
+    // Services
+    private final UserHasBookService userHasBookService = ServiceFactory.INSTANCE.getUserHasBookService();
+
     @FXML
     private void initialize() {
+        // English comments only:
         // Defensive: ensure UI is clickable
         root.setDisable(false);
         root.setMouseTransparent(false);
@@ -71,6 +91,10 @@ public class DashboardController {
         setupTheme();
         setupResponsiveWrapping();
         setupDemoStats();
+
+        // English comments only:
+        // Load real cards from DB
+        loadCurrentlyReadingCards();
     }
 
     private void setupNavToggleGroup() {
@@ -84,6 +108,7 @@ public class DashboardController {
     }
 
     private void setupUserHeader() {
+        // English comments only:
         // Do NOT override i18n headerTitleLabel here if it's set via FXML (%key).
         if (userNameLabel != null) {
             var user = AppState.getCurrentUser();
@@ -128,6 +153,7 @@ public class DashboardController {
     }
 
     private void setupDemoStats() {
+        // English comments only:
         // Replace later with real values from DB/service.
         if (booksReadValueLabel != null && isBlank(booksReadValueLabel.getText())) {
             booksReadValueLabel.setText("24");
@@ -168,7 +194,9 @@ public class DashboardController {
 
     @FXML
     private void onDashboardSelected(ActionEvent event) {
-        // already here
+        // English comments only:
+        // Already here
+        loadCurrentlyReadingCards();
     }
 
     @FXML
@@ -224,6 +252,198 @@ public class DashboardController {
 
         SceneNavigator.showAddBookModal(w);
     }
+
+    // ========== DB LOADING: Currently Reading cards ==========
+
+    private void loadCurrentlyReadingCards() {
+        if (currentlyReadingContainer == null) return;
+
+        if (AppState.getCurrentUser() == null) {
+            // English comments only:
+            // Not logged in -> clear cards
+            currentlyReadingContainer.getChildren().clear();
+            if (inProgressValueLabel != null) inProgressValueLabel.setText("0");
+            return;
+        }
+
+        long userId = AppState.getCurrentUser().getId();
+
+        Task<List<CardVm>> task = new Task<>() {
+            @Override
+            protected List<CardVm> call() {
+                // English comments only:
+                // Load links for the user and filter READING
+                List<UserBookLink> links = userHasBookService.listByUser(userId);
+
+                List<CardVm> result = new ArrayList<>();
+                for (UserBookLink link : links) {
+                    if (link.state() != BookState.READING) continue;
+
+                    // English comments only:
+                    // Resolve Book using reflection to avoid compile break on different APIs.
+                    Book book = resolveBookById(link.bookId());
+                    if (book == null) continue;
+
+                    // English comments only:
+                    // Progress can be wired later (e.g., from ReadingSession).
+                    int endPage = 0;
+                    int totalPages = 0;
+
+                    result.add(new CardVm(book, link.state(), endPage, totalPages));
+                }
+                return result;
+            }
+        };
+
+        task.setOnSucceeded(e -> {
+            List<CardVm> cards = task.getValue();
+            renderCurrentlyReadingCards(cards);
+
+            // English comments only:
+            // Update in-progress counter using loaded cards count
+            if (inProgressValueLabel != null) inProgressValueLabel.setText(String.valueOf(cards.size()));
+        });
+
+        task.setOnFailed(e -> {
+            Throwable ex = task.getException();
+            ex.printStackTrace();
+        });
+
+        Thread t = new Thread(task);
+        t.setDaemon(true);
+        t.start();
+    }
+
+    private void renderCurrentlyReadingCards(List<CardVm> cards) {
+        if (currentlyReadingContainer == null) return;
+
+        currentlyReadingContainer.getChildren().clear();
+
+        for (CardVm vm : cards) {
+            Node cardNode = loadActiveBookCard(vm);
+            if (cardNode != null) {
+                currentlyReadingContainer.getChildren().add(cardNode);
+            }
+        }
+    }
+
+    private Node loadActiveBookCard(CardVm vm) {
+        // English comments only:
+        // Loads existing card FXML and binds data via reflection to avoid coupling.
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sk/upjs/paz/ui/cards/activeBookCard.fxml"));
+            Node node = loader.load();
+
+            Object controller = loader.getController();
+            if (controller != null) {
+                bindToCardController(controller, vm);
+            }
+            return node;
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    private void bindToCardController(Object controller, CardVm vm) {
+        // English comments only:
+        // Try common method signatures in order. Ignore if not found.
+        invokeIfExists(controller, "setData",
+                new Class[]{Book.class, BookState.class, int.class, int.class},
+                new Object[]{vm.book(), vm.state(), vm.endPage(), vm.totalPages()});
+
+        invokeIfExists(controller, "setBook",
+                new Class[]{Book.class},
+                new Object[]{vm.book()});
+
+        invokeIfExists(controller, "setState",
+                new Class[]{BookState.class},
+                new Object[]{vm.state()});
+
+        invokeIfExists(controller, "setProgress",
+                new Class[]{int.class, int.class},
+                new Object[]{vm.endPage(), vm.totalPages()});
+
+        invokeIfExists(controller, "setEndPage",
+                new Class[]{int.class},
+                new Object[]{vm.endPage()});
+
+        invokeIfExists(controller, "setTotalPages",
+                new Class[]{int.class},
+                new Object[]{vm.totalPages()});
+    }
+
+    private void invokeIfExists(Object target, String methodName, Class<?>[] paramTypes, Object[] args) {
+        try {
+            Method m = target.getClass().getMethod(methodName, paramTypes);
+            m.invoke(target, args);
+        } catch (Exception ignored) {
+            // English comments only:
+            // Method not present or invocation failed -> safely ignore.
+        }
+    }
+
+    private Book resolveBookById(long bookId) {
+        // English comments only:
+        // Uses reflection against BookService instance to avoid compile-time dependency on method names.
+        Object bookService = null;
+        try {
+            bookService = ServiceFactory.INSTANCE.getBookService();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+
+        if (bookService == null) return null;
+
+        // Try: Book getById(long)
+        Book b = tryCallBookMethod(bookService, "getById", bookId);
+        if (b != null) return b;
+
+        // Try: Book get(long)
+        b = tryCallBookMethod(bookService, "get", bookId);
+        if (b != null) return b;
+
+        // Try: Optional<Book> findById(long)
+        b = tryCallOptionalBookMethod(bookService, "findById", bookId);
+        if (b != null) return b;
+
+        // Try: Optional<Book> getByIdOptional(long)
+        b = tryCallOptionalBookMethod(bookService, "getByIdOptional", bookId);
+        if (b != null) return b;
+
+        // Try: Book find(long)
+        b = tryCallBookMethod(bookService, "find", bookId);
+        return b;
+    }
+
+    private Book tryCallBookMethod(Object service, String methodName, long bookId) {
+        try {
+            Method m = service.getClass().getMethod(methodName, long.class);
+            Object res = m.invoke(service, bookId);
+            if (res instanceof Book book) {
+                return book;
+            }
+            return null;
+        } catch (Exception ignored) {
+            return null;
+        }
+    }
+
+    private Book tryCallOptionalBookMethod(Object service, String methodName, long bookId) {
+        try {
+            Method m = service.getClass().getMethod(methodName, long.class);
+            Object res = m.invoke(service, bookId);
+            if (res instanceof Optional<?> opt && opt.isPresent() && opt.get() instanceof Book book) {
+                return book;
+            }
+            return null;
+        } catch (Exception ignored) {
+            return null;
+        }
+    }
+
+    private record CardVm(Book book, BookState state, int endPage, int totalPages) {}
 
     // ========== Helpers ==========
 

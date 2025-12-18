@@ -76,8 +76,7 @@
                     <!-- CHANGED: HBox -> FlowPane so 2 columns wrap into 1 column on narrow width -->
                     <FlowPane fx:id="mainFlow"
                               hgap="32.0"
-                              vgap="24.0"
-                              prefWrapLength="760">
+                              vgap="24.0">
 
                         <!-- LEFT COLUMN: cover + quick meta -->
                         <VBox prefWidth="260.0"

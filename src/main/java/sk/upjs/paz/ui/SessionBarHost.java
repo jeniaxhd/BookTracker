@@ -87,6 +87,8 @@ public final class SessionBarHost {
             if (url == null) throw new IllegalStateException("Missing FXML: /sk/upjs/paz/ui/sessionBar.fxml");
 
             FXMLLoader loader = new FXMLLoader(url);
+            loader.setResources(sk.upjs.paz.ui.i18n.I18N.getBundle()); // <<< ВАЖЛИВО
+
             barNode = loader.load();
             controller = loader.getController();
 
@@ -94,6 +96,7 @@ public final class SessionBarHost {
             throw new RuntimeException("Cannot load sessionBar.fxml", e);
         }
     }
+
 
     public static long getActiveUserId() {
         return activeUserId;

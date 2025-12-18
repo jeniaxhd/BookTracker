@@ -16,8 +16,8 @@
     <!-- LEFT: SIDEBAR -->
     <left>
         <VBox
-              styleClass="sidebar"
-              BorderPane.alignment="CENTER">
+                styleClass="sidebar"
+                BorderPane.alignment="CENTER">
             <children>
 
                 <!-- Logo -->
@@ -300,9 +300,12 @@
 
                                 <!-- Bottom area: Queue + Statistics -->
                                 <!-- CHANGED: HBox -> FlowPane so it stacks on narrow windows -->
-                                <FlowPane hgap="24.0"
+                                <FlowPane fx:id="bottomFlow"
+                                          hgap="24.0"
                                           vgap="24.0"
                                           prefWrapLength="1000">
+
+
                                     <children>
 
                                         <!-- Reading queue -->
@@ -383,11 +386,13 @@
 
                                                                 <VBox spacing="2.0">
                                                                     <children>
-                                                                        <Label text="%dashboard.books_read" styleClass="stat-label"/>
+                                                                        <Label text="%dashboard.books_read"
+                                                                               styleClass="stat-label"/>
                                                                         <Label fx:id="booksReadValueLabel"
                                                                                text="24"
                                                                                styleClass="stat-value"/>
-                                                                        <Label text="%dashboard.this_year" styleClass="stat-subtitle"/>
+                                                                        <Label text="%dashboard.this_year"
+                                                                               styleClass="stat-subtitle"/>
                                                                     </children>
                                                                 </VBox>
                                                             </children>
@@ -408,11 +413,13 @@
 
                                                                 <VBox spacing="2.0">
                                                                     <children>
-                                                                        <Label text="%status.inProgress" styleClass="stat-label"/>
+                                                                        <Label text="%status.inProgress"
+                                                                               styleClass="stat-label"/>
                                                                         <Label fx:id="inProgressValueLabel"
                                                                                text="4"
                                                                                styleClass="stat-value"/>
-                                                                        <Label text="%status.currentlyReading" styleClass="stat-subtitle"/>
+                                                                        <Label text="%status.currentlyReading"
+                                                                               styleClass="stat-subtitle"/>
                                                                     </children>
                                                                 </VBox>
                                                             </children>
@@ -433,9 +440,11 @@
 
                                                                 <VBox spacing="2.0">
                                                                     <children>
-                                                                        <Label text="%dashboard.pages_read" styleClass="stat-label"/>
+                                                                        <Label text="%dashboard.pages_read"
+                                                                               styleClass="stat-label"/>
                                                                         <Label text="8,432" styleClass="stat-value"/>
-                                                                        <Label text="%dashboard.total" styleClass="stat-subtitle"/>
+                                                                        <Label text="%dashboard.total"
+                                                                               styleClass="stat-subtitle"/>
                                                                     </children>
                                                                 </VBox>
                                                             </children>
@@ -456,9 +465,11 @@
 
                                                                 <VBox spacing="2.0">
                                                                     <children>
-                                                                        <Label text="%dashboard.reading_streak" styleClass="stat-label"/>
+                                                                        <Label text="%dashboard.reading_streak"
+                                                                               styleClass="stat-label"/>
                                                                         <Label text="12" styleClass="stat-value"/>
-                                                                        <Label text="%dashboard.days_in_a_row" styleClass="stat-subtitle"/>
+                                                                        <Label text="%dashboard.days_in_a_row"
+                                                                               styleClass="stat-subtitle"/>
                                                                     </children>
                                                                 </VBox>
                                                             </children>
