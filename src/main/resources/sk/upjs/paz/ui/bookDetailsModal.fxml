@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 
 <BorderPane fx:id="root"
-            prefHeight="620.0"
-            prefWidth="820.0"
             xmlns="http://javafx.com/javafx/17.0.12"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="sk.upjs.paz.ui.BookDetailsModalController"
@@ -19,82 +17,87 @@
             <children>
                 <HBox alignment="CENTER_LEFT" spacing="16.0">
                     <padding>
-                        <Insets top="20" right="24" bottom="16" left="24" />
+                        <Insets top="20" right="24" bottom="16" left="24"/>
                     </padding>
                     <children>
 
-                        <!-- Title + subtitle -->
                         <VBox spacing="4.0">
                             <children>
                                 <Label fx:id="titleLabel"
-                                       styleClass="header-title"
-                                       text="Atomic Habits" />
+                                       styleClass="header-title"/>
                                 <Label fx:id="subtitleLabel"
                                        styleClass="header-subtitle"
-                                       text="%bookDetailsModal.book_details_and_metadata" />
+                                       text="Book details and metadata"/>
                             </children>
                         </VBox>
 
-                        <Pane HBox.hgrow="ALWAYS" />
+                        <Pane HBox.hgrow="ALWAYS"/>
 
-                        <!-- Header actions -->
-                        <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                        <!-- hidden actions -->
+                        <HBox alignment="CENTER_RIGHT"
+                              spacing="10.0"
+                              visible="false"
+                              managed="false">
                             <children>
-
-                                <Button fx:id="editBookButton"
-                                        text="%bookDetailsModal.edit_book"
-                                        mnemonicParsing="false"
-                                        styleClass="header-secondary-button"/>
-
                                 <Button fx:id="startSessionHeaderButton"
                                         minWidth="180.0"
                                         mnemonicParsing="false"
                                         onAction="#handleStartSession"
                                         styleClass="header-primary-button"
-                                        text="%bookDetailsModal.start_reading_session" />
-
+                                        text="Start reading session"/>
                                 <Button fx:id="closeIconButton"
                                         minWidth="36.0"
                                         onAction="#handleClose"
                                         styleClass="header-icon-button"
-                                        text="✕" />
+                                        text="✕"/>
                             </children>
                         </HBox>
 
                     </children>
                 </HBox>
 
-                <Separator />
+                <Separator/>
             </children>
         </VBox>
     </top>
 
     <!-- ========= MAIN CONTENT ========= -->
     <center>
-        <VBox spacing="24.0">
-            <padding>
-                <Insets top="24" right="32" bottom="24" left="32" />
-            </padding>
-            <children>
+        <!-- CHANGED: add ScrollPane so height resize never breaks layout -->
+        <ScrollPane fx:id="contentScrollPane"
+                    fitToWidth="true"
+                    hbarPolicy="NEVER">
+            <content>
+                <VBox spacing="24.0">
+                    <padding>
+                        <Insets top="24" right="32" bottom="24" left="32"/>
+                    </padding>
 
-                <!-- Two-column layout -->
-                <HBox spacing="32.0">
-                    <children>
+                    <!-- CHANGED: HBox -> FlowPane so 2 columns wrap into 1 column on narrow width -->
+                    <FlowPane fx:id="mainFlow"
+                              hgap="32.0"
+                              vgap="24.0"
+                              prefWrapLength="760">
 
-                        <!-- LEFT COLUMN: cover + meta -->
-                        <VBox prefWidth="260.0" spacing="16.0">
+                        <!-- LEFT COLUMN: cover + quick meta -->
+                        <VBox prefWidth="260.0"
+                              minWidth="240.0"
+                              spacing="16.0">
 
-                            <!-- Cover -->
                             <StackPane prefHeight="320.0"
                                        prefWidth="220.0"
                                        styleClass="book-detail-cover">
                                 <children>
-                                    <Label styleClass="book-detail-cover-placeholder"
-                                           text="%bookDetailsModal.book_cover" />
+                                    <ImageView fx:id="coverImageView"
+                                               fitWidth="220.0"
+                                               fitHeight="320.0"
+                                               preserveRatio="false"/>
+                                    <Label fx:id="coverPlaceholderLabel"
+                                           styleClass="book-detail-cover-placeholder"
+                                           text="Book Cover"/>
                                 </children>
                             </StackPane>
 
-                            <!-- Meta cards: year / language / pages -->
                             <FlowPane hgap="12.0" vgap="8.0">
                                 <children>
 
@@ -103,11 +106,10 @@
                                           spacing="4.0"
                                           styleClass="book-meta-card">
                                         <children>
-                                            <Label styleClass="book-meta-label"
-                                                   text="%common.year" />
+                                            <Label styleClass="book-meta-label" text="Year"/>
                                             <Label fx:id="yearLabel"
                                                    styleClass="book-meta-value"
-                                                   text="2020" />
+                                                   text="—"/>
                                         </children>
                                     </VBox>
 
@@ -116,131 +118,114 @@
                                           spacing="4.0"
                                           styleClass="book-meta-card">
                                         <children>
-                                            <Label styleClass="book-meta-label"
-                                                   text="%common.language" />
-                                            <Label fx:id="languageLabel"
-                                                   styleClass="book-meta-value"
-                                                   text="EN" />
-                                        </children>
-                                    </VBox>
-
-                                    <VBox alignment="CENTER"
-                                          prefWidth="80.0"
-                                          spacing="4.0"
-                                          styleClass="book-meta-card">
-                                        <children>
-                                            <Label styleClass="book-meta-label"
-                                                   text="%common.pages" />
+                                            <Label styleClass="book-meta-label" text="Pages"/>
                                             <Label fx:id="pagesLabel"
                                                    styleClass="book-meta-value"
-                                                   text="320" />
+                                                   text="—"/>
                                         </children>
                                     </VBox>
 
                                 </children>
                             </FlowPane>
 
-                            <!-- Genre + status pills -->
                             <HBox spacing="8.0">
                                 <children>
                                     <Label fx:id="genreLabel"
                                            styleClass="tag-pill"
-                                           text="Productivity" />
+                                           text="—"/>
                                     <Label fx:id="statusLabel"
                                            styleClass="status-pill--in-progress"
-                                           text="%status.inProgress" />
+                                           text="—"/>
                                 </children>
                             </HBox>
 
                         </VBox>
 
-                        <!-- RIGHT COLUMN: description + author -->
-                        <VBox spacing="24.0" VBox.vgrow="ALWAYS">
+                        <!-- RIGHT COLUMN: details -->
+                        <VBox prefWidth="520.0"
+                              minWidth="320.0"
+                              spacing="20.0">
 
-                            <!-- About this book -->
-                            <VBox spacing="8.0">
+                            <VBox spacing="6.0">
                                 <children>
-                                    <Label styleClass="section-title"
-                                           text="%bookDetailsModal.about_this_book" />
-
-                                    <Label fx:id="descriptionLabel"
-                                           maxWidth="420.0"
-                                           styleClass="book-detail-body-text"
-                                           text="An atomic habit is a regular practice or routine that is not only small and easy to do but is also the source of incredible power..."
-                                           wrapText="true" />
+                                    <Label fx:id="bookTitleBigLabel"
+                                           styleClass="book-title-big"/>
+                                    <HBox spacing="8.0" alignment="CENTER_LEFT">
+                                        <children>
+                                            <Label text="by" styleClass="muted"/>
+                                            <Label fx:id="bookAuthorBigLabel"
+                                                   styleClass="book-author-big"/>
+                                        </children>
+                                    </HBox>
                                 </children>
                             </VBox>
 
-                            <!-- About the author -->
-                            <VBox spacing="12.0">
+                            <Separator/>
+
+                            <VBox spacing="8.0">
                                 <children>
                                     <Label styleClass="section-title"
-                                           text="%bookDetailsModal.about_the_author" />
+                                           text="About this book"/>
 
-                                    <!-- author row -->
-                                    <HBox alignment="CENTER_LEFT"
-                                          spacing="12.0">
+                                    <!-- CHANGED: allow it to adapt -->
+                                    <Label fx:id="descriptionLabel"
+                                           maxWidth="Infinity"
+                                           styleClass="book-detail-body-text"
+                                           text=""
+                                           wrapText="true"/>
+                                </children>
+                            </VBox>
+
+                            <VBox spacing="10.0">
+                                <children>
+                                    <Label styleClass="section-title" text="Your review"/>
+
+                                    <TextArea fx:id="reviewArea"
+                                              promptText="Write a short review..."
+                                              prefRowCount="5"
+                                              wrapText="true"
+                                              styleClass="text-area"
+                                              maxWidth="Infinity"/>
+
+                                    <HBox alignment="CENTER_RIGHT">
                                         <children>
-                                            <!-- Avatar circle -->
-                                            <StackPane prefHeight="40.0"
-                                                       prefWidth="40.0"
-                                                       styleClass="author-avatar">
-                                                <children>
-                                                    <Label fx:id="authorInitialsLabel"
-                                                           styleClass="author-avatar-initials"
-                                                           text="JC" />
-                                                </children>
-                                            </StackPane>
-
-                                            <VBox spacing="4.0">
-                                                <children>
-                                                    <Label fx:id="authorNameLabel"
-                                                           styleClass="author-name"
-                                                           text="James Clear" />
-                                                    <Label fx:id="authorCountryLabel"
-                                                           styleClass="author-country-pill"
-                                                           text="United States" />
-                                                </children>
-                                            </VBox>
+                                            <Button fx:id="saveReviewButton"
+                                                    text="Save review"
+                                                    mnemonicParsing="false"
+                                                    onAction="#handleSaveReview"
+                                                    styleClass="header-secondary-button"/>
                                         </children>
                                     </HBox>
-
-                                    <!-- author bio -->
-                                    <Label fx:id="authorBioLabel"
-                                           maxWidth="440.0"
-                                           styleClass="book-detail-body-text"
-                                           text="James Clear is a writer and speaker focused on habits, decision making, and continuous improvement..."
-                                           wrapText="true" />
                                 </children>
                             </VBox>
 
                         </VBox>
 
-                    </children>
-                </HBox>
-
-            </children>
-        </VBox>
+                    </FlowPane>
+                </VBox>
+            </content>
+        </ScrollPane>
     </center>
 
     <!-- ========= FOOTER ========= -->
     <bottom>
         <VBox>
             <children>
-                <Separator />
+                <Separator/>
                 <HBox alignment="CENTER_LEFT" spacing="12.0">
                     <padding>
-                        <Insets top="12" right="24" bottom="16" left="24" />
+                        <Insets top="12" right="24" bottom="16" left="24"/>
                     </padding>
                     <children>
 
                         <Label styleClass="stat-subtitle"
-                               text="%bookDetailsModal.you_can_edit_this_information_later_from_your_libr" />
+                               wrapText="true"
+                               text="You can edit this information later from your Library."/>
 
-                        <Pane HBox.hgrow="ALWAYS" />
+                        <Pane HBox.hgrow="ALWAYS"/>
 
                         <Button fx:id="closeButton"
-                                text="%common.close"
+                                text="Close"
                                 mnemonicParsing="false"
                                 onAction="#handleClose"
                                 styleClass="header-secondary-button"/>
@@ -250,7 +235,7 @@
                                 mnemonicParsing="false"
                                 onAction="#handleStartSession"
                                 styleClass="header-primary-button"
-                                text="%bookDetailsModal.start_reading_session" />
+                                text="Start reading session"/>
 
                     </children>
                 </HBox>

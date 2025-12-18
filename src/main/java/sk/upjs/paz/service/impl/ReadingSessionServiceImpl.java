@@ -76,12 +76,18 @@ public class ReadingSessionServiceImpl implements ReadingSessionService {
         session.setStart(LocalDateTime.now());
         session.setDuration(0);
         session.setEndPage(startPage);
-        session.setLastTimeRead(LocalDate.now());
+        session.setLastTimeRead(LocalDateTime.now());
 
         readingSessionDao.add(session);
 
+        // Ensure generated id is present
+        if (session.getId() == null) {
+            throw new IllegalStateException("ReadingSession ID was not generated");
+        }
+
         return session;
     }
+
 
     @Override
     public void finishSession(Long sessionId,
@@ -100,13 +106,13 @@ public class ReadingSessionServiceImpl implements ReadingSessionService {
         if (finalState == null) {
             throw new IllegalArgumentException("finalState cannot be null");
         }
-        
+
         BookState previousState = session.getState();
 
         session.setEndPage(endPage);
         session.setDuration(durationMinutes);
         session.setState(finalState);
-        session.setLastTimeRead(LocalDate.now());
+        session.setLastTimeRead(LocalDateTime.now());
 
         readingSessionDao.update(session);
 

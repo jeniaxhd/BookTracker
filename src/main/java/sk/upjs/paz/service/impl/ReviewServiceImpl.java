@@ -23,7 +23,6 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public void update(Review review) {
-        validateReviewForUpdate(review);
         reviewDao.update(review);
     }
 
@@ -90,20 +89,7 @@ public class ReviewServiceImpl implements ReviewService {
             throw new IllegalArgumentException("User and its ID cannot be null");
         }
 
-        validateRating(review.getRating());
-        // comment може бути null, це ок
     }
 
-    private void validateReviewForUpdate(Review review) {
-        validateReviewForCreate(review); // всі ті самі перевірки
-        if (review.getId() == null) {
-            throw new IllegalArgumentException("Review ID cannot be null when updating");
-        }
-    }
 
-    private void validateRating(int rating) {
-        if (rating < 1 || rating > 10) {
-            throw new IllegalArgumentException("Rating must be between 1 and 10");
-        }
-    }
 }

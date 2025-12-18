@@ -13,12 +13,12 @@ public class ReadingSession {
     private LocalDateTime start;
     private int duration;
     private int endPage;
-    private LocalDate lastTimeRead;
+    private LocalDateTime lastTimeRead;
 
     public ReadingSession(){}
 
     public ReadingSession(Long id, Book book, User user, BookState state, LocalDateTime start,
-                          int duration, int endPage, LocalDate lastTimeRead){
+                          int duration, int endPage, LocalDateTime lastTimeRead){
         this.id = id;
         this.user = user;
         this.book = book;
@@ -29,14 +29,14 @@ public class ReadingSession {
         this.lastTimeRead = lastTimeRead;
     }
     public ReadingSession(Book book, User user, BookState state, LocalDateTime start,
-                          int duration, int endPage, LocalDate lastTimeRead){
+                          int duration, int endPage, LocalDateTime lastTimeRead){
         this.user = user;
         this.book = book;
         this.state = state;
         this.start = start;
         this.duration = duration;
         this.endPage = endPage;
-        this.lastTimeRead = lastTimeRead;
+        this.lastTimeRead=lastTimeRead;
     }
 
     public Long getId() {
@@ -78,11 +78,11 @@ public class ReadingSession {
         this.endPage = endPage;
     }
 
-    public LocalDate getLastTimeRead() {
+    public LocalDateTime getLastTimeRead() {
         return lastTimeRead;
     }
 
-    public void setLastTimeRead(LocalDate lastTimeRead) {
+    public void setLastTimeRead(LocalDateTime lastTimeRead) {
         this.lastTimeRead = lastTimeRead;
     }
 
@@ -117,6 +117,6 @@ public class ReadingSession {
             }
         }
 
-        this.lastTimeRead = LocalDate.now();
+        this.lastTimeRead = LocalDateTime.now();
     }
 }

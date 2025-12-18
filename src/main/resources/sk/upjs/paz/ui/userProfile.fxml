@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.net.URL?>
+<?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
+<?import java.lang.String?>
 
 <BorderPane fx:id="root"
-            prefWidth="1200.0"
-            prefHeight="760.0"
             xmlns="http://javafx.com/javafx/17.0.12"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="sk.upjs.paz.ui.UserProfileController"
             styleClass="dashboard-root">
 
-
     <!-- ===== SIDEBAR ===== -->
     <left>
-        <VBox styleClass="sidebar">
+        <VBox prefWidth="240.0"
+              styleClass="sidebar">
             <children>
 
-                <!-- Sidebar header (logo) -->
                 <HBox styleClass="sidebar-header" spacing="10.0" alignment="CENTER_LEFT">
                     <children>
                         <StackPane prefWidth="34.0" prefHeight="34.0" styleClass="sidebar-logo-circle">
@@ -32,39 +31,32 @@
                     </children>
                 </HBox>
 
-                <!-- Navigation -->
                 <VBox styleClass="sidebar-nav">
                     <children>
                         <ToggleButton fx:id="dashboardNavButton"
-                                      text="%nav.dashboard"
+                                      text="Dashboard"
                                       onAction="#onDashboardSelected"
                                       styleClass="sidebar-nav-button"/>
 
                         <ToggleButton fx:id="libraryNavButton"
-                                      text="%nav.library"
+                                      text="Library"
                                       onAction="#onLibrarySelected"
                                       styleClass="sidebar-nav-button"/>
 
                         <ToggleButton fx:id="currentlyReadingNavButton"
-                                      text="%nav.currentlyReading"
+                                      text="Currently reading"
                                       onAction="#onCurrentlyReadingSelected"
                                       styleClass="sidebar-nav-button"/>
 
                         <ToggleButton fx:id="statisticsNavButton"
-                                      text="%nav.statistics"
+                                      text="Statistics"
                                       onAction="#onStatisticsSelected"
-                                      styleClass="sidebar-nav-button"/>
-
-                        <ToggleButton fx:id="settingsNavButton"
-                                      text="%nav.settings"
-                                      onAction="#onSettingsSelected"
                                       styleClass="sidebar-nav-button"/>
                     </children>
                 </VBox>
 
                 <Pane VBox.vgrow="ALWAYS"/>
 
-                <!-- Sidebar user -->
                 <VBox styleClass="sidebar-user">
                     <children>
                         <Button fx:id="userProfileButton"
@@ -85,10 +77,10 @@
                                         <VBox spacing="2.0">
                                             <children>
                                                 <Label fx:id="userNameLabel"
-                                                       text="%userProfile.user_name"
+                                                       text="User Name"
                                                        styleClass="sidebar-user-name"/>
                                                 <Label fx:id="userSubtitleLabel"
-                                                       text="%nav.viewProfile"
+                                                       text="View profile"
                                                        styleClass="sidebar-user-subtitle"/>
                                             </children>
                                         </VBox>
@@ -116,33 +108,38 @@
                         <VBox spacing="4.0">
                             <children>
                                 <Label fx:id="headerTitleLabel"
-                                       text="%userProfile.profile"
+                                       text="Profile"
                                        styleClass="header-title"/>
                                 <Label fx:id="headerSubtitleLabel"
-                                       text="%userProfile.account_details"
+                                       text="Account details &amp; preferences"
                                        styleClass="header-subtitle"/>
                             </children>
                         </VBox>
 
                         <Pane HBox.hgrow="ALWAYS"/>
 
-                        <Button fx:id="notificationsButton"
-                                onAction="#onNotifications"
-                                styleClass="header-icon-button">
-                            <graphic>
-                                <ImageView fx:id="notificationsIcon"
-                                           fitWidth="18" fitHeight="18"
-                                           pickOnBounds="true" />
-                            </graphic>
-                        </Button>
+                        <!-- wrap-friendly actions -->
+                        <FlowPane hgap="8.0" vgap="8.0" alignment="CENTER_RIGHT" prefWrapLength="240">
+                            <children>
+                                <Button fx:id="notificationsButton"
+                                        onAction="#onNotifications"
+                                        styleClass="header-icon-button">
+                                    <graphic>
+                                        <ImageView fx:id="notificationsIcon"
+                                                   fitWidth="18" fitHeight="18"
+                                                   pickOnBounds="true"/>
+                                    </graphic>
+                                </Button>
 
-                        <ToggleButton fx:id="themeToggle"
-                                      onAction="#onToggleTheme"
-                                      styleClass="header-icon-button">
-                            <graphic>
-                                <ImageView fx:id="themeIcon" fitWidth="18" fitHeight="18" pickOnBounds="true"/>
-                            </graphic>
-                        </ToggleButton>
+                                <ToggleButton fx:id="themeToggle"
+                                              onAction="#onToggleTheme"
+                                              styleClass="header-icon-button">
+                                    <graphic>
+                                        <ImageView fx:id="themeIcon" fitWidth="18" fitHeight="18" pickOnBounds="true"/>
+                                    </graphic>
+                                </ToggleButton>
+                            </children>
+                        </FlowPane>
 
                     </children>
                 </HBox>
@@ -152,106 +149,163 @@
 
     <!-- ===== CONTENT ===== -->
     <center>
-        <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+        <ScrollPane fx:id="contentScrollPane"
+                    fitToWidth="true"
+                    hbarPolicy="NEVER"
+                    VBox.vgrow="ALWAYS"
+                    styleClass="scroll-pane">
             <content>
-                <VBox spacing="24.0">
+                <!-- CHANGED: center cards on big screens -->
+                <StackPane>
                     <padding>
                         <Insets top="24" right="24" bottom="24" left="24"/>
                     </padding>
 
                     <children>
+                        <VBox spacing="24.0" maxWidth="760.0">
 
-                        <!-- Single profile card -->
-                        <VBox spacing="14.0" styleClass="stat-card" maxWidth="760.0">
-                            <children>
+                            <!-- PROFILE CARD -->
+                            <VBox spacing="14.0" styleClass="stat-card">
+                                <children>
 
-                                <Label text="%nav.viewProfile" styleClass="section-title"/>
+                                    <Label text="Profile" styleClass="section-title"/>
 
-                                <HBox spacing="12.0" alignment="CENTER_LEFT">
-                                    <children>
-                                        <StackPane prefWidth="54.0" prefHeight="54.0" styleClass="settings-avatar-circle">
-                                            <children>
-                                                <Label fx:id="profileAvatarText"
-                                                       text="U"
-                                                       styleClass="settings-avatar-text"/>
-                                            </children>
-                                        </StackPane>
+                                    <HBox spacing="12.0" alignment="CENTER_LEFT">
+                                        <children>
+                                            <StackPane prefWidth="54.0" prefHeight="54.0"
+                                                       styleClass="settings-avatar-circle">
+                                                <children>
+                                                    <Label fx:id="profileAvatarText"
+                                                           text="U"
+                                                           styleClass="settings-avatar-text"/>
+                                                </children>
+                                            </StackPane>
 
-                                        <VBox spacing="4.0">
-                                            <children>
-                                                <Label fx:id="profileNameLabel"
-                                                       text="%userProfile.user"
-                                                       styleClass="settings-name"/>
-                                                <Label fx:id="profileMetaLabel"
-                                                       text=""
-                                                       styleClass="settings-helper"/>
-                                            </children>
-                                        </VBox>
-                                    </children>
-                                </HBox>
+                                            <VBox spacing="4.0">
+                                                <children>
+                                                    <Label fx:id="profileNameLabel"
+                                                           text="User"
+                                                           styleClass="settings-name"/>
+                                                    <Label fx:id="profileMetaLabel"
+                                                           text=""
+                                                           styleClass="settings-helper"/>
+                                                </children>
+                                            </VBox>
+                                        </children>
+                                    </HBox>
 
-                                <VBox spacing="6.0">
-                                    <children>
-                                        <Label text="%common.email" styleClass="settings-small-label"/>
-                                        <Label fx:id="emailValueLabel"
-                                               text="user@mail.com"
-                                               styleClass="settings-email-box"/>
-                                    </children>
-                                </VBox>
+                                    <VBox spacing="6.0">
+                                        <children>
+                                            <Label text="Email" styleClass="settings-small-label"/>
+                                            <Label fx:id="emailValueLabel"
+                                                   text="user@mail.com"
+                                                   styleClass="settings-email-box"/>
+                                        </children>
+                                    </VBox>
 
-                                <Separator/>
+                                    <Separator/>
 
-                                <!-- Edit box (hidden by default) -->
-                                <VBox fx:id="editBox" spacing="10.0" visible="false" managed="false">
-                                    <children>
-                                        <VBox spacing="6.0">
-                                            <children>
-                                                <Label text="%userProfile.name" styleClass="settings-small-label"/>
-                                                <TextField fx:id="nameEditField"
-                                                           promptText="%userProfile.your_name"
-                                                           styleClass="settings-number-field"/>
-                                            </children>
-                                        </VBox>
+                                    <VBox fx:id="editBox" spacing="10.0" visible="false" managed="false">
+                                        <children>
+                                            <VBox spacing="6.0">
+                                                <children>
+                                                    <Label text="Name" styleClass="settings-small-label"/>
+                                                    <TextField fx:id="nameEditField"
+                                                               maxWidth="Infinity"
+                                                               promptText="Your name"
+                                                               styleClass="settings-number-field"/>
+                                                </children>
+                                            </VBox>
 
-                                        <HBox spacing="10.0" alignment="CENTER_RIGHT">
-                                            <children>
-                                                <Button fx:id="cancelEditButton"
-                                                        text="%common.cancel"
-                                                        onAction="#onCancelEdit"
-                                                        styleClass="header-secondary-button"/>
-                                                <Button fx:id="saveProfileButton"
-                                                        text="%common.save"
-                                                        onAction="#onSaveProfile"
-                                                        styleClass="header-primary-button"/>
-                                            </children>
-                                        </HBox>
-                                    </children>
-                                </VBox>
+                                            <!-- wrap-friendly buttons -->
+                                            <FlowPane hgap="10.0" vgap="10.0" alignment="CENTER_RIGHT">
+                                                <children>
+                                                    <Button fx:id="cancelEditButton"
+                                                            text="Cancel"
+                                                            onAction="#onCancelEdit"
+                                                            styleClass="header-secondary-button"/>
+                                                    <Button fx:id="saveProfileButton"
+                                                            text="Save"
+                                                            onAction="#onSaveProfile"
+                                                            styleClass="header-primary-button"/>
+                                                </children>
+                                            </FlowPane>
+                                        </children>
+                                    </VBox>
 
-                                <VBox spacing="10.0">
-                                    <children>
-                                        <Label text="%userProfile.quick_actions" styleClass="settings-label"/>
+                                    <VBox spacing="10.0">
+                                        <children>
+                                            <Label text="Quick actions" styleClass="settings-label"/>
 
-                                        <HBox spacing="10.0">
-                                            <children>
-                                                <Button fx:id="editProfileButton"
-                                                        text="%userProfile.edit_profile"
-                                                        onAction="#onEditProfile"
-                                                        styleClass="settings-secondary-button"/>
-                                                <Button fx:id="logoutButton"
-                                                        text="%userProfile.log_out"
-                                                        onAction="#onLogout"
-                                                        styleClass="danger-text-button"/>
-                                            </children>
-                                        </HBox>
-                                    </children>
-                                </VBox>
+                                            <!-- CHANGED: HBox -> FlowPane (wrap on narrow) -->
+                                            <FlowPane hgap="10.0" vgap="10.0">
+                                                <children>
+                                                    <Button fx:id="editProfileButton"
+                                                            text="Edit profile"
+                                                            onAction="#onEditProfile"
+                                                            styleClass="settings-secondary-button"/>
+                                                    <Button fx:id="logoutButton"
+                                                            text="Log out"
+                                                            onAction="#onLogout"
+                                                            styleClass="danger-text-button"/>
+                                                </children>
+                                            </FlowPane>
+                                        </children>
+                                    </VBox>
 
-                            </children>
+                                </children>
+                            </VBox>
+
+                            <!-- PREFERENCES -->
+                            <VBox spacing="16.0" styleClass="stat-card">
+                                <children>
+
+                                    <Label text="Preferences" styleClass="section-title"/>
+
+                                    <VBox spacing="6.0">
+                                        <children>
+                                            <Label text="Interface language" styleClass="settings-label"/>
+                                            <ComboBox fx:id="interfaceLanguageCombo"
+                                                      maxWidth="Infinity"
+                                                      styleClass="settings-combobox">
+                                                <items>
+                                                    <FXCollections fx:factory="observableArrayList">
+                                                        <String fx:value="English"/>
+                                                        <String fx:value="Slovak"/>
+                                                    </FXCollections>
+                                                </items>
+                                            </ComboBox>
+
+                                            <Label wrapText="true"
+                                                   text="Only labels and messages are affected."
+                                                   styleClass="settings-helper"/>
+                                        </children>
+                                    </VBox>
+
+                                    <VBox spacing="6.0">
+                                        <children>
+                                            <Label text="Theme" styleClass="settings-label"/>
+
+                                            <!-- CHANGED: wrap-friendly segmented buttons -->
+                                            <FlowPane hgap="8.0" vgap="8.0">
+                                                <children>
+                                                    <ToggleButton fx:id="themeLightToggle"
+                                                                  text="Light"
+                                                                  styleClass="segmented-pill"/>
+                                                    <ToggleButton fx:id="themeDarkToggle"
+                                                                  text="Dark"
+                                                                  styleClass="segmented-pill"/>
+                                                </children>
+                                            </FlowPane>
+                                        </children>
+                                    </VBox>
+
+                                </children>
+                            </VBox>
+
                         </VBox>
-
                     </children>
-                </VBox>
+                </StackPane>
             </content>
         </ScrollPane>
     </center>

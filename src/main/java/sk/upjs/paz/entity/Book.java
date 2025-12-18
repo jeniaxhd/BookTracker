@@ -8,7 +8,6 @@ public class Book {
     private String title;
     private String description;
     private List<Author> authors;
-    private double averageRating;
     private List<Genre> genres = new ArrayList<>();
     private Integer year;
     private int pages;
@@ -17,7 +16,7 @@ public class Book {
     public Book() {
     }
 
-    public Book(Long id, String title, List<Author> authors, List<Genre> genre, int year, int pages, String coverPath, int averageRating, String description, String language) {
+    public Book(Long id, String title, List<Author> authors, List<Genre> genre, int year, int pages, String coverPath, String description, String language) {
         this.id = id;
         this.title = title;
         this.authors = authors;
@@ -26,7 +25,6 @@ public class Book {
         this.pages = pages;
         this.coverPath = coverPath;
         this.description = description;
-        this.averageRating = averageRating;
     }
 
     public Book(String title, List<Author> authors, List<Genre> genre, int year, int pages, String coverPath, String description, String language) {
@@ -37,7 +35,6 @@ public class Book {
         this.pages = pages;
         this.coverPath = coverPath;
         this.description = description;
-        this.averageRating = 0.0;
     }
 
     public Long getId() {
@@ -115,7 +112,7 @@ public class Book {
         }
 
         return "[" + title + " by " + authorNames + " " + year + " Description: " + description +
-                " with average rating: " + averageRating + " in genres: " + getGenre().toString() +
+                " in genres: " + getGenre().toString() +
                 " pages: " + pages + "]";
     }
 
@@ -127,13 +124,6 @@ public class Book {
         this.coverPath = coverPath;
     }
 
-    public double getAverageRating() {
-        return averageRating;
-    }
-
-    public void setAverageRating(double averageRating) {
-        this.averageRating = averageRating;
-    }
 
 }
 

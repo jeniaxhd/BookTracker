@@ -44,8 +44,6 @@ public class BookJdbcDao implements BookDao {
         b.setPages(rs.getInt("pages"));
         b.setCoverPath(rs.getString("cover_path"));
 
-        double avg = loadAverageRating(b.getId());
-        b.setAverageRating(avg);
 
         List<Genre> genres = loadGenresForBook(b.getId());
         b.setGenre(genres);
@@ -173,14 +171,6 @@ public class BookJdbcDao implements BookDao {
         });
     }
 
-    private double loadAverageRating(long bookId) {
-        Double v = jdbcTemplate.queryForObject(
-                "SELECT AVG(rating) FROM review WHERE book_id = ?",
-                Double.class,
-                bookId
-        );
-        return v == null ? 0.0 : v;
-    }
 
     private List<Genre> loadGenresForBook(long bookId) {
         String sql = "SELECT g.id, g.name " +
@@ -282,6 +272,11 @@ public class BookJdbcDao implements BookDao {
     }
 
     @Override
+    public List<Book> findByFilter(Integer yearFrom, Integer yearTo, Integer pagesFrom, Integer pagesTo) {
+        return List.of();
+    }
+
+    @Override
     public List<Book> findByFilter(Integer yearFrom,
                                    Integer yearTo,
                                    Integer pagesFrom,
@@ -316,14 +311,7 @@ public class BookJdbcDao implements BookDao {
 
         List<Book> books = jdbcTemplate.query(sb.toString(), mapper, params.toArray());
 
-        if (ratingFrom != null || ratingTo != null) {
-            books.removeIf(b -> {
-                double r = b.getAverageRating();
-                if (ratingFrom != null && r < ratingFrom) return true;
-                if (ratingTo != null && r > ratingTo) return true;
-                return false;
-            });
-        }
+
 
         return books;
     }

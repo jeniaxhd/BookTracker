@@ -28,7 +28,6 @@ public class ReviewJdbcDao implements ReviewDao {
     private final RowMapper<Review> mapper = (rs, rowNum) -> {
         Review r = new Review();
         r.setId(rs.getLong("id"));
-        r.setRating(rs.getInt("rating"));
         r.setComment(rs.getString("comment"));
 
         Timestamp ts = rs.getTimestamp("createdAt");
@@ -62,7 +61,6 @@ public class ReviewJdbcDao implements ReviewDao {
 
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, review.getRating());
             ps.setString(2, review.getComment());
             ps.setTimestamp(3, Timestamp.valueOf(finalCreated));
             ps.setLong(4, review.getBook().getId());
@@ -78,8 +76,7 @@ public class ReviewJdbcDao implements ReviewDao {
     @Override
     public void update(Review review) {
         jdbcTemplate.update(
-                "UPDATE review SET rating = ?, comment = ? WHERE id = ?",
-                review.getRating(),
+                "UPDATE review SET  comment = ? WHERE id = ?",
                 review.getComment(),
                 review.getId()
         );

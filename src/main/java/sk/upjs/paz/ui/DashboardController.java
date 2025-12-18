@@ -27,8 +27,7 @@ public class DashboardController {
     @FXML
     private ToggleButton statisticsNavButton;
 
-    @FXML
-    private ToggleButton settingsNavButton;
+
 
     // Header actions
     @FXML
@@ -37,8 +36,7 @@ public class DashboardController {
     @FXML
     private Button addBookButton;
 
-    @FXML
-    private Button searchButton;
+
 
     @FXML
     private Button notificationsButton;
@@ -103,7 +101,7 @@ public class DashboardController {
         libraryNavButton.setToggleGroup(navGroup);
         currentlyReadingNavButton.setToggleGroup(navGroup);
         statisticsNavButton.setToggleGroup(navGroup);
-        settingsNavButton.setToggleGroup(navGroup);
+
         dashboardNavButton.setSelected(true);
 
         if (headerTitleLabel != null) {
@@ -114,12 +112,12 @@ public class DashboardController {
         }
 
         // Load icon images
-        searchLight = load("/img/logoLight/search.png");
-        searchDark = load("/img/logoDark/search.png");
-        bellLight = load("/img/logoLight/bell.png");
-        bellDark = load("/img/logoDark/bell.png");
-        moonIcon = load("/img/logoLight/moon.png");
-        sunIcon = load("/img/logoDark/sun.png");
+        searchLight = load("/sk/upjs/paz/ui/img/logoLight/search.png");
+        searchDark = load("/sk/upjs/paz/ui/img/logoDark/search.png");
+        bellLight = load("/sk/upjs/paz/ui/img/logoLight/bell.png");
+        bellDark = load("/sk/upjs/paz/ui/img/logoDark/bell.png");
+        moonIcon = load("/sk/upjs/paz/ui/img/logoLight/moon.png");
+        sunIcon = load("/sk/upjs/paz/ui/img/logoDark/sun.png");
 
         // Apply theme when scene becomes available
         root.sceneProperty().addListener((obs, oldScene, newScene) -> {
@@ -204,10 +202,6 @@ public class DashboardController {
         SceneNavigator.showStatistics();
     }
 
-    @FXML
-    private void onSettingsSelected(ActionEvent event) {
-        SceneNavigator.showSettings();
-    }
 
     // ========== HEADER BUTTONS ==========
 

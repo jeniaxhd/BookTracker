@@ -5,18 +5,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import sk.upjs.paz.ui.dto.ActiveBookCard;
 import sk.upjs.paz.service.CurrentlyReadingService;
-import sk.upjs.paz.ui.i18n.I18N;
+import sk.upjs.paz.ui.dto.ActiveBookCard;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,7 +26,7 @@ public class CurrentlyReadingController {
     @FXML private ToggleButton libraryNavButton;
     @FXML private ToggleButton currentlyReadingNavButton;
     @FXML private ToggleButton statisticsNavButton;
-    @FXML private ToggleButton settingsNavButton;
+
 
     // User / header
     @FXML private Button userProfileButton;
@@ -39,21 +34,20 @@ public class CurrentlyReadingController {
     @FXML private Label headerTitleLabel;
 
     // Header actions
-    @FXML private Button searchButton;
-    @FXML private Button settingsButton;
+
     @FXML private ToggleButton themeToggle;
     @FXML private Button startSessionButton;
 
     // Header icons
     @FXML private ImageView searchIcon;
-    @FXML private ImageView settingsIcon;
+
     @FXML private ImageView themeIcon;
 
     // Content
     @FXML private ScrollPane contentScrollPane;
     @FXML private VBox contentRoot;
 
-    // IMPORTANT: container for cards (add this in FXML)
+    // Container for cards
     @FXML private VBox cardsBox;
 
     private CurrentlyReadingService currentlyReadingService;
@@ -61,7 +55,7 @@ public class CurrentlyReadingController {
 
     // Icons
     private Image searchLight, searchDark;
-    private Image settingsLight, settingsDark;
+
     private Image moonIcon, sunIcon;
 
     public void setCurrentlyReadingService(CurrentlyReadingService s) {
@@ -76,7 +70,7 @@ public class CurrentlyReadingController {
         if (libraryNavButton != null) libraryNavButton.setToggleGroup(navGroup);
         if (currentlyReadingNavButton != null) currentlyReadingNavButton.setToggleGroup(navGroup);
         if (statisticsNavButton != null) statisticsNavButton.setToggleGroup(navGroup);
-        if (settingsNavButton != null) settingsNavButton.setToggleGroup(navGroup);
+
 
         if (currentlyReadingNavButton != null) currentlyReadingNavButton.setSelected(true);
         if (headerTitleLabel != null) headerTitleLabel.setText("Currently Reading");
@@ -85,12 +79,10 @@ public class CurrentlyReadingController {
             userNameLabel.setText(AppState.getCurrentUser().getName());
         }
 
-        searchLight = load("/img/logoLight/search.png");
-        searchDark = load("/img/logoDark/search.png");
-        settingsLight = load("/img/logoLight/settings.png");
-        settingsDark = load("/img/logoDark/settings.png");
-        moonIcon = load("/img/logoLight/moon.png");
-        sunIcon = load("/img/logoDark/sun.png");
+        searchLight = load("/sk/upjs/paz/ui/img/logoLight/search.png");
+        searchDark = load("/sk/upjs/paz/ui/img/logoDark/search.png");
+        moonIcon = load("/sk/upjs/paz/ui/img/logoLight/moon.png");
+        sunIcon = load("/sk/upjs/paz/ui/img/logoDark/sun.png");
 
         root.sceneProperty().addListener((obs, oldScene, newScene) -> {
             if (newScene != null) {
@@ -103,6 +95,17 @@ public class CurrentlyReadingController {
             ThemeManager.apply(root.getScene());
             updateIconsForTheme();
         }
+
+        // If service was not injected via SceneNavigator, try lazy fallback
+        if (currentlyReadingService == null) {
+            try {
+                currentlyReadingService = sk.upjs.paz.service.ServiceFactory.INSTANCE.getCurrentlyReadingService();
+            } catch (Exception ignored) {
+                // Service may not exist yet; controller can still work if injected later
+            }
+        }
+
+        refresh();
     }
 
     public void refresh() {
@@ -129,7 +132,9 @@ public class CurrentlyReadingController {
             renderCards(cachedCards);
         });
 
-        task.setOnFailed(e -> task.getException().printStackTrace());
+        task.setOnFailed(e -> {
+            if (task.getException() != null) task.getException().printStackTrace();
+        });
 
         Thread t = new Thread(task);
         t.setDaemon(true);
@@ -145,27 +150,53 @@ public class CurrentlyReadingController {
 
     private Node loadCard(ActiveBookCard card) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sk/upjs/paz/ui/activeBookCard.fxml"),  I18N.getBundle());
-            Parent root = loader.load();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sk/upjs/paz/ui/cards/activeBookCard.fxml"));
+            Node node = loader.load();
 
             ActiveBookCardController c = loader.getController();
             c.setData(card);
             c.setOnContinue(this::startSessionForCard);
             c.setOnDetails(this::openBookDetailsForCard);
 
-            return root;
+            return node;
         } catch (IOException ex) {
             throw new RuntimeException("Cannot load activeBookCard.fxml", ex);
         }
     }
 
     private void startSessionForCard(ActiveBookCard card) {
+        if (card == null) return;
+        if (!AppState.isLoggedIn()) return;
+
+        long userId = AppState.getCurrentUser().getId();
+
+        var readingSessionService = sk.upjs.paz.service.ServiceFactory.INSTANCE.getReadingSessionService();
+        var userHasBookService = sk.upjs.paz.service.ServiceFactory.INSTANCE.getUserHasBookService();
+
+        int startPage = Math.max(0, card.currentPage());
+
+        // Start session in DB and get generated session id
+        var session = readingSessionService.startNewSession(userId, card.bookId(), startPage);
+        long sessionId = session.getId();
+
+        // Ensure user-book state is READING
+        userHasBookService.upsert(userId, card.bookId(), sk.upjs.paz.enums.BookState.READING);
+
         String subtitle = card.authorsText() + " · " + card.genreName();
-        SessionBarHost.show(root, card.title(), subtitle, "In Progress");
+
+        // Show session bar with context so end-session can update DB
+        SceneNavigator.startSessionBar(userId, card.bookId(), sessionId, card.title(), subtitle, "READING");
+
+        // Optional: refresh cards so the state/progress updates immediately
+        refresh();
     }
 
+
     private void openBookDetailsForCard(ActiveBookCard card) {
-        openBookDetailsModal(card.title());
+        if (root == null || root.getScene() == null) return;
+
+        // Open the details modal by bookId (new API)
+        SceneNavigator.showBookDetailsModal(root.getScene().getWindow(), card.bookId());
     }
 
     private Image load(String path) {
@@ -189,7 +220,7 @@ public class CurrentlyReadingController {
 
         if (themeToggle != null) themeToggle.setSelected(dark);
         if (searchIcon != null) searchIcon.setImage(dark ? searchDark : searchLight);
-        if (settingsIcon != null) settingsIcon.setImage(dark ? settingsDark : settingsLight);
+
         if (themeIcon != null) themeIcon.setImage(dark ? sunIcon : moonIcon);
     }
 
@@ -215,11 +246,6 @@ public class CurrentlyReadingController {
         SceneNavigator.showStatistics();
     }
 
-    @FXML
-    private void onSettingsSelected(ActionEvent event) {
-        SceneNavigator.showSettings();
-    }
-
     // ===== Header actions =====
 
     @FXML
@@ -227,10 +253,6 @@ public class CurrentlyReadingController {
         // later
     }
 
-    @FXML
-    private void onSettings(ActionEvent event) {
-        SceneNavigator.showSettings();
-    }
 
     @FXML
     private void onUserProfile(ActionEvent event) {
@@ -245,68 +267,10 @@ public class CurrentlyReadingController {
 
     @FXML
     private void onAddAnotherBook(ActionEvent event) {
-        openAddBookModal();
-    }
-
-    // ===== Modals =====
-
-    private void openAddBookModal() {
-        openModal("/sk/upjs/paz/ui/addBookModal.fxml", "Add Book");
-    }
-
-    private void openBookDetailsModal(String bookTitle) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sk/upjs/paz/ui/bookDetailsModal.fxml"), I18N.getBundle());
-            Parent dialogRoot = loader.load();
-
-            BookDetailsModalController c = loader.getController();
-            c.setBookDetails(
-                    bookTitle,
-                    "Book details and metadata",
-                    "2020",
-                    "EN",
-                    "320",
-                    "Productivity",
-                    "In Progress",
-                    "Description placeholder...",
-                    "JC",
-                    "James Clear",
-                    "United States",
-                    "Author bio placeholder..."
-            );
-
-            Scene dialogScene = new Scene(dialogRoot);
-            ThemeManager.apply(dialogScene);
-
-            Stage dialogStage = new Stage();
-            dialogStage.setTitle("Book details");
-            dialogStage.initModality(Modality.WINDOW_MODAL);
-            dialogStage.initOwner(root.getScene().getWindow());
-            dialogStage.setScene(dialogScene);
-            dialogStage.showAndWait();
-
-        } catch (IOException e) {
-            throw new RuntimeException("Cannot open bookDetailsModal.fxml", e);
-        }
-    }
-
-    private void openModal(String fxmlPath, String title) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath), I18N.getBundle());
-            Parent dialogRoot = loader.load();
-
-            Scene dialogScene = new Scene(dialogRoot);
-            ThemeManager.apply(dialogScene);
-
-            Stage dialogStage = new Stage();
-            dialogStage.setTitle(title);
-            dialogStage.initModality(Modality.WINDOW_MODAL);
-            dialogStage.initOwner(root.getScene().getWindow());
-            dialogStage.setScene(dialogScene);
-            dialogStage.showAndWait();
-
-        } catch (IOException e) {
-            throw new RuntimeException("Cannot open modal: " + fxmlPath, e);
+        // Use navigator so services (BookService, GenreService, UserHasBookService) are injected correctly
+        if (root != null && root.getScene() != null) {
+            SceneNavigator.showAddBookModal(root.getScene().getWindow());
+            refresh(); // reload cards after modal closes
         }
     }
 }

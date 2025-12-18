@@ -4,8 +4,8 @@ import javafx.scene.Scene;
 
 public final class  ThemeManager {
 
-    private static final String LIGHT = "/css/lightTheme.css";
-    private static final String DARK = "/css/darkTheme.css";
+    private static final String LIGHT = "/sk/upjs/paz/ui/css/lightTheme.css";
+    private static final String DARK = "/sk/upjs/paz/ui/css/darkTheme.css";
 
     private static boolean darkMode = false;
 

@@ -33,19 +33,16 @@ public class AddBookModalController {
     @FXML private TextField titleField;
     @FXML private TextField authorField;
     @FXML private TextField pagesField;
-    @FXML private TextField languageField;
-    @FXML private TextField tagsField;
+
+
     @FXML private TextField yearField;
     @FXML private TextField categoryField;
 
-    @FXML private FlowPane tagsPane;
-    @FXML private TextArea notesArea;
 
     @FXML private ImageView coverPreview;
     @FXML private Label coverPlaceholderLabel;
     @FXML private Button uploadCoverButton;
 
-    private final Set<String> tags = new LinkedHashSet<>();
     private File selectedCoverFile;
 
     private GenreService genreService;
@@ -93,12 +90,6 @@ public class AddBookModalController {
                 change.getControlNewText().matches("\\d{0,4}") ? change : null
         ));
 
-        tagsField.setOnAction(e -> addTagFromField());
-        tagsField.setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.BACK_SPACE && tagsField.getText().isEmpty()) {
-                removeLastTag();
-            }
-        });
 
         coverPreview.setImage(null);
         coverPlaceholderLabel.setVisible(true);
@@ -214,7 +205,7 @@ public class AddBookModalController {
 
     @FXML
     private void onSaveBook() {
-        addTagFromField();
+
 
         if (bookService == null) { showError("BookService is not set."); return; }
         if (userHasBookService == null) { showError("UserHasBookService is not set."); return; }
@@ -229,9 +220,6 @@ public class AddBookModalController {
         Book book = new Book();
         book.setTitle(titleField.getText().trim());
         book.setPages(pages);
-
-        String notes = notesArea.getText();
-        book.setDescription((notes == null || notes.isBlank()) ? null : notes.trim());
 
         book.setCoverPath(selectedCoverFile == null ? null : selectedCoverFile.getAbsolutePath());
 
@@ -291,44 +279,6 @@ public class AddBookModalController {
     private void onCancel() {
         Stage stage = (Stage) root.getScene().getWindow();
         stage.close();
-    }
-
-    private void addTagFromField() {
-        String raw = tagsField.getText().trim();
-        if (raw.isEmpty()) return;
-
-        for (String part : raw.split("[,;]")) {
-            String tag = part.trim();
-            if (tag.isEmpty()) continue;
-
-            if (tags.add(tag)) {
-                tagsPane.getChildren().add(createTagChip(tag));
-            }
-        }
-        tagsField.clear();
-    }
-
-    private void removeLastTag() {
-        if (tags.isEmpty()) return;
-        tags.remove(tags.stream().reduce((a, b) -> b).orElse(null));
-
-        int n = tagsPane.getChildren().size();
-        if (n > 0) tagsPane.getChildren().remove(n - 1);
-    }
-
-    private HBox createTagChip(String tag) {
-        HBox chip = new HBox(6);
-        chip.getStyleClass().add("tag-chip");
-
-        Text label = new Text(tag);
-        Button remove = new Button("×");
-        remove.setOnAction(e -> {
-            tags.remove(tag);
-            tagsPane.getChildren().remove(chip);
-        });
-
-        chip.getChildren().addAll(label, remove);
-        return chip;
     }
 
     private void showError(String message) {

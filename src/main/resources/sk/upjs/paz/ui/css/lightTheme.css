@@ -162,7 +162,7 @@
     -fx-border-color: #E8E6E3;
     -fx-border-radius: 20;
     -fx-padding: 16;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.04), 6, 0, 0, 3);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.04), 6, 0, 0, 3);
 }
 
 .book-cover {
@@ -205,7 +205,7 @@
     -fx-border-color: #E8E6E3;
     -fx-border-radius: 20;
     -fx-padding: 16;
-    -fx-border-style: segments(2,2);
+    -fx-border-style: segments(2, 2);
 }
 
 .book-card-placeholder-icon {
@@ -335,7 +335,7 @@
 .text-area:focused {
     -fx-background-color: #FFFFFF;
     -fx-border-color: #C08552;
-    -fx-effect: dropshadow(gaussian, rgba(192,133,82,0.25), 6, 0, 0, 0);
+    -fx-effect: dropshadow(gaussian, rgba(192, 133, 82, 0.25), 6, 0, 0, 0);
 }
 
 /* combobox arrow button */
@@ -435,7 +435,7 @@
 
 .header-search-field:focused {
     -fx-border-color: #C08552;
-    -fx-effect: dropshadow(gaussian, rgba(192,133,82,0.35), 8, 0, 0, 0);
+    -fx-effect: dropshadow(gaussian, rgba(192, 133, 82, 0.35), 8, 0, 0, 0);
 }
 
 /* ========= LIBRARY BOOK CARDS ========= */
@@ -446,18 +446,21 @@
     -fx-border-color: #E8E6E3;
     -fx-border-radius: 20;
     -fx-padding: 16;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.04), 6, 0, 0, 3);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.04), 6, 0, 0, 3);
 }
 
 .library-book-card:hover {
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 4);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.08), 10, 0, 0, 4);
     -fx-translate-y: -1;
 }
 
 .library-book-cover {
-    -fx-background-color: #E8E6E3;
-    -fx-background-radius: 16;
+    -fx-background-radius: 24;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-alignment: center;
 }
+
 
 .book-cover-placeholder-text {
     -fx-text-fill: #AEAEB2;
@@ -499,7 +502,7 @@
     -fx-border-color: #E8E6E3;
     -fx-border-radius: 20;
     -fx-background-radius: 20;
-    -fx-border-style: segments(2,2);
+    -fx-border-style: segments(2, 2);
     -fx-padding: 16;
 }
 
@@ -545,18 +548,18 @@
 .streak-day {
     -fx-arc-width: 6;
     -fx-arc-height: 6;
-    -fx-fill: #F0EBE5;      /* neutral warm */
+    -fx-fill: #F0EBE5; /* neutral warm */
     -fx-stroke: #E8E6E3;
     -fx-stroke-width: 1;
 }
 
 .streak-day--active {
-    -fx-fill: #C08552;      /* warm caramel for active days */
+    -fx-fill: #C08552; /* warm caramel for active days */
     -fx-stroke: transparent;
 }
 
 .streak-day--empty {
-    -fx-fill: #F7F5F2;      /* background-like */
+    -fx-fill: #F7F5F2; /* background-like */
     -fx-stroke: #E8E6E3;
 }
 
@@ -690,7 +693,7 @@
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 20;
     -fx-padding: 10 18 10 12;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 12, 0, 0, 4);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.12), 12, 0, 0, 4);
 }
 
 /* Book cover placeholder */
@@ -819,7 +822,7 @@
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 16;
     -fx-padding: 14;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.04), 8, 0, 0, 3);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.04), 8, 0, 0, 3);
 }
 
 .session-end-cover-placeholder {
@@ -1001,6 +1004,7 @@
     -fx-text-fill: white;
     -fx-border-color: transparent;
 }
+
 /* ===== STAT CARDS (light theme, compact) ===== */
 
 .stat-card {
@@ -1016,7 +1020,7 @@
     -fx-background-radius: 14;
     -fx-alignment: center;
     -fx-pref-width: 40;
-    -fx-pref-height: 40;      /* smaller badge size */
+    -fx-pref-height: 40; /* smaller badge size */
 }
 
 /* warm gold badge */
@@ -1058,7 +1062,7 @@
 /* emoji/icon inside the badge */
 .stat-icon-emoji {
     -fx-text-fill: white;
-    -fx-font-size: 18px;  /* smaller icon */
+    -fx-font-size: 18px; /* smaller icon */
 }
 
 .stat-label {
@@ -1068,7 +1072,7 @@
 
 .stat-value {
     -fx-text-fill: #3b2f28;
-    -fx-font-size: 16px;  /* slightly smaller */
+    -fx-font-size: 16px; /* slightly smaller */
     -fx-font-weight: 600;
 }
 
@@ -1076,6 +1080,7 @@
     -fx-text-fill: #b3a292;
     -fx-font-size: 10px;
 }
+
 .library-side-wrapper {
     -fx-background-color: #ffff;
     -fx-background-radius: 18;
@@ -1089,7 +1094,7 @@
 }
 
 .book-link:hover {
-    -fx-text-fill: #C4864B;   /* твій теплий акцент */
+    -fx-text-fill: #C4864B; /* твій теплий акцент */
     -fx-underline: true;
 }
 
@@ -1120,6 +1125,7 @@
     -fx-border-color: rgba(0, 0, 0, 0.05);
     -fx-border-width: 1 0 0 0; /* subtle top line */
 }
+
 /* ===== HEADER INNER WRAPPER ===== */
 .header-inner {
     /* Visual helper for the header row, can stay minimal */
@@ -1139,7 +1145,7 @@
 
 .settings-combobox:focused {
     -fx-border-color: #d79a52;
-    -fx-effect: dropshadow(gaussian, rgba(215,154,82,0.35), 6, 0, 0, 0);
+    -fx-effect: dropshadow(gaussian, rgba(215, 154, 82, 0.35), 6, 0, 0, 0);
 }
 
 .settings-combobox > .arrow-button {
@@ -1157,6 +1163,7 @@
     -fx-font-size: 11px;
     -fx-padding: 2 0 0 0;
 }
+
 /* ========= STATISTICS: MAIN CARD ========= */
 
 /* Make the main stats card a bit roomier */
@@ -1168,12 +1175,12 @@
 
 .streak-day {
     -fx-fill: transparent;
-    -fx-stroke: #e2d4c5;      /* soft border */
+    -fx-stroke: #e2d4c5; /* soft border */
     -fx-stroke-width: 1.2;
 }
 
 .streak-day--active {
-    -fx-fill: #f3c89a;        /* warm “gold” */
+    -fx-fill: #f3c89a; /* warm “gold” */
     -fx-stroke: #f3c89a;
 }
 
@@ -1215,9 +1222,9 @@
 
 /* upload area inside cover card: no aggressive yellow, тільки м’яка зона */
 .upload-dropzone {
-    -fx-background-color: #FBF7F2;   /* трохи світліше за фон */
+    -fx-background-color: #FBF7F2; /* трохи світліше за фон */
     -fx-background-radius: 16;
-    -fx-border-color: #E8E6E3;       /* дуже делікатний бордер */
+    -fx-border-color: #E8E6E3; /* дуже делікатний бордер */
     -fx-border-radius: 16;
     -fx-border-width: 1;
     -fx-padding: 24;
@@ -1244,6 +1251,7 @@
     -fx-border-radius: 10;
     -fx-background-color: #FFF8F8; /* дуже легкий рожевий фон */
 }
+
 /* ===== BOOK DETAILS MODAL – LIGHT ===== */
 
 .book-detail-root {
@@ -1260,7 +1268,7 @@
     -fx-background-radius: 18;
     -fx-border-color: #E8E6E3;
     -fx-border-radius: 18;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.04), 8, 0, 0, 4);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.04), 8, 0, 0, 4);
 }
 
 .book-detail-cover-placeholder {
@@ -1333,19 +1341,22 @@
     -fx-text-fill: #6C6C70;
     -fx-font-size: 10px;
 }
+
 .field-error {
     -fx-border-color: #e05555;
     -fx-border-width: 1.5;
     -fx-border-radius: 10;
     -fx-background-radius: 10;
 }
+
 .field-error:focused {
     -fx-border-color: #e05555;
 }
+
 .tag-chip {
     -fx-background-radius: 999;
     -fx-padding: 4 10 4 10;
-    -fx-background-color: rgba(0,0,0,0.06);
+    -fx-background-color: rgba(0, 0, 0, 0.06);
     -fx-alignment: center;
 }
 
@@ -1358,6 +1369,7 @@
     -fx-padding: 0 4 0 4;
     -fx-cursor: hand;
 }
+
 /* ===== AUTOCOMPLETE (ContextMenu) – rounded + accent ===== */
 
 .context-menu {
@@ -1370,7 +1382,7 @@
     -fx-background-insets: 0;
     -fx-border-insets: 0;
 
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 14, 0, 0, 6);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.12), 14, 0, 0, 6);
 }
 
 /* прибирає “квадратність” у деяких скінах */
@@ -1383,7 +1395,7 @@
 
 /* текст по дефолту */
 .context-menu .menu-item .label {
-    -fx-text-fill: #C08552;  /* твій теплий акцент */
+    -fx-text-fill: #C08552; /* твій теплий акцент */
     -fx-font-size: 12px;
 }
 

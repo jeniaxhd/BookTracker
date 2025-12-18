@@ -9,8 +9,6 @@
 
 <BorderPane
         fx:id="root"
-        prefHeight="800.0"
-        prefWidth="1200.0"
         styleClass="dashboard-root"
         xmlns="http://javafx.com/javafx/17.0.12"
         xmlns:fx="http://javafx.com/fxml/1"
@@ -52,25 +50,21 @@
                     </padding>
                     <children>
                         <ToggleButton fx:id="dashboardNavButton"
-                                      text="%nav.dashboard"
+                                      text="Dashboard"
                                       onAction="#onDashboardSelected"
                                       styleClass="sidebar-nav-button"/>
                         <ToggleButton fx:id="libraryNavButton"
-                                      text="%nav.library"
+                                      text="Library"
                                       onAction="#onLibrarySelected"
                                       styleClass="sidebar-nav-button"/>
                         <ToggleButton fx:id="currentlyReadingNavButton"
-                                      text="%nav.currentlyReading"
+                                      text="Currently Reading"
                                       selected="true"
                                       onAction="#onCurrentlyReadingSelected"
                                       styleClass="sidebar-nav-button,sidebar-nav-button--active"/>
                         <ToggleButton fx:id="statisticsNavButton"
-                                      text="%nav.statistics"
+                                      text="Statistics"
                                       onAction="#onStatisticsSelected"
-                                      styleClass="sidebar-nav-button"/>
-                        <ToggleButton fx:id="settingsNavButton"
-                                      text="%nav.settings"
-                                      onAction="#onSettingsSelected"
                                       styleClass="sidebar-nav-button"/>
                     </children>
                 </VBox>
@@ -125,20 +119,18 @@
                 <!-- ===== HEADER ===== -->
                 <VBox styleClass="header">
                     <children>
-                        <HBox alignment="CENTER_LEFT"
-                              spacing="16.0">
+                        <HBox alignment="CENTER_LEFT" spacing="16.0">
                             <padding>
                                 <Insets top="24" right="32" bottom="24" left="32"/>
                             </padding>
 
                             <children>
-                                <!-- Title + subtitle -->
                                 <VBox spacing="4.0">
                                     <children>
                                         <Label fx:id="headerTitleLabel"
-                                               text="%nav.currentlyReading"
+                                               text="Currently Reading"
                                                styleClass="header-title"/>
-                                        <Label text="%currentlyReading.continue_your_active_books_and_log_your_latest_rea"
+                                        <Label text="Continue your active books and log your latest reading sessions."
                                                wrapText="true"
                                                styleClass="header-subtitle"/>
                                     </children>
@@ -146,7 +138,6 @@
 
                                 <Pane HBox.hgrow="ALWAYS"/>
 
-                                <!-- Right controls: search, settings, theme, start session -->
                                 <HBox alignment="CENTER_RIGHT" spacing="8.0">
                                     <children>
 
@@ -155,17 +146,6 @@
                                                 styleClass="header-icon-button">
                                             <graphic>
                                                 <ImageView fx:id="searchIcon"
-                                                           fitWidth="18.0"
-                                                           fitHeight="18.0"
-                                                           preserveRatio="true"/>
-                                            </graphic>
-                                        </Button>
-
-                                        <Button fx:id="settingsButton"
-                                                onAction="#onSettings"
-                                                styleClass="header-icon-button">
-                                            <graphic>
-                                                <ImageView fx:id="settingsIcon"
                                                            fitWidth="18.0"
                                                            fitHeight="18.0"
                                                            preserveRatio="true"/>
@@ -184,12 +164,11 @@
                                         </ToggleButton>
 
                                         <Button fx:id="startSessionButton"
-                                                text="%currentlyReading.start_session"
+                                                text="Start session"
                                                 onAction="#onStartSession"
                                                 styleClass="header-primary-button">
                                             <graphic>
-                                                <Label text="+"
-                                                       styleClass="header-primary-icon"/>
+                                                <Label text="+" styleClass="header-primary-icon"/>
                                             </graphic>
                                         </Button>
 
@@ -203,10 +182,10 @@
                 <!-- ===== SCROLLABLE CONTENT ===== -->
                 <ScrollPane fx:id="contentScrollPane"
                             fitToWidth="true"
+                            hbarPolicy="NEVER"
                             VBox.vgrow="ALWAYS">
                     <content>
-                        <VBox fx:id="contentRoot"
-                              spacing="24.0">
+                        <VBox fx:id="contentRoot" spacing="24.0">
                             <padding>
                                 <Insets top="24" right="32" bottom="32" left="32"/>
                             </padding>
@@ -216,51 +195,53 @@
                                 <VBox spacing="16.0">
                                     <children>
 
-                                        <Label text="%currentlyReading.active_books"
-                                               styleClass="section-title"/>
+                                        <Label text="Active books" styleClass="section-title"/>
 
-                                        <Label text="%currentlyReading.showing_books_you_re_currently_reading"
+                                        <Label text="Showing books you're currently reading."
                                                styleClass="header-subtitle"/>
 
-                                        <HBox spacing="8.0">
+                                        <!-- CHANGED: HBox -> FlowPane (wrap chips on resize) -->
+                                        <FlowPane hgap="8.0" vgap="8.0" prefWrapLength="900">
                                             <children>
-                                                <ToggleButton text="%common.all"
+                                                <ToggleButton text="All"
                                                               selected="true"
                                                               styleClass="filter-chip,filter-chip--active"/>
-                                                <ToggleButton text="%currentlyReading.high_priority"
+                                                <ToggleButton text="High priority"
                                                               styleClass="filter-chip"/>
-                                                <ToggleButton text="%currentlyReading.finishing_soon"
+                                                <ToggleButton text="Finishing soon"
                                                               styleClass="filter-chip"/>
-                                                <ToggleButton text="%currentlyReading.recently_started"
+                                                <ToggleButton text="Recently started"
                                                               styleClass="filter-chip"/>
                                             </children>
-                                        </HBox>
+                                        </FlowPane>
 
                                     </children>
                                 </VBox>
 
                                 <!-- Main layout: cards + side stats -->
-                                <HBox spacing="24.0">
+                                <!-- CHANGED: HBox -> FlowPane so sidebar stats can drop below -->
+                                <FlowPane fx:id="mainFlow"
+                                          hgap="24.0"
+                                          vgap="24.0"
+                                          prefWrapLength="1000">
                                     <children>
 
-                                        <!-- LEFT: active book cards (dynamic from DB) -->
+                                        <!-- LEFT: active book cards -->
                                         <VBox fx:id="cardsBox"
                                               spacing="16.0"
-                                              HBox.hgrow="ALWAYS"/>
+                                              prefWidth="680.0"
+                                              minWidth="320.0"/>
 
                                         <!-- RIGHT: side stats -->
-                                        <VBox prefWidth="260.0" spacing="16.0">
+                                        <VBox prefWidth="260.0"
+                                              minWidth="240.0"
+                                              spacing="16.0">
 
-                                            <!-- Today’s reading -->
-                                            <VBox spacing="10.0"
-                                                  styleClass="stat-card">
+                                            <VBox spacing="10.0" styleClass="stat-card">
                                                 <children>
-                                                    <Label text="%currentlyReading.today_s_reading"
-                                                           styleClass="section-title"/>
-                                                    <Label text="42 min"
-                                                           styleClass="stat-value"/>
-                                                    <Label text="%currentlyReading.time_read_so_far_today"
-                                                           styleClass="stat-label"/>
+                                                    <Label text="Today's reading" styleClass="section-title"/>
+                                                    <Label text="42 min" styleClass="stat-value"/>
+                                                    <Label text="Time read so far today" styleClass="stat-label"/>
 
                                                     <VBox spacing="4.0">
                                                         <children>
@@ -273,99 +254,72 @@
                                                 </children>
                                             </VBox>
 
-                                            <!-- Reading streak -->
-                                            <VBox spacing="10.0"
-                                                  styleClass="stat-card">
+                                            <VBox spacing="10.0" styleClass="stat-card">
                                                 <children>
-                                                    <Label text="%dashboard.reading_streak"
-                                                           styleClass="section-title"/>
-                                                    <Label text="10 days"
-                                                           styleClass="stat-value"/>
-                                                    <Label text="In a row"
-                                                           styleClass="stat-label"/>
+                                                    <Label text="Reading streak" styleClass="section-title"/>
+                                                    <Label text="10 days" styleClass="stat-value"/>
+                                                    <Label text="In a row" styleClass="stat-label"/>
 
                                                     <HBox spacing="4.0">
                                                         <children>
-                                                            <!-- filled dots -->
-                                                            <Rectangle width="12.0" height="12.0"
-                                                                       arcWidth="6.0" arcHeight="6.0"
+                                                            <Rectangle width="12.0" height="12.0" arcWidth="6.0" arcHeight="6.0"
                                                                        styleClass="streak-day,streak-day--active"/>
-                                                            <Rectangle width="12.0" height="12.0"
-                                                                       arcWidth="6.0" arcHeight="6.0"
+                                                            <Rectangle width="12.0" height="12.0" arcWidth="6.0" arcHeight="6.0"
                                                                        styleClass="streak-day,streak-day--active"/>
-                                                            <Rectangle width="12.0" height="12.0"
-                                                                       arcWidth="6.0" arcHeight="6.0"
+                                                            <Rectangle width="12.0" height="12.0" arcWidth="6.0" arcHeight="6.0"
                                                                        styleClass="streak-day,streak-day--active"/>
-                                                            <Rectangle width="12.0" height="12.0"
-                                                                       arcWidth="6.0" arcHeight="6.0"
+                                                            <Rectangle width="12.0" height="12.0" arcWidth="6.0" arcHeight="6.0"
                                                                        styleClass="streak-day,streak-day--active"/>
-                                                            <Rectangle width="12.0" height="12.0"
-                                                                       arcWidth="6.0" arcHeight="6.0"
+                                                            <Rectangle width="12.0" height="12.0" arcWidth="6.0" arcHeight="6.0"
                                                                        styleClass="streak-day,streak-day--active"/>
-                                                            <Rectangle width="12.0" height="12.0"
-                                                                       arcWidth="6.0" arcHeight="6.0"
+                                                            <Rectangle width="12.0" height="12.0" arcWidth="6.0" arcHeight="6.0"
                                                                        styleClass="streak-day,streak-day--active"/>
-                                                            <Rectangle width="12.0" height="12.0"
-                                                                       arcWidth="6.0" arcHeight="6.0"
+                                                            <Rectangle width="12.0" height="12.0" arcWidth="6.0" arcHeight="6.0"
                                                                        styleClass="streak-day,streak-day--active"/>
-                                                            <!-- empty dots -->
-                                                            <Rectangle width="12.0" height="12.0"
-                                                                       arcWidth="6.0" arcHeight="6.0"
+                                                            <Rectangle width="12.0" height="12.0" arcWidth="6.0" arcHeight="6.0"
                                                                        styleClass="streak-day,streak-day--empty"/>
-                                                            <Rectangle width="12.0" height="12.0"
-                                                                       arcWidth="6.0" arcHeight="6.0"
+                                                            <Rectangle width="12.0" height="12.0" arcWidth="6.0" arcHeight="6.0"
                                                                        styleClass="streak-day,streak-day--empty"/>
-                                                            <Rectangle width="12.0" height="12.0"
-                                                                       arcWidth="6.0" arcHeight="6.0"
+                                                            <Rectangle width="12.0" height="12.0" arcWidth="6.0" arcHeight="6.0"
                                                                        styleClass="streak-day,streak-day--empty"/>
                                                         </children>
                                                     </HBox>
                                                 </children>
                                             </VBox>
 
-                                            <!-- Quick stats -->
-                                            <VBox spacing="10.0"
-                                                  styleClass="stat-card">
+                                            <VBox spacing="10.0" styleClass="stat-card">
                                                 <children>
-                                                    <Label text="%currentlyReading.quick_stats"
-                                                           styleClass="section-title"/>
+                                                    <Label text="Quick stats" styleClass="section-title"/>
 
                                                     <HBox spacing="8.0" alignment="CENTER_LEFT">
                                                         <children>
-                                                            <Label text="%currentlyReading.books_in_progress"
-                                                                   styleClass="stat-label"/>
+                                                            <Label text="Books in progress" styleClass="stat-label"/>
                                                             <Pane HBox.hgrow="ALWAYS"/>
-                                                            <Label text="4"
-                                                                   styleClass="stat-label"/>
+                                                            <Label text="4" styleClass="stat-label"/>
                                                         </children>
                                                     </HBox>
 
                                                     <HBox spacing="8.0" alignment="CENTER_LEFT">
                                                         <children>
-                                                            <Label text="%currentlyReading.pages_read_this_week"
-                                                                   styleClass="stat-label"/>
+                                                            <Label text="Pages read this week" styleClass="stat-label"/>
                                                             <Pane HBox.hgrow="ALWAYS"/>
-                                                            <Label text="320"
-                                                                   styleClass="stat-label"/>
+                                                            <Label text="320" styleClass="stat-label"/>
                                                         </children>
                                                     </HBox>
 
                                                     <HBox spacing="8.0" alignment="CENTER_LEFT">
                                                         <children>
-                                                            <Label text="Sessions this week"
-                                                                   styleClass="stat-label"/>
+                                                            <Label text="Sessions this week" styleClass="stat-label"/>
                                                             <Pane HBox.hgrow="ALWAYS"/>
-                                                            <Label text="6"
-                                                                   styleClass="stat-label"/>
+                                                            <Label text="6" styleClass="stat-label"/>
                                                         </children>
                                                     </HBox>
                                                 </children>
                                             </VBox>
 
                                         </VBox>
-
                                     </children>
-                                </HBox>
+                                </FlowPane>
 
                             </children>
                         </VBox>
