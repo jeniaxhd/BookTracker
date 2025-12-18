@@ -76,12 +76,12 @@
                                     <children>
                                         <StackPane prefWidth="32.0" prefHeight="32.0" styleClass="sidebar-user-avatar">
                                             <children>
-                                                <Label text="" styleClass="sidebar-user-initials"/>
+                                                <Label fx:id="userInitialsLabel" text="" styleClass="sidebar-user-initials"/>
                                             </children>
                                         </StackPane>
                                         <VBox spacing="2.0">
                                             <children>
-                                                <Label fx:id="userNameLabel" text="" styleClass="sidebar-user-name"/>
+                                                <Label fx:id="userNameLabel" text="%userProfile.user_name" styleClass="sidebar-user-name"/>
                                                 <Label text="%nav.viewProfile" styleClass="sidebar-user-subtitle"/>
                                             </children>
                                         </VBox>
