@@ -1,0 +1,89 @@
+### AUTHORS - CREATE
+POST http://localhost:8080/api/authors
+Content-Type: application/json
+
+{
+  "name": "George Orwell",
+  "country": "UK",
+  "bio": "Writer"
+}
+
+### AUTHORS - READ ALL
+GET http://localhost:8080/api/authors/2
+
+### AUTHORS - UPDATE
+PUT http://localhost:8080/api/authors/8
+Content-Type: application/json
+
+{
+  "name": "George Orwell",
+  "country": "UK",
+  "bio": "Updated bio"
+}
+
+### AUTHORS - DELETE
+DELETE http://localhost:8080/api/authors/10
+
+### GENRES - CREATE
+POST http://localhost:8080/api/genres
+Content-Type: application/json
+
+{
+  "name": "Dystopia"
+}
+
+### GENRES - READ ALL
+GET http://localhost:8080/api/genres
+
+### GENRES - UPDATE
+PUT http://localhost:8080/api/genres/1
+Content-Type: application/json
+
+{
+  "name": "Updated Dystopia"
+}
+
+### GENRES - DELETE
+DELETE http://localhost:8080/api/genres/47
+
+### BOOKS - CREATE
+POST http://localhost:8080/api/books
+Content-Type: application/json
+
+{
+  "title": "1984",
+  "description": "Dystopian novel",
+  "year": 1949,
+  "pages": 328,
+  "coverPath": "",
+  "authors": [
+    { "id": 2 }
+  ],
+  "genre": [
+    { "id": 2 }
+  ]
+}
+
+### BOOKS - READ ALL
+GET http://localhost:8080/api/books
+
+### BOOKS - UPDATE
+PUT http://localhost:8080/api/books/
+Content-Type: application/json
+
+{
+  "title": "Nineteen Eighty-Four",
+  "description": "Updated description",
+  "year": 1949,
+  "pages": 328,
+  "coverPath": "",
+  "authors": [
+    { "id": 1 }
+  ],
+  "genre": [
+    { "id": 1 }
+  ]
+}
+
+### BOOKS - DELETE
+DELETE http://localhost:8080/api/books/1
