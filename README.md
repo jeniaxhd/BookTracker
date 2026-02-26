@@ -6,6 +6,8 @@ It includes:
 - a Spring Boot REST backend,
 - and a React web frontend.
 
+This is a student project created together with a classmate.
+
 The application stores data in MySQL (books, authors, genres, users, reading sessions, and reviews).
 
 ## Project Structure
