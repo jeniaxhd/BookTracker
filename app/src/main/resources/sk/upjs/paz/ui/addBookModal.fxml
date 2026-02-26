@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane fx:id="root"
+            xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="sk.upjs.paz.ui.AddBookModalController"
+            styleClass="dashboard-root,addbook-window">
+
+
+
+    <!-- ===== HEADER ===== -->
+    <top>
+        <VBox styleClass="header,addbook-header">
+            <children>
+                <HBox alignment="CENTER_LEFT" spacing="16.0">
+                    <padding>
+                        <Insets top="20" right="24" bottom="20" left="24"/>
+                    </padding>
+                    <children>
+
+                        <VBox spacing="4.0">
+                            <children>
+                                <Label text="%common.addBook" styleClass="header-title"/>
+                                <Label text="%addBookModal.add_a_new_book_to_your_library_and_set_up_its_deta"
+                                       wrapText="true"
+                                       styleClass="header-subtitle"/>
+                            </children>
+                        </VBox>
+
+                        <Pane HBox.hgrow="ALWAYS"/>
+
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </top>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <center>
+        <ScrollPane fx:id="contentScrollPane"
+                    fitToWidth="true"
+                    hbarPolicy="NEVER">
+            <content>
+                <VBox spacing="24.0">
+                    <padding>
+                        <Insets top="24" right="24" bottom="24" left="24"/>
+                    </padding>
+
+                    <!-- CHANGED: HBox -> FlowPane so it wraps on narrow width -->
+                    <FlowPane fx:id="mainFlow"
+                              hgap="24.0"
+                              vgap="24.0"
+                              prefWrapLength="820">
+
+                        <!-- LEFT: cover card -->
+                        <VBox prefWidth="320.0"
+                              minWidth="260.0"
+                              spacing="16.0"
+                              styleClass="stat-card,addbook-cover-card">
+                            <children>
+                                <Label text="Book cover &amp; preview"
+                                       styleClass="section-title"/>
+
+                                <VBox alignment="CENTER" spacing="8.0" styleClass="upload-dropzone">
+                                    <children>
+                                        <ImageView fx:id="coverPreview"
+                                                   fitWidth="220"
+                                                   fitHeight="300"
+                                                   preserveRatio="true"/>
+                                        <Label fx:id="coverPlaceholderLabel"
+                                               text="%addBookModal.upload_cover"
+                                               styleClass="book-card-placeholder-text"/>
+                                    </children>
+                                </VBox>
+
+                                <Button fx:id="uploadCoverButton"
+                                        maxWidth="Infinity"
+                                        text="%addBookModal.upload_cover_image"
+                                        onAction="#onUploadCover"
+                                        styleClass="header-primary-button"/>
+                            </children>
+                        </VBox>
+
+                        <!-- RIGHT: details card -->
+                        <VBox prefWidth="420.0"
+                              minWidth="320.0"
+                              spacing="16.0"
+                              styleClass="stat-card,addbook-details-card">
+                            <children>
+
+                                <Label text="%addBookModal.book_details"
+                                       styleClass="section-title"/>
+
+                                <VBox spacing="10.0">
+                                    <children>
+
+                                        <Label text="%addBookModal.basic_information"
+                                               styleClass="header-subtitle"/>
+
+                                        <VBox spacing="4.0">
+                                            <children>
+                                                <Label text="%addBookModal.book_title"/>
+                                                <TextField fx:id="titleField"
+                                                           maxWidth="Infinity"
+                                                           promptText="%addBookModal.enter_book_title"/>
+                                            </children>
+                                        </VBox>
+
+                                        <VBox spacing="4.0">
+                                            <children>
+                                                <Label text="%addBookModal.author"/>
+                                                <TextField fx:id="authorField"
+                                                           maxWidth="Infinity"
+                                                           promptText="%addBookModal.enter_author_name"/>
+                                            </children>
+                                        </VBox>
+
+                                        <!-- Row: Category + Year -->
+                                        <HBox spacing="12.0">
+                                            <children>
+
+                                                <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                                                    <children>
+                                                        <Label text="%common.category"/>
+                                                        <TextField fx:id="categoryField"
+                                                                   maxWidth="Infinity"
+                                                                   promptText="%addBookModal.select_category"/>
+                                                    </children>
+                                                </VBox>
+
+                                                <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                                                    <children>
+                                                        <Label text="%common.year"/>
+                                                        <TextField fx:id="yearField"
+                                                                   maxWidth="Infinity"
+                                                                   promptText="e.g. 2020"/>
+                                                    </children>
+                                                </VBox>
+
+                                            </children>
+                                        </HBox>
+
+                                        <!-- Row: Pages -->
+                                        <HBox spacing="12.0">
+                                            <children>
+                                                <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                                                    <children>
+                                                        <Label text="%common.pages"/>
+                                                        <TextField fx:id="pagesField"
+                                                                   maxWidth="Infinity"
+                                                                   promptText="e.g. 320"/>
+                                                    </children>
+                                                </VBox>
+                                            </children>
+                                        </HBox>
+
+                                    </children>
+                                </VBox>
+
+                            </children>
+                        </VBox>
+
+                    </FlowPane>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+
+    <!-- ===== FOOTER BUTTONS ===== -->
+    <bottom>
+        <HBox alignment="CENTER_RIGHT"
+              spacing="8.0"
+              styleClass="addbook-footer">
+            <padding>
+                <Insets top="10" right="24" bottom="18" left="24"/>
+            </padding>
+            <children>
+                <Button fx:id="cancelButton"
+                        text="%common.cancel"
+                        onAction="#onCancel"
+                        styleClass="header-secondary-button"/>
+                <Button fx:id="saveButton"
+                        text="%addBookModal.save_book"
+                        onAction="#onSaveBook"
+                        styleClass="header-primary-button"/>
+            </children>
+        </HBox>
+    </bottom>
+
+</BorderPane>

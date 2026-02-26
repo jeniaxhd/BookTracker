@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.image.ImageView?>
+
+<BorderPane fx:id="root"
+            xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="sk.upjs.paz.ui.StatisticsController"
+            styleClass="dashboard-root">
+
+    <!-- ========== SIDEBAR ========== -->
+    <left>
+        <VBox prefWidth="240.0"
+              styleClass="sidebar"
+              BorderPane.alignment="CENTER">
+            <children>
+
+                <VBox spacing="10.0" styleClass="sidebar-header">
+                    <padding>
+                        <Insets top="24" right="24" bottom="16" left="24"/>
+                    </padding>
+                    <children>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                            <children>
+                                <StackPane prefWidth="32.0" prefHeight="32.0" styleClass="sidebar-logo-circle">
+                                    <children>
+                                        <Label text="" styleClass="sidebar-logo-letter"/>
+                                    </children>
+                                </StackPane>
+                                <Label text="%app.name" styleClass="sidebar-logo-text"/>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+
+                <Separator/>
+
+                <VBox spacing="6.0" styleClass="sidebar-nav">
+                    <padding>
+                        <Insets top="16" right="16" bottom="16" left="16"/>
+                    </padding>
+                    <children>
+                        <ToggleButton fx:id="dashboardNavButton" text="%nav.dashboard"
+                                      onAction="#onDashboardSelected"
+                                      styleClass="sidebar-nav-button"/>
+                        <ToggleButton fx:id="libraryNavButton" text="%nav.library"
+                                      onAction="#onLibrarySelected"
+                                      styleClass="sidebar-nav-button"/>
+                        <ToggleButton fx:id="currentlyReadingNavButton" text="%nav.currentlyReading"
+                                      onAction="#onCurrentlyReadingSelected"
+                                      styleClass="sidebar-nav-button"/>
+                        <ToggleButton fx:id="statisticsNavButton" text="%nav.statistics" selected="true"
+                                      onAction="#onStatisticsSelected"
+                                      styleClass="sidebar-nav-button,sidebar-nav-button--active"/>
+                    </children>
+                </VBox>
+
+                <Pane VBox.vgrow="ALWAYS"/>
+
+                <VBox styleClass="sidebar-user">
+                    <padding>
+                        <Insets top="8" right="16" bottom="24" left="16"/>
+                    </padding>
+                    <children>
+                        <Button fx:id="userProfileButton"
+                                maxWidth="Infinity"
+                                onAction="#onUserProfile"
+                                styleClass="sidebar-user-button">
+                            <graphic>
+                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                    <children>
+                                        <StackPane prefWidth="32.0" prefHeight="32.0" styleClass="sidebar-user-avatar">
+                                            <children>
+                                                <Label fx:id="userInitialsLabel"
+                                                       text="Y"
+                                                       styleClass="sidebar-user-initials"/>
+                                            </children>
+                                        </StackPane>
+                                        <VBox spacing="2.0">
+                                            <children>
+                                                <Label fx:id="userNameLabel" text="%userProfile.user_name" styleClass="sidebar-user-name"/>
+                                                <Label text="%nav.viewProfile" styleClass="sidebar-user-subtitle"/>
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </HBox>
+                            </graphic>
+                        </Button>
+                    </children>
+                </VBox>
+
+            </children>
+        </VBox>
+    </left>
+
+    <!-- ========== MAIN AREA ========== -->
+    <center>
+        <VBox BorderPane.alignment="CENTER">
+            <children>
+
+                <!-- HEADER -->
+                <VBox styleClass="header">
+                    <children>
+                        <HBox spacing="16.0"
+                              alignment="CENTER_LEFT"
+                              styleClass="header-inner">
+                            <padding>
+                                <Insets top="24" right="32" bottom="24" left="32"/>
+                            </padding>
+
+                            <children>
+                                <VBox spacing="4.0">
+                                    <children>
+                                        <Label fx:id="headerTitleLabel" text="%nav.statistics" styleClass="header-title"/>
+                                        <Label text="%statistics.subtitle"
+                                               wrapText="true"
+                                               styleClass="header-subtitle"/>
+                                    </children>
+                                </VBox>
+
+                                <Pane HBox.hgrow="ALWAYS"/>
+
+                                <!-- (optional wrap-friendly) -->
+                                <FlowPane hgap="8.0" vgap="8.0" alignment="CENTER_RIGHT" prefWrapLength="420">
+                                    <children>
+                                        <ComboBox fx:id="timeRangeCombo"
+                                                  prefWidth="140.0"
+                                                  promptText=""
+                                                  styleClass="filter-combobox"/>
+
+                                        <Button fx:id="notificationsButton"
+                                                onAction="#onNotifications"
+                                                styleClass="header-icon-button">
+                                            <graphic>
+                                                <ImageView fx:id="notificationsIcon"
+                                                           fitWidth="18.0"
+                                                           fitHeight="18.0"
+                                                           preserveRatio="true"/>
+                                            </graphic>
+                                        </Button>
+
+                                        <ToggleButton fx:id="themeToggle"
+                                                      onAction="#onToggleTheme"
+                                                      styleClass="header-icon-button">
+                                            <graphic>
+                                                <ImageView fx:id="themeIcon"
+                                                           fitWidth="18.0"
+                                                           fitHeight="18.0"
+                                                           preserveRatio="true"/>
+                                            </graphic>
+                                        </ToggleButton>
+
+                                        <Button fx:id="exportButton"
+                                                text="%statistics.export_report"
+                                                onAction="#onExportReport"
+                                                styleClass="header-primary-button"/>
+                                    </children>
+                                </FlowPane>
+
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+
+                <!-- SCROLLABLE CONTENT -->
+                <ScrollPane fx:id="contentScrollPane"
+                            fitToWidth="true"
+                            hbarPolicy="NEVER"
+                            VBox.vgrow="ALWAYS">
+                    <content>
+                        <VBox fx:id="contentRoot" spacing="24.0">
+                            <padding>
+                                <Insets top="24" right="32" bottom="32" left="32"/>
+                            </padding>
+                            <children>
+
+                                <!-- ROW 1: CHANGED HBox -> FlowPane (wrap on narrow) -->
+                                <FlowPane fx:id="row1Flow"
+                                          hgap="24.0"
+                                          vgap="24.0"
+                                          prefWrapLength="1000">
+
+                                    <!-- MAIN CHART CARD -->
+                                    <VBox spacing="16.0"
+                                          prefWidth="720.0"
+                                          minWidth="320.0"
+                                          styleClass="stat-card,stats-main">
+                                        <children>
+
+                                            <HBox alignment="CENTER_LEFT" spacing="8.0">
+                                                <children>
+                                                    <Label text="%statistics.pages_read_over_time" styleClass="section-title"/>
+                                                    <Label fx:id="mainRangeLabel" text="" styleClass="stat-subtitle"/>
+                                                </children>
+                                            </HBox>
+
+                                            <StackPane prefHeight="260.0">
+                                                <children>
+                                                    <LineChart fx:id="pagesLineChart" animated="false" legendVisible="false" createSymbols="false">
+                                                        <xAxis>
+                                                            <CategoryAxis />
+                                                        </xAxis>
+                                                        <yAxis>
+                                                            <NumberAxis />
+                                                        </yAxis>
+                                                    </LineChart>
+                                                </children>
+                                            </StackPane>
+
+                                            <!-- also can wrap if needed -->
+                                            <FlowPane hgap="32.0" vgap="12.0" prefWrapLength="720">
+                                                <children>
+
+                                                    <VBox spacing="4.0">
+                                                        <children>
+                                                            <Label text="%statistics.total_pages" styleClass="stat-label"/>
+                                                            <Label fx:id="totalPagesValueLabel" text="" styleClass="stat-value"/>
+                                                        </children>
+                                                    </VBox>
+
+                                                    <VBox spacing="4.0">
+                                                        <children>
+                                                            <Label text="%statistics.average_per_day" styleClass="stat-label"/>
+                                                            <Label fx:id="avgPerDayValueLabel" text="" styleClass="stat-value"/>
+                                                        </children>
+                                                    </VBox>
+
+                                                    <VBox spacing="4.0">
+                                                        <children>
+                                                            <Label text="%statistics.best_day" styleClass="stat-label"/>
+                                                            <Label fx:id="bestDayValueLabel" text="" styleClass="stat-value"/>
+                                                        </children>
+                                                    </VBox>
+
+                                                </children>
+                                            </FlowPane>
+
+                                        </children>
+                                    </VBox>
+
+                                    <!-- RIGHT COLUMN -->
+                                    <VBox prefWidth="280.0"
+                                          minWidth="260.0"
+                                          spacing="16.0">
+
+                                        <VBox spacing="12.0" styleClass="stat-card">
+                                            <children>
+                                                <Label text="%statistics.current_streak" styleClass="section-title"/>
+                                                <Label fx:id="currentStreakValueLabel" text="" styleClass="stat-value"/>
+                                                <Label fx:id="bestStreakLabel" text="" styleClass="stat-subtitle"/>
+
+                                                <GridPane hgap="6.0" vgap="6.0">
+                                                    <children>
+                                                        <Rectangle width="18.0" height="18.0" GridPane.rowIndex="0" GridPane.columnIndex="0"
+                                                                   styleClass="streak-day,streak-day--active"/>
+                                                        <Rectangle width="18.0" height="18.0" GridPane.rowIndex="0" GridPane.columnIndex="1"
+                                                                   styleClass="streak-day,streak-day--active"/>
+                                                        <Rectangle width="18.0" height="18.0" GridPane.rowIndex="0" GridPane.columnIndex="2"
+                                                                   styleClass="streak-day,streak-day--active"/>
+                                                        <Rectangle width="18.0" height="18.0" GridPane.rowIndex="0" GridPane.columnIndex="3"
+                                                                   styleClass="streak-day,streak-day--empty"/>
+                                                        <Rectangle width="18.0" height="18.0" GridPane.rowIndex="0" GridPane.columnIndex="4"
+                                                                   styleClass="streak-day,streak-day--active"/>
+
+                                                        <Rectangle width="18.0" height="18.0" GridPane.rowIndex="1" GridPane.columnIndex="0"
+                                                                   styleClass="streak-day,streak-day--active"/>
+                                                        <Rectangle width="18.0" height="18.0" GridPane.rowIndex="1" GridPane.columnIndex="1"
+                                                                   styleClass="streak-day,streak-day--active"/>
+                                                        <Rectangle width="18.0" height="18.0" GridPane.rowIndex="1" GridPane.columnIndex="2"
+                                                                   styleClass="streak-day,streak-day--active"/>
+                                                        <Rectangle width="18.0" height="18.0" GridPane.rowIndex="1" GridPane.columnIndex="3"
+                                                                   styleClass="streak-day,streak-day--active"/>
+                                                        <Rectangle width="18.0" height="18.0" GridPane.rowIndex="1" GridPane.columnIndex="4"
+                                                                   styleClass="streak-day,streak-day--active"/>
+
+                                                        <Rectangle width="18.0" height="18.0" GridPane.rowIndex="2" GridPane.columnIndex="0"
+                                                                   styleClass="streak-day,streak-day--empty"/>
+                                                        <Rectangle width="18.0" height="18.0" GridPane.rowIndex="2" GridPane.columnIndex="1"
+                                                                   styleClass="streak-day,streak-day--active"/>
+                                                        <Rectangle width="18.0" height="18.0" GridPane.rowIndex="2" GridPane.columnIndex="2"
+                                                                   styleClass="streak-day,streak-day--active"/>
+                                                        <Rectangle width="18.0" height="18.0" GridPane.rowIndex="2" GridPane.columnIndex="3"
+                                                                   styleClass="streak-day,streak-day--active"/>
+                                                        <Rectangle width="18.0" height="18.0" GridPane.rowIndex="2" GridPane.columnIndex="4"
+                                                                   styleClass="streak-day,streak-day--active"/>
+                                                    </children>
+                                                </GridPane>
+                                            </children>
+                                        </VBox>
+
+                                        <VBox spacing="12.0" styleClass="stat-card">
+                                            <children>
+                                                <Label text="%statistics.this_year_at_a_glance" styleClass="section-title"/>
+
+                                                <VBox spacing="8.0">
+                                                    <children>
+                                                        <HBox spacing="8.0" alignment="CENTER_LEFT">
+                                                            <children>
+                                                                <Label text="📚" styleClass="stats-row-icon"/>
+                                                                <Label text="%statistics.books_finished" styleClass="stats-row-label"/>
+                                                                <Pane HBox.hgrow="ALWAYS"/>
+                                                                <Label fx:id="booksFinishedValueLabel" text="" styleClass="stats-row-value"/>
+                                                            </children>
+                                                        </HBox>
+
+                                                        <HBox spacing="8.0" alignment="CENTER_LEFT">
+                                                            <children>
+                                                                <Label text="📄" styleClass="stats-row-icon"/>
+                                                                <Label text="%statistics.pages_read" styleClass="stats-row-label"/>
+                                                                <Pane HBox.hgrow="ALWAYS"/>
+                                                                <Label fx:id="pagesReadThisYearValueLabel" text="" styleClass="stats-row-value"/>
+                                                            </children>
+                                                        </HBox>
+
+                                                        <HBox spacing="8.0" alignment="CENTER_LEFT">
+                                                            <children>
+                                                                <Label text="📆" styleClass="stats-row-icon"/>
+                                                                <Label text="%statistics.active_reading_days" styleClass="stats-row-label"/>
+                                                                <Pane HBox.hgrow="ALWAYS"/>
+                                                                <Label fx:id="activeDaysThisYearValueLabel" text="" styleClass="stats-row-value"/>
+                                                            </children>
+                                                        </HBox>
+
+                                                        <HBox spacing="8.0" alignment="CENTER_LEFT">
+                                                            <children>
+                                                                <Label text="⏱" styleClass="stats-row-icon"/>
+                                                                <Label text="%statistics.avg_session_length" styleClass="stats-row-label"/>
+                                                                <Pane HBox.hgrow="ALWAYS"/>
+                                                                <Label fx:id="avgSessionLengthThisYearValueLabel" text="" styleClass="stats-row-value"/>
+                                                            </children>
+                                                        </HBox>
+                                                    </children>
+                                                </VBox>
+                                            </children>
+                                        </VBox>
+
+                                    </VBox>
+                                </FlowPane>
+
+                                <!-- ROW 2 -->
+                                <VBox spacing="12.0" styleClass="stat-card">
+                                    <children>
+                                        <Label text="%statistics.pages_read_per_month" styleClass="section-title"/>
+                                        <Label fx:id="barChartSubtitleLabel" text="" styleClass="stat-subtitle"/>
+
+                                        <StackPane prefHeight="220.0" styleClass="stats-bar-chart-placeholder">
+                                            <children>
+                                                <BarChart fx:id="pagesBarChart" animated="false" legendVisible="false" categoryGap="8.0" barGap="2.0">
+                                                    <xAxis>
+                                                        <CategoryAxis />
+                                                    </xAxis>
+                                                    <yAxis>
+                                                        <NumberAxis />
+                                                    </yAxis>
+                                                </BarChart>
+                                            </children>
+                                        </StackPane>
+                                    </children>
+                                </VBox>
+
+                            </children>
+                        </VBox>
+                    </content>
+                </ScrollPane>
+
+            </children>
+        </VBox>
+    </center>
+</BorderPane>

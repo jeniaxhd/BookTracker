@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane fx:id="root"
+            styleClass="dashboard-root"
+            xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="sk.upjs.paz.ui.LibraryController">
+
+    <!-- LEFT: SIDEBAR -->
+    <left>
+        <VBox prefWidth="240.0" styleClass="sidebar" BorderPane.alignment="CENTER">
+            <children>
+
+                <VBox spacing="10.0" styleClass="sidebar-header">
+                    <padding>
+                        <Insets bottom="16" left="24" right="24" top="24"/>
+                    </padding>
+                    <children>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                            <children>
+                                <StackPane prefHeight="32.0" prefWidth="32.0" styleClass="sidebar-logo-circle">
+                                    <children>
+                                        <Label styleClass="sidebar-logo-letter" text="B"/>
+                                    </children>
+                                </StackPane>
+                                <Label styleClass="sidebar-logo-text" text="%app.name"/>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+
+                <Separator/>
+
+                <VBox spacing="6.0" styleClass="sidebar-nav">
+                    <padding>
+                        <Insets bottom="16" left="16" right="16" top="16"/>
+                    </padding>
+                    <children>
+                        <ToggleButton fx:id="dashboardNavButton" onAction="#onDashboardSelected"
+                                      styleClass="sidebar-nav-button" text="%nav.dashboard"/>
+                        <ToggleButton fx:id="libraryNavButton" onAction="#onLibrarySelected" selected="true"
+                                      styleClass="sidebar-nav-button,sidebar-nav-button--active" text="%nav.library"/>
+                        <ToggleButton fx:id="currentlyReadingNavButton" onAction="#onCurrentlyReadingSelected"
+                                      styleClass="sidebar-nav-button" text="%nav.currentlyReading"/>
+                        <ToggleButton fx:id="statisticsNavButton" onAction="#onStatisticsSelected"
+                                      styleClass="sidebar-nav-button" text="%nav.statistics"/>
+                    </children>
+                </VBox>
+
+                <Pane VBox.vgrow="ALWAYS"/>
+
+                <VBox styleClass="sidebar-user">
+                    <padding>
+                        <Insets bottom="24" left="16" right="16" top="8"/>
+                    </padding>
+                    <children>
+                        <Button fx:id="userProfileButton" maxWidth="Infinity" onAction="#onUserProfile"
+                                styleClass="sidebar-user-button">
+                            <graphic>
+                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                    <children>
+                                        <StackPane prefHeight="32.0" prefWidth="32.0" styleClass="sidebar-user-avatar">
+                                            <children>
+                                                <Label styleClass="sidebar-user-initials" text="Y"/>
+                                            </children>
+                                        </StackPane>
+
+                                        <VBox spacing="2.0">
+                                            <children>
+                                                <Label fx:id="userNameLabel" styleClass="sidebar-user-name" text="Sarah Chen"/>
+                                                <Label styleClass="sidebar-user-subtitle" text="%nav.viewProfile"/>
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </HBox>
+                            </graphic>
+                        </Button>
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+    </left>
+
+    <!-- CENTER: MAIN AREA -->
+    <center>
+        <VBox BorderPane.alignment="CENTER">
+            <children>
+
+                <!-- Header -->
+                <VBox styleClass="header">
+                    <children>
+                        <HBox alignment="CENTER_LEFT" spacing="16.0" styleClass="header-inner">
+                            <padding>
+                                <Insets bottom="24" left="32" right="32" top="24"/>
+                            </padding>
+
+                            <children>
+
+                                <VBox spacing="4.0">
+                                    <children>
+                                        <Label fx:id="headerTitleLabel" styleClass="header-title" text="%nav.library"/>
+                                        <Label styleClass="header-subtitle"
+                                               text="%library.browse_search_and_organize_all_your_books"
+                                               wrapText="true"/>
+                                    </children>
+                                </VBox>
+
+                                <Pane HBox.hgrow="ALWAYS"/>
+
+                                <!-- Right actions -->
+                                <HBox alignment="CENTER_RIGHT" spacing="8.0">
+                                    <children>
+
+                                        <!-- Let it stretch/shrink -->
+                                        <TextField fx:id="searchField"
+                                                   maxWidth="Infinity"
+                                                   promptText="%library.search_by_title_author_or_tag"
+                                                   styleClass="header-search-field"
+                                                   HBox.hgrow="ALWAYS"/>
+
+                                        <ToggleButton fx:id="themeToggle" onAction="#onToggleTheme"
+                                                      styleClass="header-icon-button">
+                                            <graphic>
+                                                <ImageView fx:id="themeIcon" fitHeight="18.0" fitWidth="18.0"
+                                                           preserveRatio="true"/>
+                                            </graphic>
+                                        </ToggleButton>
+
+                                        <Button fx:id="addBookButton" onAction="#onAddBook"
+                                                styleClass="header-primary-button" text="%common.addBook">
+                                            <graphic>
+                                                <Label styleClass="header-primary-icon" text="+"/>
+                                            </graphic>
+                                        </Button>
+
+                                    </children>
+                                </HBox>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+
+                <!-- Scrollable content -->
+                <ScrollPane fx:id="contentScrollPane"
+                            fitToWidth="true"
+                            hbarPolicy="NEVER"
+                            VBox.vgrow="ALWAYS">
+                    <content>
+                        <VBox fx:id="contentRoot" spacing="24.0">
+                            <padding>
+                                <Insets bottom="32" left="32" right="32" top="24"/>
+                            </padding>
+                            <children>
+
+                                <!-- FILTERS -->
+                                <VBox spacing="12.0">
+                                    <children>
+                                        <Label styleClass="section-title" text="%library.filters"/>
+
+                                        <!-- CHANGED: chips wrap -->
+                                        <FlowPane fx:id="statusChipsFlow"
+                                                  hgap="8.0"
+                                                  vgap="8.0"
+                                                  prefWrapLength="900">
+                                            <children>
+                                                <ToggleButton selected="true"
+                                                              styleClass="filter-chip,filter-chip--active" text="%common.all"/>
+                                                <ToggleButton styleClass="filter-chip" text="%status.inProgress"/>
+                                                <ToggleButton styleClass="filter-chip" text="%library.finished"/>
+                                                <ToggleButton styleClass="filter-chip" text="%library.not_started"/>
+                                                <ToggleButton styleClass="filter-chip" text="%library.abandoned"/>
+                                            </children>
+                                        </FlowPane>
+
+                                        <!-- CHANGED: combobox row wraps too -->
+                                        <FlowPane fx:id="filtersRowFlow"
+                                                  hgap="12.0"
+                                                  vgap="12.0"
+                                                  prefWrapLength="900">
+                                            <children>
+                                                <ComboBox fx:id="categoryCombo"
+                                                          prefWidth="180.0"
+                                                          promptText="%common.category"
+                                                          styleClass="filter-combobox"/>
+                                                <ComboBox fx:id="sortCombo"
+                                                          prefWidth="220.0"
+                                                          promptText="%library.sort_by_recently_added"
+                                                          styleClass="filter-combobox"/>
+                                            </children>
+                                        </FlowPane>
+                                    </children>
+                                </VBox>
+
+                                <!-- BOOK GRID -->
+                                <VBox spacing="12.0">
+                                    <children>
+                                        <Label styleClass="section-title" text="%library.all_books"/>
+
+                                        <FlowPane fx:id="allBooksContainer"
+                                                  hgap="16.0"
+                                                  vgap="16.0"
+                                                  prefWrapLength="720.0"/>
+                                    </children>
+                                </VBox>
+
+                            </children>
+                        </VBox>
+                    </content>
+                </ScrollPane>
+
+            </children>
+        </VBox>
+    </center>
+</BorderPane>
